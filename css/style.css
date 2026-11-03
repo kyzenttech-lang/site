@@ -1816,3 +1816,10 @@ html.janela-aberta .barra-fixa { display: none; }
 .cartao.cartao-link:hover { border-color: var(--linha); }
 .cartao-link .cartao-ver { display: inline-flex; align-items: center; min-height: 44px; margin-top: auto; text-decoration: underline; text-underline-offset: 4px; }
 .cartao-link .cartao-ver:hover { text-decoration-thickness: 2px; }
+
+/* ramos: 5 cards (no celular, o último ocupa a linha toda) */
+.ramos .ramo:last-child:nth-child(odd) { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
+@media (min-width: 1000px) {
+  .ramos { grid-template-columns: repeat(5, 1fr); }
+  .ramos .ramo:last-child:nth-child(odd) { grid-column: auto; aspect-ratio: 3 / 4; }
+}

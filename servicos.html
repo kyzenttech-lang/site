@@ -30,8 +30,8 @@
   <script>(function(){var t;try{t=localStorage.getItem("kyzent-tema")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);document.documentElement.classList.add("js")})();</script>
 
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=29">
-  <script src="js/main.js?v=29" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=30">
+  <script src="js/main.js?v=30" defer></script>
 </head>
 <body>
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -78,14 +78,14 @@
     </section>
 
     <section class="secao secao-servicos" id="catalogo" aria-label="Serviços por módulo">
-      <div class="container filtro" data-filtro data-nomes='{"lanchonete": "Lanchonetes", "barbearia": "Barbearias", "salao": "Salões de beleza", "consultorio": "Consultórios odontológicos"}'>
+      <div class="container filtro" data-filtro data-nomes='{"lanchonete": "Lanchonetes", "barbearia": "Barbearias", "salao": "Salões de beleza", "consultorio": "Consultórios odontológicos", "petshop": "Pet shops"}'>
         <p class="filtro-titulo" id="filtro-titulo">Qual é o seu tipo de negócio?</p>
         <button class="filtro-abrir" type="button" data-abrir-janela="janela-filtro" aria-haspopup="dialog">
           <span class="filtro-abrir-rotulo">Tipo de negócio</span><strong data-filtro-atual>Todos</strong><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg>
         </button>
         <div class="filtro-botoes" role="group" aria-labelledby="filtro-titulo">
           <button class="filtro-chip" type="button" data-ramo="todos" aria-pressed="true"><span>Todos</span></button>
-          <button class="filtro-chip" type="button" data-ramo="lanchonete" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a8 6 0 0 1 16 0z"/><path d="M3 14.5h18"/><path d="M4.5 18h15a1.5 1.5 0 0 1-1.5 2h-12a1.5 1.5 0 0 1-1.5-2z"/></svg><span>Lanchonete</span></button><button class="filtro-chip" type="button" data-ramo="barbearia" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.8 20 19M8.5 15.2 20 5"/></svg><span>Barbearia</span></button><button class="filtro-chip" type="button" data-ramo="salao" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5h17v3.5h-17z"/><path d="M6 11v7M9 11v7M12 11v7M15 11v7M18 11v7"/></svg><span>Salão de beleza</span></button><button class="filtro-chip" type="button" data-ramo="consultorio" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 3.5c-2.6 0-4.3 2-4.3 4.7 0 3.1 1.6 4.6 2.1 7.6.5 3 1 5.7 2.4 5.7 1.6 0 1.6-4.2 3.3-4.2s1.7 4.2 3.3 4.2c1.4 0 1.9-2.7 2.4-5.7s2.1-4.5 2.1-7.6c0-2.7-1.7-4.7-4.3-4.7-1.9 0-2.8 1-4.5 1s-2.6-1-4.5-1z"/></svg><span>Consultório</span></button>
+          <button class="filtro-chip" type="button" data-ramo="lanchonete" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a8 6 0 0 1 16 0z"/><path d="M3 14.5h18"/><path d="M4.5 18h15a1.5 1.5 0 0 1-1.5 2h-12a1.5 1.5 0 0 1-1.5-2z"/></svg><span>Lanchonete</span></button><button class="filtro-chip" type="button" data-ramo="barbearia" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.8 20 19M8.5 15.2 20 5"/></svg><span>Barbearia</span></button><button class="filtro-chip" type="button" data-ramo="salao" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5h17v3.5h-17z"/><path d="M6 11v7M9 11v7M12 11v7M15 11v7M18 11v7"/></svg><span>Salão de beleza</span></button><button class="filtro-chip" type="button" data-ramo="consultorio" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 3.5c-2.6 0-4.3 2-4.3 4.7 0 3.1 1.6 4.6 2.1 7.6.5 3 1 5.7 2.4 5.7 1.6 0 1.6-4.2 3.3-4.2s1.7 4.2 3.3 4.2c1.4 0 1.9-2.7 2.4-5.7s2.1-4.5 2.1-7.6c0-2.7-1.7-4.7-4.3-4.7-1.9 0-2.8 1-4.5 1s-2.6-1-4.5-1z"/></svg><span>Consultório</span></button><button class="filtro-chip" type="button" data-ramo="petshop" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="11" r="1.8"/><circle cx="10" cy="6.5" r="1.8"/><circle cx="14" cy="6.5" r="1.8"/><circle cx="17.5" cy="11" r="1.8"/><path d="M8 17.2c0-2.3 1.8-4 4-4s4 1.7 4 4c0 1.6-1.2 2.3-2.6 2.3-.9 0-1.1-.4-1.4-.4s-.5.4-1.4.4C9.2 19.5 8 18.8 8 17.2z"/></svg><span>Pet shop</span></button>
         </div>
       </div>
       <div class="abas-faixa">
@@ -104,14 +104,14 @@
             <p>Chatbots, respostas automáticas e triagem para atender bem o cliente a qualquer hora.</p>
           </div>
           <ul class="painel-itens">
-              <li class="item" data-ramos="lanchonete barbearia salao consultorio">
+              <li class="item" data-ramos="lanchonete barbearia salao consultorio petshop">
                 <h4>Chatbots inteligentes</h4>
                 <p>Atendimento automatizado pelo WhatsApp e Instagram, disponível 24 horas.</p>
                 <button class="item-add" type="button" data-servico="Chatbots inteligentes" data-area="WhatsApp e atendimento" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="lanchonete barbearia salao consultorio">
+              <li class="item" data-ramos="lanchonete barbearia salao consultorio petshop">
                 <h4>Respostas inteligentes</h4>
                 <p>Resolução automática de dúvidas e perguntas frequentes.</p>
                 <button class="item-add" type="button" data-servico="Respostas inteligentes" data-area="WhatsApp e atendimento" aria-pressed="false">
@@ -164,7 +164,7 @@
             <p>Horários marcados, clientes acompanhados e oportunidades que não se perdem.</p>
           </div>
           <ul class="painel-itens">
-              <li class="item" data-ramos="barbearia salao consultorio">
+              <li class="item" data-ramos="barbearia salao consultorio petshop">
                 <h4>Agendamentos automáticos</h4>
                 <p>Organização de reuniões, consultas e serviços.</p>
                 <button class="item-add" type="button" data-servico="Agendamentos automáticos" data-area="Agendamento e vendas" aria-pressed="false">
@@ -178,7 +178,7 @@
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="lanchonete barbearia salao consultorio">
+              <li class="item" data-ramos="lanchonete barbearia salao consultorio petshop">
                 <h4>Follow-up inteligente</h4>
                 <p>Acompanhamento automático de clientes e recuperação de oportunidades.</p>
                 <button class="item-add" type="button" data-servico="Follow-up inteligente" data-area="Agendamento e vendas" aria-pressed="false">
@@ -218,21 +218,21 @@
             <p>Cadastros, pedidos, relatórios e documentos organizados, com os seus sistemas conversando entre si.</p>
           </div>
           <ul class="painel-itens">
-              <li class="item" data-ramos="lanchonete">
+              <li class="item" data-ramos="lanchonete petshop">
                 <h4>Gestão de cadastros e pedidos</h4>
                 <p>Organização automatizada de informações e solicitações.</p>
                 <button class="item-add" type="button" data-servico="Gestão de cadastros e pedidos" data-area="Gestão e sistemas" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="barbearia salao consultorio">
+              <li class="item" data-ramos="barbearia salao consultorio petshop">
                 <h4>Integração com CRM</h4>
                 <p>Centralização e gerenciamento do relacionamento com clientes.</p>
                 <button class="item-add" type="button" data-servico="Integração com CRM" data-area="Gestão e sistemas" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="lanchonete barbearia">
+              <li class="item" data-ramos="lanchonete barbearia petshop">
                 <h4>Relatórios automatizados</h4>
                 <p>Geração de relatórios para acompanhamento empresarial.</p>
                 <button class="item-add" type="button" data-servico="Relatórios automatizados" data-area="Gestão e sistemas" aria-pressed="false">
@@ -253,7 +253,7 @@
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="lanchonete">
+              <li class="item" data-ramos="lanchonete petshop">
                 <h4>Integração com estoque e ERP</h4>
                 <p>Automatização e conexão de sistemas de gestão empresarial.</p>
                 <button class="item-add" type="button" data-servico="Integração com estoque e ERP" data-area="Gestão e sistemas" aria-pressed="false">
@@ -284,7 +284,7 @@
             <p>Um site feito sob medida para o seu negócio, do jeito que você quer apresentá-lo.</p>
           </div>
           <ul class="painel-itens">
-              <li class="item" data-ramos="lanchonete barbearia salao consultorio">
+              <li class="item" data-ramos="lanchonete barbearia salao consultorio petshop">
                 <h4>Site personalizado</h4>
                 <p>Site feito sob medida para o seu negócio, conforme o que você quer mostrar e o que mais interessa aos seus clientes.</p>
                 <button class="item-add" type="button" data-servico="Site personalizado" data-area="Site e presença online" aria-pressed="false">
@@ -426,7 +426,7 @@
         <p class="gaveta-form-titulo">Para a gente já chegar preparado <span>(opcional)</span></p>
         <label>Seu nome<input name="nome" autocomplete="name"></label>
         <label>Tipo de negócio<input name="negocio" list="lista-negocios" placeholder="Ex.: barbearia"></label>
-        <datalist id="lista-negocios"><option value="Lanchonete"><option value="Barbearia"><option value="Salão de beleza"><option value="Consultório odontológico"><option value="Restaurante"><option value="Loja"><option value="Clínica"></datalist>
+        <datalist id="lista-negocios"><option value="Lanchonete"><option value="Barbearia"><option value="Salão de beleza"><option value="Consultório odontológico"><option value="Pet shop"><option value="Restaurante"><option value="Loja"><option value="Clínica"></datalist>
         <label>Observação<textarea name="obs" rows="3" placeholder="Ex.: atendo 40 clientes por dia no WhatsApp"></textarea></label>
       </form>
     </div>
@@ -447,7 +447,7 @@
     <div class="janela-corpo">
       <h2 id="filtro-janela-titulo" tabindex="-1" autofocus>Qual é o seu tipo de negócio?</h2>
       <p class="janela-resumo">Mostramos só os serviços que mais combinam com o seu negócio.</p>
-      <div class="filtro-opcoes"><button class="filtro-opcao" type="button" data-ramo="todos" aria-pressed="true"><span>Todos</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button class="filtro-opcao" type="button" data-ramo="lanchonete" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a8 6 0 0 1 16 0z"/><path d="M3 14.5h18"/><path d="M4.5 18h15a1.5 1.5 0 0 1-1.5 2h-12a1.5 1.5 0 0 1-1.5-2z"/></svg><span>Lanchonete</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button class="filtro-opcao" type="button" data-ramo="barbearia" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.8 20 19M8.5 15.2 20 5"/></svg><span>Barbearia</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button class="filtro-opcao" type="button" data-ramo="salao" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5h17v3.5h-17z"/><path d="M6 11v7M9 11v7M12 11v7M15 11v7M18 11v7"/></svg><span>Salão de beleza</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button class="filtro-opcao" type="button" data-ramo="consultorio" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 3.5c-2.6 0-4.3 2-4.3 4.7 0 3.1 1.6 4.6 2.1 7.6.5 3 1 5.7 2.4 5.7 1.6 0 1.6-4.2 3.3-4.2s1.7 4.2 3.3 4.2c1.4 0 1.9-2.7 2.4-5.7s2.1-4.5 2.1-7.6c0-2.7-1.7-4.7-4.3-4.7-1.9 0-2.8 1-4.5 1s-2.6-1-4.5-1z"/></svg><span>Consultório</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></div>
+      <div class="filtro-opcoes"><button class="filtro-opcao" type="button" data-ramo="todos" aria-pressed="true"><span>Todos</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button class="filtro-opcao" type="button" data-ramo="lanchonete" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a8 6 0 0 1 16 0z"/><path d="M3 14.5h18"/><path d="M4.5 18h15a1.5 1.5 0 0 1-1.5 2h-12a1.5 1.5 0 0 1-1.5-2z"/></svg><span>Lanchonete</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button class="filtro-opcao" type="button" data-ramo="barbearia" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.8 20 19M8.5 15.2 20 5"/></svg><span>Barbearia</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button class="filtro-opcao" type="button" data-ramo="salao" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5h17v3.5h-17z"/><path d="M6 11v7M9 11v7M12 11v7M15 11v7M18 11v7"/></svg><span>Salão de beleza</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button class="filtro-opcao" type="button" data-ramo="consultorio" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 3.5c-2.6 0-4.3 2-4.3 4.7 0 3.1 1.6 4.6 2.1 7.6.5 3 1 5.7 2.4 5.7 1.6 0 1.6-4.2 3.3-4.2s1.7 4.2 3.3 4.2c1.4 0 1.9-2.7 2.4-5.7s2.1-4.5 2.1-7.6c0-2.7-1.7-4.7-4.3-4.7-1.9 0-2.8 1-4.5 1s-2.6-1-4.5-1z"/></svg><span>Consultório</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button class="filtro-opcao" type="button" data-ramo="petshop" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="11" r="1.8"/><circle cx="10" cy="6.5" r="1.8"/><circle cx="14" cy="6.5" r="1.8"/><circle cx="17.5" cy="11" r="1.8"/><path d="M8 17.2c0-2.3 1.8-4 4-4s4 1.7 4 4c0 1.6-1.2 2.3-2.6 2.3-.9 0-1.1-.4-1.4-.4s-.5.4-1.4.4C9.2 19.5 8 18.8 8 17.2z"/></svg><span>Pet shop</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></div>
     </div>
   </dialog>
 </body>

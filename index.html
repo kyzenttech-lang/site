@@ -30,8 +30,8 @@
   <script>(function(){var t;try{t=localStorage.getItem("kyzent-tema")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);document.documentElement.classList.add("js")})();</script>
 
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=29">
-  <script src="js/main.js?v=29" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=30">
+  <script src="js/main.js?v=30" defer></script>
 </head>
 <body>
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -100,6 +100,7 @@
           <button class="ramo" type="button" data-abrir-janela="janela-barbearia" aria-haspopup="dialog"><img src="assets/fotos/barbearia.jpg" alt="" width="880" height="1100" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Barbearias</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
           <button class="ramo" type="button" data-abrir-janela="janela-salao" aria-haspopup="dialog"><img src="assets/fotos/salao.jpg" alt="" width="734" height="1100" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Salões de beleza</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
           <button class="ramo" type="button" data-abrir-janela="janela-consultorio" aria-haspopup="dialog"><img src="assets/fotos/consultorio.jpg" alt="" width="1200" height="800" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Consultórios odontológicos</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
+          <button class="ramo" type="button" data-abrir-janela="janela-petshop" aria-haspopup="dialog"><img src="assets/fotos/petshop.jpg" alt="" width="1200" height="900" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Pet shops</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
         </div>
       </div>
     </section>
@@ -185,7 +186,7 @@
         <p class="gaveta-form-titulo">Para a gente já chegar preparado <span>(opcional)</span></p>
         <label>Seu nome<input name="nome" autocomplete="name"></label>
         <label>Tipo de negócio<input name="negocio" list="lista-negocios" placeholder="Ex.: barbearia"></label>
-        <datalist id="lista-negocios"><option value="Lanchonete"><option value="Barbearia"><option value="Salão de beleza"><option value="Consultório odontológico"><option value="Restaurante"><option value="Loja"><option value="Clínica"></datalist>
+        <datalist id="lista-negocios"><option value="Lanchonete"><option value="Barbearia"><option value="Salão de beleza"><option value="Consultório odontológico"><option value="Pet shop"><option value="Restaurante"><option value="Loja"><option value="Clínica"></datalist>
         <label>Observação<textarea name="obs" rows="3" placeholder="Ex.: atendo 40 clientes por dia no WhatsApp"></textarea></label>
       </form>
     </div>
@@ -254,6 +255,20 @@
       <div class="janela-acoes">
         <a class="botao" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent.%20Tenho%20um%20consult%C3%B3rio%20odontol%C3%B3gico%20e%20quero%20saber%20o%20que%20voc%C3%AAs%20podem%20automatizar." target="_blank" rel="noopener" data-contato data-msg="Olá, vim pelo site da Kyzent. Tenho um consultório odontológico e quero saber o que vocês podem automatizar.">Chamar no WhatsApp</a>
         <a class="link-seta" href="servicos.html?ramo=consultorio">Ver serviços para consultórios odontológicos</a>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="janela" id="janela-petshop" aria-labelledby="janela-petshop-titulo">
+    <div class="janela-foto"><img src="assets/fotos/petshop.jpg" alt="" width="1200" height="900" loading="lazy"></div>
+    <button class="janela-fechar" type="button" data-fechar-janela aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="janela-corpo">
+      <p class="janela-sobre">O que a Kyzent faz para</p>
+      <h2 id="janela-petshop-titulo" tabindex="-1" autofocus>Pet shops</h2>
+      <p class="janela-resumo">Agenda de banho e tosa organizada, tutores lembrados da vacina e pedidos de ração sem se perder no WhatsApp.</p>
+      <ul class="lista-check"><li><strong>Agendamentos automáticos</strong> Banho, tosa e consulta marcados direto na conversa, sem choque de horário.</li><li><strong>Chatbot no WhatsApp e no Instagram</strong> Atende a qualquer hora quem quer saber de serviço, preço e horário.</li><li><strong>Respostas inteligentes</strong> Valores de banho e tosa, vacinas, produtos e horários respondidos na hora.</li><li><strong>Follow-up inteligente</strong> Lembra o tutor da vacina, do vermífugo e do próximo banho do pet.</li><li><strong>Gestão de pedidos</strong> Pedidos de ração e de produtos organizados, para retirar na loja ou receber em casa.</li><li><strong>Cadastro de pets e tutores</strong> Histórico de cada pet e dados do tutor guardados em um só lugar.</li></ul>
+      <div class="janela-acoes">
+        <a class="botao" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent.%20Tenho%20um%20pet%20shop%20e%20quero%20saber%20o%20que%20voc%C3%AAs%20podem%20automatizar." target="_blank" rel="noopener" data-contato data-msg="Olá, vim pelo site da Kyzent. Tenho um pet shop e quero saber o que vocês podem automatizar.">Chamar no WhatsApp</a>
+        <a class="link-seta" href="servicos.html?ramo=petshop">Ver serviços para pet shops</a>
       </div>
     </div>
   </dialog>

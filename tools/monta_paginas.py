@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "29"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "30"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -43,6 +43,7 @@ I = {
     "agenda": svg('<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8.5 14h2M13.5 14h2M8.5 17h2"/>'),
     "site": svg('<rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M3 9.5h18M6.5 7h.01M9 7h.01M7.5 13.5h5M7.5 16h8"/>'),
     "seta_baixo": svg('<path d="M6 9.5l6 6 6-6"/>'),
+    "pata": svg('<circle cx="6.5" cy="11" r="1.8"/><circle cx="10" cy="6.5" r="1.8"/><circle cx="14" cy="6.5" r="1.8"/><circle cx="17.5" cy="11" r="1.8"/><path d="M8 17.2c0-2.3 1.8-4 4-4s4 1.7 4 4c0 1.6-1.2 2.3-2.6 2.3-.9 0-1.1-.4-1.4-.4s-.5.4-1.4.4C9.2 19.5 8 18.8 8 17.2z"/>'),
     "voltar": svg('<path d="M15 5l-7 7 7 7"/>'),
     "mic": svg('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>'),
 }
@@ -53,23 +54,23 @@ PAGINAS = [("index.html", "Início"), ("quem-somos.html", "Quem somos"), ("servi
 
 # ------------------------------------------------------------------ catálogo de serviços (sem preço: o valor é combinado com cada cliente)
 # ramos: para quais tipos de negócio o serviço é indicado (filtro da página Serviços)
-TODOS = ["lanchonete", "barbearia", "salao", "consultorio"]
+TODOS = ["lanchonete", "barbearia", "salao", "consultorio", "petshop"]
 CATALOGO = {
     "Chatbots inteligentes": ("Atendimento automatizado pelo WhatsApp e Instagram, disponível 24 horas.", TODOS),
     "Respostas inteligentes": ("Resolução automática de dúvidas e perguntas frequentes.", TODOS),
     "Triagem de atendimento": ("Identificação das necessidades dos clientes e encaminhamento para atendentes humanos.", ["salao", "consultorio"]),
     "Centrais inteligentes de atendimento": ("Múltiplos agentes de IA trabalhando em diferentes funções.", []),
-    "Agendamentos automáticos": ("Organização de reuniões, consultas e serviços.", ["barbearia", "salao", "consultorio"]),
+    "Agendamentos automáticos": ("Organização de reuniões, consultas e serviços.", ["barbearia", "salao", "consultorio", "petshop"]),
     "Captação e qualificação de leads": ("Identificação e classificação de potenciais clientes.", ["salao", "consultorio"]),
     "Follow-up inteligente": ("Acompanhamento automático de clientes e recuperação de oportunidades.", TODOS),
     "Orçamentos automatizados": ("Geração e envio de propostas comerciais.", ["salao"]),
     "Automação de processos comerciais": ("Integração e otimização de etapas do processo de vendas.", []),
-    "Gestão de cadastros e pedidos": ("Organização automatizada de informações e solicitações.", ["lanchonete"]),
-    "Integração com CRM": ("Centralização e gerenciamento do relacionamento com clientes.", ["barbearia", "salao", "consultorio"]),
-    "Relatórios automatizados": ("Geração de relatórios para acompanhamento empresarial.", ["lanchonete", "barbearia"]),
+    "Gestão de cadastros e pedidos": ("Organização automatizada de informações e solicitações.", ["lanchonete", "petshop"]),
+    "Integração com CRM": ("Centralização e gerenciamento do relacionamento com clientes.", ["barbearia", "salao", "consultorio", "petshop"]),
+    "Relatórios automatizados": ("Geração de relatórios para acompanhamento empresarial.", ["lanchonete", "barbearia", "petshop"]),
     "Automação de documentos": ("Organização e envio automático de documentos.", ["consultorio"]),
     "Integração de sistemas": ("Conexão entre diferentes plataformas e ferramentas empresariais.", []),
-    "Integração com estoque e ERP": ("Automatização e conexão de sistemas de gestão empresarial.", ["lanchonete"]),
+    "Integração com estoque e ERP": ("Automatização e conexão de sistemas de gestão empresarial.", ["lanchonete", "petshop"]),
     "Agentes de IA personalizados": ("Inteligência artificial desenvolvida conforme as necessidades da empresa.", []),
     "Assistentes internos de IA": ("Ferramentas inteligentes para auxiliar funcionários.", []),
     "Sistemas personalizados": ("Desenvolvimento de soluções de atendimento e automação sob medida.", []),
@@ -147,6 +148,15 @@ RAMOS = [
         ("Automação de documentos", "Envio automático de orientações e documentos ao paciente."),
         ("Cadastro de pacientes e CRM", "Informações de cada paciente organizadas, com cuidado com os dados (LGPD)."),
     ]),
+    ("petshop", "Pet shops", "pata", "um pet shop", "Banho e tosa marcados, sem perder mensagem.",
+     "Agenda de banho e tosa organizada, tutores lembrados da vacina e pedidos de ração sem se perder no WhatsApp.", [
+        ("Agendamentos automáticos", "Banho, tosa e consulta marcados direto na conversa, sem choque de horário."),
+        ("Chatbot no WhatsApp e no Instagram", "Atende a qualquer hora quem quer saber de serviço, preço e horário."),
+        ("Respostas inteligentes", "Valores de banho e tosa, vacinas, produtos e horários respondidos na hora."),
+        ("Follow-up inteligente", "Lembra o tutor da vacina, do vermífugo e do próximo banho do pet."),
+        ("Gestão de pedidos", "Pedidos de ração e de produtos organizados, para retirar na loja ou receber em casa."),
+        ("Cadastro de pets e tutores", "Histórico de cada pet e dados do tutor guardados em um só lugar."),
+    ]),
 ]
 
 # fotos de banco (Unsplash, licença livre; origem em assets/fotos/CREDITOS.md): arquivo, largura, altura
@@ -155,6 +165,7 @@ FOTO_RAMO = {
     "barbearia": ("barbearia.jpg", 880, 1100),
     "salao": ("salao.jpg", 734, 1100),
     "consultorio": ("consultorio.jpg", 1200, 800),
+    "petshop": ("petshop.jpg", 1200, 900),
 }
 
 def ramos_cartoes():
@@ -206,7 +217,7 @@ def numero_opcao(n):
             f'<span class="numero-icone">{I["conversa"]}</span>'
             f'<span class="numero-texto"><span class="numero-tipo">WhatsApp</span><span class="numero-valor">{WHATS[n][1]}</span></span></a>')
 
-RAMOS_NOMES = ["Lanchonete", "Barbearia", "Salão de beleza", "Consultório odontológico", "Restaurante", "Loja", "Clínica"]
+RAMOS_NOMES = ["Lanchonete", "Barbearia", "Salão de beleza", "Consultório odontológico", "Pet shop", "Restaurante", "Loja", "Clínica"]
 
 JANELAS_GERAIS = f"""  <dialog class="janela janela-pequena" id="janela-contato" aria-labelledby="contato-titulo">
     <button class="janela-fechar" type="button" data-fechar-janela aria-label="Fechar">{I["fechar"]}</button>
@@ -594,7 +605,7 @@ EXEMPLOS = {"whatsapp": CONVERSA, "agenda": mock_agenda(), "gestao": mock_gestao
 
 # nome do ramo (filtro): id -> (texto do botão, ícone)
 FILTRO_RAMOS = {"lanchonete": ("Lanchonete", "lanche"), "barbearia": ("Barbearia", "tesoura"),
-                "salao": ("Salão de beleza", "pente"), "consultorio": ("Consultório", "dente")}
+                "salao": ("Salão de beleza", "pente"), "consultorio": ("Consultório", "dente"), "petshop": ("Pet shop", "pata")}
 
 abas = []
 paineis = []
