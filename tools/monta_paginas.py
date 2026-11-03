@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "3"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "4"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da KYZENT")
@@ -182,7 +182,7 @@ def pagina(arq, titulo, descricao, corpo, janelas=""):
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 
   <!-- aplica o tema antes de desenhar a página (evita piscar) -->
-  <script>(function(){{var t;try{{t=localStorage.getItem("kyzent-tema")}}catch(e){{}}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}})();</script>
+  <script>(function(){{var t;try{{t=localStorage.getItem("kyzent-tema")}}catch(e){{}}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);document.documentElement.classList.add("js")}})();</script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -275,8 +275,8 @@ PARA_QUEM = f"""    <section class="secao secao-faixa" id="para-quem" aria-label
 
 # ------------------------------------------------------------------ Início
 cartoes_servicos = "\n".join(
-    f'          <li class="cartao"><span class="cartao-icone">{I[ic]}</span><span class="cartao-num">{n}</span>'
-    f'<h3>{t}</h3><p>{resumo}</p></li>'
+    f'          <li><a class="cartao cartao-link" href="servicos.html#servico-{n}"><span class="cartao-icone">{I[ic]}</span><span class="cartao-num">{n}</span>'
+    f'<h3>{t}</h3><p>{resumo}</p><span class="cartao-ver">Ver serviços</span></a></li>'
     for n, t, ic, resumo, _ in SERVICOS)
 
 INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
@@ -391,52 +391,107 @@ QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
 {CHAMADA}"""
 
 # ------------------------------------------------------------------ Serviços
-blocos = []
-for n, t, ic, _, itens in SERVICOS:
-    lis = "\n".join(f'            <li class="item"><h4>{a}</h4><p>{b}</p></li>' for a, b in itens)
-    blocos.append(f"""        <article class="servico" id="servico-{n}">
-          <div class="servico-cabeca">
-            <span class="cartao-icone">{I[ic]}</span>
-            <span class="servico-num">{n}</span>
+FOTO_SERV = {
+    "01": ("celular-mensagem.jpg", 733, 1100, "Pessoa usando o celular ao lado de uma xícara de café"),
+    "02": ("comercio-balcao.jpg", 1600, 900, "Dona de comércio atendendo uma cliente no balcão"),
+    "03": ("equipe-computador.jpg", 1600, 900, "Pessoas trabalhando juntas em frente a um computador"),
+    "04": ("equipe-reuniao.jpg", 1600, 900, "Equipe conversando em uma reunião num escritório"),
+}
+
+ETAPAS = [
+    ("Conversa", "Entendemos como funciona o seu negócio e onde está o trabalho repetitivo."),
+    ("Proposta", "Indicamos as automações certas e enviamos um orçamento personalizado."),
+    ("Implantação", "Configuramos tudo com as informações do seu negócio, pela API oficial da Meta."),
+    ("Acompanhamento", "Manutenção e suporte contínuos, com ajustes conforme o seu negócio cresce."),
+]
+
+abas = []
+paineis = []
+for i, (n, t, ic, resumo, itens) in enumerate(SERVICOS):
+    sel = "true" if i == 0 else "false"
+    abas.append(
+        f'<button class="aba" type="button" role="tab" id="aba-{n}" aria-controls="servico-{n}" aria-selected="{sel}" tabindex="{0 if i == 0 else -1}">'
+        f'<span class="aba-icone">{I[ic]}</span><span class="aba-texto"><span class="aba-num">{n}</span>{t}</span></button>')
+    foto, fw, fh, falt = FOTO_SERV[n]
+    cards = "\n".join(
+        f'''              <li class="item">
+                <h4>{a}</h4>
+                <p>{d}</p>
+                <button class="item-add" type="button" data-servico="{a}" aria-pressed="false">
+                  <span class="item-add-mais">{I["mais"]}</span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>''' for a, d in itens)
+    paineis.append(f"""        <section class="painel" id="servico-{n}" role="tabpanel" aria-labelledby="aba-{n}" tabindex="-1">
+          <div class="painel-lado">
+            <div class="painel-foto"><img src="assets/fotos/{foto}" alt="{falt}" width="{fw}" height="{fh}" loading="lazy"></div>
+            <span class="painel-num">{n} · {len(itens)} serviços</span>
             <h2>{t}</h2>
+            <p>{resumo}</p>
           </div>
-          <ul class="servico-itens">
-{lis}
+          <ul class="painel-itens">
+{cards}
           </ul>
-        </article>""")
+        </section>""")
 
-SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
+etapas = "\n".join(
+    f'          <li class="etapa"><span class="etapa-num">{i+1:02d}</span><h3>{t}</h3><p>{d}</p></li>'
+    for i, (t, d) in enumerate(ETAPAS))
+
+SERVICOS_PAG = f"""    <section class="pagina-topo pagina-topo-servicos" aria-labelledby="titulo-pagina">
+      <div class="container topo-servicos">
+        <div>
+          <p class="rotulo">Nossos serviços</p>
+          <h1 id="titulo-pagina">Automação inteligente para empresas.</h1>
+          <p>Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
+        </div>
+        <div class="topo-servicos-dica">
+          <span class="cartao-icone">{I["mais"]}</span>
+          <p><strong>Monte o seu orçamento.</strong> Adicione os serviços que interessam e envie a lista pelo WhatsApp.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="secao secao-servicos" aria-label="Serviços por área">
+      <div class="abas-faixa">
+        <div class="container">
+          <div class="abas" role="tablist" aria-label="Áreas de serviço">
+            {"".join(abas)}
+          </div>
+        </div>
+      </div>
+      <div class="container paineis">
+{chr(10).join(paineis)}
+      </div>
+    </section>
+
+    <section class="secao secao-faixa" aria-labelledby="titulo-etapas">
       <div class="container">
-        <p class="rotulo">Nossos serviços</p>
-        <h1 id="titulo-pagina">Automação inteligente para empresas.</h1>
-        <p>Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
-        <ul class="atalhos">
-{chr(10).join(f'          <li><a href="#servico-{n}"><span>{n}</span> {t}</a></li>' for n, t, *_ in SERVICOS)}
-        </ul>
+        <div class="cabeca">
+          <p class="rotulo">Como funciona</p>
+          <h2 id="titulo-etapas">Do primeiro contato à automação funcionando.</h2>
+        </div>
+        <ol class="etapas">
+{etapas}
+        </ol>
       </div>
     </section>
 
-    <section class="secao" aria-label="Lista de serviços">
-      <div class="container servicos">
-{chr(10).join(blocos)}
-      </div>
-    </section>
+{PARA_QUEM.replace('class="secao secao-faixa"', 'class="secao"', 1)}
 
-{PARA_QUEM}
+{CHAMADA}
 
-    <section class="secao" aria-labelledby="titulo-proposta">
-      <div class="container dupla">
-        <div class="dupla-foto">
-          <img src="assets/fotos/equipe-computador.jpg" alt="Pessoas trabalhando juntas em frente a um computador" width="1600" height="900" loading="lazy">
+    <div class="selecao" data-selecao hidden>
+      <div class="container selecao-conteudo">
+        <div class="selecao-texto">
+          <strong><span data-selecao-total>0</span> <span data-selecao-palavra>serviço</span> no orçamento</strong>
+          <span class="selecao-lista" data-selecao-lista></span>
         </div>
-        <div class="dupla-texto">
-          <p class="rotulo">Nossa proposta</p>
-          <h2 id="titulo-proposta">Transformamos tecnologia em resultados para o seu negócio.</h2>
-          <p>Mais eficiência, menos tarefas manuais e processos mais inteligentes.</p>
-          <a class="botao" href="contato.html">Solicitar orçamento</a>
+        <div class="selecao-acoes">
+          <button class="botao botao-contorno" type="button" data-selecao-limpar>Limpar</button>
+          <a class="botao" href="{link_whats()}" target="_blank" rel="noopener" data-selecao-enviar data-numero="{WHATS[0][0]}">Solicitar orçamento</a>
         </div>
       </div>
-    </section>"""
+    </div>"""
 
 # ------------------------------------------------------------------ Contato
 def botao_whats(n):

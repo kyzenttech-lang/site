@@ -27,13 +27,13 @@
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 
   <!-- aplica o tema antes de desenhar a página (evita piscar) -->
-  <script>(function(){var t;try{t=localStorage.getItem("kyzent-tema")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)})();</script>
+  <script>(function(){var t;try{t=localStorage.getItem("kyzent-tema")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);document.documentElement.classList.add("js")})();</script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=3">
-  <script src="js/main.js?v=3" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=4">
+  <script src="js/main.js?v=4" defer></script>
 </head>
 <body>
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -55,80 +55,214 @@
   </header>
 
   <main id="conteudo">
-    <section class="pagina-topo" aria-labelledby="titulo-pagina">
-      <div class="container">
-        <p class="rotulo">Nossos serviços</p>
-        <h1 id="titulo-pagina">Automação inteligente para empresas.</h1>
-        <p>Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
-        <ul class="atalhos">
-          <li><a href="#servico-01"><span>01</span> Atendimento e relacionamento</a></li>
-          <li><a href="#servico-02"><span>02</span> Vendas e captação de clientes</a></li>
-          <li><a href="#servico-03"><span>03</span> Administração e gestão empresarial</a></li>
-          <li><a href="#servico-04"><span>04</span> Soluções avançadas e personalizadas</a></li>
-        </ul>
+    <section class="pagina-topo pagina-topo-servicos" aria-labelledby="titulo-pagina">
+      <div class="container topo-servicos">
+        <div>
+          <p class="rotulo">Nossos serviços</p>
+          <h1 id="titulo-pagina">Automação inteligente para empresas.</h1>
+          <p>Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
+        </div>
+        <div class="topo-servicos-dica">
+          <span class="cartao-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          <p><strong>Monte o seu orçamento.</strong> Adicione os serviços que interessam e envie a lista pelo WhatsApp.</p>
+        </div>
       </div>
     </section>
 
-    <section class="secao" aria-label="Lista de serviços">
-      <div class="container servicos">
-        <article class="servico" id="servico-01">
-          <div class="servico-cabeca">
-            <span class="cartao-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg></span>
-            <span class="servico-num">01</span>
+    <section class="secao secao-servicos" aria-label="Serviços por área">
+      <div class="abas-faixa">
+        <div class="container">
+          <div class="abas" role="tablist" aria-label="Áreas de serviço">
+            <button class="aba" type="button" role="tab" id="aba-01" aria-controls="servico-01" aria-selected="true" tabindex="0"><span class="aba-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg></span><span class="aba-texto"><span class="aba-num">01</span>Atendimento e relacionamento</span></button><button class="aba" type="button" role="tab" id="aba-02" aria-controls="servico-02" aria-selected="false" tabindex="-1"><span class="aba-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><span class="aba-texto"><span class="aba-num">02</span>Vendas e captação de clientes</span></button><button class="aba" type="button" role="tab" id="aba-03" aria-controls="servico-03" aria-selected="false" tabindex="-1"><span class="aba-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 13h3M8 16h6"/></svg></span><span class="aba-texto"><span class="aba-num">03</span>Administração e gestão empresarial</span></button><button class="aba" type="button" role="tab" id="aba-04" aria-controls="servico-04" aria-selected="false" tabindex="-1"><span class="aba-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg></span><span class="aba-texto"><span class="aba-num">04</span>Soluções avançadas e personalizadas</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="container paineis">
+        <section class="painel" id="servico-01" role="tabpanel" aria-labelledby="aba-01" tabindex="-1">
+          <div class="painel-lado">
+            <div class="painel-foto"><img src="assets/fotos/celular-mensagem.jpg" alt="Pessoa usando o celular ao lado de uma xícara de café" width="733" height="1100" loading="lazy"></div>
+            <span class="painel-num">01 · 3 serviços</span>
             <h2>Atendimento e relacionamento</h2>
+            <p>Chatbots no WhatsApp e no Instagram, respostas automáticas e triagem para atendentes.</p>
           </div>
-          <ul class="servico-itens">
-            <li class="item"><h4>Chatbots inteligentes</h4><p>Atendimento automatizado pelo WhatsApp e Instagram, disponível 24 horas.</p></li>
-            <li class="item"><h4>Respostas inteligentes</h4><p>Resolução automática de dúvidas e perguntas frequentes.</p></li>
-            <li class="item"><h4>Triagem de atendimento</h4><p>Identificação das necessidades dos clientes e encaminhamento para atendentes humanos.</p></li>
+          <ul class="painel-itens">
+              <li class="item">
+                <h4>Chatbots inteligentes</h4>
+                <p>Atendimento automatizado pelo WhatsApp e Instagram, disponível 24 horas.</p>
+                <button class="item-add" type="button" data-servico="Chatbots inteligentes" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Respostas inteligentes</h4>
+                <p>Resolução automática de dúvidas e perguntas frequentes.</p>
+                <button class="item-add" type="button" data-servico="Respostas inteligentes" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Triagem de atendimento</h4>
+                <p>Identificação das necessidades dos clientes e encaminhamento para atendentes humanos.</p>
+                <button class="item-add" type="button" data-servico="Triagem de atendimento" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
           </ul>
-        </article>
-        <article class="servico" id="servico-02">
-          <div class="servico-cabeca">
-            <span class="cartao-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span>
-            <span class="servico-num">02</span>
+        </section>
+        <section class="painel" id="servico-02" role="tabpanel" aria-labelledby="aba-02" tabindex="-1">
+          <div class="painel-lado">
+            <div class="painel-foto"><img src="assets/fotos/comercio-balcao.jpg" alt="Dona de comércio atendendo uma cliente no balcão" width="1600" height="900" loading="lazy"></div>
+            <span class="painel-num">02 · 4 serviços</span>
             <h2>Vendas e captação de clientes</h2>
+            <p>Leads qualificados, agendamentos, follow-up e orçamentos no automático.</p>
           </div>
-          <ul class="servico-itens">
-            <li class="item"><h4>Captação e qualificação de leads</h4><p>Identificação e classificação de potenciais clientes.</p></li>
-            <li class="item"><h4>Agendamentos automáticos</h4><p>Organização de reuniões, consultas e serviços.</p></li>
-            <li class="item"><h4>Follow-up inteligente</h4><p>Acompanhamento automático de clientes e recuperação de oportunidades.</p></li>
-            <li class="item"><h4>Orçamentos automatizados</h4><p>Geração e envio de propostas comerciais.</p></li>
+          <ul class="painel-itens">
+              <li class="item">
+                <h4>Captação e qualificação de leads</h4>
+                <p>Identificação e classificação de potenciais clientes.</p>
+                <button class="item-add" type="button" data-servico="Captação e qualificação de leads" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Agendamentos automáticos</h4>
+                <p>Organização de reuniões, consultas e serviços.</p>
+                <button class="item-add" type="button" data-servico="Agendamentos automáticos" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Follow-up inteligente</h4>
+                <p>Acompanhamento automático de clientes e recuperação de oportunidades.</p>
+                <button class="item-add" type="button" data-servico="Follow-up inteligente" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Orçamentos automatizados</h4>
+                <p>Geração e envio de propostas comerciais.</p>
+                <button class="item-add" type="button" data-servico="Orçamentos automatizados" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
           </ul>
-        </article>
-        <article class="servico" id="servico-03">
-          <div class="servico-cabeca">
-            <span class="cartao-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 13h3M8 16h6"/></svg></span>
-            <span class="servico-num">03</span>
+        </section>
+        <section class="painel" id="servico-03" role="tabpanel" aria-labelledby="aba-03" tabindex="-1">
+          <div class="painel-lado">
+            <div class="painel-foto"><img src="assets/fotos/equipe-computador.jpg" alt="Pessoas trabalhando juntas em frente a um computador" width="1600" height="900" loading="lazy"></div>
+            <span class="painel-num">03 · 6 serviços</span>
             <h2>Administração e gestão empresarial</h2>
+            <p>Cadastros, pedidos, CRM, relatórios, documentos e sistemas conectados.</p>
           </div>
-          <ul class="servico-itens">
-            <li class="item"><h4>Gestão de cadastros e pedidos</h4><p>Organização automatizada de informações e solicitações.</p></li>
-            <li class="item"><h4>Integração com CRM</h4><p>Centralização e gerenciamento do relacionamento com clientes.</p></li>
-            <li class="item"><h4>Relatórios automatizados</h4><p>Geração de relatórios para acompanhamento empresarial.</p></li>
-            <li class="item"><h4>Automação de documentos</h4><p>Organização e envio automático de documentos.</p></li>
-            <li class="item"><h4>Assistentes internos de IA</h4><p>Ferramentas inteligentes para auxiliar funcionários.</p></li>
-            <li class="item"><h4>Integração de sistemas</h4><p>Conexão entre diferentes plataformas e ferramentas empresariais.</p></li>
+          <ul class="painel-itens">
+              <li class="item">
+                <h4>Gestão de cadastros e pedidos</h4>
+                <p>Organização automatizada de informações e solicitações.</p>
+                <button class="item-add" type="button" data-servico="Gestão de cadastros e pedidos" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Integração com CRM</h4>
+                <p>Centralização e gerenciamento do relacionamento com clientes.</p>
+                <button class="item-add" type="button" data-servico="Integração com CRM" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Relatórios automatizados</h4>
+                <p>Geração de relatórios para acompanhamento empresarial.</p>
+                <button class="item-add" type="button" data-servico="Relatórios automatizados" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Automação de documentos</h4>
+                <p>Organização e envio automático de documentos.</p>
+                <button class="item-add" type="button" data-servico="Automação de documentos" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Assistentes internos de IA</h4>
+                <p>Ferramentas inteligentes para auxiliar funcionários.</p>
+                <button class="item-add" type="button" data-servico="Assistentes internos de IA" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Integração de sistemas</h4>
+                <p>Conexão entre diferentes plataformas e ferramentas empresariais.</p>
+                <button class="item-add" type="button" data-servico="Integração de sistemas" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
           </ul>
-        </article>
-        <article class="servico" id="servico-04">
-          <div class="servico-cabeca">
-            <span class="cartao-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg></span>
-            <span class="servico-num">04</span>
+        </section>
+        <section class="painel" id="servico-04" role="tabpanel" aria-labelledby="aba-04" tabindex="-1">
+          <div class="painel-lado">
+            <div class="painel-foto"><img src="assets/fotos/equipe-reuniao.jpg" alt="Equipe conversando em uma reunião num escritório" width="1600" height="900" loading="lazy"></div>
+            <span class="painel-num">04 · 5 serviços</span>
             <h2>Soluções avançadas e personalizadas</h2>
+            <p>Agentes de IA, integração com ERP e sistemas sob medida para a sua empresa.</p>
           </div>
-          <ul class="servico-itens">
-            <li class="item"><h4>Agentes de IA personalizados</h4><p>Inteligência artificial desenvolvida conforme as necessidades da empresa.</p></li>
-            <li class="item"><h4>Integração com estoque e ERP</h4><p>Automatização e conexão de sistemas de gestão empresarial.</p></li>
-            <li class="item"><h4>Centrais inteligentes de atendimento</h4><p>Múltiplos agentes de IA trabalhando em diferentes funções.</p></li>
-            <li class="item"><h4>Automação de processos comerciais</h4><p>Integração e otimização de etapas do processo de vendas.</p></li>
-            <li class="item"><h4>Sistemas personalizados</h4><p>Desenvolvimento de soluções de atendimento e automação sob medida.</p></li>
+          <ul class="painel-itens">
+              <li class="item">
+                <h4>Agentes de IA personalizados</h4>
+                <p>Inteligência artificial desenvolvida conforme as necessidades da empresa.</p>
+                <button class="item-add" type="button" data-servico="Agentes de IA personalizados" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Integração com estoque e ERP</h4>
+                <p>Automatização e conexão de sistemas de gestão empresarial.</p>
+                <button class="item-add" type="button" data-servico="Integração com estoque e ERP" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Centrais inteligentes de atendimento</h4>
+                <p>Múltiplos agentes de IA trabalhando em diferentes funções.</p>
+                <button class="item-add" type="button" data-servico="Centrais inteligentes de atendimento" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Automação de processos comerciais</h4>
+                <p>Integração e otimização de etapas do processo de vendas.</p>
+                <button class="item-add" type="button" data-servico="Automação de processos comerciais" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
+              <li class="item">
+                <h4>Sistemas personalizados</h4>
+                <p>Desenvolvimento de soluções de atendimento e automação sob medida.</p>
+                <button class="item-add" type="button" data-servico="Sistemas personalizados" aria-pressed="false">
+                  <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                </button>
+              </li>
           </ul>
-        </article>
+        </section>
       </div>
     </section>
 
-    <section class="secao secao-faixa" id="para-quem" aria-labelledby="titulo-ramos">
+    <section class="secao secao-faixa" aria-labelledby="titulo-etapas">
+      <div class="container">
+        <div class="cabeca">
+          <p class="rotulo">Como funciona</p>
+          <h2 id="titulo-etapas">Do primeiro contato à automação funcionando.</h2>
+        </div>
+        <ol class="etapas">
+          <li class="etapa"><span class="etapa-num">01</span><h3>Conversa</h3><p>Entendemos como funciona o seu negócio e onde está o trabalho repetitivo.</p></li>
+          <li class="etapa"><span class="etapa-num">02</span><h3>Proposta</h3><p>Indicamos as automações certas e enviamos um orçamento personalizado.</p></li>
+          <li class="etapa"><span class="etapa-num">03</span><h3>Implantação</h3><p>Configuramos tudo com as informações do seu negócio, pela API oficial da Meta.</p></li>
+          <li class="etapa"><span class="etapa-num">04</span><h3>Acompanhamento</h3><p>Manutenção e suporte contínuos, com ajustes conforme o seu negócio cresce.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="secao" id="para-quem" aria-labelledby="titulo-ramos">
       <div class="container">
         <div class="cabeca">
           <p class="rotulo">Para quem</p>
@@ -145,19 +279,30 @@
       </div>
     </section>
 
-    <section class="secao" aria-labelledby="titulo-proposta">
-      <div class="container dupla">
-        <div class="dupla-foto">
-          <img src="assets/fotos/equipe-computador.jpg" alt="Pessoas trabalhando juntas em frente a um computador" width="1600" height="900" loading="lazy">
-        </div>
-        <div class="dupla-texto">
-          <p class="rotulo">Nossa proposta</p>
-          <h2 id="titulo-proposta">Transformamos tecnologia em resultados para o seu negócio.</h2>
-          <p>Mais eficiência, menos tarefas manuais e processos mais inteligentes.</p>
+    <section class="chamada" aria-labelledby="titulo-chamada">
+      <div class="container">
+        <div class="chamada-caixa">
+          <div>
+            <h2 id="titulo-chamada">Mais eficiência, menos tarefas manuais e processos mais inteligentes.</h2>
+            <p>Entre em contato e solicite um orçamento personalizado.</p>
+          </div>
           <a class="botao" href="contato.html">Solicitar orçamento</a>
         </div>
       </div>
     </section>
+
+    <div class="selecao" data-selecao hidden>
+      <div class="container selecao-conteudo">
+        <div class="selecao-texto">
+          <strong><span data-selecao-total>0</span> <span data-selecao-palavra>serviço</span> no orçamento</strong>
+          <span class="selecao-lista" data-selecao-lista></span>
+        </div>
+        <div class="selecao-acoes">
+          <button class="botao botao-contorno" type="button" data-selecao-limpar>Limpar</button>
+          <a class="botao" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20KYZENT" target="_blank" rel="noopener" data-selecao-enviar data-numero="5519988728894">Solicitar orçamento</a>
+        </div>
+      </div>
+    </div>
   </main>
 
   <footer class="rodape">
