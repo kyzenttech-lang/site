@@ -262,6 +262,38 @@ a:focus-visible,
 }
 .texto p + p { margin-top: 14px; }
 
+.texto strong { color: var(--texto); font-weight: 600; }
+
+/* quem somos: missão, visão e valores */
+.pilares {
+  margin-top: 40px;
+  display: grid;
+  gap: 14px;
+}
+.pilar {
+  padding: 28px 24px;
+  background: var(--fundo);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio);
+}
+.pilar h3 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.1875rem;
+}
+/* ponto azul, como o ponto da órbita do logo */
+.pilar h3::before {
+  content: "";
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--azul-claro);
+  box-shadow: 0 0 12px rgba(63, 180, 255, .7);
+}
+.pilar p { margin-top: 12px; color: var(--texto-2); font-size: 1rem; }
+
 /* o que a IA faz */
 .cartoes {
   list-style: none;
@@ -424,6 +456,7 @@ a:focus-visible,
   .topo-k { max-width: none; width: 125%; }
   .secao { padding: 112px 0; }
   .cartoes { grid-template-columns: repeat(4, 1fr); }
+  .pilares { grid-template-columns: repeat(3, 1fr); }
   .contato-caixa { padding: 64px; }
   .rodape-conteudo { grid-template-columns: auto 1fr auto auto; align-items: center; gap: 32px; }
 }
