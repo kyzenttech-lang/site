@@ -30,8 +30,8 @@
   <script>(function(){var t;try{t=localStorage.getItem("kyzent-tema")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);document.documentElement.classList.add("js")})();</script>
 
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=30">
-  <script src="js/main.js?v=30" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=31">
+  <script src="js/main.js?v=31" defer></script>
 </head>
 <body>
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -99,7 +99,7 @@
           <button class="ramo" type="button" data-abrir-janela="janela-lanchonete" aria-haspopup="dialog"><img src="assets/fotos/lanchonete.jpg" alt="" width="1200" height="675" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Lanchonetes</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
           <button class="ramo" type="button" data-abrir-janela="janela-barbearia" aria-haspopup="dialog"><img src="assets/fotos/barbearia.jpg" alt="" width="880" height="1100" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Barbearias</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
           <button class="ramo" type="button" data-abrir-janela="janela-salao" aria-haspopup="dialog"><img src="assets/fotos/salao.jpg" alt="" width="734" height="1100" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Salões de beleza</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
-          <button class="ramo" type="button" data-abrir-janela="janela-consultorio" aria-haspopup="dialog"><img src="assets/fotos/consultorio.jpg" alt="" width="1200" height="800" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Consultórios odontológicos</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
+          <button class="ramo" type="button" data-abrir-janela="janela-consultorio" aria-haspopup="dialog"><img src="assets/fotos/consultorio.jpg" alt="" width="1200" height="800" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Clínicas</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
           <button class="ramo" type="button" data-abrir-janela="janela-petshop" aria-haspopup="dialog"><img src="assets/fotos/petshop.jpg" alt="" width="1200" height="900" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Pet shops</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
         </div>
       </div>
@@ -186,7 +186,7 @@
         <p class="gaveta-form-titulo">Para a gente já chegar preparado <span>(opcional)</span></p>
         <label>Seu nome<input name="nome" autocomplete="name"></label>
         <label>Tipo de negócio<input name="negocio" list="lista-negocios" placeholder="Ex.: barbearia"></label>
-        <datalist id="lista-negocios"><option value="Lanchonete"><option value="Barbearia"><option value="Salão de beleza"><option value="Consultório odontológico"><option value="Pet shop"><option value="Restaurante"><option value="Loja"><option value="Clínica"></datalist>
+        <datalist id="lista-negocios"><option value="Lanchonete"><option value="Barbearia"><option value="Salão de beleza"><option value="Clínica"><option value="Pet shop"><option value="Restaurante"><option value="Loja"></datalist>
         <label>Observação<textarea name="obs" rows="3" placeholder="Ex.: atendo 40 clientes por dia no WhatsApp"></textarea></label>
       </form>
     </div>
@@ -249,12 +249,12 @@
     <button class="janela-fechar" type="button" data-fechar-janela aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="janela-corpo">
       <p class="janela-sobre">O que a Kyzent faz para</p>
-      <h2 id="janela-consultorio-titulo" tabindex="-1" autofocus>Consultórios odontológicos</h2>
-      <p class="janela-resumo">Recepção mais leve, agenda confirmada e pacientes acompanhados.</p>
-      <ul class="lista-check"><li><strong>Agendamentos automáticos</strong> Marcação e confirmação de consultas pelo WhatsApp.</li><li><strong>Triagem de atendimento</strong> Identifica se é avaliação, retorno ou urgência e encaminha para a recepção.</li><li><strong>Respostas inteligentes</strong> Convênios, endereço, horários e tipos de tratamento respondidos na hora.</li><li><strong>Follow-up inteligente</strong> Lembrete de consulta e de retorno para revisão e limpeza.</li><li><strong>Automação de documentos</strong> Envio automático de orientações e documentos ao paciente.</li><li><strong>Cadastro de pacientes e CRM</strong> Informações de cada paciente organizadas, com cuidado com os dados (LGPD).</li></ul>
+      <h2 id="janela-consultorio-titulo" tabindex="-1" autofocus>Clínicas</h2>
+      <p class="janela-resumo">Recepção mais leve, agenda confirmada e pacientes acompanhados, de consultórios a clínicas.</p>
+      <ul class="lista-check"><li><strong>Agendamentos automáticos</strong> Marcação e confirmação de consultas pelo WhatsApp.</li><li><strong>Triagem de atendimento</strong> Identifica se é avaliação, retorno ou urgência e encaminha para a recepção.</li><li><strong>Respostas inteligentes</strong> Convênios, endereço, horários e tipos de tratamento respondidos na hora.</li><li><strong>Follow-up inteligente</strong> Lembrete de consulta e de retorno para exames e revisões.</li><li><strong>Automação de documentos</strong> Envio automático de orientações e documentos ao paciente.</li><li><strong>Cadastro de pacientes e CRM</strong> Informações de cada paciente organizadas, com cuidado com os dados (LGPD).</li></ul>
       <div class="janela-acoes">
-        <a class="botao" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent.%20Tenho%20um%20consult%C3%B3rio%20odontol%C3%B3gico%20e%20quero%20saber%20o%20que%20voc%C3%AAs%20podem%20automatizar." target="_blank" rel="noopener" data-contato data-msg="Olá, vim pelo site da Kyzent. Tenho um consultório odontológico e quero saber o que vocês podem automatizar.">Chamar no WhatsApp</a>
-        <a class="link-seta" href="servicos.html?ramo=consultorio">Ver serviços para consultórios odontológicos</a>
+        <a class="botao" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent.%20Tenho%20uma%20cl%C3%ADnica%20e%20quero%20saber%20o%20que%20voc%C3%AAs%20podem%20automatizar." target="_blank" rel="noopener" data-contato data-msg="Olá, vim pelo site da Kyzent. Tenho uma clínica e quero saber o que vocês podem automatizar.">Chamar no WhatsApp</a>
+        <a class="link-seta" href="servicos.html?ramo=consultorio">Ver serviços para clínicas</a>
       </div>
     </div>
   </dialog>

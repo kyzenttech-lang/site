@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "30"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "31"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -44,6 +44,7 @@ I = {
     "site": svg('<rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M3 9.5h18M6.5 7h.01M9 7h.01M7.5 13.5h5M7.5 16h8"/>'),
     "seta_baixo": svg('<path d="M6 9.5l6 6 6-6"/>'),
     "pata": svg('<circle cx="6.5" cy="11" r="1.8"/><circle cx="10" cy="6.5" r="1.8"/><circle cx="14" cy="6.5" r="1.8"/><circle cx="17.5" cy="11" r="1.8"/><path d="M8 17.2c0-2.3 1.8-4 4-4s4 1.7 4 4c0 1.6-1.2 2.3-2.6 2.3-.9 0-1.1-.4-1.4-.4s-.5.4-1.4.4C9.2 19.5 8 18.8 8 17.2z"/>'),
+    "cruz": svg('<path d="M9 4h6v5h5v6h-5v5H9v-5H4V9h5z"/>'),
     "voltar": svg('<path d="M15 5l-7 7 7 7"/>'),
     "mic": svg('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>'),
 }
@@ -139,12 +140,12 @@ RAMOS = [
         ("Follow-up inteligente", "Lembretes de horário e convite de retorno para manutenção."),
         ("Cadastro de clientes e CRM", "Preferências e histórico de cada cliente sempre à mão."),
     ]),
-    ("consultorio", "Consultórios odontológicos", "dente", "um consultório odontológico", "Consulta confirmada sem a recepção ligar.",
-     "Recepção mais leve, agenda confirmada e pacientes acompanhados.", [
+    ("consultorio", "Clínicas", "dente", "uma clínica", "Consulta confirmada sem a recepção ligar.",
+     "Recepção mais leve, agenda confirmada e pacientes acompanhados, de consultórios a clínicas.", [
         ("Agendamentos automáticos", "Marcação e confirmação de consultas pelo WhatsApp."),
         ("Triagem de atendimento", "Identifica se é avaliação, retorno ou urgência e encaminha para a recepção."),
         ("Respostas inteligentes", "Convênios, endereço, horários e tipos de tratamento respondidos na hora."),
-        ("Follow-up inteligente", "Lembrete de consulta e de retorno para revisão e limpeza."),
+        ("Follow-up inteligente", "Lembrete de consulta e de retorno para exames e revisões."),
         ("Automação de documentos", "Envio automático de orientações e documentos ao paciente."),
         ("Cadastro de pacientes e CRM", "Informações de cada paciente organizadas, com cuidado com os dados (LGPD)."),
     ]),
@@ -217,7 +218,7 @@ def numero_opcao(n):
             f'<span class="numero-icone">{I["conversa"]}</span>'
             f'<span class="numero-texto"><span class="numero-tipo">WhatsApp</span><span class="numero-valor">{WHATS[n][1]}</span></span></a>')
 
-RAMOS_NOMES = ["Lanchonete", "Barbearia", "Salão de beleza", "Consultório odontológico", "Pet shop", "Restaurante", "Loja", "Clínica"]
+RAMOS_NOMES = ["Lanchonete", "Barbearia", "Salão de beleza", "Clínica", "Pet shop", "Restaurante", "Loja"]
 
 JANELAS_GERAIS = f"""  <dialog class="janela janela-pequena" id="janela-contato" aria-labelledby="contato-titulo">
     <button class="janela-fechar" type="button" data-fechar-janela aria-label="Fechar">{I["fechar"]}</button>
@@ -605,7 +606,7 @@ EXEMPLOS = {"whatsapp": CONVERSA, "agenda": mock_agenda(), "gestao": mock_gestao
 
 # nome do ramo (filtro): id -> (texto do botão, ícone)
 FILTRO_RAMOS = {"lanchonete": ("Lanchonete", "lanche"), "barbearia": ("Barbearia", "tesoura"),
-                "salao": ("Salão de beleza", "pente"), "consultorio": ("Consultório", "dente"), "petshop": ("Pet shop", "pata")}
+                "salao": ("Salão de beleza", "pente"), "consultorio": ("Clínica", "cruz"), "petshop": ("Pet shop", "pata")}
 
 abas = []
 paineis = []
