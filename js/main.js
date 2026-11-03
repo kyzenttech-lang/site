@@ -3,7 +3,7 @@
   "use strict";
   var raiz = document.documentElement;
   var semMovimento = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var MSG_PADRAO = "Olá, vim pelo site da KYZENT.";
+  var MSG_PADRAO = "Olá, vim pelo site da Kyzent.";
 
   function $(sel, ctx) { return (ctx || document).querySelector(sel); }
   function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
@@ -118,7 +118,7 @@
       var ligado = tem(b.getAttribute("data-servico"));
       b.setAttribute("aria-pressed", ligado ? "true" : "false");
       var rot = $(".item-add-rotulo", b);
-      if (rot) rot.textContent = ligado ? "No orçamento" : "Adicionar ao orçamento";
+      if (rot) rot.textContent = ligado ? "No orçamento" : "Adicionar";
       var item = b.closest(".item");
       if (item) item.classList.toggle("escolhido", ligado);
     });
@@ -137,7 +137,8 @@
     $("[data-carrinho-vazio]").hidden = n > 0;
     form.hidden = n === 0;
     $("[data-carrinho-base]").hidden = n === 0;
-    desenharEstimativa();
+    var nota = $("[data-carrinho-nota]");
+    if (nota) nota.hidden = n === 0;
     lista.innerHTML = "";
     itens.forEach(function (i) {
       var li = document.createElement("li");
@@ -153,25 +154,6 @@
       });
       lista.appendChild(li);
     });
-  }
-
-  // soma dos valores de referência da planilha (implantação e mensalidade, mínimo e máximo)
-  var PRECOS = window.KYZENT_PRECOS || {};
-  function brl(v) { return "R$ " + v.toLocaleString("pt-BR"); }
-  function desenharEstimativa() {
-    var caixa = $("[data-carrinho-estimativa]");
-    if (!caixa) return;
-    var t = [0, 0, 0, 0], conta = 0;
-    itens.forEach(function (i) {
-      var p = PRECOS[i.nome];
-      if (!p) return;
-      conta++;
-      for (var k = 0; k < 4; k++) t[k] += p[k];
-    });
-    caixa.hidden = conta === 0;
-    if (!conta) return;
-    $("[data-estimativa-implantacao]", caixa).textContent = brl(t[0]) + " a " + brl(t[1]);
-    $("[data-estimativa-mensalidade]", caixa).textContent = brl(t[2]) + " a " + brl(t[3]) + " por mês";
   }
 
   function salvar() { guardar(CHAVE, itens); desenharCarrinho(); atualizarBotoesServico(); }
@@ -254,7 +236,7 @@
   if (limpar) limpar.addEventListener("click", function () { itens = []; salvar(); });
 
   function mensagemOrcamento() {
-    var linhas = ["Olá, vim pelo site da KYZENT e quero um orçamento."];
+    var linhas = ["Olá, vim pelo site da Kyzent e quero um orçamento."];
     if (dados.nome) linhas.push("Nome: " + dados.nome.trim());
     if (dados.negocio) linhas.push("Negócio: " + dados.negocio.trim());
     linhas.push("", "Serviços:");
@@ -303,7 +285,7 @@
     b.addEventListener("click", function (e) {
       var msg = b.getAttribute("data-msg");
       var comOrcamento = !msg && itens.length > 0;
-      if (!msg) msg = comOrcamento ? mensagemOrcamento() : (/orçamento/i.test(b.textContent) ? "Olá, vim pelo site da KYZENT e quero um orçamento." : MSG_PADRAO);
+      if (!msg) msg = comOrcamento ? mensagemOrcamento() : (/orçamento/i.test(b.textContent) ? "Olá, vim pelo site da Kyzent e quero um orçamento." : MSG_PADRAO);
       var origem = b.closest("dialog");
       e.preventDefault();
       if (origem && origem !== janelaContato) fecharJanela(origem, function () { abrirContato(msg, comOrcamento); });
@@ -365,20 +347,67 @@
     abas.forEach(function (aba, i) {
       aba.addEventListener("click", function () {
         mostrarAba(aba, false, true);
-        try { history.replaceState(null, "", "#" + aba.getAttribute("aria-controls")); } catch (e) {}
+        try { history.replaceState(null, "", location.pathname + location.search + "#" + aba.getAttribute("aria-controls")); } catch (e) {}
       });
       aba.addEventListener("keydown", function (e) {
         var alvo = null;
-        if (e.key === "ArrowRight") alvo = abas[(i + 1) % abas.length];
-        else if (e.key === "ArrowLeft") alvo = abas[(i - 1 + abas.length) % abas.length];
-        else if (e.key === "Home") alvo = abas[0];
-        else if (e.key === "End") alvo = abas[abas.length - 1];
+        var vis = abas.filter(function (a) { return !a.hidden; });
+        var k = vis.indexOf(aba);
+        if (e.key === "ArrowRight") alvo = vis[(k + 1) % vis.length];
+        else if (e.key === "ArrowLeft") alvo = vis[(k - 1 + vis.length) % vis.length];
+        else if (e.key === "Home") alvo = vis[0];
+        else if (e.key === "End") alvo = vis[vis.length - 1];
         if (alvo) { e.preventDefault(); mostrarAba(alvo, true, false); }
       });
     });
     var inicial = abas[0];
     abas.forEach(function (a) { if ("#" + a.getAttribute("aria-controls") === location.hash) inicial = a; });
     mostrarAba(inicial, false, false);
+
+    /* ---------------------------------------------------------- filtro por tipo de negócio */
+    var filtro = $("[data-filtro]");
+    if (filtro) {
+      var chips = $$("[data-ramo]");
+      var nomes = {};
+      try { nomes = JSON.parse(filtro.getAttribute("data-nomes")) || {}; } catch (e) {}
+      var atual = "todos";
+
+      function aplicarFiltro(ramo) {
+        atual = ramo;
+        chips.forEach(function (c) { c.setAttribute("aria-pressed", c.getAttribute("data-ramo") === ramo ? "true" : "false"); });
+        var rotulo = $("[data-filtro-atual]");
+        if (rotulo) rotulo.textContent = ramo === "todos" ? "Todos" : (nomes[ramo] ? $("span", $('.filtro-chip[data-ramo="' + ramo + '"]')).textContent : ramo);
+        var total = 0, primeira = null;
+        abas.forEach(function (aba) {
+          var painel = document.getElementById(aba.getAttribute("aria-controls"));
+          var n = 0;
+          $$(".item", painel).forEach(function (it) {
+            var ramos = (it.getAttribute("data-ramos") || "").split(" ");
+            var ok = ramo === "todos" || ramos.indexOf(ramo) > -1;
+            it.hidden = !ok;
+            if (ok) n++;
+          });
+          total += n;
+          aba.hidden = n === 0;
+          if (n && !primeira) primeira = aba;
+          $("[data-qtd]", aba).textContent = n;
+          $("[data-painel-num]", painel).textContent = n + " " + (n === 1 ? "serviço" : "serviços");
+        });
+        var ativa = $('[role="tab"][aria-selected="true"]');
+        if ((!ativa || ativa.hidden) && primeira) mostrarAba(primeira, false, false);
+        else if (ativa) moverIndicador(ativa, true);
+      }
+      chips.forEach(function (c) {
+        c.addEventListener("click", function () {
+          aplicarFiltro(c.getAttribute("data-ramo"));
+          var jan = c.closest("dialog");
+          if (jan) fecharJanela(jan);
+          try { history.replaceState(null, "", location.pathname + (atual === "todos" ? "" : "?ramo=" + atual) + location.hash); } catch (e) {}
+        });
+      });
+      var pedido = /[?&]ramo=([a-z]+)/.exec(location.search);
+      if (pedido && nomes[pedido[1]]) aplicarFiltro(pedido[1]);
+    }
     addEventListener("resize", function () { moverIndicador($('[role="tab"][aria-selected="true"]'), true); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { moverIndicador($('[role="tab"][aria-selected="true"]'), true); });
     if (inicial !== abas[0]) {
