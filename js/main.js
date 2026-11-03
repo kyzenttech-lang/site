@@ -22,11 +22,25 @@
   // menu do celular
   var botaoMenu = document.querySelector("[data-abrir-menu]");
   var menu = document.getElementById("menu-celular");
+  function menuAberto(aberto) {
+    menu.classList.toggle("aberto", aberto);
+    raiz.classList.toggle("menu-aberto", aberto);
+    botaoMenu.setAttribute("aria-expanded", aberto ? "true" : "false");
+    botaoMenu.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+  }
   if (botaoMenu && menu) {
     botaoMenu.addEventListener("click", function () {
-      var aberto = menu.classList.toggle("aberto");
-      botaoMenu.setAttribute("aria-expanded", aberto ? "true" : "false");
-      botaoMenu.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+      menuAberto(!menu.classList.contains("aberto"));
+    });
+    menu.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", function () { menuAberto(false); });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && menu.classList.contains("aberto")) { menuAberto(false); botaoMenu.focus(); }
+    });
+    // se a tela crescer (girou o celular), o menu de celular fecha
+    window.addEventListener("resize", function () {
+      if (window.innerWidth >= 1000 && menu.classList.contains("aberto")) menuAberto(false);
     });
   }
 

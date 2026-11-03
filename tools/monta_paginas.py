@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "4"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "5"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da KYZENT")
@@ -127,7 +127,7 @@ def ramos_janelas():
     <div class="janela-foto"><img src="assets/fotos/{foto}" alt="" width="{w}" height="{h}" loading="lazy"></div>
     <button class="janela-fechar" type="button" data-fechar-janela aria-label="Fechar">{I["fechar"]}</button>
     <div class="janela-corpo">
-      <p class="rotulo">O que fazemos para</p>
+      <p class="janela-sobre">O que a KYZENT faz para</p>
       <h2 id="janela-{rid}-titulo" tabindex="-1" autofocus>{nome}</h2>
       <p class="janela-resumo">{resumo}</p>
       <ul class="lista-check">{lis}</ul>
@@ -184,9 +184,7 @@ def pagina(arq, titulo, descricao, corpo, janelas=""):
   <!-- aplica o tema antes de desenhar a página (evita piscar) -->
   <script>(function(){{var t;try{{t=localStorage.getItem("kyzent-tema")}}catch(e){{}}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);document.documentElement.classList.add("js")}})();</script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css?v={VERSAO}">
   <script src="js/main.js?v={VERSAO}" defer></script>
 </head>
@@ -199,7 +197,7 @@ def pagina(arq, titulo, descricao, corpo, janelas=""):
       <nav aria-label="Principal">{menu(arq, "menu")}</nav>
       <div class="barra-acoes">
         <button class="icone-botao" type="button" data-trocar-tema aria-label="Trocar tema">{I["lua"]}{I["sol"]}</button>
-        <button class="icone-botao botao-menu" type="button" data-abrir-menu aria-expanded="false" aria-controls="menu-celular" aria-label="Abrir menu">{I["menu"]}</button>
+        <button class="icone-botao botao-menu" type="button" data-abrir-menu aria-expanded="false" aria-controls="menu-celular" aria-label="Abrir menu">{svg('<path d="M4 7h16M4 12h16M4 17h16"/>', "icone-abrir")}{svg('<path d="M6 6l12 12M18 6L6 18"/>', "icone-fechar")}</button>
         <a class="botao" href="contato.html">Fale conosco</a>
       </div>
     </div>
@@ -244,6 +242,7 @@ def pagina(arq, titulo, descricao, corpo, janelas=""):
       </div>
     </div>
   </footer>
+  <a class="whats-fixo" href="{link_whats()}" target="_blank" rel="noopener">{I["conversa"]}<span>Chamar no WhatsApp</span></a>
 {janelas}
 </body>
 </html>
@@ -264,7 +263,6 @@ CHAMADA = """    <section class="chamada" aria-labelledby="titulo-chamada">
 PARA_QUEM = f"""    <section class="secao secao-faixa" id="para-quem" aria-labelledby="titulo-ramos">
       <div class="container">
         <div class="cabeca">
-          <p class="rotulo">Para quem</p>
           <h2 id="titulo-ramos">Soluções para cada tipo de comércio.</h2>
           <p>Toque no seu ramo e veja o que a KYZENT pode automatizar no seu dia a dia.</p>
         </div>
@@ -275,14 +273,13 @@ PARA_QUEM = f"""    <section class="secao secao-faixa" id="para-quem" aria-label
 
 # ------------------------------------------------------------------ Início
 cartoes_servicos = "\n".join(
-    f'          <li><a class="cartao cartao-link" href="servicos.html#servico-{n}"><span class="cartao-icone">{I[ic]}</span><span class="cartao-num">{n}</span>'
+    f'          <li><a class="cartao cartao-link" href="servicos.html#servico-{n}"><span class="cartao-icone">{I[ic]}</span>'
     f'<h3>{t}</h3><p>{resumo}</p><span class="cartao-ver">Ver serviços</span></a></li>'
     for n, t, ic, resumo, _ in SERVICOS)
 
 INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
       <div class="container inicio-grade">
         <div>
-          <p class="rotulo">Automação &amp; IA · Paulínia/SP</p>
           <h1 id="titulo-inicio">Seu comércio atendendo no WhatsApp 24h, sem precisar contratar.</h1>
           <p class="inicio-apoio">A KYZENT coloca uma IA no WhatsApp do seu comércio, que responde seus clientes a qualquer hora. Você paga uma mensalidade, mais barata que um funcionário, e a gente cuida de tudo.</p>
           <div class="inicio-acoes">
@@ -299,7 +296,7 @@ INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
         <div class="inicio-foto">
           <img src="assets/fotos/comercio-balcao.jpg" alt="Dona de comércio sorrindo atrás do balcão" width="1600" height="900" fetchpriority="high">
           <div class="conversa" aria-label="Exemplo de conversa com a IA no WhatsApp">
-            <p class="conversa-topo">Exemplo de atendimento</p>
+            <p class="conversa-topo">Exemplo de conversa no WhatsApp</p>
             <p class="balao balao-cliente">Boa noite! Vocês abrem amanhã?</p>
             <p class="balao balao-ia">Boa noite! Abrimos sim, das 9h às 18h. Quer que eu já agende um horário?</p>
           </div>
@@ -311,7 +308,6 @@ INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
       <div class="container">
         <div class="cabeca-linha">
           <div class="cabeca">
-            <p class="rotulo">Nossos serviços</p>
             <h2 id="titulo-servicos">Automação inteligente para empresas.</h2>
             <p>Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
           </div>
@@ -331,7 +327,6 @@ INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
           <img src="assets/fotos/equipe-computador.jpg" alt="Pessoas trabalhando juntas em frente a um computador" width="1600" height="900" loading="lazy">
         </div>
         <div class="dupla-texto">
-          <p class="rotulo">Quem somos</p>
           <h2 id="titulo-quem">Tecnologia e inovação para o seu comércio.</h2>
           <p>Somos a KYZENT, uma empresa de Tecnologia e Inovação dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</p>
           <p>Nosso propósito é transformar processos por meio da tecnologia, oferecendo mais produtividade, automação e eficiência para impulsionar os resultados dos nossos clientes.</p>
@@ -345,7 +340,6 @@ INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
 # ------------------------------------------------------------------ Quem somos
 QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
       <div class="container">
-        <p class="rotulo">Quem somos</p>
         <h1 id="titulo-pagina">Tecnologia e inovação para o seu comércio.</h1>
         <p>Somos a KYZENT, uma empresa de Tecnologia e Inovação dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</p>
       </div>
@@ -357,7 +351,6 @@ QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
           <img src="assets/fotos/equipe-reuniao.jpg" alt="Equipe conversando em uma reunião num escritório" width="1600" height="900">
         </div>
         <div class="dupla-texto">
-          <p class="rotulo">Nosso propósito</p>
           <h2 id="titulo-proposito">Transformar processos por meio da tecnologia.</h2>
           <p>Nosso propósito é transformar processos por meio da tecnologia, oferecendo mais produtividade, automação e eficiência para impulsionar os resultados dos nossos clientes.</p>
           <p>A KYZENT é uma empresa de tecnologia de Paulínia que automatiza o trabalho repetitivo do seu comércio. Em vez de contratar mais gente, você assina um serviço que trabalha junto com a sua equipe.</p>
@@ -368,7 +361,6 @@ QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
     <section class="secao secao-faixa" aria-labelledby="titulo-pilares">
       <div class="container">
         <div class="cabeca">
-          <p class="rotulo">O que nos guia</p>
           <h2 id="titulo-pilares">Missão, visão e valores.</h2>
         </div>
         <div class="grade grade-3 grade-pilares">
@@ -405,13 +397,14 @@ ETAPAS = [
     ("Acompanhamento", "Manutenção e suporte contínuos, com ajustes conforme o seu negócio cresce."),
 ]
 
+CURTO = {'01': 'Atendimento', '02': 'Vendas', '03': 'Gestão', '04': 'Avançadas'}
 abas = []
 paineis = []
 for i, (n, t, ic, resumo, itens) in enumerate(SERVICOS):
     sel = "true" if i == 0 else "false"
     abas.append(
         f'<button class="aba" type="button" role="tab" id="aba-{n}" aria-controls="servico-{n}" aria-selected="{sel}" tabindex="{0 if i == 0 else -1}">'
-        f'<span class="aba-icone">{I[ic]}</span><span class="aba-texto"><span class="aba-num">{n}</span>{t}</span></button>')
+        f'<span class="aba-icone">{I[ic]}</span><span class="aba-texto"><span class="aba-longo">{t}</span><span class="aba-curto">{CURTO[n]}</span></span></button>')
     foto, fw, fh, falt = FOTO_SERV[n]
     cards = "\n".join(
         f'''              <li class="item">
@@ -424,7 +417,7 @@ for i, (n, t, ic, resumo, itens) in enumerate(SERVICOS):
     paineis.append(f"""        <section class="painel" id="servico-{n}" role="tabpanel" aria-labelledby="aba-{n}" tabindex="-1">
           <div class="painel-lado">
             <div class="painel-foto"><img src="assets/fotos/{foto}" alt="{falt}" width="{fw}" height="{fh}" loading="lazy"></div>
-            <span class="painel-num">{n} · {len(itens)} serviços</span>
+            <span class="painel-num">{len(itens)} serviços</span>
             <h2>{t}</h2>
             <p>{resumo}</p>
           </div>
@@ -440,7 +433,6 @@ etapas = "\n".join(
 SERVICOS_PAG = f"""    <section class="pagina-topo pagina-topo-servicos" aria-labelledby="titulo-pagina">
       <div class="container topo-servicos">
         <div>
-          <p class="rotulo">Nossos serviços</p>
           <h1 id="titulo-pagina">Automação inteligente para empresas.</h1>
           <p>Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
         </div>
@@ -467,7 +459,6 @@ SERVICOS_PAG = f"""    <section class="pagina-topo pagina-topo-servicos" aria-la
     <section class="secao secao-faixa" aria-labelledby="titulo-etapas">
       <div class="container">
         <div class="cabeca">
-          <p class="rotulo">Como funciona</p>
           <h2 id="titulo-etapas">Do primeiro contato à automação funcionando.</h2>
         </div>
         <ol class="etapas">
@@ -507,7 +498,6 @@ def botao_whats(n):
 
 CONTATO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
       <div class="container">
-        <p class="rotulo">Fale conosco</p>
         <h1 id="titulo-pagina">Solicite um orçamento personalizado.</h1>
         <p>Chame a gente no WhatsApp. Toque em um dos números: a conversa abre com uma mensagem pronta, é só enviar.</p>
       </div>
