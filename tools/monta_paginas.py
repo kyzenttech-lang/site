@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "8"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "12"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da KYZENT")
@@ -124,13 +124,23 @@ RAMOS = [
     ]),
 ]
 
+# fotos de banco (Unsplash, licença livre; origem em assets/fotos/CREDITOS.md): arquivo, largura, altura
+FOTO_RAMO = {
+    "lanchonete": ("lanchonete.jpg", 1200, 675),
+    "barbearia": ("barbearia.jpg", 880, 1100),
+    "salao": ("salao.jpg", 734, 1100),
+    "consultorio": ("consultorio.jpg", 1200, 800),
+}
+
 def ramos_cartoes():
     cartoes = []
-    for rid, nome, ic, _, dor, *_ in RAMOS:
+    for rid, nome, *_ in RAMOS:
+        foto, w, h = FOTO_RAMO[rid]
         cartoes.append(
             f'<button class="ramo" type="button" data-abrir-janela="janela-{rid}" aria-haspopup="dialog">'
-            f'<span class="ramo-icone">{I[ic]}</span><span class="ramo-nome">{nome}</span>'
-            f'<span class="ramo-dor">{dor}</span><span class="ramo-ver">Ver mais {I["mais"]}</span></button>')
+            f'<img src="assets/fotos/{foto}" alt="" width="{w}" height="{h}" loading="lazy">'
+            f'<span class="ramo-texto"><span class="ramo-nome">{nome}</span>'
+            f'<span class="ramo-ver">Ver mais {I["mais"]}</span></span></button>')
     return '<div class="ramos">\n          ' + "\n          ".join(cartoes) + "\n        </div>"
 
 def ramos_janelas():
@@ -139,9 +149,9 @@ def ramos_janelas():
         lis = "".join(f"<li><strong>{t}</strong> {d}</li>" for t, d in itens)
         msg = f"Olá, vim pelo site da KYZENT. Tenho {artigo} e quero saber o que vocês podem automatizar."
         janelas.append(f"""  <dialog class="janela" id="janela-{rid}" aria-labelledby="janela-{rid}-titulo">
+    <div class="janela-foto"><img src="assets/fotos/{FOTO_RAMO[rid][0]}" alt="" width="{FOTO_RAMO[rid][1]}" height="{FOTO_RAMO[rid][2]}" loading="lazy"></div>
     <button class="janela-fechar" type="button" data-fechar-janela aria-label="Fechar">{I["fechar"]}</button>
     <div class="janela-corpo">
-      <span class="janela-icone">{I[ic]}</span>
       <p class="janela-sobre">O que a KYZENT faz para</p>
       <h2 id="janela-{rid}-titulo" tabindex="-1" autofocus>{nome}</h2>
       <p class="janela-resumo">{resumo}</p>
@@ -397,17 +407,29 @@ PILARES = """    <section class="secao secao-faixa" aria-labelledby="titulo-pila
 
 # ------------------------------------------------------------------ Início
 # Textos oficiais: empresa/KYZENT.md (Quem somos, missão, visão, valores) e a lista de serviços.
-FRENTES = "\n".join(
-    f'          <li><a class="cartao cartao-link" href="servicos.html#servico-{n}"><span class="cartao-icone">{I[ic]}</span>'
-    f'<h3>{t}</h3><ul class="cartao-itens">' + "".join(f"<li>{a}</li>" for a, *_ in itens) +
-    '</ul><span class="cartao-ver">Ver serviços</span></a></li>'
-    for n, t, ic, curto, resumo, itens in SERVICOS)
+# foto de cada frente: arquivo, largura, altura e posição do recorte
+FOTO_FRENTE = {
+    "01": ("celular-mensagem.jpg", 733, 1100, "50% 45%"),
+    "02": ("comercio-balcao.jpg", 1600, 900, "50% 50%"),
+    "03": ("equipe-reuniao.jpg", 1600, 900, "50% 50%"),
+    "04": ("cafeteria.jpg", 733, 1100, "50% 62%"),
+}
+
+def frente(n, titulo, itens):
+    foto, w, h, pos = FOTO_FRENTE[n]
+    lista = "".join(f"<li>{a}</li>" for a, *_ in itens)
+    return (f'          <li><a class="cartao cartao-link" href="servicos.html#servico-{n}">'
+            f'<div class="cartao-foto"><img src="assets/fotos/{foto}" alt="" width="{w}" height="{h}" loading="lazy" style="object-position:{pos}"></div>'
+            f'<div class="cartao-corpo"><h3>{titulo}</h3><ul class="cartao-itens">{lista}</ul>'
+            f'<span class="cartao-ver">Ver serviços</span></div></a></li>')
+
+FRENTES = "\n".join(frente(n, t, itens) for n, t, ic, curto, resumo, itens in SERVICOS)
 
 INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
       <div class="container inicio-grade">
         <div class="inicio-texto">
-          <h1 id="titulo-inicio">Somos a KYZENT, uma empresa de Tecnologia e Inovação dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</h1>
-          <p class="inicio-apoio">Nosso propósito é transformar processos por meio da tecnologia, oferecendo mais produtividade, automação e eficiência para impulsionar os resultados dos nossos clientes.</p>
+          <h1 id="titulo-inicio">Tecnologia e inovação para o seu comércio.</h1>
+          <p class="inicio-apoio">Automatizamos o atendimento, as vendas e a gestão de pequenas empresas de Paulínia e região.</p>
           <div class="inicio-acoes">
             <a class="botao botao-grande" href="contato.html" data-contato>{I["conversa"]}{BOTAO}</a>
             <a class="botao botao-grande botao-contorno" href="servicos.html">Conheça os serviços</a>
@@ -420,9 +442,7 @@ INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
       </div>
     </section>
 
-{PILARES}
-
-    <section class="secao" aria-labelledby="titulo-frentes">
+    <section class="secao secao-faixa" aria-labelledby="titulo-frentes">
       <div class="container">
         <div class="cabeca-linha">
           <div class="cabeca">
@@ -437,12 +457,12 @@ INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
       </div>
     </section>
 
-{PARA_QUEM}
+{PARA_QUEM.replace('class="secao secao-faixa"', 'class="secao"', 1)}
 
 {CHAMADA}"""
 
 # ------------------------------------------------------------------ Quem somos
-QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
+QUEM = f"""    <section class="pagina-topo pagina-topo-larga" aria-labelledby="titulo-pagina">
       <div class="container">
         <h1 id="titulo-pagina">Tecnologia e inovação para o seu comércio.</h1>
         <p>Somos a KYZENT, uma empresa de Tecnologia e Inovação dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</p>
@@ -450,8 +470,11 @@ QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
     </section>
 
     <section class="secao" aria-labelledby="titulo-proposito">
-      <div class="container">
-        <div class="cabeca">
+      <div class="container dupla">
+        <div class="dupla-foto">
+          <img src="assets/fotos/equipe-reuniao.jpg" alt="Equipe conversando em uma reunião num escritório" width="1600" height="900">
+        </div>
+        <div class="dupla-texto">
           <h2 id="titulo-proposito">Transformar processos por meio da tecnologia.</h2>
           <p>Nosso propósito é transformar processos por meio da tecnologia, oferecendo mais produtividade, automação e eficiência para impulsionar os resultados dos nossos clientes.</p>
           <p>A KYZENT é uma empresa de tecnologia de Paulínia que automatiza o trabalho repetitivo do seu comércio. Em vez de contratar mais gente, você assina um serviço que trabalha junto com a sua equipe.</p>
@@ -489,6 +512,12 @@ CONVERSA = f"""<figure class="zap-figura">
           <figcaption>Exemplo de conversa. A IA responde com o cardápio, os preços e o horário do seu comércio.</figcaption>
         </figure>"""
 
+FOTO_SERV = {
+    "02": ("comercio-balcao.jpg", 1600, 900, "Dona de comércio atendendo uma cliente no balcão"),
+    "03": ("equipe-computador.jpg", 1600, 900, "Pessoas trabalhando juntas em frente a um computador"),
+    "04": ("equipe-reuniao.jpg", 1600, 900, "Equipe conversando em uma reunião num escritório"),
+}
+
 abas = []
 paineis = []
 for i, (n, t, ic, curto, resumo, itens) in enumerate(SERVICOS):
@@ -505,10 +534,15 @@ for i, (n, t, ic, curto, resumo, itens) in enumerate(SERVICOS):
                   <span class="item-add-mais">{I["mais"]}</span><span class="item-add-feito">{I["check"]}</span><span class="item-add-rotulo">Adicionar ao orçamento</span>
                 </button>
               </li>''' for a, d, im, _, mm, _ in itens)
+    if n in FOTO_SERV:
+        foto, fw, fh, falt = FOTO_SERV[n]
+        ilustracao = f'<div class="painel-foto"><img src="assets/fotos/{foto}" alt="{falt}" width="{fw}" height="{fh}" loading="lazy"></div>'
+    else:
+        ilustracao = f'<span class="painel-icone">{I[ic]}</span>'
     exemplo = f'          <div class="painel-exemplo">\n{CONVERSA}\n          </div>' if n == "01" else ""
     paineis.append(f"""        <section class="painel{" tem-exemplo" if exemplo else ""}" id="servico-{n}" role="tabpanel" aria-labelledby="aba-{n}" tabindex="-1">
           <div class="painel-lado">
-            <span class="painel-icone">{I[ic]}</span>
+            {ilustracao}
             <span class="painel-num">{len(itens)} serviços</span>
             <h2>{t}</h2>
             <p>{resumo}</p>
@@ -572,7 +606,8 @@ CONTATO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
     </section>
 
     <section class="secao" aria-label="Formas de contato">
-      <div class="container contato-pagina">
+      <div class="container dupla">
+        <div>
         <div class="contatos">
 {botao_whats(0)}
 {botao_whats(1)}
@@ -583,6 +618,10 @@ CONTATO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
           <div><dt>Onde estamos</dt><dd>Paulínia/SP</dd></div>
           <div><dt>Atendemos</dt><dd>Paulínia e região</dd></div>
         </dl>
+        </div>
+        <div class="dupla-foto dupla-foto-alta">
+          <img src="assets/fotos/cafeteria.jpg" alt="Mulher usando o celular em uma cafeteria" width="733" height="1100">
+        </div>
       </div>
     </section>"""
 

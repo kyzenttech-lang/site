@@ -30,8 +30,8 @@
   <script>(function(){var t;try{t=localStorage.getItem("kyzent-tema")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);document.documentElement.classList.add("js")})();</script>
 
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=8">
-  <script src="js/main.js?v=8" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=12">
+  <script src="js/main.js?v=12" defer></script>
 </head>
 <body>
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -135,7 +135,7 @@
         </section>
         <section class="painel" id="servico-02" role="tabpanel" aria-labelledby="aba-02" tabindex="-1">
           <div class="painel-lado">
-            <span class="painel-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span>
+            <div class="painel-foto"><img src="assets/fotos/comercio-balcao.jpg" alt="Dona de comércio atendendo uma cliente no balcão" width="1600" height="900" loading="lazy"></div>
             <span class="painel-num">4 serviços</span>
             <h2>Vendas e captação de clientes</h2>
             <p>Leads qualificados, agendamentos, follow-up e orçamentos no automático.</p>
@@ -178,7 +178,7 @@
         </section>
         <section class="painel" id="servico-03" role="tabpanel" aria-labelledby="aba-03" tabindex="-1">
           <div class="painel-lado">
-            <span class="painel-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 13h3M8 16h6"/></svg></span>
+            <div class="painel-foto"><img src="assets/fotos/equipe-computador.jpg" alt="Pessoas trabalhando juntas em frente a um computador" width="1600" height="900" loading="lazy"></div>
             <span class="painel-num">6 serviços</span>
             <h2>Administração e gestão empresarial</h2>
             <p>Cadastros, pedidos, CRM, relatórios, documentos e sistemas conectados.</p>
@@ -237,7 +237,7 @@
         </section>
         <section class="painel" id="servico-04" role="tabpanel" aria-labelledby="aba-04" tabindex="-1">
           <div class="painel-lado">
-            <span class="painel-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg></span>
+            <div class="painel-foto"><img src="assets/fotos/equipe-reuniao.jpg" alt="Equipe conversando em uma reunião num escritório" width="1600" height="900" loading="lazy"></div>
             <span class="painel-num">5 serviços</span>
             <h2>Soluções avançadas e personalizadas</h2>
             <p>Agentes de IA, integração com ERP e sistemas sob medida para a sua empresa.</p>
@@ -310,10 +310,10 @@
           <p>Toque no seu ramo e veja o que a KYZENT faz no seu dia a dia.</p>
         </div>
         <div class="ramos">
-          <button class="ramo" type="button" data-abrir-janela="janela-lanchonete" aria-haspopup="dialog"><span class="ramo-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a8 6 0 0 1 16 0z"/><path d="M3 14.5h18"/><path d="M4.5 18h15a1.5 1.5 0 0 1-1.5 2h-12a1.5 1.5 0 0 1-1.5-2z"/></svg></span><span class="ramo-nome">Lanchonetes</span><span class="ramo-dor">Pedido anotado sem parar o caixa.</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></button>
-          <button class="ramo" type="button" data-abrir-janela="janela-barbearia" aria-haspopup="dialog"><span class="ramo-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.8 20 19M8.5 15.2 20 5"/></svg></span><span class="ramo-nome">Barbearias</span><span class="ramo-dor">Agenda cheia sem largar a máquina.</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></button>
-          <button class="ramo" type="button" data-abrir-janela="janela-salao" aria-haspopup="dialog"><span class="ramo-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5h17v3.5h-17z"/><path d="M6 11v7M9 11v7M12 11v7M15 11v7M18 11v7"/></svg></span><span class="ramo-nome">Salões de beleza</span><span class="ramo-dor">Horário marcado com cada profissional.</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></button>
-          <button class="ramo" type="button" data-abrir-janela="janela-consultorio" aria-haspopup="dialog"><span class="ramo-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 3.5c-2.6 0-4.3 2-4.3 4.7 0 3.1 1.6 4.6 2.1 7.6.5 3 1 5.7 2.4 5.7 1.6 0 1.6-4.2 3.3-4.2s1.7 4.2 3.3 4.2c1.4 0 1.9-2.7 2.4-5.7s2.1-4.5 2.1-7.6c0-2.7-1.7-4.7-4.3-4.7-1.9 0-2.8 1-4.5 1s-2.6-1-4.5-1z"/></svg></span><span class="ramo-nome">Consultórios odontológicos</span><span class="ramo-dor">Consulta confirmada sem a recepção ligar.</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></button>
+          <button class="ramo" type="button" data-abrir-janela="janela-lanchonete" aria-haspopup="dialog"><img src="assets/fotos/lanchonete.jpg" alt="" width="1200" height="675" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Lanchonetes</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
+          <button class="ramo" type="button" data-abrir-janela="janela-barbearia" aria-haspopup="dialog"><img src="assets/fotos/barbearia.jpg" alt="" width="880" height="1100" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Barbearias</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
+          <button class="ramo" type="button" data-abrir-janela="janela-salao" aria-haspopup="dialog"><img src="assets/fotos/salao.jpg" alt="" width="734" height="1100" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Salões de beleza</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
+          <button class="ramo" type="button" data-abrir-janela="janela-consultorio" aria-haspopup="dialog"><img src="assets/fotos/consultorio.jpg" alt="" width="1200" height="800" loading="lazy"><span class="ramo-texto"><span class="ramo-nome">Consultórios odontológicos</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></span></button>
         </div>
         <p class="ramos-nota">Tem outro tipo de negócio? <a class="link-seta" href="contato.html" data-contato>Chame a gente no WhatsApp</a></p>
       </div>
@@ -424,9 +424,9 @@
   </div>
   <script>window.KYZENT_PRECOS = {"Chatbots inteligentes": [200, 500, 100, 450], "Respostas inteligentes": [300, 500, 150, 300], "Triagem de atendimento": [200, 400, 100, 300], "Captação e qualificação de leads": [300, 550, 150, 500], "Agendamentos automáticos": [200, 450, 200, 400], "Follow-up inteligente": [300, 550, 200, 400], "Orçamentos automatizados": [300, 450, 250, 400], "Gestão de cadastros e pedidos": [200, 450, 150, 300], "Integração com CRM": [300, 550, 150, 300], "Relatórios automatizados": [250, 350, 200, 400], "Automação de documentos": [150, 350, 150, 300], "Assistentes internos de IA": [350, 450, 200, 500], "Integração de sistemas": [250, 500, 200, 400], "Agentes de IA personalizados": [350, 650, 250, 350], "Integração com estoque e ERP": [350, 750, 200, 650], "Centrais inteligentes de atendimento": [250, 350, 300, 450], "Automação de processos comerciais": [250, 650, 250, 450], "Sistemas personalizados": [200, 450, 300, 550]};</script>
   <dialog class="janela" id="janela-lanchonete" aria-labelledby="janela-lanchonete-titulo">
+    <div class="janela-foto"><img src="assets/fotos/lanchonete.jpg" alt="" width="1200" height="675" loading="lazy"></div>
     <button class="janela-fechar" type="button" data-fechar-janela aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="janela-corpo">
-      <span class="janela-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a8 6 0 0 1 16 0z"/><path d="M3 14.5h18"/><path d="M4.5 18h15a1.5 1.5 0 0 1-1.5 2h-12a1.5 1.5 0 0 1-1.5-2z"/></svg></span>
       <p class="janela-sobre">O que a KYZENT faz para</p>
       <h2 id="janela-lanchonete-titulo" tabindex="-1" autofocus>Lanchonetes</h2>
       <p class="janela-resumo">Pedidos, dúvidas e clientes atendidos sem parar o caixa.</p>
@@ -438,9 +438,9 @@
     </div>
   </dialog>
   <dialog class="janela" id="janela-barbearia" aria-labelledby="janela-barbearia-titulo">
+    <div class="janela-foto"><img src="assets/fotos/barbearia.jpg" alt="" width="880" height="1100" loading="lazy"></div>
     <button class="janela-fechar" type="button" data-fechar-janela aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="janela-corpo">
-      <span class="janela-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.8 20 19M8.5 15.2 20 5"/></svg></span>
       <p class="janela-sobre">O que a KYZENT faz para</p>
       <h2 id="janela-barbearia-titulo" tabindex="-1" autofocus>Barbearias</h2>
       <p class="janela-resumo">Agenda cheia e organizada, sem responder mensagem entre um corte e outro.</p>
@@ -452,9 +452,9 @@
     </div>
   </dialog>
   <dialog class="janela" id="janela-salao" aria-labelledby="janela-salao-titulo">
+    <div class="janela-foto"><img src="assets/fotos/salao.jpg" alt="" width="734" height="1100" loading="lazy"></div>
     <button class="janela-fechar" type="button" data-fechar-janela aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="janela-corpo">
-      <span class="janela-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5h17v3.5h-17z"/><path d="M6 11v7M9 11v7M12 11v7M15 11v7M18 11v7"/></svg></span>
       <p class="janela-sobre">O que a KYZENT faz para</p>
       <h2 id="janela-salao-titulo" tabindex="-1" autofocus>Salões de beleza</h2>
       <p class="janela-resumo">Agenda de cada profissional organizada e cliente bem atendida do primeiro contato ao retorno.</p>
@@ -466,9 +466,9 @@
     </div>
   </dialog>
   <dialog class="janela" id="janela-consultorio" aria-labelledby="janela-consultorio-titulo">
+    <div class="janela-foto"><img src="assets/fotos/consultorio.jpg" alt="" width="1200" height="800" loading="lazy"></div>
     <button class="janela-fechar" type="button" data-fechar-janela aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="janela-corpo">
-      <span class="janela-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 3.5c-2.6 0-4.3 2-4.3 4.7 0 3.1 1.6 4.6 2.1 7.6.5 3 1 5.7 2.4 5.7 1.6 0 1.6-4.2 3.3-4.2s1.7 4.2 3.3 4.2c1.4 0 1.9-2.7 2.4-5.7s2.1-4.5 2.1-7.6c0-2.7-1.7-4.7-4.3-4.7-1.9 0-2.8 1-4.5 1s-2.6-1-4.5-1z"/></svg></span>
       <p class="janela-sobre">O que a KYZENT faz para</p>
       <h2 id="janela-consultorio-titulo" tabindex="-1" autofocus>Consultórios odontológicos</h2>
       <p class="janela-resumo">Recepção mais leve, agenda confirmada e pacientes acompanhados.</p>

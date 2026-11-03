@@ -30,8 +30,8 @@
   <script>(function(){var t;try{t=localStorage.getItem("kyzent-tema")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);document.documentElement.classList.add("js")})();</script>
 
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=8">
-  <script src="js/main.js?v=8" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=12">
+  <script src="js/main.js?v=12" defer></script>
 </head>
 <body>
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -63,7 +63,8 @@
     </section>
 
     <section class="secao" aria-label="Formas de contato">
-      <div class="container contato-pagina">
+      <div class="container dupla">
+        <div>
         <div class="contatos">
             <a class="contato" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20KYZENT" target="_blank" rel="noopener">
               <span class="contato-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg></span>
@@ -90,6 +91,10 @@
           <div><dt>Onde estamos</dt><dd>Paulínia/SP</dd></div>
           <div><dt>Atendemos</dt><dd>Paulínia e região</dd></div>
         </dl>
+        </div>
+        <div class="dupla-foto dupla-foto-alta">
+          <img src="assets/fotos/cafeteria.jpg" alt="Mulher usando o celular em uma cafeteria" width="733" height="1100">
+        </div>
       </div>
     </section>
   </main>

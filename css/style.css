@@ -274,12 +274,12 @@ button:focus-visible,
 
 .inicio { padding: 48px 0 64px; }
 .inicio-grade { display: grid; gap: 40px; align-items: center; }
-.inicio h1 { font-size: 1.625rem; font-stretch: 100%; letter-spacing: -.015em; line-height: 1.22; }
+.inicio h1 { font-size: 2.125rem; font-stretch: 100%; letter-spacing: -.02em; line-height: 1.15; }
 .inicio-apoio { margin-top: 20px; max-width: 640px; color: var(--texto-2); font-size: 1.0625rem; }
 .inicio-acoes { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; }
 .botao-grande { min-height: 56px; padding: 0 28px; font-size: 1.0625rem; }
 .botao svg { width: 22px; height: 22px; flex: none; }
-.inicio-marca { display: none; }
+.inicio-marca { width: 70%; margin: 0 auto; }
 .inicio-marca img { width: 100%; height: auto; }
 
 /* ---------- Topo das páginas internas ---------- */
@@ -468,7 +468,9 @@ html.janela-aberta { overflow: hidden; }
 
 
 /* cartões do início que levam para a aba certa */
-.cartao-link { display: flex; flex-direction: column; height: 100%; text-decoration: none; }
+.cartao.cartao-link { display: flex; flex-direction: column; height: 100%; padding: 0; overflow: hidden; text-decoration: none; }
+.cartao-foto img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.cartao-corpo { display: flex; flex-direction: column; flex: 1; padding: 22px 24px 24px; }
 
 .cartao-itens {
   margin: 16px 0 0;
@@ -758,7 +760,6 @@ html.janela-aberta { overflow: hidden; }
 /* ---------- Telas maiores ---------- */
 
 @media (min-width: 640px) {
-  .inicio h1 { font-size: 3.25rem; }
   .pagina-topo h1 { font-size: 3.25rem; }
   .cabeca h2, .dupla-texto h2 { font-size: 2.5rem; }
   .grade-2, .grade-4 { grid-template-columns: 1fr 1fr; }
@@ -784,7 +785,6 @@ html.janela-aberta { overflow: hidden; }
 
   .inicio { padding: 80px 0 112px; }
   .inicio-grade { grid-template-columns: 1fr 1fr; align-items: center; gap: 64px; }
-  .inicio h1 { font-size: 3.5rem; }
 
   .pagina-topo { padding: 96px 0 80px; }
   .pagina-topo h1 { font-size: 4rem; }
@@ -898,7 +898,6 @@ html.janela-aberta { overflow: hidden; }
 @media (max-width: 639px) {
   :root { --corte: 28px; }
   .inicio { padding-top: 32px; }
-  .inicio h1 { font-size: 2.125rem; }
   .pagina-topo { padding: 44px 0 40px; }
   .pagina-topo h1 { font-size: 2.125rem; }
   .pagina-topo p:not(.rotulo) { font-size: 1.0625rem; }
@@ -916,6 +915,7 @@ html.janela-aberta { overflow: hidden; }
   .etapa-num { grid-row: span 2; width: 40px; height: 40px; margin: 0; }
   .etapa p { margin-top: 4px; }
   .cartao { padding: 22px; }
+  .cartao-foto img { aspect-ratio: 16 / 8; }
   .cartao-icone { margin-bottom: 14px; }
 }
 
@@ -1476,49 +1476,12 @@ html.janela-aberta .barra-fixa { display: none; }
   text-align: center;
 }
 
-/* ---------- Ramos sem foto ---------- */
-
-.ramo {
-  aspect-ratio: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  min-height: 100%;
-  padding: 22px;
-  border: 1px solid var(--linha);
-  background: var(--fundo);
-  color: var(--texto);
-  transition: border-color .2s ease, transform .2s var(--ease);
-}
-.ramo::after { content: none; }
-.ramo:hover { border-color: var(--azul); }
-.ramo-icone { display: grid; width: 32px; height: 32px; margin-bottom: 8px; color: var(--destaque); }
-.ramo-icone svg { width: 30px; height: 30px; }
-.ramo-nome { font-size: 1.125rem; font-weight: 650; font-stretch: 108%; letter-spacing: -.01em; line-height: 1.2; }
-.ramo-dor { color: var(--texto-2); font-size: .9688rem; }
-.ramo-ver {
-  margin-top: auto;
-  padding-top: 10px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--destaque);
-  font-size: .875rem;
-  font-weight: 600;
-  opacity: 1;
-}
-.ramo-ver svg { width: 14px; height: 14px; }
-.janela-icone { display: grid; width: 34px; height: 34px; margin-bottom: 14px; color: var(--destaque); }
-.janela-icone svg { width: 32px; height: 32px; }
-.janela .janela-corpo { padding-top: 36px; }
-.janela > .janela-fechar { background: var(--fundo-2); color: var(--texto); }
-
 /* ---------- Serviços: preço e ícone no lugar da foto ---------- */
 
 .painel-icone { display: grid; width: 40px; height: 40px; margin-bottom: 16px; color: var(--destaque); }
 .painel-icone svg { width: 36px; height: 36px; }
 .painel-lado .painel-num { margin-top: 0; }
+.painel-lado .painel-foto + .painel-num { margin-top: 24px; }
 .item-preco { display: grid; gap: 2px; margin: 0 0 18px !important; font-size: .9375rem !important; }
 .item-preco strong { color: var(--texto); font-weight: 650; }
 .item-preco span { color: var(--texto-3); font-size: .875rem; }
@@ -1545,23 +1508,20 @@ html.janela-aberta .barra-fixa { display: none; }
 .gaveta-estimativa-nota { margin-top: 10px; color: var(--texto-3); font-size: .875rem; }
 
 /* contato sem foto */
-.contato-pagina { max-width: 820px; }
-.contato-pagina .contatos { grid-template-columns: 1fr; }
 
 /* barra fixa do celular */
 .barra-fixa-orcamento { padding: 0 16px; gap: 4px; }
 
 @media (min-width: 640px) {
-  .inicio h1 { font-size: 2rem; font-stretch: 106%; }
-  .contato-pagina .contatos { grid-template-columns: 1fr 1fr; }
+  .inicio h1 { font-size: 2.75rem; font-stretch: 106%; }
 }
 
 @media (min-width: 1000px) {
   .inicio { padding: 80px 0 96px; }
-  .inicio-grade { grid-template-columns: 1.45fr 1fr; gap: 72px; }
-  .inicio h1 { font-size: 2.5rem; }
-  .inicio-apoio { font-size: 1.125rem; }
-  .inicio-marca { display: block; }
+  .inicio-grade { grid-template-columns: 1.2fr 1fr; gap: 72px; }
+  .inicio-marca { width: 100%; margin: 0; }
+  .inicio h1 { font-size: 3.25rem; }
+  .inicio-apoio { font-size: 1.1875rem; }
 
   /* aba Atendimento: a conversa de exemplo fica na coluna da esquerda, abaixo do título */
   .painel.tem-exemplo {
@@ -1578,10 +1538,14 @@ html.janela-aberta .barra-fixa { display: none; }
 @media (max-width: 639px) {
   .inicio-acoes .botao { width: 100%; }
   .zap { max-width: none; font-size: .9063rem; }
-  .ramos { grid-template-columns: 1fr 1fr; }
-  .ramo { padding: 16px; }
-  .ramo-nome { font-size: 1rem; }
-  .ramo-dor { font-size: .875rem; }
+}
+
+/* Quem somos: o topo usa a largura inteira */
+.pagina-topo-larga h1,
+.pagina-topo-larga p:not(.rotulo) { max-width: none; }
+.pagina-topo-larga p:not(.rotulo) { text-wrap: balance; }
+@media (min-width: 1000px) {
+  .pagina-topo-larga h1 { font-size: clamp(2.75rem, 4.4vw, 3.75rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
