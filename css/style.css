@@ -1823,3 +1823,6 @@ html.janela-aberta .barra-fixa { display: none; }
   .ramos { grid-template-columns: repeat(5, 1fr); }
   .ramos .ramo:last-child:nth-child(odd) { grid-column: auto; aspect-ratio: 3 / 4; }
 }
+
+/* ilustrações que mudam com o tipo de negócio */
+.ex-var[hidden] { display: none; }

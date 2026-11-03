@@ -375,6 +375,7 @@
       function aplicarFiltro(ramo) {
         atual = ramo;
         chips.forEach(function (c) { c.setAttribute("aria-pressed", c.getAttribute("data-ramo") === ramo ? "true" : "false"); });
+        $$(".ex-var").forEach(function (v) { v.hidden = v.getAttribute("data-ex") !== ramo; });
         var rotulo = $("[data-filtro-atual]");
         if (rotulo) rotulo.textContent = ramo === "todos" ? "Todos" : (nomes[ramo] ? $("span", $('.filtro-chip[data-ramo="' + ramo + '"]')).textContent : ramo);
         var total = 0, primeira = null;

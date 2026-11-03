@@ -30,8 +30,8 @@
   <script>(function(){var t;try{t=localStorage.getItem("kyzent-tema")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);document.documentElement.classList.add("js")})();</script>
 
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=31">
-  <script src="js/main.js?v=31" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=32">
+  <script src="js/main.js?v=32" defer></script>
 </head>
 <body>
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -134,7 +134,7 @@
               </li>
           </ul>
           <div class="painel-exemplo">
-<figure class="zap-figura">
+<div class="ex-var" data-ex="todos"><figure class="zap-figura">
           <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: um cliente pede um lanche às 21h47 e a IA anota o pedido, soma o total e combina o pagamento.">
             <div class="zap-topo" aria-hidden="true">
               <span class="zap-voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></span>
@@ -152,8 +152,108 @@
             </div>
             <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span></div>
           </div>
-          <figcaption>Exemplo de conversa. A IA responde com o cardápio, os preços e o horário do seu comércio.</figcaption>
-        </figure>
+          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="lanchonete" hidden><figure class="zap-figura">
+          <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: um cliente pede um lanche às 21h47 e a IA anota o pedido, soma o total e combina o pagamento.">
+            <div class="zap-topo" aria-hidden="true">
+              <span class="zap-voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></span>
+              <span class="zap-avatar">SL</span>
+              <span class="zap-nome"><strong>Sua lanchonete</strong><small>online</small></span>
+            </div>
+            <div class="zap-corpo" aria-hidden="true">
+              <p class="zap-dia">Hoje</p>
+              <div class="zap-msg zap-cliente"><p>Boa noite! Ainda dá pra pedir?</p><span class="zap-hora">21:47</span></div>
+              <div class="zap-msg zap-ia"><p>Boa noite! Dá sim, a cozinha vai até as 23h. O que vai ser?</p><span class="zap-hora">21:47<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              <div class="zap-msg zap-cliente"><p>1 X-salada e 1 refri lata. Entrega na Rua das Flores, 120</p><span class="zap-hora">21:48</span></div>
+              <div class="zap-msg zap-ia"><p>Anotado:<br>1 X-salada: R$ 22,00<br>1 refri lata: R$ 6,00<br>Entrega: R$ 5,00<br><strong>Total: R$ 33,00</strong><br>Vai pagar no Pix ou na entrega?</p><span class="zap-hora">21:48<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              <div class="zap-msg zap-cliente"><p>Pix</p><span class="zap-hora">21:49</span></div>
+              <div class="zap-msg zap-ia"><p>Perfeito! Mandei a chave Pix aqui embaixo. Seu pedido chega em uns 40 minutos.</p><span class="zap-hora">21:49<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            </div>
+            <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span></div>
+          </div>
+          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="barbearia" hidden><figure class="zap-figura">
+          <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: um cliente pede horário para corte e barba e a IA oferece horários livres e confirma a marcação.">
+            <div class="zap-topo" aria-hidden="true">
+              <span class="zap-voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></span>
+              <span class="zap-avatar">SB</span>
+              <span class="zap-nome"><strong>Sua barbearia</strong><small>online</small></span>
+            </div>
+            <div class="zap-corpo" aria-hidden="true">
+              <p class="zap-dia">Hoje</p>
+              <div class="zap-msg zap-cliente"><p>Boa tarde! Tem horário hoje pra corte e barba?</p><span class="zap-hora">15:02</span></div>
+              <div class="zap-msg zap-ia"><p>Boa tarde! Tem sim. Hoje restam 16h30 e 18h. Qual prefere?</p><span class="zap-hora">15:02<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              <div class="zap-msg zap-cliente"><p>18h</p><span class="zap-hora">15:03</span></div>
+              <div class="zap-msg zap-ia"><p>Marcado: <strong>corte e barba, hoje às 18h</strong>.<br>Valor: R$ 55,00.</p><span class="zap-hora">15:03<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              <div class="zap-msg zap-cliente"><p>Fechou, valeu!</p><span class="zap-hora">15:03</span></div>
+              <div class="zap-msg zap-ia"><p>Combinado! Te aviso 1 hora antes para você não esquecer.</p><span class="zap-hora">15:04<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            </div>
+            <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span></div>
+          </div>
+          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="salao" hidden><figure class="zap-figura">
+          <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: uma cliente pede escova e hidratação e a IA oferece horários por profissional e confirma a marcação.">
+            <div class="zap-topo" aria-hidden="true">
+              <span class="zap-voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></span>
+              <span class="zap-avatar">SS</span>
+              <span class="zap-nome"><strong>Seu salão</strong><small>online</small></span>
+            </div>
+            <div class="zap-corpo" aria-hidden="true">
+              <p class="zap-dia">Hoje</p>
+              <div class="zap-msg zap-cliente"><p>Oi! Quero fazer escova e hidratação no sábado</p><span class="zap-hora">10:12</span></div>
+              <div class="zap-msg zap-ia"><p>Oi! Dá sim. Sábado temos 9h30 com a Camila ou 14h com a Bia. Qual prefere?</p><span class="zap-hora">10:12<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              <div class="zap-msg zap-cliente"><p>9h30 com a Camila</p><span class="zap-hora">10:13</span></div>
+              <div class="zap-msg zap-ia"><p>Marcado: <strong>sábado, 9h30, com a Camila</strong>.<br>Duração: cerca de 2 horas.</p><span class="zap-hora">10:13<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              <div class="zap-msg zap-cliente"><p>Perfeito!</p><span class="zap-hora">10:14</span></div>
+              <div class="zap-msg zap-ia"><p>Na sexta eu te lembro por aqui. Até lá!</p><span class="zap-hora">10:14<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            </div>
+            <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span></div>
+          </div>
+          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="consultorio" hidden><figure class="zap-figura">
+          <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: um paciente pede um retorno e a IA oferece horários e confirma a consulta.">
+            <div class="zap-topo" aria-hidden="true">
+              <span class="zap-voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></span>
+              <span class="zap-avatar">SC</span>
+              <span class="zap-nome"><strong>Sua clínica</strong><small>online</small></span>
+            </div>
+            <div class="zap-corpo" aria-hidden="true">
+              <p class="zap-dia">Hoje</p>
+              <div class="zap-msg zap-cliente"><p>Bom dia! Preciso marcar um retorno</p><span class="zap-hora">08:41</span></div>
+              <div class="zap-msg zap-ia"><p>Bom dia! Claro. Tenho quinta às 10h ou sexta às 15h. Qual fica melhor?</p><span class="zap-hora">08:41<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              <div class="zap-msg zap-cliente"><p>Quinta, 10h</p><span class="zap-hora">08:42</span></div>
+              <div class="zap-msg zap-ia"><p>Retorno marcado para <strong>quinta, às 10h</strong>.<br>Posso confirmar pelo convênio ou como particular?</p><span class="zap-hora">08:42<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              <div class="zap-msg zap-cliente"><p>Convênio</p><span class="zap-hora">08:43</span></div>
+              <div class="zap-msg zap-ia"><p>Anotado. Um dia antes eu confirmo com você por aqui.</p><span class="zap-hora">08:43<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            </div>
+            <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span></div>
+          </div>
+          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="petshop" hidden><figure class="zap-figura">
+          <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: um tutor pergunta o valor do banho e tosa e a IA informa e agenda o horário.">
+            <div class="zap-topo" aria-hidden="true">
+              <span class="zap-voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></span>
+              <span class="zap-avatar">SP</span>
+              <span class="zap-nome"><strong>Seu pet shop</strong><small>online</small></span>
+            </div>
+            <div class="zap-corpo" aria-hidden="true">
+              <p class="zap-dia">Hoje</p>
+              <div class="zap-msg zap-cliente"><p>Oi! Quanto é o banho e tosa pra um shih-tzu?</p><span class="zap-hora">11:20</span></div>
+              <div class="zap-msg zap-ia"><p>Oi! Banho e tosa do shih-tzu: <strong>R$ 70,00</strong>. Quer agendar? Tenho sábado às 10h ou 14h.</p><span class="zap-hora">11:20<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              <div class="zap-msg zap-cliente"><p>10h, por favor</p><span class="zap-hora">11:21</span></div>
+              <div class="zap-msg zap-ia"><p>Agendado: <strong>sábado, 10h</strong>. Pode deixar o Thor com a gente!</p><span class="zap-hora">11:21<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              <div class="zap-msg zap-cliente"><p>Ele tem a vacina em dia?</p><span class="zap-hora">11:22</span></div>
+              <div class="zap-msg zap-ia"><p>Posso te lembrar da próxima vacina também. Qual foi a data da última?</p><span class="zap-hora">11:22<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            </div>
+            <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span></div>
+          </div>
+          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
+        </figure></div>
           </div>
         </section>
         <section class="painel tem-exemplo" id="modulo-agenda" role="tabpanel" aria-labelledby="aba-agenda" tabindex="-1">
@@ -201,13 +301,48 @@
               </li>
           </ul>
           <div class="painel-exemplo">
-<figure class="mock-figura">
-          <div class="mock mock-agenda" role="img" aria-label="Exemplo de agenda do dia, com horários confirmados e lembretes enviados automaticamente.">
+<div class="ex-var" data-ex="todos"><figure class="mock-figura">
+          <div class="mock mock-agenda" role="img" aria-label="Exemplo de agenda de hoje, com mensagens e confirmações feitas automaticamente.">
             <div class="mock-topo" aria-hidden="true"><strong>Agenda de hoje</strong><span>4 horários</span></div>
             <ul class="mock-corpo" aria-hidden="true"><li class="mock-linha mock-ok"><time>09:00</time><span class="mock-quem"><strong>Carlos</strong><small>Corte</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-ok"><time>10:30</time><span class="mock-quem"><strong>Marina</strong><small>Retorno</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-livre"><time>11:15</time><span class="mock-quem"><small>Pode ser preenchido pela IA</small></span><span class="mock-chip">Horário livre</span></li><li class="mock-linha mock-lembrete"><time>14:00</time><span class="mock-quem"><strong>João</strong><small>Avaliação</small></span><span class="mock-chip">Lembrete enviado</span></li></ul>
           </div>
           <figcaption>Exemplo ilustrativo. A IA marca, confirma e lembra o cliente, sem você parar o que está fazendo.</figcaption>
-        </figure>
+        </figure></div>
+<div class="ex-var" data-ex="lanchonete" hidden><figure class="mock-figura">
+          <div class="mock mock-agenda" role="img" aria-label="Exemplo de clientes para chamar de volta, com mensagens e confirmações feitas automaticamente.">
+            <div class="mock-topo" aria-hidden="true"><strong>Clientes para chamar de volta</strong><span>3 mensagens</span></div>
+            <ul class="mock-corpo" aria-hidden="true"><li class="mock-linha mock-lembrete"><time>15 d</time><span class="mock-quem"><strong>Carlos</strong><small>Não pede há 15 dias</small></span><span class="mock-chip">Mensagem enviada</span></li><li class="mock-linha mock-lembrete"><time>20 d</time><span class="mock-quem"><strong>Marina</strong><small>Não pede há 20 dias</small></span><span class="mock-chip">Mensagem enviada</span></li><li class="mock-linha mock-ok"><time>30 d</time><span class="mock-quem"><strong>João</strong><small>Não pede há 30 dias</small></span><span class="mock-chip">Voltou a pedir</span></li></ul>
+          </div>
+          <figcaption>Exemplo ilustrativo. A IA lembra o cliente de voltar, sem você precisar procurar.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="barbearia" hidden><figure class="mock-figura">
+          <div class="mock mock-agenda" role="img" aria-label="Exemplo de agenda de hoje, com mensagens e confirmações feitas automaticamente.">
+            <div class="mock-topo" aria-hidden="true"><strong>Agenda de hoje</strong><span>4 horários</span></div>
+            <ul class="mock-corpo" aria-hidden="true"><li class="mock-linha mock-ok"><time>09:00</time><span class="mock-quem"><strong>Carlos</strong><small>Corte e barba</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-ok"><time>10:30</time><span class="mock-quem"><strong>Lucas</strong><small>Corte</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-livre"><time>11:15</time><span class="mock-quem"><small>Pode ser preenchido pela IA</small></span><span class="mock-chip">Horário livre</span></li><li class="mock-linha mock-lembrete"><time>14:00</time><span class="mock-quem"><strong>André</strong><small>Barba</small></span><span class="mock-chip">Lembrete enviado</span></li></ul>
+          </div>
+          <figcaption>Exemplo ilustrativo. A IA marca, confirma e lembra o cliente, sem você parar o que está fazendo.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="salao" hidden><figure class="mock-figura">
+          <div class="mock mock-agenda" role="img" aria-label="Exemplo de agenda de hoje, com mensagens e confirmações feitas automaticamente.">
+            <div class="mock-topo" aria-hidden="true"><strong>Agenda de hoje</strong><span>4 horários</span></div>
+            <ul class="mock-corpo" aria-hidden="true"><li class="mock-linha mock-ok"><time>09:30</time><span class="mock-quem"><strong>Ana</strong><small>Escova · Camila</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-ok"><time>11:00</time><span class="mock-quem"><strong>Júlia</strong><small>Hidratação · Bia</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-livre"><time>13:30</time><span class="mock-quem"><small>Pode ser preenchido pela IA</small></span><span class="mock-chip">Horário livre</span></li><li class="mock-linha mock-lembrete"><time>15:00</time><span class="mock-quem"><strong>Paula</strong><small>Coloração · Camila</small></span><span class="mock-chip">Lembrete enviado</span></li></ul>
+          </div>
+          <figcaption>Exemplo ilustrativo. A IA marca, confirma e lembra o cliente, sem você parar o que está fazendo.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="consultorio" hidden><figure class="mock-figura">
+          <div class="mock mock-agenda" role="img" aria-label="Exemplo de agenda de hoje, com mensagens e confirmações feitas automaticamente.">
+            <div class="mock-topo" aria-hidden="true"><strong>Agenda de hoje</strong><span>4 horários</span></div>
+            <ul class="mock-corpo" aria-hidden="true"><li class="mock-linha mock-ok"><time>09:00</time><span class="mock-quem"><strong>Marina</strong><small>Retorno</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-ok"><time>10:30</time><span class="mock-quem"><strong>João</strong><small>Consulta</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-livre"><time>11:15</time><span class="mock-quem"><small>Pode ser preenchido pela IA</small></span><span class="mock-chip">Horário livre</span></li><li class="mock-linha mock-lembrete"><time>14:00</time><span class="mock-quem"><strong>Rita</strong><small>Exame</small></span><span class="mock-chip">Lembrete enviado</span></li></ul>
+          </div>
+          <figcaption>Exemplo ilustrativo. A IA marca, confirma e lembra o cliente, sem você parar o que está fazendo.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="petshop" hidden><figure class="mock-figura">
+          <div class="mock mock-agenda" role="img" aria-label="Exemplo de agenda de hoje, com mensagens e confirmações feitas automaticamente.">
+            <div class="mock-topo" aria-hidden="true"><strong>Agenda de hoje</strong><span>4 horários</span></div>
+            <ul class="mock-corpo" aria-hidden="true"><li class="mock-linha mock-ok"><time>09:00</time><span class="mock-quem"><strong>Thor</strong><small>Banho e tosa</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-ok"><time>10:30</time><span class="mock-quem"><strong>Mel</strong><small>Vacina</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-livre"><time>11:15</time><span class="mock-quem"><small>Pode ser preenchido pela IA</small></span><span class="mock-chip">Horário livre</span></li><li class="mock-linha mock-lembrete"><time>14:00</time><span class="mock-quem"><strong>Bob</strong><small>Banho</small></span><span class="mock-chip">Lembrete enviado</span></li></ul>
+          </div>
+          <figcaption>Exemplo ilustrativo. A IA marca, confirma e lembra o cliente, sem você parar o que está fazendo.</figcaption>
+        </figure></div>
           </div>
         </section>
         <section class="painel tem-exemplo" id="modulo-gestao" role="tabpanel" aria-labelledby="aba-gestao" tabindex="-1">
@@ -262,18 +397,54 @@
               </li>
           </ul>
           <div class="painel-exemplo">
-<figure class="mock-figura">
-          <div class="mock mock-gestao" role="img" aria-label="Exemplo de painel com pedidos do dia, clientes cadastrados e um gráfico da semana.">
+<div class="ex-var" data-ex="todos"><figure class="mock-figura">
+          <div class="mock mock-gestao" role="img" aria-label="Exemplo de painel com os números da semana e um gráfico.">
             <div class="mock-topo" aria-hidden="true"><strong>Resumo da semana</strong><span>Atualizado agora</span></div>
-            <div class="mock-numeros" aria-hidden="true">
-              <div><small>Pedidos</small><strong>128</strong></div>
-              <div><small>Clientes</small><strong>214</strong></div>
-              <div><small>Retornos</small><strong>37</strong></div>
-            </div>
+            <div class="mock-numeros" aria-hidden="true"><div><small>Pedidos</small><strong>128</strong></div><div><small>Clientes</small><strong>214</strong></div><div><small>Retornos</small><strong>37</strong></div></div>
             <div class="mock-barras" aria-hidden="true"><i style="--h:38%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:70%"></i><i style="--h:58%"></i><i style="--h:86%"></i><i style="--h:64%"></i></div>
           </div>
           <figcaption>Exemplo ilustrativo. Cadastros, pedidos e relatórios organizados sem planilha na mão.</figcaption>
-        </figure>
+        </figure></div>
+<div class="ex-var" data-ex="lanchonete" hidden><figure class="mock-figura">
+          <div class="mock mock-gestao" role="img" aria-label="Exemplo de painel com os números da semana e um gráfico.">
+            <div class="mock-topo" aria-hidden="true"><strong>Resumo da semana</strong><span>Atualizado agora</span></div>
+            <div class="mock-numeros" aria-hidden="true"><div><small>Pedidos</small><strong>128</strong></div><div><small>Clientes</small><strong>214</strong></div><div><small>Entregas</small><strong>96</strong></div></div>
+            <div class="mock-barras" aria-hidden="true"><i style="--h:38%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:70%"></i><i style="--h:58%"></i><i style="--h:86%"></i><i style="--h:64%"></i></div>
+          </div>
+          <figcaption>Exemplo ilustrativo. Cadastros, pedidos e relatórios organizados sem planilha na mão.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="barbearia" hidden><figure class="mock-figura">
+          <div class="mock mock-gestao" role="img" aria-label="Exemplo de painel com os números da semana e um gráfico.">
+            <div class="mock-topo" aria-hidden="true"><strong>Resumo da semana</strong><span>Atualizado agora</span></div>
+            <div class="mock-numeros" aria-hidden="true"><div><small>Atendimentos</small><strong>128</strong></div><div><small>Clientes</small><strong>214</strong></div><div><small>Retornos</small><strong>37</strong></div></div>
+            <div class="mock-barras" aria-hidden="true"><i style="--h:38%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:70%"></i><i style="--h:58%"></i><i style="--h:86%"></i><i style="--h:64%"></i></div>
+          </div>
+          <figcaption>Exemplo ilustrativo. Cadastros, pedidos e relatórios organizados sem planilha na mão.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="salao" hidden><figure class="mock-figura">
+          <div class="mock mock-gestao" role="img" aria-label="Exemplo de painel com os números da semana e um gráfico.">
+            <div class="mock-topo" aria-hidden="true"><strong>Resumo da semana</strong><span>Atualizado agora</span></div>
+            <div class="mock-numeros" aria-hidden="true"><div><small>Atendimentos</small><strong>96</strong></div><div><small>Clientes</small><strong>180</strong></div><div><small>Retornos</small><strong>41</strong></div></div>
+            <div class="mock-barras" aria-hidden="true"><i style="--h:38%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:70%"></i><i style="--h:58%"></i><i style="--h:86%"></i><i style="--h:64%"></i></div>
+          </div>
+          <figcaption>Exemplo ilustrativo. Cadastros, pedidos e relatórios organizados sem planilha na mão.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="consultorio" hidden><figure class="mock-figura">
+          <div class="mock mock-gestao" role="img" aria-label="Exemplo de painel com os números da semana e um gráfico.">
+            <div class="mock-topo" aria-hidden="true"><strong>Resumo da semana</strong><span>Atualizado agora</span></div>
+            <div class="mock-numeros" aria-hidden="true"><div><small>Consultas</small><strong>84</strong></div><div><small>Pacientes</small><strong>312</strong></div><div><small>Retornos</small><strong>29</strong></div></div>
+            <div class="mock-barras" aria-hidden="true"><i style="--h:38%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:70%"></i><i style="--h:58%"></i><i style="--h:86%"></i><i style="--h:64%"></i></div>
+          </div>
+          <figcaption>Exemplo ilustrativo. Cadastros, pedidos e relatórios organizados sem planilha na mão.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="petshop" hidden><figure class="mock-figura">
+          <div class="mock mock-gestao" role="img" aria-label="Exemplo de painel com os números da semana e um gráfico.">
+            <div class="mock-topo" aria-hidden="true"><strong>Resumo da semana</strong><span>Atualizado agora</span></div>
+            <div class="mock-numeros" aria-hidden="true"><div><small>Banhos</small><strong>72</strong></div><div><small>Pets</small><strong>241</strong></div><div><small>Pedidos</small><strong>38</strong></div></div>
+            <div class="mock-barras" aria-hidden="true"><i style="--h:38%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:70%"></i><i style="--h:58%"></i><i style="--h:86%"></i><i style="--h:64%"></i></div>
+          </div>
+          <figcaption>Exemplo ilustrativo. Cadastros, pedidos e relatórios organizados sem planilha na mão.</figcaption>
+        </figure></div>
           </div>
         </section>
         <section class="painel tem-exemplo" id="modulo-site" role="tabpanel" aria-labelledby="aba-site" tabindex="-1">
@@ -293,8 +464,8 @@
               </li>
           </ul>
           <div class="painel-exemplo">
-<figure class="mock-figura">
-          <div class="mock mock-site" role="img" aria-label="Exemplo de site de um comércio, com título, botão de WhatsApp e três blocos de serviços.">
+<div class="ex-var" data-ex="todos"><figure class="mock-figura">
+          <div class="mock mock-site" role="img" aria-label="Exemplo de site: O seu negócio, do seu jeito. Botão de WhatsApp e três blocos de serviços.">
             <div class="mock-topo mock-navegador" aria-hidden="true"><span class="mock-pontos"><i></i><i></i><i></i></span><span class="mock-url">seunegocio.com.br</span></div>
             <div class="mock-pagina" aria-hidden="true">
               <p class="mock-titulo">O seu negócio, do seu jeito.</p>
@@ -304,7 +475,67 @@
             </div>
           </div>
           <figcaption>Exemplo ilustrativo. O site é feito sob medida, com o seu jeito e o que você quer mostrar.</figcaption>
-        </figure>
+        </figure></div>
+<div class="ex-var" data-ex="lanchonete" hidden><figure class="mock-figura">
+          <div class="mock mock-site" role="img" aria-label="Exemplo de site: Peça o seu lanche sem fila. Botão de WhatsApp e três blocos de serviços.">
+            <div class="mock-topo mock-navegador" aria-hidden="true"><span class="mock-pontos"><i></i><i></i><i></i></span><span class="mock-url">sualanchonete.com.br</span></div>
+            <div class="mock-pagina" aria-hidden="true">
+              <p class="mock-titulo">Peça o seu lanche sem fila.</p>
+              <p class="mock-sub">Cardápio, entrega e horários num lugar só.</p>
+              <span class="mock-botao">Chamar no WhatsApp</span>
+              <div class="mock-blocos"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+          <figcaption>Exemplo ilustrativo. O site é feito sob medida, com o seu jeito e o que você quer mostrar.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="barbearia" hidden><figure class="mock-figura">
+          <div class="mock mock-site" role="img" aria-label="Exemplo de site: Corte e barba, no seu horário. Botão de WhatsApp e três blocos de serviços.">
+            <div class="mock-topo mock-navegador" aria-hidden="true"><span class="mock-pontos"><i></i><i></i><i></i></span><span class="mock-url">suabarbearia.com.br</span></div>
+            <div class="mock-pagina" aria-hidden="true">
+              <p class="mock-titulo">Corte e barba, no seu horário.</p>
+              <p class="mock-sub">Serviços, valores e agenda num lugar só.</p>
+              <span class="mock-botao">Chamar no WhatsApp</span>
+              <div class="mock-blocos"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+          <figcaption>Exemplo ilustrativo. O site é feito sob medida, com o seu jeito e o que você quer mostrar.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="salao" hidden><figure class="mock-figura">
+          <div class="mock mock-site" role="img" aria-label="Exemplo de site: Beleza com hora marcada. Botão de WhatsApp e três blocos de serviços.">
+            <div class="mock-topo mock-navegador" aria-hidden="true"><span class="mock-pontos"><i></i><i></i><i></i></span><span class="mock-url">seusalao.com.br</span></div>
+            <div class="mock-pagina" aria-hidden="true">
+              <p class="mock-titulo">Beleza com hora marcada.</p>
+              <p class="mock-sub">Serviços, profissionais e agenda num lugar só.</p>
+              <span class="mock-botao">Chamar no WhatsApp</span>
+              <div class="mock-blocos"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+          <figcaption>Exemplo ilustrativo. O site é feito sob medida, com o seu jeito e o que você quer mostrar.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="consultorio" hidden><figure class="mock-figura">
+          <div class="mock mock-site" role="img" aria-label="Exemplo de site: Cuidado com a sua saúde. Botão de WhatsApp e três blocos de serviços.">
+            <div class="mock-topo mock-navegador" aria-hidden="true"><span class="mock-pontos"><i></i><i></i><i></i></span><span class="mock-url">suaclinica.com.br</span></div>
+            <div class="mock-pagina" aria-hidden="true">
+              <p class="mock-titulo">Cuidado com a sua saúde.</p>
+              <p class="mock-sub">Especialidades, convênios e agendamento.</p>
+              <span class="mock-botao">Chamar no WhatsApp</span>
+              <div class="mock-blocos"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+          <figcaption>Exemplo ilustrativo. O site é feito sob medida, com o seu jeito e o que você quer mostrar.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="petshop" hidden><figure class="mock-figura">
+          <div class="mock mock-site" role="img" aria-label="Exemplo de site: Banho, tosa e muito carinho. Botão de WhatsApp e três blocos de serviços.">
+            <div class="mock-topo mock-navegador" aria-hidden="true"><span class="mock-pontos"><i></i><i></i><i></i></span><span class="mock-url">seupetshop.com.br</span></div>
+            <div class="mock-pagina" aria-hidden="true">
+              <p class="mock-titulo">Banho, tosa e muito carinho.</p>
+              <p class="mock-sub">Serviços, produtos e agendamento num lugar só.</p>
+              <span class="mock-botao">Chamar no WhatsApp</span>
+              <div class="mock-blocos"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+          <figcaption>Exemplo ilustrativo. O site é feito sob medida, com o seu jeito e o que você quer mostrar.</figcaption>
+        </figure></div>
           </div>
         </section>
         <section class="painel tem-exemplo" id="modulo-ia" role="tabpanel" aria-labelledby="aba-ia" tabindex="-1">
@@ -338,8 +569,8 @@
               </li>
           </ul>
           <div class="painel-exemplo">
-<figure class="mock-figura">
-          <div class="mock mock-ia" role="img" aria-label="Exemplo de como uma IA sob medida recebe mensagens do WhatsApp, Instagram e site e conversa com agenda, estoque e cadastro de clientes.">
+<div class="ex-var" data-ex="todos"><figure class="mock-figura">
+          <div class="mock mock-ia" role="img" aria-label="Exemplo de como uma IA sob medida recebe mensagens do WhatsApp, Instagram e site e conversa com agenda, estoque, clientes.">
             <div class="mock-fluxo" aria-hidden="true">
               <ul class="mock-fila mock-entrada"><li>WhatsApp</li><li>Instagram</li><li>Site</li></ul>
               <div class="mock-seta"></div>
@@ -349,7 +580,67 @@
             </div>
           </div>
           <figcaption>Exemplo ilustrativo. A IA conversa com os canais e com os sistemas que a sua empresa já usa.</figcaption>
-        </figure>
+        </figure></div>
+<div class="ex-var" data-ex="lanchonete" hidden><figure class="mock-figura">
+          <div class="mock mock-ia" role="img" aria-label="Exemplo de como uma IA sob medida recebe mensagens do WhatsApp, Instagram e site e conversa com pedidos, estoque, clientes.">
+            <div class="mock-fluxo" aria-hidden="true">
+              <ul class="mock-fila mock-entrada"><li>WhatsApp</li><li>Instagram</li><li>Site</li></ul>
+              <div class="mock-seta"></div>
+              <div class="mock-ia-centro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg><strong>IA sob medida</strong><small>Do jeito da sua empresa</small></div>
+              <div class="mock-seta"></div>
+              <ul class="mock-fila mock-saida"><li>Pedidos</li><li>Estoque</li><li>Clientes</li></ul>
+            </div>
+          </div>
+          <figcaption>Exemplo ilustrativo. A IA conversa com os canais e com os sistemas que a sua empresa já usa.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="barbearia" hidden><figure class="mock-figura">
+          <div class="mock mock-ia" role="img" aria-label="Exemplo de como uma IA sob medida recebe mensagens do WhatsApp, Instagram e site e conversa com agenda, clientes, relatórios.">
+            <div class="mock-fluxo" aria-hidden="true">
+              <ul class="mock-fila mock-entrada"><li>WhatsApp</li><li>Instagram</li><li>Site</li></ul>
+              <div class="mock-seta"></div>
+              <div class="mock-ia-centro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg><strong>IA sob medida</strong><small>Do jeito da sua empresa</small></div>
+              <div class="mock-seta"></div>
+              <ul class="mock-fila mock-saida"><li>Agenda</li><li>Clientes</li><li>Relatórios</li></ul>
+            </div>
+          </div>
+          <figcaption>Exemplo ilustrativo. A IA conversa com os canais e com os sistemas que a sua empresa já usa.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="salao" hidden><figure class="mock-figura">
+          <div class="mock mock-ia" role="img" aria-label="Exemplo de como uma IA sob medida recebe mensagens do WhatsApp, Instagram e site e conversa com agenda, clientes, relatórios.">
+            <div class="mock-fluxo" aria-hidden="true">
+              <ul class="mock-fila mock-entrada"><li>WhatsApp</li><li>Instagram</li><li>Site</li></ul>
+              <div class="mock-seta"></div>
+              <div class="mock-ia-centro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg><strong>IA sob medida</strong><small>Do jeito da sua empresa</small></div>
+              <div class="mock-seta"></div>
+              <ul class="mock-fila mock-saida"><li>Agenda</li><li>Clientes</li><li>Relatórios</li></ul>
+            </div>
+          </div>
+          <figcaption>Exemplo ilustrativo. A IA conversa com os canais e com os sistemas que a sua empresa já usa.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="consultorio" hidden><figure class="mock-figura">
+          <div class="mock mock-ia" role="img" aria-label="Exemplo de como uma IA sob medida recebe mensagens do WhatsApp, Instagram e site e conversa com agenda, clientes, relatórios.">
+            <div class="mock-fluxo" aria-hidden="true">
+              <ul class="mock-fila mock-entrada"><li>WhatsApp</li><li>Instagram</li><li>Site</li></ul>
+              <div class="mock-seta"></div>
+              <div class="mock-ia-centro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg><strong>IA sob medida</strong><small>Do jeito da sua empresa</small></div>
+              <div class="mock-seta"></div>
+              <ul class="mock-fila mock-saida"><li>Agenda</li><li>Clientes</li><li>Relatórios</li></ul>
+            </div>
+          </div>
+          <figcaption>Exemplo ilustrativo. A IA conversa com os canais e com os sistemas que a sua empresa já usa.</figcaption>
+        </figure></div>
+<div class="ex-var" data-ex="petshop" hidden><figure class="mock-figura">
+          <div class="mock mock-ia" role="img" aria-label="Exemplo de como uma IA sob medida recebe mensagens do WhatsApp, Instagram e site e conversa com agenda, estoque, clientes.">
+            <div class="mock-fluxo" aria-hidden="true">
+              <ul class="mock-fila mock-entrada"><li>WhatsApp</li><li>Instagram</li><li>Site</li></ul>
+              <div class="mock-seta"></div>
+              <div class="mock-ia-centro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg><strong>IA sob medida</strong><small>Do jeito da sua empresa</small></div>
+              <div class="mock-seta"></div>
+              <ul class="mock-fila mock-saida"><li>Agenda</li><li>Estoque</li><li>Clientes</li></ul>
+            </div>
+          </div>
+          <figcaption>Exemplo ilustrativo. A IA conversa com os canais e com os sistemas que a sua empresa já usa.</figcaption>
+        </figure></div>
           </div>
         </section>
         <p class="precos-nota">Valores combinados conforme a necessidade de cada negócio.</p>

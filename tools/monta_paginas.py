@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "31"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "32"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -518,67 +518,140 @@ def balao(quem, texto, hora):
     tiques = TIQUES if quem == "ia" else ""
     return f'<div class="zap-msg zap-{quem}"><p>{texto}</p><span class="zap-hora">{hora}{tiques}</span></div>'
 
-CONVERSA = f"""<figure class="zap-figura">
-          <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: um cliente pede um lanche às 21h47 e a IA anota o pedido, soma o total e combina o pagamento.">
+# Os exemplos mudam com o tipo de negócio escolhido no filtro ("todos" é o padrão).
+RAMOS_IDS = ["todos", "lanchonete", "barbearia", "salao", "consultorio", "petshop"]
+
+# conversa de WhatsApp: (nome, iniciais, texto do aria-label, [(quem, texto, hora)])
+CONVERSAS = {
+    "lanchonete": ("Sua lanchonete", "SL", "um cliente pede um lanche às 21h47 e a IA anota o pedido, soma o total e combina o pagamento", [
+        ("cliente", "Boa noite! Ainda dá pra pedir?", "21:47"),
+        ("ia", "Boa noite! Dá sim, a cozinha vai até as 23h. O que vai ser?", "21:47"),
+        ("cliente", "1 X-salada e 1 refri lata. Entrega na Rua das Flores, 120", "21:48"),
+        ("ia", "Anotado:<br>1 X-salada: R$ 22,00<br>1 refri lata: R$ 6,00<br>Entrega: R$ 5,00<br><strong>Total: R$ 33,00</strong><br>Vai pagar no Pix ou na entrega?", "21:48"),
+        ("cliente", "Pix", "21:49"),
+        ("ia", "Perfeito! Mandei a chave Pix aqui embaixo. Seu pedido chega em uns 40 minutos.", "21:49")]),
+    "barbearia": ("Sua barbearia", "SB", "um cliente pede horário para corte e barba e a IA oferece horários livres e confirma a marcação", [
+        ("cliente", "Boa tarde! Tem horário hoje pra corte e barba?", "15:02"),
+        ("ia", "Boa tarde! Tem sim. Hoje restam 16h30 e 18h. Qual prefere?", "15:02"),
+        ("cliente", "18h", "15:03"),
+        ("ia", "Marcado: <strong>corte e barba, hoje às 18h</strong>.<br>Valor: R$ 55,00.", "15:03"),
+        ("cliente", "Fechou, valeu!", "15:03"),
+        ("ia", "Combinado! Te aviso 1 hora antes para você não esquecer.", "15:04")]),
+    "salao": ("Seu salão", "SS", "uma cliente pede escova e hidratação e a IA oferece horários por profissional e confirma a marcação", [
+        ("cliente", "Oi! Quero fazer escova e hidratação no sábado", "10:12"),
+        ("ia", "Oi! Dá sim. Sábado temos 9h30 com a Camila ou 14h com a Bia. Qual prefere?", "10:12"),
+        ("cliente", "9h30 com a Camila", "10:13"),
+        ("ia", "Marcado: <strong>sábado, 9h30, com a Camila</strong>.<br>Duração: cerca de 2 horas.", "10:13"),
+        ("cliente", "Perfeito!", "10:14"),
+        ("ia", "Na sexta eu te lembro por aqui. Até lá!", "10:14")]),
+    "consultorio": ("Sua clínica", "SC", "um paciente pede um retorno e a IA oferece horários e confirma a consulta", [
+        ("cliente", "Bom dia! Preciso marcar um retorno", "08:41"),
+        ("ia", "Bom dia! Claro. Tenho quinta às 10h ou sexta às 15h. Qual fica melhor?", "08:41"),
+        ("cliente", "Quinta, 10h", "08:42"),
+        ("ia", "Retorno marcado para <strong>quinta, às 10h</strong>.<br>Posso confirmar pelo convênio ou como particular?", "08:42"),
+        ("cliente", "Convênio", "08:43"),
+        ("ia", "Anotado. Um dia antes eu confirmo com você por aqui.", "08:43")]),
+    "petshop": ("Seu pet shop", "SP", "um tutor pergunta o valor do banho e tosa e a IA informa e agenda o horário", [
+        ("cliente", "Oi! Quanto é o banho e tosa pra um shih-tzu?", "11:20"),
+        ("ia", "Oi! Banho e tosa do shih-tzu: <strong>R$ 70,00</strong>. Quer agendar? Tenho sábado às 10h ou 14h.", "11:20"),
+        ("cliente", "10h, por favor", "11:21"),
+        ("ia", "Agendado: <strong>sábado, 10h</strong>. Pode deixar o Thor com a gente!", "11:21"),
+        ("cliente", "Ele tem a vacina em dia?", "11:22"),
+        ("ia", "Posso te lembrar da próxima vacina também. Qual foi a data da última?", "11:22")]),
+}
+
+def conversa(r):
+    nome, ini, aria, msgs = CONVERSAS["lanchonete" if r == "todos" else r]
+    baloes = "\n              ".join(balao(q, t, h) for q, t, h in msgs)
+    return f"""<figure class="zap-figura">
+          <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: {aria}.">
             <div class="zap-topo" aria-hidden="true">
               <span class="zap-voltar">{I["voltar"]}</span>
-              <span class="zap-avatar">SL</span>
-              <span class="zap-nome"><strong>Sua lanchonete</strong><small>online</small></span>
+              <span class="zap-avatar">{ini}</span>
+              <span class="zap-nome"><strong>{nome}</strong><small>online</small></span>
             </div>
             <div class="zap-corpo" aria-hidden="true">
               <p class="zap-dia">Hoje</p>
-              {balao("cliente", "Boa noite! Ainda dá pra pedir?", "21:47")}
-              {balao("ia", "Boa noite! Dá sim, a cozinha vai até as 23h. O que vai ser?", "21:47")}
-              {balao("cliente", "1 X-salada e 1 refri lata. Entrega na Rua das Flores, 120", "21:48")}
-              {balao("ia", "Anotado:<br>1 X-salada: R$ 22,00<br>1 refri lata: R$ 6,00<br>Entrega: R$ 5,00<br><strong>Total: R$ 33,00</strong><br>Vai pagar no Pix ou na entrega?", "21:48")}
-              {balao("cliente", "Pix", "21:49")}
-              {balao("ia", "Perfeito! Mandei a chave Pix aqui embaixo. Seu pedido chega em uns 40 minutos.", "21:49")}
+              {baloes}
             </div>
             <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic">{I["mic"]}</span></div>
           </div>
-          <figcaption>Exemplo de conversa. A IA responde com o cardápio, os preços e o horário do seu comércio.</figcaption>
+          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
         </figure>"""
 
 # ilustrações de cada módulo (no lugar das fotos de banco): exemplos desenhados em HTML/CSS
-def mock_agenda():
-    linhas = [("09:00", "Carlos", "Corte", "ok", "Confirmado"),
-              ("10:30", "Marina", "Retorno", "ok", "Confirmado"),
-              ("11:15", "", "", "livre", "Horário livre"),
-              ("14:00", "João", "Avaliação", "lembrete", "Lembrete enviado")]
+# agenda: (título, resumo, [(hora, nome, serviço, estado, texto do estado)])
+AGENDAS = {
+    "todos": ("Agenda de hoje", "4 horários", [("09:00", "Carlos", "Corte", "ok", "Confirmado"), ("10:30", "Marina", "Retorno", "ok", "Confirmado"),
+              ("11:15", "", "", "livre", "Horário livre"), ("14:00", "João", "Avaliação", "lembrete", "Lembrete enviado")]),
+    "lanchonete": ("Clientes para chamar de volta", "3 mensagens", [("15 d", "Carlos", "Não pede há 15 dias", "lembrete", "Mensagem enviada"),
+              ("20 d", "Marina", "Não pede há 20 dias", "lembrete", "Mensagem enviada"), ("30 d", "João", "Não pede há 30 dias", "ok", "Voltou a pedir")]),
+    "barbearia": ("Agenda de hoje", "4 horários", [("09:00", "Carlos", "Corte e barba", "ok", "Confirmado"), ("10:30", "Lucas", "Corte", "ok", "Confirmado"),
+              ("11:15", "", "", "livre", "Horário livre"), ("14:00", "André", "Barba", "lembrete", "Lembrete enviado")]),
+    "salao": ("Agenda de hoje", "4 horários", [("09:30", "Ana", "Escova · Camila", "ok", "Confirmado"), ("11:00", "Júlia", "Hidratação · Bia", "ok", "Confirmado"),
+              ("13:30", "", "", "livre", "Horário livre"), ("15:00", "Paula", "Coloração · Camila", "lembrete", "Lembrete enviado")]),
+    "consultorio": ("Agenda de hoje", "4 horários", [("09:00", "Marina", "Retorno", "ok", "Confirmado"), ("10:30", "João", "Consulta", "ok", "Confirmado"),
+              ("11:15", "", "", "livre", "Horário livre"), ("14:00", "Rita", "Exame", "lembrete", "Lembrete enviado")]),
+    "petshop": ("Agenda de hoje", "4 horários", [("09:00", "Thor", "Banho e tosa", "ok", "Confirmado"), ("10:30", "Mel", "Vacina", "ok", "Confirmado"),
+              ("11:15", "", "", "livre", "Horário livre"), ("14:00", "Bob", "Banho", "lembrete", "Lembrete enviado")]),
+}
+
+def mock_agenda(r):
+    titulo, resumo, linhas = AGENDAS[r]
     lis = ""
     for hora, nome, serv, cls, estado in linhas:
         quem = f"<strong>{nome}</strong><small>{serv}</small>" if nome else "<small>Pode ser preenchido pela IA</small>"
         lis += f'<li class="mock-linha mock-{cls}"><time>{hora}</time><span class="mock-quem">{quem}</span><span class="mock-chip">{estado}</span></li>'
+    legenda = ("A IA lembra o cliente de voltar, sem você precisar procurar." if r == "lanchonete"
+               else "A IA marca, confirma e lembra o cliente, sem você parar o que está fazendo.")
     return f"""<figure class="mock-figura">
-          <div class="mock mock-agenda" role="img" aria-label="Exemplo de agenda do dia, com horários confirmados e lembretes enviados automaticamente.">
-            <div class="mock-topo" aria-hidden="true"><strong>Agenda de hoje</strong><span>4 horários</span></div>
+          <div class="mock mock-agenda" role="img" aria-label="Exemplo de {titulo.lower()}, com mensagens e confirmações feitas automaticamente.">
+            <div class="mock-topo" aria-hidden="true"><strong>{titulo}</strong><span>{resumo}</span></div>
             <ul class="mock-corpo" aria-hidden="true">{lis}</ul>
           </div>
-          <figcaption>Exemplo ilustrativo. A IA marca, confirma e lembra o cliente, sem você parar o que está fazendo.</figcaption>
+          <figcaption>Exemplo ilustrativo. {legenda}</figcaption>
         </figure>"""
 
-def mock_gestao():
+# gestão: (rótulo, valor) x3
+GESTOES = {
+    "todos": [("Pedidos", "128"), ("Clientes", "214"), ("Retornos", "37")],
+    "lanchonete": [("Pedidos", "128"), ("Clientes", "214"), ("Entregas", "96")],
+    "barbearia": [("Atendimentos", "128"), ("Clientes", "214"), ("Retornos", "37")],
+    "salao": [("Atendimentos", "96"), ("Clientes", "180"), ("Retornos", "41")],
+    "consultorio": [("Consultas", "84"), ("Pacientes", "312"), ("Retornos", "29")],
+    "petshop": [("Banhos", "72"), ("Pets", "241"), ("Pedidos", "38")],
+}
+
+def mock_gestao(r):
     barras = "".join(f'<i style="--h:{h}%"></i>' for h in (38, 52, 44, 70, 58, 86, 64))
+    nums = "".join(f"<div><small>{a}</small><strong>{b}</strong></div>" for a, b in GESTOES[r])
     return f"""<figure class="mock-figura">
-          <div class="mock mock-gestao" role="img" aria-label="Exemplo de painel com pedidos do dia, clientes cadastrados e um gráfico da semana.">
+          <div class="mock mock-gestao" role="img" aria-label="Exemplo de painel com os números da semana e um gráfico.">
             <div class="mock-topo" aria-hidden="true"><strong>Resumo da semana</strong><span>Atualizado agora</span></div>
-            <div class="mock-numeros" aria-hidden="true">
-              <div><small>Pedidos</small><strong>128</strong></div>
-              <div><small>Clientes</small><strong>214</strong></div>
-              <div><small>Retornos</small><strong>37</strong></div>
-            </div>
+            <div class="mock-numeros" aria-hidden="true">{nums}</div>
             <div class="mock-barras" aria-hidden="true">{barras}</div>
           </div>
           <figcaption>Exemplo ilustrativo. Cadastros, pedidos e relatórios organizados sem planilha na mão.</figcaption>
         </figure>"""
 
-def mock_site():
+# site: (endereço, título, subtítulo)
+SITES = {
+    "todos": ("seunegocio.com.br", "O seu negócio, do seu jeito.", "Serviços, horários e contato num lugar só."),
+    "lanchonete": ("sualanchonete.com.br", "Peça o seu lanche sem fila.", "Cardápio, entrega e horários num lugar só."),
+    "barbearia": ("suabarbearia.com.br", "Corte e barba, no seu horário.", "Serviços, valores e agenda num lugar só."),
+    "salao": ("seusalao.com.br", "Beleza com hora marcada.", "Serviços, profissionais e agenda num lugar só."),
+    "consultorio": ("suaclinica.com.br", "Cuidado com a sua saúde.", "Especialidades, convênios e agendamento."),
+    "petshop": ("seupetshop.com.br", "Banho, tosa e muito carinho.", "Serviços, produtos e agendamento num lugar só."),
+}
+
+def mock_site(r):
+    url, titulo, sub = SITES[r]
     return f"""<figure class="mock-figura">
-          <div class="mock mock-site" role="img" aria-label="Exemplo de site de um comércio, com título, botão de WhatsApp e três blocos de serviços.">
-            <div class="mock-topo mock-navegador" aria-hidden="true"><span class="mock-pontos"><i></i><i></i><i></i></span><span class="mock-url">seunegocio.com.br</span></div>
+          <div class="mock mock-site" role="img" aria-label="Exemplo de site: {titulo} Botão de WhatsApp e três blocos de serviços.">
+            <div class="mock-topo mock-navegador" aria-hidden="true"><span class="mock-pontos"><i></i><i></i><i></i></span><span class="mock-url">{url}</span></div>
             <div class="mock-pagina" aria-hidden="true">
-              <p class="mock-titulo">O seu negócio, do seu jeito.</p>
-              <p class="mock-sub">Serviços, horários e contato num lugar só.</p>
+              <p class="mock-titulo">{titulo}</p>
+              <p class="mock-sub">{sub}</p>
               <span class="mock-botao">{BOTAO}</span>
               <div class="mock-blocos"><i></i><i></i><i></i></div>
             </div>
@@ -586,23 +659,33 @@ def mock_site():
           <figcaption>Exemplo ilustrativo. O site é feito sob medida, com o seu jeito e o que você quer mostrar.</figcaption>
         </figure>"""
 
-def mock_ia():
+# IA sob medida: com o que a IA conversa (saída)
+SAIDAS_IA = {"todos": ["Agenda", "Estoque", "Clientes"], "lanchonete": ["Pedidos", "Estoque", "Clientes"],
+             "petshop": ["Agenda", "Estoque", "Clientes"]}
+
+def mock_ia(r):
     def fila(nomes, cls):
         return f'<ul class="mock-fila {cls}">' + "".join(f"<li>{n}</li>" for n in nomes) + "</ul>"
+    saida = SAIDAS_IA.get(r, ["Agenda", "Clientes", "Relatórios"])
     return f"""<figure class="mock-figura">
-          <div class="mock mock-ia" role="img" aria-label="Exemplo de como uma IA sob medida recebe mensagens do WhatsApp, Instagram e site e conversa com agenda, estoque e cadastro de clientes.">
+          <div class="mock mock-ia" role="img" aria-label="Exemplo de como uma IA sob medida recebe mensagens do WhatsApp, Instagram e site e conversa com {', '.join(s.lower() for s in saida)}.">
             <div class="mock-fluxo" aria-hidden="true">
               {fila(["WhatsApp", "Instagram", "Site"], "mock-entrada")}
               <div class="mock-seta"></div>
               <div class="mock-ia-centro">{I["avancado"]}<strong>IA sob medida</strong><small>Do jeito da sua empresa</small></div>
               <div class="mock-seta"></div>
-              {fila(["Agenda", "Estoque", "Clientes"], "mock-saida")}
+              {fila(saida, "mock-saida")}
             </div>
           </div>
           <figcaption>Exemplo ilustrativo. A IA conversa com os canais e com os sistemas que a sua empresa já usa.</figcaption>
         </figure>"""
 
-EXEMPLOS = {"whatsapp": CONVERSA, "agenda": mock_agenda(), "gestao": mock_gestao(), "site": mock_site(), "ia": mock_ia()}
+def variantes(fn):
+    """Uma versão do exemplo para cada tipo de negócio; o JS mostra a do filtro escolhido."""
+    return "\n".join(f'<div class="ex-var" data-ex="{r}"{"" if r == "todos" else " hidden"}>{fn(r)}</div>' for r in RAMOS_IDS)
+
+EXEMPLOS = {"whatsapp": variantes(conversa), "agenda": variantes(mock_agenda), "gestao": variantes(mock_gestao),
+            "site": variantes(mock_site), "ia": variantes(mock_ia)}
 
 # nome do ramo (filtro): id -> (texto do botão, ícone)
 FILTRO_RAMOS = {"lanchonete": ("Lanchonete", "lanche"), "barbearia": ("Barbearia", "tesoura"),
