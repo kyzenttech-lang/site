@@ -30,6 +30,27 @@
     });
   }
 
+  // janelas dos ramos (lanchonete, barbearia...)
+  function fecharJanela(j) {
+    if (j.open) j.close();
+  }
+  document.querySelectorAll("[data-abrir-janela]").forEach(function (botao) {
+    botao.addEventListener("click", function () {
+      var j = document.getElementById(botao.getAttribute("data-abrir-janela"));
+      if (!j || typeof j.showModal !== "function") return;
+      j.showModal();
+      raiz.classList.add("janela-aberta");
+    });
+  });
+  document.querySelectorAll("dialog.janela").forEach(function (j) {
+    j.addEventListener("close", function () { raiz.classList.remove("janela-aberta"); });
+    // clique fora da caixa fecha
+    j.addEventListener("click", function (e) { if (e.target === j) fecharJanela(j); });
+    j.querySelectorAll("[data-fechar-janela]").forEach(function (b) {
+      b.addEventListener("click", function () { fecharJanela(j); });
+    });
+  });
+
   // ano do rodapé sempre atualizado
   var ano = document.querySelector("[data-ano]");
   if (ano) ano.textContent = new Date().getFullYear();
