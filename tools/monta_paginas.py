@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "5"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "6"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da KYZENT")
@@ -29,6 +29,9 @@ I = {
     "conversa": svg('<path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/>'),
     "vendas": svg('<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>'),
     "gestao": svg('<rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 13h3M8 16h6"/>'),
+    "orcamento": svg('<path d="M9 3.5h6v3H9z"/><path d="M9 5H6.5A1.5 1.5 0 0 0 5 6.5v13A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 17.5 5H15"/><path d="M9 11.5h6M9 15.5h4"/>'),
+    "sorteio": svg('<path d="M16 3.5h4.5V8M4 20 20.5 3.5M20.5 16v4.5H16M14.5 14.5l6 6M4 4l5 5"/>'),
+    "check": svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
     "avancado": svg('<rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/>'),
 }
 
@@ -132,7 +135,7 @@ def ramos_janelas():
       <p class="janela-resumo">{resumo}</p>
       <ul class="lista-check">{lis}</ul>
       <div class="janela-acoes">
-        <a class="botao" href="{link_whats(msg)}" target="_blank" rel="noopener">Quero isso no meu comércio</a>
+        <a class="botao" href="{link_whats(msg)}" target="_blank" rel="noopener" data-contato data-msg="{msg}">Quero isso no meu comércio</a>
         <a class="link-seta" href="servicos.html">Ver todos os serviços</a>
       </div>
     </div>
@@ -150,6 +153,61 @@ def menu(atual, classe):
 def logos():
     return ('<img class="logo-claro" src="assets/img/kyzent-horizontal-claro.svg" alt="KYZENT, automação e IA" width="590" height="140">'
             '<img class="logo-escuro" src="assets/img/kyzent-horizontal-escuro.svg" alt="KYZENT, automação e IA" width="590" height="140">')
+
+def numero_opcao(n):
+    return (f'<a class="numero" href="{link_whats(None, n)}" target="_blank" rel="noopener" data-numero="{WHATS[n][0]}">'
+            f'<span class="numero-icone">{I["conversa"]}</span>'
+            f'<span class="numero-texto"><span class="numero-tipo">WhatsApp</span><span class="numero-valor">{WHATS[n][1]}</span></span></a>')
+
+RAMOS_NOMES = ["Lanchonete", "Barbearia", "Salão de beleza", "Consultório odontológico", "Restaurante", "Loja", "Clínica"]
+
+JANELAS_GERAIS = f"""  <dialog class="janela janela-pequena" id="janela-contato" aria-labelledby="contato-titulo">
+    <button class="janela-fechar" type="button" data-fechar-janela aria-label="Fechar">{I["fechar"]}</button>
+    <div class="janela-corpo">
+      <h2 id="contato-titulo" tabindex="-1" autofocus>Falar com a KYZENT</h2>
+      <p class="janela-resumo">Escolha um número. A conversa abre no WhatsApp com a mensagem pronta; é só enviar.</p>
+      <p class="contato-leva" data-contato-leva hidden></p>
+      <div class="numeros">
+        {numero_opcao(0)}
+        {numero_opcao(1)}
+        <a class="numero numero-qualquer" href="{link_whats(None, 0)}" target="_blank" rel="noopener" data-numero="sorteio"><span class="numero-icone">{I["sorteio"]}</span><span class="numero-texto"><span class="numero-tipo">Tanto faz</span><span class="numero-valor">Qualquer um dos dois</span></span></a>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="gaveta" id="carrinho" aria-labelledby="carrinho-titulo">
+    <div class="gaveta-topo">
+      <h2 id="carrinho-titulo" tabindex="-1" autofocus>Seu orçamento <span class="gaveta-qtd" data-carrinho-qtd></span></h2>
+      <button class="icone-botao" type="button" data-fechar-janela aria-label="Fechar">{I["fechar"]}</button>
+    </div>
+    <div class="gaveta-corpo">
+      <div class="gaveta-vazia" data-carrinho-vazio>
+        <span class="gaveta-vazia-icone">{I["orcamento"]}</span>
+        <p><strong>Nenhum serviço no orçamento ainda.</strong></p>
+        <p>Na página de serviços, toque em "Adicionar ao orçamento" no que interessar. Tudo fica guardado aqui.</p>
+        <a class="botao botao-contorno" href="servicos.html">Ver serviços</a>
+      </div>
+      <ul class="gaveta-lista" data-carrinho-lista></ul>
+      <form class="gaveta-form" data-carrinho-form>
+        <p class="gaveta-form-titulo">Para a gente já chegar preparado <span>(opcional)</span></p>
+        <label>Seu nome<input name="nome" autocomplete="name"></label>
+        <label>Tipo de negócio<input name="negocio" list="lista-negocios" placeholder="Ex.: barbearia"></label>
+        <datalist id="lista-negocios">{"".join(f'<option value="{r}">' for r in RAMOS_NOMES)}</datalist>
+        <label>Observação<textarea name="obs" rows="3" placeholder="Ex.: atendo 40 clientes por dia no WhatsApp"></textarea></label>
+      </form>
+    </div>
+    <div class="gaveta-base" data-carrinho-base>
+      <button class="botao" type="button" data-carrinho-enviar>Enviar pedido pelo WhatsApp</button>
+      <button class="link-botao" type="button" data-carrinho-limpar>Limpar orçamento</button>
+    </div>
+  </dialog>
+
+  <div class="aviso" role="status" aria-live="polite" data-aviso hidden>
+    <span class="aviso-icone">{I["check"]}</span>
+    <span class="aviso-texto" data-aviso-texto></span>
+    <button class="aviso-botao" type="button" data-abrir-carrinho>Ver orçamento</button>
+  </div>"""
+
 
 def pagina(arq, titulo, descricao, corpo, janelas=""):
     url = BASE + ("" if arq == "index.html" else arq)
@@ -196,14 +254,15 @@ def pagina(arq, titulo, descricao, corpo, janelas=""):
       <a class="barra-logo" href="index.html" aria-label="KYZENT, página inicial">{logos()}</a>
       <nav aria-label="Principal">{menu(arq, "menu")}</nav>
       <div class="barra-acoes">
+        <button class="icone-botao carrinho-botao" type="button" data-abrir-carrinho aria-label="Ver orçamento">{I["orcamento"]}<span class="contador" data-contador hidden>0</span></button>
         <button class="icone-botao" type="button" data-trocar-tema aria-label="Trocar tema">{I["lua"]}{I["sol"]}</button>
         <button class="icone-botao botao-menu" type="button" data-abrir-menu aria-expanded="false" aria-controls="menu-celular" aria-label="Abrir menu">{svg('<path d="M4 7h16M4 12h16M4 17h16"/>', "icone-abrir")}{svg('<path d="M6 6l12 12M18 6L6 18"/>', "icone-fechar")}</button>
-        <a class="botao" href="contato.html">Fale conosco</a>
+        <a class="botao" href="contato.html" data-contato>Fale conosco</a>
       </div>
     </div>
     <nav class="menu-celular" id="menu-celular" aria-label="Menu">
       {menu(arq, "")}
-      <a class="botao" href="contato.html">Fale conosco</a>
+      <a class="botao" href="contato.html" data-contato>Fale conosco</a>
     </nav>
   </header>
 
@@ -242,7 +301,12 @@ def pagina(arq, titulo, descricao, corpo, janelas=""):
       </div>
     </div>
   </footer>
-  <a class="whats-fixo" href="{link_whats()}" target="_blank" rel="noopener">{I["conversa"]}<span>Chamar no WhatsApp</span></a>
+  <div class="barra-fixa">
+    <button class="barra-fixa-orcamento" type="button" data-abrir-carrinho hidden>{I["orcamento"]}<span>Orçamento</span><span class="contador" data-contador>0</span></button>
+    <a class="whats-fixo" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{I["conversa"]}<span class="whats-longo">Chamar no WhatsApp</span><span class="whats-curto">WhatsApp</span></a>
+  </div>
+
+{JANELAS_GERAIS}
 {janelas}
 </body>
 </html>
@@ -255,7 +319,7 @@ CHAMADA = """    <section class="chamada" aria-labelledby="titulo-chamada">
             <h2 id="titulo-chamada">Mais eficiência, menos tarefas manuais e processos mais inteligentes.</h2>
             <p>Entre em contato e solicite um orçamento personalizado.</p>
           </div>
-          <a class="botao" href="contato.html">Solicitar orçamento</a>
+          <a class="botao" href="contato.html" data-contato>Solicitar orçamento</a>
         </div>
       </div>
     </section>"""
@@ -267,7 +331,7 @@ PARA_QUEM = f"""    <section class="secao secao-faixa" id="para-quem" aria-label
           <p>Toque no seu ramo e veja o que a KYZENT pode automatizar no seu dia a dia.</p>
         </div>
         {ramos_cartoes()}
-        <p class="ramos-nota">Tem outro tipo de negócio? <a class="link-seta" href="contato.html">Fale com a gente</a></p>
+        <p class="ramos-nota">Tem outro tipo de negócio? <a class="link-seta" href="contato.html" data-contato>Fale com a gente</a></p>
       </div>
     </section>"""
 
@@ -283,7 +347,7 @@ INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
           <h1 id="titulo-inicio">Seu comércio atendendo no WhatsApp 24h, sem precisar contratar.</h1>
           <p class="inicio-apoio">A KYZENT coloca uma IA no WhatsApp do seu comércio, que responde seus clientes a qualquer hora. Você paga uma mensalidade, mais barata que um funcionário, e a gente cuida de tudo.</p>
           <div class="inicio-acoes">
-            <a class="botao" href="contato.html">Fale conosco</a>
+            <a class="botao" href="contato.html" data-contato>Fale conosco</a>
             <a class="botao botao-contorno" href="servicos.html">Conheça os serviços</a>
           </div>
           <ul class="inicio-selos">
@@ -410,8 +474,8 @@ for i, (n, t, ic, resumo, itens) in enumerate(SERVICOS):
         f'''              <li class="item">
                 <h4>{a}</h4>
                 <p>{d}</p>
-                <button class="item-add" type="button" data-servico="{a}" aria-pressed="false">
-                  <span class="item-add-mais">{I["mais"]}</span><span class="item-add-rotulo">Adicionar ao orçamento</span>
+                <button class="item-add" type="button" data-servico="{a}" data-area="{t}" aria-pressed="false">
+                  <span class="item-add-mais">{I["mais"]}</span><span class="item-add-feito">{I["check"]}</span><span class="item-add-rotulo">Adicionar ao orçamento</span>
                 </button>
               </li>''' for a, d in itens)
     paineis.append(f"""        <section class="painel" id="servico-{n}" role="tabpanel" aria-labelledby="aba-{n}" tabindex="-1">
@@ -437,8 +501,8 @@ SERVICOS_PAG = f"""    <section class="pagina-topo pagina-topo-servicos" aria-la
           <p>Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
         </div>
         <div class="topo-servicos-dica">
-          <span class="cartao-icone">{I["mais"]}</span>
-          <p><strong>Monte o seu orçamento.</strong> Adicione os serviços que interessam e envie a lista pelo WhatsApp.</p>
+          <span class="cartao-icone">{I["orcamento"]}</span>
+          <p><strong>Monte o seu orçamento.</strong> Adicione os serviços que interessam, como num carrinho, e envie tudo de uma vez pelo WhatsApp.</p>
         </div>
       </div>
     </section>
@@ -469,20 +533,7 @@ SERVICOS_PAG = f"""    <section class="pagina-topo pagina-topo-servicos" aria-la
 
 {PARA_QUEM.replace('class="secao secao-faixa"', 'class="secao"', 1)}
 
-{CHAMADA}
-
-    <div class="selecao" data-selecao hidden>
-      <div class="container selecao-conteudo">
-        <div class="selecao-texto">
-          <strong><span data-selecao-total>0</span> <span data-selecao-palavra>serviço</span> no orçamento</strong>
-          <span class="selecao-lista" data-selecao-lista></span>
-        </div>
-        <div class="selecao-acoes">
-          <button class="botao botao-contorno" type="button" data-selecao-limpar>Limpar</button>
-          <a class="botao" href="{link_whats()}" target="_blank" rel="noopener" data-selecao-enviar data-numero="{WHATS[0][0]}">Solicitar orçamento</a>
-        </div>
-      </div>
-    </div>"""
+{CHAMADA}"""
 
 # ------------------------------------------------------------------ Contato
 def botao_whats(n):
