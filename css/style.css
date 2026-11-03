@@ -1811,3 +1811,8 @@ html.janela-aberta .barra-fixa { display: none; }
   .aviso { width: calc(100% - 32px); }
   .aviso-texto { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 }
+
+/* cards da página inicial: só o link "Ver serviços" leva ao módulo */
+.cartao.cartao-link:hover { border-color: var(--linha); }
+.cartao-link .cartao-ver { display: inline-flex; align-items: center; min-height: 44px; margin-top: auto; text-decoration: underline; text-underline-offset: 4px; }
+.cartao-link .cartao-ver:hover { text-decoration-thickness: 2px; }

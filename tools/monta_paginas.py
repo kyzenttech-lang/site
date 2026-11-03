@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "28"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "29"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -435,10 +435,10 @@ FOTO_FRENTE = {
 def frente(n, titulo, modulo, itens):
     foto, w, h, pos = FOTO_FRENTE[n]
     lista = "".join(f"<li>{a}</li>" for a in itens)
-    return (f'          <li><a class="cartao cartao-link" href="servicos.html#modulo-{modulo}">'
+    return (f'          <li><article class="cartao cartao-link">'
             f'<div class="cartao-foto"><img src="assets/fotos/{foto}" alt="" width="{w}" height="{h}" loading="lazy" style="object-position:{pos}"></div>'
             f'<div class="cartao-corpo"><h3>{titulo}</h3><ul class="cartao-itens">{lista}</ul>'
-            f'<span class="cartao-ver">Ver serviços</span></div></a></li>')
+            f'<a class="cartao-ver" href="servicos.html#modulo-{modulo}">Ver serviços</a></div></article></li>')
 
 FRENTES = "\n".join(frente(n, t, mod, itens) for n, t, ic, curto, resumo, mod, itens in AREAS)
 
