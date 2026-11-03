@@ -13,14 +13,16 @@
   }
 
   /* ------------------------------------------------------------ tema */
-  var botaoTema = $("[data-trocar-tema]");
+  var botoesTema = $$("[data-trocar-tema]");
   function rotuloTema() {
-    if (!botaoTema) return;
-    botaoTema.setAttribute("aria-label", raiz.getAttribute("data-theme") === "dark" ? "Usar tema claro" : "Usar tema escuro");
+    var escuro = raiz.getAttribute("data-theme") === "dark";
+    botoesTema.forEach(function (b) {
+      if (b.classList.contains("icone-botao")) b.setAttribute("aria-label", escuro ? "Usar tema claro" : "Usar tema escuro");
+    });
   }
-  if (botaoTema) {
-    rotuloTema();
-    botaoTema.addEventListener("click", function () {
+  rotuloTema();
+  botoesTema.forEach(function (botao) {
+    botao.addEventListener("click", function () {
       var novo = raiz.getAttribute("data-theme") === "dark" ? "light" : "dark";
       function aplicar() {
         raiz.setAttribute("data-theme", novo);
@@ -29,7 +31,7 @@
       }
       // troca em círculo, saindo do botão
       if (!document.startViewTransition || semMovimento) { aplicar(); return; }
-      var r = botaoTema.getBoundingClientRect();
+      var r = botao.getBoundingClientRect();
       var x = r.left + r.width / 2, y = r.top + r.height / 2;
       var raio = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
       raiz.classList.add("trocando-tema");
@@ -42,7 +44,7 @@
       });
       t.finished.then(function () { raiz.classList.remove("trocando-tema"); });
     });
-  }
+  });
 
   /* ------------------------------------------------------------ menu do celular */
   var botaoMenu = $("[data-abrir-menu]");
@@ -124,20 +126,18 @@
 
   function desenharCarrinho() {
     var n = itens.length;
-    $$("[data-contador]").forEach(function (c) {
-      c.textContent = n;
-      if (c.closest(".carrinho-botao")) c.hidden = n === 0;
+    $$("[data-contador]").forEach(function (c) { c.textContent = "(" + n + ")"; });
+    $$(".orcamento-botao, .barra-fixa-orcamento").forEach(function (b) {
+      b.hidden = n === 0;
+      b.setAttribute("aria-label", "Ver orçamento, " + n + " " + palavra(n));
     });
-    $$(".carrinho-botao").forEach(function (b) {
-      b.setAttribute("aria-label", n ? "Ver orçamento, " + n + " " + palavra(n) : "Ver orçamento");
-    });
-    $$(".barra-fixa-orcamento").forEach(function (b) { b.hidden = n === 0; });
     raiz.classList.toggle("tem-orcamento", n > 0);
     if (!gaveta) return;
     $("[data-carrinho-qtd]").textContent = n ? "(" + n + ")" : "";
     $("[data-carrinho-vazio]").hidden = n > 0;
     form.hidden = n === 0;
     $("[data-carrinho-base]").hidden = n === 0;
+    desenharEstimativa();
     lista.innerHTML = "";
     itens.forEach(function (i) {
       var li = document.createElement("li");
@@ -155,6 +155,25 @@
     });
   }
 
+  // soma dos valores de referência da planilha (implantação e mensalidade, mínimo e máximo)
+  var PRECOS = window.KYZENT_PRECOS || {};
+  function brl(v) { return "R$ " + v.toLocaleString("pt-BR"); }
+  function desenharEstimativa() {
+    var caixa = $("[data-carrinho-estimativa]");
+    if (!caixa) return;
+    var t = [0, 0, 0, 0], conta = 0;
+    itens.forEach(function (i) {
+      var p = PRECOS[i.nome];
+      if (!p) return;
+      conta++;
+      for (var k = 0; k < 4; k++) t[k] += p[k];
+    });
+    caixa.hidden = conta === 0;
+    if (!conta) return;
+    $("[data-estimativa-implantacao]", caixa).textContent = brl(t[0]) + " a " + brl(t[1]);
+    $("[data-estimativa-mensalidade]", caixa).textContent = brl(t[2]) + " a " + brl(t[3]) + " por mês";
+  }
+
   function salvar() { guardar(CHAVE, itens); desenharCarrinho(); atualizarBotoesServico(); }
   function remover(nome) { itens = itens.filter(function (i) { return i.nome !== nome; }); salvar(); }
 
@@ -166,9 +185,9 @@
   // bolinha que voa do botão até o ícone do orçamento
   function voar(origem) {
     if (semMovimento || !origem.animate) return;
-    var alvo = $$(".carrinho-botao, .barra-fixa-orcamento").filter(function (el) {
+    var alvo = $$(".orcamento-botao, .barra-fixa-orcamento").filter(function (el) {
       var r = el.getBoundingClientRect(); return r.width > 0 && r.top < innerHeight && r.bottom > 0;
-    })[0] || $(".carrinho-botao");
+    })[0];
     if (!alvo) return;
     var a = origem.getBoundingClientRect(), b = alvo.getBoundingClientRect();
     var bola = document.createElement("span");
