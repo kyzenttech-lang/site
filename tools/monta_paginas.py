@@ -7,14 +7,11 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "7"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "8"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da KYZENT")
 BOTAO = "Chamar no WhatsApp"   # o mesmo nome em todo botão de contato
-
-# Custo de um funcionário usado na conta da página inicial (estimativa da KYZENT, em KYZENT.md).
-CUSTO_FUNCIONARIO = 2500
 
 def link_whats(msg=None, n=0):
     return f"https://wa.me/{WHATS[n][0]}?text={quote(msg) if msg else MSG}"
@@ -86,7 +83,6 @@ SERVICOS = [
     ]),
 ]
 PRECOS = {nome: [a, b, c, d] for *_, itens in SERVICOS for nome, _, a, b, c, d in itens}
-CHATBOT = PRECOS["Chatbots inteligentes"]
 
 # ------------------------------------------------------------------ ramos (cartões com janela)
 RAMOS = [
@@ -354,7 +350,7 @@ PARA_QUEM = f"""    <section class="secao secao-faixa" id="para-quem" aria-label
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-ramos">Feito para o seu tipo de comércio.</h2>
-          <p>Toque no seu ramo e veja o que a IA faz no seu dia a dia.</p>
+          <p>Toque no seu ramo e veja o que a KYZENT faz no seu dia a dia.</p>
         </div>
         {ramos_cartoes()}
         <p class="ramos-nota">Tem outro tipo de negócio? <a class="link-seta" href="contato.html" data-contato>Chame a gente no WhatsApp</a></p>
@@ -377,13 +373,97 @@ COMO_FUNCIONA = f"""    <section class="secao" aria-labelledby="titulo-etapas">
       </div>
     </section>"""
 
-SOCIOS = [("Otavio Felix da Silva", "OF"), ("Danilo Crisostomo Dias Xavier", "DX")]
-def socios_html():
-    return "".join(
-        f'<li class="socio"><span class="socio-sigla" aria-hidden="true">{s}</span>'
-        f'<span><strong>{n}</strong><span>Sócio da KYZENT</span></span></li>' for n, s in SOCIOS)
+PILARES = """    <section class="secao secao-faixa" aria-labelledby="titulo-pilares">
+      <div class="container">
+        <div class="cabeca">
+          <h2 id="titulo-pilares">Missão, visão e valores.</h2>
+        </div>
+        <div class="grade grade-3 grade-pilares">
+          <article class="pilar">
+            <h3>Nossa missão</h3>
+            <p>Oferecer soluções tecnológicas que promovam produtividade, automação e crescimento, otimizando processos e potencializando os resultados dos nossos clientes.</p>
+          </article>
+          <article class="pilar">
+            <h3>Nossa visão</h3>
+            <p>Ser referência em Tecnologia e Inovação, reconhecida por transformar negócios e contribuir para a evolução do mercado.</p>
+          </article>
+          <article class="pilar">
+            <h3>Nossos valores</h3>
+            <p>Atuar com respeito, ética e compromisso com nossos clientes e colaboradores, construindo relações sólidas e duradouras, pautadas na lealdade, transparência e dignidade.</p>
+          </article>
+        </div>
+      </div>
+    </section>"""
 
 # ------------------------------------------------------------------ Início
+# Textos oficiais: empresa/KYZENT.md (Quem somos, missão, visão, valores) e a lista de serviços.
+FRENTES = "\n".join(
+    f'          <li><a class="cartao cartao-link" href="servicos.html#servico-{n}"><span class="cartao-icone">{I[ic]}</span>'
+    f'<h3>{t}</h3><ul class="cartao-itens">' + "".join(f"<li>{a}</li>" for a, *_ in itens) +
+    '</ul><span class="cartao-ver">Ver serviços</span></a></li>'
+    for n, t, ic, curto, resumo, itens in SERVICOS)
+
+INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
+      <div class="container inicio-grade">
+        <div class="inicio-texto">
+          <h1 id="titulo-inicio">Somos a KYZENT, uma empresa de Tecnologia e Inovação dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</h1>
+          <p class="inicio-apoio">Nosso propósito é transformar processos por meio da tecnologia, oferecendo mais produtividade, automação e eficiência para impulsionar os resultados dos nossos clientes.</p>
+          <div class="inicio-acoes">
+            <a class="botao botao-grande" href="contato.html" data-contato>{I["conversa"]}{BOTAO}</a>
+            <a class="botao botao-grande botao-contorno" href="servicos.html">Conheça os serviços</a>
+          </div>
+        </div>
+        <div class="inicio-marca" aria-hidden="true">
+          <img class="logo-claro" src="assets/img/kyzent-k-claro.svg" alt="" width="1080" height="520">
+          <img class="logo-escuro" src="assets/img/kyzent-k-escuro.svg" alt="" width="1080" height="520">
+        </div>
+      </div>
+    </section>
+
+{PILARES}
+
+    <section class="secao" aria-labelledby="titulo-frentes">
+      <div class="container">
+        <div class="cabeca-linha">
+          <div class="cabeca">
+            <h2 id="titulo-frentes">Automação inteligente para empresas.</h2>
+            <p>Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
+          </div>
+          <a class="link-seta" href="servicos.html">Ver serviços e preços</a>
+        </div>
+        <ol class="grade grade-4">
+{FRENTES}
+        </ol>
+      </div>
+    </section>
+
+{PARA_QUEM}
+
+{CHAMADA}"""
+
+# ------------------------------------------------------------------ Quem somos
+QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
+      <div class="container">
+        <h1 id="titulo-pagina">Tecnologia e inovação para o seu comércio.</h1>
+        <p>Somos a KYZENT, uma empresa de Tecnologia e Inovação dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</p>
+      </div>
+    </section>
+
+    <section class="secao" aria-labelledby="titulo-proposito">
+      <div class="container">
+        <div class="cabeca">
+          <h2 id="titulo-proposito">Transformar processos por meio da tecnologia.</h2>
+          <p>Nosso propósito é transformar processos por meio da tecnologia, oferecendo mais produtividade, automação e eficiência para impulsionar os resultados dos nossos clientes.</p>
+          <p>A KYZENT é uma empresa de tecnologia de Paulínia que automatiza o trabalho repetitivo do seu comércio. Em vez de contratar mais gente, você assina um serviço que trabalha junto com a sua equipe.</p>
+        </div>
+      </div>
+    </section>
+
+{PILARES}
+
+{CHAMADA}"""
+
+# ------------------------------------------------------------------ Serviços
 def balao(quem, texto, hora):
     tiques = TIQUES if quem == "ia" else ""
     return f'<div class="zap-msg zap-{quem}"><p>{texto}</p><span class="zap-hora">{hora}{tiques}</span></div>'
@@ -409,123 +489,6 @@ CONVERSA = f"""<figure class="zap-figura">
           <figcaption>Exemplo de conversa. A IA responde com o cardápio, os preços e o horário do seu comércio.</figcaption>
         </figure>"""
 
-MUDA = [
-    "Responde cliente às 23h, no domingo e no feriado.",
-    "Anota o pedido sem errar e sem você parar o caixa.",
-    "Marca horário sozinha e lembra o cliente antes.",
-    "Tira dúvida de preço, endereço e cardápio na hora.",
-]
-
-INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
-      <div class="container inicio-grade">
-        <div class="inicio-texto">
-          <h1 id="titulo-inicio">Seu WhatsApp atendendo cliente 24 horas, sem contratar ninguém.</h1>
-          <p class="inicio-apoio">A IA da KYZENT responde, anota pedido e marca horário enquanto você trabalha.</p>
-          <div class="inicio-acoes">
-            <a class="botao botao-grande" href="contato.html" data-contato>{I["conversa"]}{BOTAO}</a>
-            <p class="inicio-preco">A partir de <strong>{brl(CHATBOT[2])} por mês</strong></p>
-          </div>
-        </div>
-        {CONVERSA}
-        <ul class="muda">
-{chr(10).join(f'          <li>{m}</li>' for m in MUDA)}
-        </ul>
-      </div>
-    </section>
-
-{PARA_QUEM}
-
-    <section class="secao" aria-labelledby="titulo-conta">
-      <div class="container">
-        <div class="cabeca">
-          <h2 id="titulo-conta">Faça a conta.</h2>
-          <p>Para atender o WhatsApp o dia todo, o caminho de sempre é contratar alguém.</p>
-        </div>
-        <div class="conta">
-          <div class="conta-lado conta-funcionario">
-            <p class="conta-titulo">Contratar alguém para atender</p>
-            <p class="conta-valor">cerca de {brl(CUSTO_FUNCIONARIO)}</p>
-            <p class="conta-por">por mês, com salário e encargos</p>
-            <ul>
-              <li>Atende em horário comercial</li>
-              <li>Tem folga, férias e falta</li>
-              <li>Responde um cliente por vez</li>
-            </ul>
-          </div>
-          <div class="conta-lado conta-kyzent">
-            <p class="conta-titulo">IA da KYZENT no WhatsApp</p>
-            <p class="conta-valor">a partir de {brl(CHATBOT[2])}</p>
-            <p class="conta-por">por mês, mais a implantação a partir de {brl(CHATBOT[0])}, paga uma vez</p>
-            <ul>
-              <li>Atende 24 horas, todos os dias</li>
-              <li>Responde vários clientes ao mesmo tempo</li>
-              <li>Manutenção e suporte da KYZENT</li>
-            </ul>
-          </div>
-        </div>
-        <p class="conta-nota">Valores de referência do atendimento automático no WhatsApp. O orçamento final depende do que for automatizado. <a class="link-seta" href="servicos.html">Ver o preço de cada serviço</a></p>
-      </div>
-    </section>
-
-{COMO_FUNCIONA.replace('class="secao"', 'class="secao secao-faixa"', 1)}
-
-    <section class="secao" aria-labelledby="titulo-quem">
-      <div class="container quem">
-        <div class="cabeca">
-          <h2 id="titulo-quem">Quem está por trás.</h2>
-          <p>A KYZENT é uma empresa de tecnologia de Paulínia. Somos dois sócios e cuidamos de cada cliente de perto.</p>
-          <a class="link-seta" href="quem-somos.html">Conheça a KYZENT</a>
-        </div>
-        <ul class="socios">{socios_html()}</ul>
-      </div>
-    </section>
-
-{CHAMADA}"""
-
-# ------------------------------------------------------------------ Quem somos
-QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
-      <div class="container">
-        <h1 id="titulo-pagina">Tecnologia e inovação para o seu comércio.</h1>
-        <p>Somos a KYZENT, uma empresa de Tecnologia e Inovação dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</p>
-      </div>
-    </section>
-
-    <section class="secao" aria-labelledby="titulo-proposito">
-      <div class="container quem">
-        <div class="cabeca">
-          <h2 id="titulo-proposito">Transformar processos por meio da tecnologia.</h2>
-          <p>Nosso propósito é transformar processos por meio da tecnologia, oferecendo mais produtividade, automação e eficiência para impulsionar os resultados dos nossos clientes.</p>
-          <p>A KYZENT é uma empresa de tecnologia de Paulínia que automatiza o trabalho repetitivo do seu comércio. Em vez de contratar mais gente, você assina um serviço que trabalha junto com a sua equipe.</p>
-        </div>
-        <ul class="socios">{socios_html()}</ul>
-      </div>
-    </section>
-
-    <section class="secao secao-faixa" aria-labelledby="titulo-pilares">
-      <div class="container">
-        <div class="cabeca">
-          <h2 id="titulo-pilares">Missão, visão e valores.</h2>
-        </div>
-        <div class="grade grade-3 grade-pilares">
-          <article class="pilar">
-            <h3>Nossa missão</h3>
-            <p>Oferecer soluções tecnológicas que promovam produtividade, automação e crescimento, otimizando processos e potencializando os resultados dos nossos clientes.</p>
-          </article>
-          <article class="pilar">
-            <h3>Nossa visão</h3>
-            <p>Ser referência em Tecnologia e Inovação, reconhecida por transformar negócios e contribuir para a evolução do mercado.</p>
-          </article>
-          <article class="pilar">
-            <h3>Nossos valores</h3>
-            <p>Atuar com respeito, ética e compromisso com nossos clientes e colaboradores, construindo relações sólidas e duradouras, pautadas na lealdade, transparência e dignidade.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-{CHAMADA}"""
-
-# ------------------------------------------------------------------ Serviços
 abas = []
 paineis = []
 for i, (n, t, ic, curto, resumo, itens) in enumerate(SERVICOS):
@@ -542,7 +505,8 @@ for i, (n, t, ic, curto, resumo, itens) in enumerate(SERVICOS):
                   <span class="item-add-mais">{I["mais"]}</span><span class="item-add-feito">{I["check"]}</span><span class="item-add-rotulo">Adicionar ao orçamento</span>
                 </button>
               </li>''' for a, d, im, _, mm, _ in itens)
-    paineis.append(f"""        <section class="painel" id="servico-{n}" role="tabpanel" aria-labelledby="aba-{n}" tabindex="-1">
+    exemplo = f'          <div class="painel-exemplo">\n{CONVERSA}\n          </div>' if n == "01" else ""
+    paineis.append(f"""        <section class="painel{" tem-exemplo" if exemplo else ""}" id="servico-{n}" role="tabpanel" aria-labelledby="aba-{n}" tabindex="-1">
           <div class="painel-lado">
             <span class="painel-icone">{I[ic]}</span>
             <span class="painel-num">{len(itens)} serviços</span>
@@ -552,6 +516,7 @@ for i, (n, t, ic, curto, resumo, itens) in enumerate(SERVICOS):
           <ul class="painel-itens">
 {cards}
           </ul>
+{exemplo}
         </section>""")
 
 SERVICOS_PAG = f"""    <section class="pagina-topo pagina-topo-servicos" aria-labelledby="titulo-pagina">
@@ -621,10 +586,10 @@ CONTATO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
       </div>
     </section>"""
 
-DESC = "A KYZENT coloca uma IA no WhatsApp do seu comércio: responde cliente 24 horas, anota pedido e marca horário. A partir de R$ 100 por mês. Paulínia e região."
+DESC = "A KYZENT é uma empresa de Tecnologia e Inovação dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio. Paulínia e região."
 
 saidas = [
-    ("index.html", "KYZENT | IA no WhatsApp para comércios de Paulínia", DESC, INICIO, ramos_janelas()),
+    ("index.html", "KYZENT | Tecnologia e Inovação para o seu comércio", DESC, INICIO, ramos_janelas()),
     ("quem-somos.html", "Quem somos | KYZENT", "A KYZENT é uma empresa de Tecnologia e Inovação de Paulínia. Conheça os sócios, a missão, a visão e os valores.", QUEM, ""),
     ("servicos.html", "Serviços e preços | KYZENT", "Atendimento, vendas, gestão e soluções personalizadas com Inteligência Artificial, com preços de referência. Monte o seu orçamento.", SERVICOS_PAG, ramos_janelas()),
     ("contato.html", "Contato | KYZENT", "Chame a KYZENT no WhatsApp e peça um orçamento personalizado. Paulínia e região.", CONTATO, ""),

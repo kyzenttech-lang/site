@@ -30,8 +30,8 @@
   <script>(function(){var t;try{t=localStorage.getItem("kyzent-tema")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);document.documentElement.classList.add("js")})();</script>
 
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=7">
-  <script src="js/main.js?v=7" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=8">
+  <script src="js/main.js?v=8" defer></script>
 </head>
 <body>
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -77,7 +77,7 @@
         </div>
       </div>
       <div class="container paineis">
-        <section class="painel" id="servico-01" role="tabpanel" aria-labelledby="aba-01" tabindex="-1">
+        <section class="painel tem-exemplo" id="servico-01" role="tabpanel" aria-labelledby="aba-01" tabindex="-1">
           <div class="painel-lado">
             <span class="painel-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg></span>
             <span class="painel-num">3 serviços</span>
@@ -110,6 +110,28 @@
                 </button>
               </li>
           </ul>
+          <div class="painel-exemplo">
+<figure class="zap-figura">
+          <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: um cliente pede um lanche às 21h47 e a IA anota o pedido, soma o total e combina o pagamento.">
+            <div class="zap-topo" aria-hidden="true">
+              <span class="zap-voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></span>
+              <span class="zap-avatar">SL</span>
+              <span class="zap-nome"><strong>Sua lanchonete</strong><small>online</small></span>
+            </div>
+            <div class="zap-corpo" aria-hidden="true">
+              <p class="zap-dia">Hoje</p>
+              <div class="zap-msg zap-cliente"><p>Boa noite! Ainda dá pra pedir?</p><span class="zap-hora">21:47</span></div>
+              <div class="zap-msg zap-ia"><p>Boa noite! Dá sim, a cozinha vai até as 23h. O que vai ser?</p><span class="zap-hora">21:47<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              <div class="zap-msg zap-cliente"><p>1 X-salada e 1 refri lata. Entrega na Rua das Flores, 120</p><span class="zap-hora">21:48</span></div>
+              <div class="zap-msg zap-ia"><p>Anotado:<br>1 X-salada: R$ 22,00<br>1 refri lata: R$ 6,00<br>Entrega: R$ 5,00<br><strong>Total: R$ 33,00</strong><br>Vai pagar no Pix ou na entrega?</p><span class="zap-hora">21:48<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+              <div class="zap-msg zap-cliente"><p>Pix</p><span class="zap-hora">21:49</span></div>
+              <div class="zap-msg zap-ia"><p>Perfeito! Mandei a chave Pix aqui embaixo. Seu pedido chega em uns 40 minutos.</p><span class="zap-hora">21:49<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+            </div>
+            <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span></div>
+          </div>
+          <figcaption>Exemplo de conversa. A IA responde com o cardápio, os preços e o horário do seu comércio.</figcaption>
+        </figure>
+          </div>
         </section>
         <section class="painel" id="servico-02" role="tabpanel" aria-labelledby="aba-02" tabindex="-1">
           <div class="painel-lado">
@@ -152,6 +174,7 @@
                 </button>
               </li>
           </ul>
+
         </section>
         <section class="painel" id="servico-03" role="tabpanel" aria-labelledby="aba-03" tabindex="-1">
           <div class="painel-lado">
@@ -210,6 +233,7 @@
                 </button>
               </li>
           </ul>
+
         </section>
         <section class="painel" id="servico-04" role="tabpanel" aria-labelledby="aba-04" tabindex="-1">
           <div class="painel-lado">
@@ -260,6 +284,7 @@
                 </button>
               </li>
           </ul>
+
         </section>
         <p class="precos-nota">Valores de referência. O orçamento final pode variar conforme o que for automatizado, as integrações, o volume de uso e o custo das ferramentas.</p>
       </div>
@@ -282,7 +307,7 @@
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-ramos">Feito para o seu tipo de comércio.</h2>
-          <p>Toque no seu ramo e veja o que a IA faz no seu dia a dia.</p>
+          <p>Toque no seu ramo e veja o que a KYZENT faz no seu dia a dia.</p>
         </div>
         <div class="ramos">
           <button class="ramo" type="button" data-abrir-janela="janela-lanchonete" aria-haspopup="dialog"><span class="ramo-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a8 6 0 0 1 16 0z"/><path d="M3 14.5h18"/><path d="M4.5 18h15a1.5 1.5 0 0 1-1.5 2h-12a1.5 1.5 0 0 1-1.5-2z"/></svg></span><span class="ramo-nome">Lanchonetes</span><span class="ramo-dor">Pedido anotado sem parar o caixa.</span><span class="ramo-ver">Ver mais <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></button>

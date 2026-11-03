@@ -24,3 +24,4 @@
 
 ## Histórico
 - 2026-11-03: troca da Inter pela Mona Sans; retirada dos vícios visuais de IA; melhorias de celular.
+- 2026-11-03: página Início volta a apresentar a KYZENT como empresa de Tecnologia e Inovação: apresentação e propósito oficiais no topo, missão/visão/valores, as 4 frentes de serviço com o mesmo peso e os ramos. A IA no WhatsApp é um dos produtos, não a identidade: a conversa de exemplo foi para a aba Atendimento de Serviços; saíram do Início o preço, "Faça a conta", "Como funciona" e os sócios (também de Quem somos). K da marca no topo do Início (claro e escuro) no lugar de foto.

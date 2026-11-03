@@ -49,8 +49,9 @@ def horizontal(arquivo_k, cor_txt, cor_slogan, nome):
 horizontal("k-cor-fundo-escuro.svg", "#FFFFFF", "#B8BCC8", "kyzent-horizontal-escuro.svg")
 horizontal("k-cor-fundo-claro.svg", "#0B0B0F", "#4A4D57", "kyzent-horizontal-claro.svg")
 
-# K grande (com órbita) para o topo do site
-salva("img/kyzent-k.svg", le("k-cor-fundo-escuro.svg"))
+# K grande (com órbita) para o topo da página inicial, uma versão por tema
+salva("img/kyzent-k-escuro.svg", le("k-cor-fundo-escuro.svg"))
+salva("img/kyzent-k-claro.svg", le("k-cor-fundo-claro.svg"))
 
 # ícone: K sem órbita num quadrado escuro arredondado (favicon e ícone de app)
 vb, corpo = miolo(le("k-sem-orbita-escuro.svg"))
