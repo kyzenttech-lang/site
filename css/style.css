@@ -274,7 +274,6 @@ button:focus-visible,
 
 .inicio { padding: 48px 0 64px; }
 .inicio-grade { display: grid; gap: 40px; align-items: center; }
-.inicio h1 { font-size: 2.125rem; font-stretch: 100%; letter-spacing: -.02em; line-height: 1.15; }
 .inicio-apoio { margin-top: 20px; max-width: 640px; color: var(--texto-2); font-size: 1.0625rem; }
 .inicio-acoes { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; }
 .botao-grande { min-height: 56px; padding: 0 28px; font-size: 1.0625rem; }
@@ -285,7 +284,7 @@ button:focus-visible,
 /* ---------- Topo das páginas internas ---------- */
 
 .pagina-topo { padding: 64px 0 56px; border-bottom: 1px solid var(--linha); }
-.pagina-topo h1 { font-size: 2.5rem; max-width: 820px; }
+.pagina-topo h1 { max-width: 820px; }
 .pagina-topo p:not(.rotulo) { margin-top: 20px; max-width: 680px; color: var(--texto-2); font-size: 1.1875rem; }
 
 .foto-larga {
@@ -720,7 +719,6 @@ html.janela-aberta { overflow: hidden; }
 /* ---------- Telas maiores ---------- */
 
 @media (min-width: 640px) {
-  .pagina-topo h1 { font-size: 3.25rem; }
   .cabeca h2, .dupla-texto h2 { font-size: 2.5rem; }
   .grade-2, .grade-4 { grid-template-columns: 1fr 1fr; }
   .grade-3 { grid-template-columns: 1fr 1fr; }
@@ -746,7 +744,6 @@ html.janela-aberta { overflow: hidden; }
   .inicio-grade { grid-template-columns: 1fr 1fr; align-items: center; gap: 64px; }
 
   .pagina-topo { padding: 96px 0 80px; }
-  .pagina-topo h1 { font-size: 4rem; }
 
   .secao { padding: 120px 0; }
   .grade-3 { grid-template-columns: repeat(3, 1fr); }
@@ -858,7 +855,6 @@ html.janela-aberta { overflow: hidden; }
   :root { --corte: 28px; }
   .inicio { padding-top: 32px; }
   .pagina-topo { padding: 44px 0 40px; }
-  .pagina-topo h1 { font-size: 2.125rem; }
   .pagina-topo p:not(.rotulo) { font-size: 1.0625rem; }
   .cabeca h2, .dupla-texto h2 { font-size: 1.75rem; }
   .secao { padding: 60px 0; }
@@ -1470,14 +1466,12 @@ html.janela-aberta .barra-fixa { display: none; }
 .barra-fixa-orcamento { padding: 0 16px; gap: 4px; }
 
 @media (min-width: 640px) {
-  .inicio h1 { font-size: 2.75rem; font-stretch: 106%; }
 }
 
 @media (min-width: 1000px) {
   .inicio { padding: 80px 0 96px; }
   .inicio-grade { grid-template-columns: 1.2fr 1fr; gap: 72px; }
   .inicio-marca { width: 100%; margin: 0; }
-  .inicio h1 { font-size: 3.25rem; }
   .inicio-apoio { font-size: 1.1875rem; }
 
   /* aba Atendimento: a conversa de exemplo fica na coluna da esquerda, abaixo do título */
@@ -1504,8 +1498,17 @@ html.janela-aberta .barra-fixa { display: none; }
 .pagina-topo-larga h1,
 .pagina-topo-larga p:not(.rotulo) { max-width: none; }
 .pagina-topo-larga p:not(.rotulo) { text-wrap: balance; }
+
+/* Título grande das 3 páginas (Início, Quem somos e Serviços): o mesmo tamanho */
+.inicio h1,
+.pagina-topo h1 { font-size: 2.125rem; font-stretch: 100%; letter-spacing: -.02em; line-height: 1.15; }
+@media (min-width: 640px) {
+  .inicio h1,
+  .pagina-topo h1 { font-size: 2.75rem; font-stretch: 106%; }
+}
 @media (min-width: 1000px) {
-  .pagina-topo-larga h1 { font-size: clamp(2.75rem, 4.4vw, 3.75rem); }
+  .inicio h1,
+  .pagina-topo h1 { font-size: 3.25rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

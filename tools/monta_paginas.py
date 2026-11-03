@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "17"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "18"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da KYZENT")
@@ -463,8 +463,9 @@ INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
 # ------------------------------------------------------------------ Quem somos
 QUEM = f"""    <section class="pagina-topo pagina-topo-larga" aria-labelledby="titulo-pagina">
       <div class="container">
-        <h1 id="titulo-pagina">Tecnologia e inovação para o seu comércio.</h1>
-        <p>Somos a KYZENT, uma empresa de Tecnologia e Inovação dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</p>
+        <h1 id="titulo-pagina">Quem somos</h1>
+        <p>Somos a KYZENT, uma empresa de Tecnologia e Inovação de Paulínia, dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio. Trabalhamos com Inteligência Artificial para melhorar o atendimento, apoiar as vendas e organizar a gestão do dia a dia, e também criamos soluções sob medida quando o seu negócio pede algo diferente.</p>
+        <p>Cada solução é pensada para a realidade do seu comércio e vem com manutenção e suporte da nossa equipe, para você ter a tecnologia funcionando sem se preocupar com a parte técnica.</p>
       </div>
     </section>
 
@@ -481,9 +482,7 @@ QUEM = f"""    <section class="pagina-topo pagina-topo-larga" aria-labelledby="t
       </div>
     </section>
 
-{PILARES}
-
-{CHAMADA}"""
+{PILARES}"""
 
 # ------------------------------------------------------------------ Serviços
 def balao(quem, texto, hora):
@@ -557,10 +556,6 @@ SERVICOS_PAG = f"""    <section class="pagina-topo pagina-topo-servicos" aria-la
         <div>
           <h1 id="titulo-pagina">Automação inteligente para empresas.</h1>
           <p>Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
-        </div>
-        <div class="topo-servicos-dica">
-          <span class="cartao-icone">{I["orcamento"]}</span>
-          <p><strong>Monte o seu orçamento.</strong> Adicione os serviços que interessam, como num carrinho, e envie tudo de uma vez pelo WhatsApp.</p>
         </div>
       </div>
     </section>
