@@ -384,7 +384,7 @@
     if (inicial !== abas[0]) {
       setTimeout(function () {
         var secao = $(".secao-servicos");
-        if (secao) scrollTo(0, secao.getBoundingClientRect().top + scrollY - 72);
+        if (secao) scrollTo({ top: secao.getBoundingClientRect().top + scrollY - 72, behavior: "instant" });
       }, 0);
     }
   }

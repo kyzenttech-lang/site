@@ -1,13 +1,13 @@
 """Monta as páginas do site com o mesmo topo, rodapé e janelas.
 Uso (na raiz do site): python tools/monta_paginas.py .
-Atenção: sobrescreve index.html, quem-somos.html, servicos.html e contato.html.
+Atenção: sobrescreve index.html, quem-somos.html e servicos.html.
 Edite o texto aqui e rode de novo, para as páginas não ficarem diferentes entre si."""
 import json, os, sys
 from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "12"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "17"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da KYZENT")
@@ -46,7 +46,7 @@ I = {
 TIQUES = ('<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" '
           'fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>')
 
-PAGINAS = [("index.html", "Início"), ("quem-somos.html", "Quem somos"), ("servicos.html", "Serviços"), ("contato.html", "Contato")]
+PAGINAS = [("index.html", "Início"), ("quem-somos.html", "Quem somos"), ("servicos.html", "Serviços")]
 
 # ------------------------------------------------------------------ serviços e preços (planilha empresa/catalogo_servicos_automacao_ia.xlsx)
 # (nome, descrição, implantação mín., implantação máx., mensalidade mín., mensalidade máx.)
@@ -288,13 +288,13 @@ def pagina(arq, titulo, descricao, corpo, janelas=""):
         <button class="orcamento-botao" type="button" data-abrir-carrinho hidden>Orçamento <span data-contador>(0)</span></button>
         <button class="icone-botao tema-botao" type="button" data-trocar-tema aria-label="Trocar tema">{I["lua"]}{I["sol"]}</button>
         <button class="icone-botao botao-menu" type="button" data-abrir-menu aria-expanded="false" aria-controls="menu-celular" aria-label="Abrir menu">{svg('<path d="M4 7h16M4 12h16M4 17h16"/>', "icone-abrir")}{svg('<path d="M6 6l12 12M18 6L6 18"/>', "icone-fechar")}</button>
-        <a class="botao" href="contato.html" data-contato>{BOTAO}</a>
+        <a class="botao" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{BOTAO}</a>
       </div>
     </div>
     <nav class="menu-celular" id="menu-celular" aria-label="Menu">
       {menu(arq, "")}
       <button class="menu-tema" type="button" data-trocar-tema>{I["lua"]}{I["sol"]}<span class="menu-tema-escuro">Usar tema escuro</span><span class="menu-tema-claro">Usar tema claro</span></button>
-      <a class="botao" href="contato.html" data-contato>{BOTAO}</a>
+      <a class="botao" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{BOTAO}</a>
     </nav>
   </header>
 
@@ -351,7 +351,7 @@ CHAMADA = f"""    <section class="chamada" aria-labelledby="titulo-chamada">
             <h2 id="titulo-chamada">Quer ver funcionando no seu comércio?</h2>
             <p>Conte como é o seu dia a dia. A gente responde no WhatsApp e monta um orçamento personalizado.</p>
           </div>
-          <a class="botao" href="contato.html" data-contato>{BOTAO}</a>
+          <a class="botao" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{BOTAO}</a>
         </div>
       </div>
     </section>"""
@@ -363,7 +363,6 @@ PARA_QUEM = f"""    <section class="secao secao-faixa" id="para-quem" aria-label
           <p>Toque no seu ramo e veja o que a KYZENT faz no seu dia a dia.</p>
         </div>
         {ramos_cartoes()}
-        <p class="ramos-nota">Tem outro tipo de negócio? <a class="link-seta" href="contato.html" data-contato>Chame a gente no WhatsApp</a></p>
       </div>
     </section>"""
 
@@ -431,7 +430,7 @@ INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
           <h1 id="titulo-inicio">Tecnologia e inovação para o seu comércio.</h1>
           <p class="inicio-apoio">Automatizamos o atendimento, as vendas e a gestão de pequenas empresas de Paulínia e região.</p>
           <div class="inicio-acoes">
-            <a class="botao botao-grande" href="contato.html" data-contato>{I["conversa"]}{BOTAO}</a>
+            <a class="botao botao-grande" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{I["conversa"]}{BOTAO}</a>
             <a class="botao botao-grande botao-contorno" href="servicos.html">Conheça os serviços</a>
           </div>
         </div>
@@ -566,6 +565,8 @@ SERVICOS_PAG = f"""    <section class="pagina-topo pagina-topo-servicos" aria-la
       </div>
     </section>
 
+{COMO_FUNCIONA.replace('class="secao"', 'class="secao secao-faixa"', 1)}
+
     <section class="secao secao-servicos" aria-label="Serviços por área">
       <div class="abas-faixa">
         <div class="container">
@@ -580,58 +581,14 @@ SERVICOS_PAG = f"""    <section class="pagina-topo pagina-topo-servicos" aria-la
       </div>
     </section>
 
-{COMO_FUNCIONA.replace('class="secao"', 'class="secao secao-faixa"', 1)}
-
-{PARA_QUEM.replace('class="secao secao-faixa"', 'class="secao"', 1)}
-
 {CHAMADA}"""
-
-# ------------------------------------------------------------------ Contato
-def botao_whats(n):
-    return f"""            <a class="contato" href="{link_whats(None, n)}" target="_blank" rel="noopener">
-              <span class="contato-icone">{I["conversa"]}</span>
-              <span class="contato-texto">
-                <!-- <span class="contato-nome">NOME AQUI</span> -->
-                <span class="contato-tipo">WhatsApp</span>
-                <span class="contato-numero">{WHATS[n][1]}</span>
-              </span>
-              <span class="contato-seta" aria-hidden="true">→</span>
-            </a>"""
-
-CONTATO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
-      <div class="container">
-        <h1 id="titulo-pagina">{BOTAO}.</h1>
-        <p>Toque em um dos números. A conversa abre com uma mensagem pronta; é só enviar e contar como é o seu comércio.</p>
-      </div>
-    </section>
-
-    <section class="secao" aria-label="Formas de contato">
-      <div class="container dupla">
-        <div>
-        <div class="contatos">
-{botao_whats(0)}
-{botao_whats(1)}
-        </div>
-
-        <dl class="info">
-          <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/kyzent.tech/" target="_blank" rel="noopener">@kyzent.tech</a></dd></div>
-          <div><dt>Onde estamos</dt><dd>Paulínia/SP</dd></div>
-          <div><dt>Atendemos</dt><dd>Paulínia e região</dd></div>
-        </dl>
-        </div>
-        <div class="dupla-foto dupla-foto-alta">
-          <img src="assets/fotos/cafeteria.jpg" alt="Mulher usando o celular em uma cafeteria" width="733" height="1100">
-        </div>
-      </div>
-    </section>"""
 
 DESC = "A KYZENT é uma empresa de Tecnologia e Inovação dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio. Paulínia e região."
 
 saidas = [
     ("index.html", "KYZENT | Tecnologia e Inovação para o seu comércio", DESC, INICIO, ramos_janelas()),
     ("quem-somos.html", "Quem somos | KYZENT", "A KYZENT é uma empresa de Tecnologia e Inovação de Paulínia. Conheça os sócios, a missão, a visão e os valores.", QUEM, ""),
-    ("servicos.html", "Serviços e preços | KYZENT", "Atendimento, vendas, gestão e soluções personalizadas com Inteligência Artificial, com preços de referência. Monte o seu orçamento.", SERVICOS_PAG, ramos_janelas()),
-    ("contato.html", "Contato | KYZENT", "Chame a KYZENT no WhatsApp e peça um orçamento personalizado. Paulínia e região.", CONTATO, ""),
+    ("servicos.html", "Serviços e preços | KYZENT", "Atendimento, vendas, gestão e soluções personalizadas com Inteligência Artificial, com preços de referência. Monte o seu orçamento.", SERVICOS_PAG, ""),
 ]
 for arq, titulo, desc, corpo, janelas in saidas:
     with open(os.path.join(SITE, arq), "w", encoding="utf-8", newline="\n") as f:

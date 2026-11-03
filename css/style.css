@@ -420,8 +420,6 @@ button:focus-visible,
 }
 .ramo-ver svg { width: 14px; height: 14px; }
 .ramo:hover .ramo-ver { opacity: 1; }
-.ramos-nota { margin-top: 28px; color: var(--texto-2); }
-.ramos-nota .link-seta { margin-left: 6px; }
 
 /* ---------- Janela do ramo ---------- */
 
@@ -692,44 +690,6 @@ html.janela-aberta { overflow: hidden; }
 .chamada-caixa h2 { font-size: 1.875rem; }
 .chamada-caixa p { margin-top: 12px; color: #A9ADBA; }
 
-/* ---------- Contato ---------- */
-
-.contatos { display: grid; gap: 16px; }
-.contato {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 24px;
-  border: 1px solid var(--linha);
-  border-radius: var(--raio);
-  background: var(--fundo-3);
-  text-decoration: none;
-  transition: border-color .15s ease;
-}
-.contato:hover { border-color: var(--azul); }
-.contato-icone {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  background: var(--azul);
-  color: #fff;
-}
-.contato-icone svg { width: 26px; height: 26px; }
-.contato-texto { display: grid; }
-.contato-nome { font-size: .9375rem; font-weight: 600; }
-.contato-tipo { font-size: .875rem; font-weight: 500; color: var(--texto-3); }
-.contato-numero { white-space: nowrap; font-size: 1.375rem; font-weight: 650; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
-.contato-seta { margin-left: auto; font-size: 1.25rem; color: var(--texto-3); transition: transform .15s ease; }
-.contato:hover .contato-seta { transform: translateX(4px); color: var(--destaque); }
-
-.info { margin-top: 40px; display: grid; gap: 24px; }
-.info dt { font-size: .875rem; font-weight: 500; color: var(--texto-3); }
-.info dd { margin: 4px 0 0; }
-.info a { color: var(--destaque); text-underline-offset: 3px; }
-
 /* ---------- Rodapé ---------- */
 
 .rodape { border-top: 1px solid var(--linha); padding: 64px 0 32px; font-size: .9375rem; }
@@ -771,7 +731,6 @@ html.janela-aberta { overflow: hidden; }
   .chamada-caixa { padding: 56px; }
   .chamada-caixa h2 { font-size: 2.25rem; }
   .rodape-grade { grid-template-columns: 1fr 1fr; }
-  .info { grid-template-columns: repeat(3, 1fr); }
   .painel-itens { grid-template-columns: 1fr 1fr; }
   .etapas { grid-template-columns: 1fr 1fr; }
 }
@@ -908,8 +867,6 @@ html.janela-aberta { overflow: hidden; }
   .inicio-acoes .botao { width: 100%; min-height: 52px; }
   .dupla-texto .botao { width: 100%; }
   .chamada-caixa .botao { width: 100%; }
-  .contato { padding: 18px; }
-  .contato-numero { font-size: 1.25rem; }
   .rodape { padding-top: 48px; }
   .etapa { display: grid; grid-template-columns: 40px 1fr; column-gap: 16px; padding: 20px; }
   .etapa-num { grid-row: span 2; width: 40px; height: 40px; margin: 0; }
@@ -1539,6 +1496,9 @@ html.janela-aberta .barra-fixa { display: none; }
   .inicio-acoes .botao { width: 100%; }
   .zap { max-width: none; font-size: .9063rem; }
 }
+
+/* menu do celular: o botão de WhatsApp aparece (a regra do topo o escondia) */
+.barra .menu-celular .botao { display: inline-flex; }
 
 /* Quem somos: o topo usa a largura inteira */
 .pagina-topo-larga h1,
