@@ -542,6 +542,21 @@
     })();
   }
 
+  /* ------------------------------------------------------------ central de automações do topo: uma notificação nova a cada 3 s */
+  var centralFeed = $("[data-central-feed]");
+  if (centralFeed && !semMovimento) {
+    var centralVisivel = true;
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { centralVisivel = es[0].isIntersecting; }).observe(centralFeed);
+    setInterval(function () {
+      if (!centralVisivel || document.hidden) return;
+      var ultimo = centralFeed.lastElementChild;
+      ultimo.classList.remove("entrando");
+      centralFeed.insertBefore(ultimo, centralFeed.firstElementChild);
+      void ultimo.offsetWidth;
+      ultimo.classList.add("entrando");
+    }, 3000);
+  }
+
   /* ------------------------------------------------------------ abas das demonstrações */
   $$("[data-demo-centro]").forEach(function (centro) {
     var abasD = $$('[role="tab"]', centro);

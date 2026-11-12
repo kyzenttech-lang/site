@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "53"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "62"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -352,10 +352,8 @@ def chamada(titulo="Vamos transformar a maneira como sua empresa trabalha?"):
         <div class="chamada-caixa revelar-bloco">
           <svg class="chamada-orbita" viewBox="0 0 800 400" aria-hidden="true"><ellipse cx="400" cy="200" rx="380" ry="110" transform="rotate(-24 400 200)"/><ellipse cx="400" cy="200" rx="300" ry="80" transform="rotate(-24 400 200)"/></svg>
           <div class="chamada-texto">
-            <p class="hero-bf" data-promo><span class="hero-bf-selo">Black Friday</span><span>Implantação grátis até {PROMO_DATA}</span></p>
             <h2 id="titulo-chamada" data-revelar-texto>{titulo}</h2>
             <p>Conte como é o seu dia a dia. A gente responde no WhatsApp e monta um orçamento personalizado para a sua empresa.</p>
-            <div data-promo>{relogio("relogio-claro")}</div>
           </div>
           <div class="chamada-acoes">
             <a class="botao botao-grande botao-claro" href="{link_whats(MSG_BF)}" target="_blank" rel="noopener" data-contato data-msg="{MSG_BF}" data-fora-msg="Olá, vim pelo site da Kyzent e quero começar um projeto." data-magnetico>Comece seu projeto com a Kyzent</a>
@@ -414,11 +412,11 @@ PILARES = f"""    <section class="secao claro" aria-labelledby="titulo-pilares">
       </div>
     </section>"""
 
-FAIXA_PALAVRAS = ["Black Friday Kyzent", f"Implantação grátis até {PROMO_DATA}", "Atendimento 24 horas no WhatsApp",
+FAIXA_PALAVRAS = ["Atendimento 24 horas no WhatsApp", "Respostas inteligentes",
                   "Agendamentos automáticos", "Pedidos organizados", "IA sob medida", "Relatórios automáticos", "Suporte da nossa equipe"]
 def faixa_animada():
     itens = "".join(f'<li>{p}<span class="faixa-orbita"></span></li>' for p in FAIXA_PALAVRAS)
-    return f"""    <div class="faixa-animada" aria-hidden="true" data-promo>
+    return f"""    <div class="faixa-animada" aria-hidden="true">
       <ul class="faixa-trilho">{itens}{itens}</ul>
     </div>"""
 
@@ -549,7 +547,7 @@ def cartao_solucao(mid, destaque=False):
     selo = '<span class="plano-selo">Porta de entrada</span>' if destaque else ""
     return (f'<li><article class="solucao brilho{" solucao-destaque" if destaque else ""}">{selo}'
             f'<div class="solucao-topo"><span class="frente-icone">{I[ic]}</span>'
-            f'<span class="solucao-tag" data-promo>Implantação grátis até {PROMO_DATA}</span></div>'
+            f'</div>'
             f'<h3>{titulo}</h3><p>{chamada_txt}</p><ul class="frente-itens">{lis}</ul>'
             f'<p class="solucao-qtd">{len(servs)} {"serviço" if len(servs) == 1 else "serviços"} nesta solução</p>'
             f'<div class="solucao-acoes"><a class="botao{"" if destaque else " botao-contorno"}" href="{PAGINA_MOD[mid]}">Conhecer a solução</a>'
@@ -714,6 +712,7 @@ SEGMENTOS = [
      ["Automação de processos comerciais", "Integração com CRM, estoque e ERP", "Agentes de IA e sistemas sob medida"],
      ["Equipe focada no que exige pessoas", "Informações conectadas para decidir melhor", "Tecnologia que acompanha o crescimento da empresa"]),
 ]
+SEG_FRASE = {'lanchonete': 'Do pedido no WhatsApp à entrega, sem anotação perdida.', 'barbearia': 'Agenda cheia, sem largar a máquina.', 'salao': 'Cada profissional com a sua agenda em ordem.', 'consultorio': 'Recepção mais leve e pacientes lembrados.', 'petshop': 'Banho, tosa e vacina sempre no dia certo.', 'empresa': 'Processos conectados para a empresa crescer.'}
 def segmentos_secao(classe="claro"):
     chips, paineis_ = [], []
     for i, (sid, nome, ic, arq, (w, h), artigo, desafios, solucoes, beneficios) in enumerate(SEGMENTOS):
@@ -721,9 +720,10 @@ def segmentos_secao(classe="claro"):
         msg = f"Olá, vim pelo site da Kyzent. Tenho {artigo} e quero saber o que vocês podem automatizar."
         col = lambda titulo, itens, cls: f'<div class="seg-col {cls}"><h4>{titulo}</h4><ul>' + "".join(f"<li>{x}</li>" for x in itens) + "</ul></div>"
         paineis_.append(f"""          <article class="seg-painel{" ativo" if i == 0 else ""}" id="seg-{sid}" aria-labelledby="seg-{sid}-titulo">
-            <div class="seg-foto">{foto(arq, w, h, sizes="(max-width: 760px) 100vw, 40vw")}<span class="seg-icone">{I[ic]}</span></div>
+            <div class="seg-foto">{foto(arq, w, h, sizes="(max-width: 760px) 100vw, 40vw")}
+              <div class="seg-foto-texto"><span class="seg-icone">{I[ic]}</span><h3 id="seg-{sid}-titulo">{nome}</h3><p>{SEG_FRASE[sid]}</p></div>
+            </div>
             <div class="seg-texto">
-              <h3 id="seg-{sid}-titulo">{nome}</h3>
               <div class="seg-colunas">
                 {col("Desafios comuns", desafios, "seg-desafios")}
                 {col("Como a Kyzent ajuda", solucoes, "seg-solucoes")}
@@ -793,6 +793,19 @@ def projetos_secao():
 
 # ------------------------------------------------------------------ Início (Kyzent 2.0)
 MSG_ESPECIALISTA = "Olá, vim pelo site da Kyzent e quero falar com um especialista."
+# notificações da central de automações do topo (simulação; o JS faz entrar uma de cada vez)
+CENTRAL_FEED = [("conversa", "Pedido anotado no WhatsApp", "Lanchonete"), ("agenda", "Corte confirmado para as 18h", "Barbearia"),
+                ("repetir", "Tutor lembrado da vacina", "Pet shop"), ("grafico", "Resumo da semana enviado", "Relatório"),
+                ("dente", "Retorno de quinta confirmado", "Clínica")]
+CENTRAL = f"""<div class="central vidro" data-central>
+            <div class="central-topo"><span class="hp-pontos"><i></i><i></i><i></i></span><strong>Central de automações</strong><span class="selo-exemplo">Simulação</span></div>
+            <div class="central-numeros">
+              <div><small>Conversas hoje</small><strong data-contar="128">128</strong></div>
+              <div><small>Agendamentos</small><strong data-contar="24">24</strong></div>
+              <div><small>Tarefas feitas</small><strong data-contar="312">312</strong></div>
+            </div>
+            <ul class="central-feed" data-central-feed>{"".join(f'<li><span class="feed-icone">{I[ic]}</span><span class="feed-texto"><strong>{t}</strong><small>{o}</small></span><span class="feed-ok">{I["check"]}</span></li>' for ic, t, o in CENTRAL_FEED)}</ul>
+          </div>"""
 HERO = f"""    <section class="hero hero-cinema" aria-labelledby="titulo-inicio">
       <div class="hero-fundo" aria-hidden="true">
         <div class="hero-gradiente"></div>
@@ -800,24 +813,20 @@ HERO = f"""    <section class="hero hero-cinema" aria-labelledby="titulo-inicio"
       </div>
       <div class="container hero-grade">
         <div class="hero-texto">
-          <p class="hero-bf" data-promo><span class="hero-bf-selo">Black Friday</span><span>Implantação grátis até {PROMO_DATA}</span></p>
+          <p class="hero-marca"><span class="hero-marca-orbita" aria-hidden="true"></span>Kyzent Technology Solutions</p>
           <h1 id="titulo-inicio" data-revelar-texto>Seu negócio no próximo nível.</h1>
           <p class="hero-apoio">Inteligência artificial, automação e tecnologia para transformar a maneira como sua empresa trabalha, vende e cresce.</p>
           <div class="hero-acoes">
             <a class="botao botao-grande" href="#solucoes" data-magnetico>Conhecer nossas soluções</a>
             <a class="botao botao-grande botao-vidro" href="{link_whats(MSG_ESPECIALISTA)}" target="_blank" rel="noopener" data-contato data-msg="{MSG_ESPECIALISTA}" data-magnetico>{I["conversa"]}Falar com um especialista</a>
           </div>
-          <div class="hero-oferta-linha" data-promo><p><strong>Implantação grátis</strong> para quem fechar até {PROMO_DATA}.</p>{relogio("relogio-mini")}</div>
         </div>
-        <div class="hero-esfera" aria-hidden="true">
+        <div class="hero-visual" aria-hidden="true">
           <div class="esfera-luz"></div>
           <canvas class="esfera" data-esfera></canvas>
-          <div class="hero-flutua vidro hero-flutua-1"><span class="flutua-icone">{I["conversa"]}</span><span><strong>Atendimento 24 h</strong><small>WhatsApp e Instagram</small></span></div>
-          <div class="hero-flutua vidro hero-flutua-2"><span class="flutua-icone">{I["agenda"]}</span><span><strong>Agenda organizada</strong><small>Confirmação e lembrete</small></span></div>
-          <div class="hero-flutua vidro hero-flutua-3"><span class="flutua-icone">{I["grafico"]}</span><span><strong>Relatórios</strong><small>Os números do negócio</small></span></div>
+          {CENTRAL}
         </div>
       </div>
-      <a class="rolar" href="#solucoes"><span class="rolar-mouse" aria-hidden="true"><i></i></span><span>Role para conhecer</span></a>
     </section>"""
 
 N_SERVICOS = len(CATALOGO)
@@ -893,7 +902,6 @@ def pagina_solucao(mid):
           <p class="pagina-topo-apoio">{chamada_txt}</p>
         </div>
         <div class="pagina-topo-texto">
-          <p class="topo-bf" data-promo><span class="hero-bf-selo">Black Friday</span>Implantação grátis para quem fechar até {PROMO_DATA}.</p>
           <a class="botao botao-grande" href="{link_whats(msg)}" target="_blank" rel="noopener" data-contato data-msg="{msg}" data-magnetico>{I["conversa"]}Pedir orçamento</a>
           <a class="link-seta" href="orcamento.html">Simular o meu orçamento</a>
         </div>
@@ -968,7 +976,6 @@ ORCAMENTO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina"
           <p class="pagina-topo-apoio">Responda quatro perguntas rápidas e receba uma recomendação de solução. No fim, ela vai pronta para o nosso WhatsApp, sem compromisso.</p>
         </div>
         <div class="pagina-topo-texto">
-          <p class="topo-bf" data-promo><span class="hero-bf-selo">Black Friday</span>Implantação grátis para quem fechar até {PROMO_DATA}.</p>
           <p>Prefere conversar direto? <a href="{link_whats()}" target="_blank" rel="noopener" data-contato>Chame no WhatsApp</a>.</p>
         </div>
       </div>
@@ -1315,7 +1322,6 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
           <p class="pagina-topo-apoio">Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
         </div>
         <div class="pagina-topo-texto">
-          <p class="topo-bf" data-promo><span class="hero-bf-selo">Black Friday</span>Implantação grátis em qualquer módulo para quem fechar até {PROMO_DATA}.</p>
           <p>Escolha o seu tipo de negócio e veja os serviços de cada solução. Para receber uma recomendação, responda as perguntas do simulador de orçamento.</p>
           <a class="botao" href="orcamento.html" data-magnetico>Simular o meu orçamento</a>
           <a class="link-seta" href="#catalogo">Ver os serviços</a>
