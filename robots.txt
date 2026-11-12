@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kyzenttech-lang.github.io/site/sitemap.xml

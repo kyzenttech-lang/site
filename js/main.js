@@ -256,7 +256,7 @@
   atualizarBotoesServico();
 
   /* ------------------------------------------------------------ abas da página de serviços */
-  var abas = $$('[role="tab"]');
+  var abas = $$('.abas [role="tab"]');
   var barraAbas = $(".abas");
   var indicador;
   if (barraAbas && abas.length) {
@@ -348,7 +348,7 @@
           $("[data-qtd]", aba).textContent = n;
           $("[data-painel-num]", painel).textContent = n + " " + (n === 1 ? "serviço" : "serviços");
         });
-        var ativa = $('[role="tab"][aria-selected="true"]');
+        var ativa = $('.abas [role="tab"][aria-selected="true"]');
         if ((!ativa || ativa.hidden) && primeira) mostrarAba(primeira, false, false);
         else if (ativa) moverIndicador(ativa, true);
       }
@@ -363,8 +363,8 @@
       var pedido = /[?&]ramo=([a-z]+)/.exec(location.search);
       if (pedido && nomes[pedido[1]]) aplicarFiltro(pedido[1]);
     }
-    addEventListener("resize", function () { moverIndicador($('[role="tab"][aria-selected="true"]'), true); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { moverIndicador($('[role="tab"][aria-selected="true"]'), true); });
+    addEventListener("resize", function () { moverIndicador($('.abas [role="tab"][aria-selected="true"]'), true); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { moverIndicador($('.abas [role="tab"][aria-selected="true"]'), true); });
     if (inicial !== abas[0]) {
       setTimeout(function () {
         var secao = $(".secao-servicos");
@@ -531,84 +531,6 @@
     })();
   }
 
-  var palco = $("[data-parallax-palco]");
-  if (palco && hero && !semMovimento && ponteiroFino) {
-    var camadas = $$("[data-profundidade]", palco);
-    var alvoM = { x: 0, y: 0 }, atualM = { x: 0, y: 0 };
-    if (ponteiroFino) {
-      hero.addEventListener("pointermove", function (e) {
-        alvoM.x = (e.clientX / innerWidth - .5) * 2;
-        alvoM.y = (e.clientY / innerHeight - .5) * 2;
-      });
-      hero.addEventListener("pointerleave", function () { alvoM.x = alvoM.y = 0; });
-    }
-    (function mover() {
-      requestAnimationFrame(mover);
-      if (!heroVisivel) return;
-      atualM.x += (alvoM.x - atualM.x) * .06;
-      atualM.y += (alvoM.y - atualM.y) * .06;
-      var rol = Math.min(scrollY, innerHeight);
-      camadas.forEach(function (c) {
-        var p = parseFloat(c.getAttribute("data-profundidade"));
-        var tx = atualM.x * 10 * p, ty = atualM.y * 8 * p - rol * .06 * p;
-        var giro = c.classList.contains("hero-painel") ? " rotateY(" + (atualM.x * 3).toFixed(2) + "deg) rotateX(" + (-atualM.y * 3).toFixed(2) + "deg)" : "";
-        c.style.transform = "translate3d(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px,0)" + giro;
-      });
-    })();
-  }
-
-  var feed = $("[data-feed]");
-  if (feed && !semMovimento) {
-    setInterval(function () {
-      if (!heroVisivel || document.hidden) return;
-      var ultimo = feed.lastElementChild;
-      ultimo.classList.remove("entrando");
-      feed.insertBefore(ultimo, feed.firstElementChild);
-      void ultimo.offsetWidth;
-      ultimo.classList.add("entrando");
-    }, 2800);
-  }
-
-  // demonstração: conversa que acontece em tempo real
-  $$("[data-chat]").forEach(function (chat) {
-    var repetir = chat.parentNode.querySelector("[data-chat-repetir]");
-    if (semMovimento) { if (repetir) repetir.hidden = true; return; }
-    var corpo = $(".chat-corpo", chat);
-    var passos = $$("[data-passo]", chat);
-    var digitando = $("[data-digitando]", chat);
-    var estado = $("[data-chat-estado]", chat);
-    var vez = 0;
-    chat.classList.add("animando");
-    function esperar(ms, minhaVez) {
-      return new Promise(function (ok, nao) { setTimeout(function () { if (minhaVez === vez) ok(); else nao(); }, ms); });
-    }
-    function tocar() {
-      var minhaVez = ++vez;
-      passos.forEach(function (p) { p.classList.remove("mostra"); corpo.appendChild(p); });
-      corpo.appendChild(digitando);
-      digitando.classList.remove("mostra");
-      estado.textContent = "online";
-      var fila = Promise.resolve();
-      passos.forEach(function (passo) {
-        var quem = passo.getAttribute("data-quem");
-        fila = fila.then(function () {
-          if (quem === "cliente") return esperar(900, minhaVez);
-          corpo.insertBefore(digitando, passo);
-          digitando.classList.add("mostra");
-          if (quem === "ia") estado.textContent = "digitando";
-          return esperar(quem === "ia" ? 1300 : 700, minhaVez);
-        }).then(function () {
-          digitando.classList.remove("mostra");
-          estado.textContent = "online";
-          passo.classList.add("mostra");
-        });
-      });
-      fila.catch(function () {});
-    }
-    quandoVisivel(chat, tocar, { threshold: 0.4 });
-    if (repetir) repetir.addEventListener("click", tocar);
-  });
-
   // demonstração: a IA passando pelas etapas
   $$("[data-fluxo]").forEach(function (fluxo) {
     if (semMovimento || !("IntersectionObserver" in window)) return;
@@ -689,6 +611,410 @@
       requestAnimationFrame(function () { pedido = false; marcar(); });
     }, { passive: true });
     marcar();
+  });
+
+  /* ============================================================ KYZENT 2.0 */
+  function el(tag, cls, texto) { var e = document.createElement(tag); if (cls) e.className = cls; if (texto != null) e.textContent = texto; return e; }
+  function espera(ms) { return new Promise(function (ok) { setTimeout(ok, semMovimento ? 0 : ms); }); }
+
+  /* ------------------------------------------------------------ esfera neural do topo (canvas, sem biblioteca) */
+  var esfera = $("[data-esfera]");
+  if (esfera && esfera.getContext) {
+    var ectx = esfera.getContext("2d");
+    var celular = innerWidth < 760;
+    var N = celular ? 170 : 340;
+    var pts = [], arestas = [], pulsos = [];
+    var ouro = Math.PI * (3 - Math.sqrt(5));
+    for (var k = 0; k < N; k++) {
+      var y = 1 - (k / (N - 1)) * 2, r = Math.sqrt(1 - y * y), t = ouro * k;
+      pts.push([Math.cos(t) * r, y, Math.sin(t) * r]);
+    }
+    var limite = celular ? 0.3 : 0.22;
+    for (var a = 0; a < N; a++) for (var b = a + 1; b < N; b++) {
+      var dx = pts[a][0] - pts[b][0], dy = pts[a][1] - pts[b][1], dz = pts[a][2] - pts[b][2];
+      if (dx * dx + dy * dy + dz * dz < limite * limite) arestas.push([a, b]);
+    }
+    var EW = 0, EH = 0, girar = 0, incl = { x: 0, y: 0 }, inclAlvo = { x: 0, y: 0 }, esferaVisivel = true;
+    var medirEsfera = function () {
+      var d = Math.min(window.devicePixelRatio || 1, 2);
+      EW = esfera.clientWidth; EH = esfera.clientHeight;
+      esfera.width = EW * d; esfera.height = EH * d;
+      ectx.setTransform(d, 0, 0, d, 0, 0);
+    };
+    medirEsfera();
+    addEventListener("resize", function () { if (Math.abs(esfera.clientWidth - EW) > 2) medirEsfera(); });
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { esferaVisivel = es[0].isIntersecting; }).observe(esfera);
+    if (ponteiroFino && !semMovimento && hero) {
+      hero.addEventListener("pointermove", function (e) { inclAlvo.x = (e.clientY / innerHeight - .5) * .5; inclAlvo.y = (e.clientX / innerWidth - .5) * .7; });
+      hero.addEventListener("pointerleave", function () { inclAlvo.x = inclAlvo.y = 0; });
+    }
+    var desenharEsfera = function () {
+      var R = Math.min(EW, EH) * 0.36, cx = EW / 2, cy = EH / 2;
+      incl.x += (inclAlvo.x - incl.x) * .05; incl.y += (inclAlvo.y - incl.y) * .05;
+      var ay = girar + incl.y, ax = -0.35 + incl.x;
+      var cyy = Math.cos(ay), syy = Math.sin(ay), cxx = Math.cos(ax), sxx = Math.sin(ax);
+      var proj = pts.map(function (p) {
+        var x = p[0] * cyy - p[2] * syy, z = p[0] * syy + p[2] * cyy;
+        var y2 = p[1] * cxx - z * sxx, z2 = p[1] * sxx + z * cxx;
+        var esc = 2.6 / (2.6 + z2);
+        return [cx + x * R * esc, cy + y2 * R * esc, z2];
+      });
+      ectx.clearRect(0, 0, EW, EH);
+      ectx.lineWidth = 1;
+      for (var i = 0; i < arestas.length; i++) {
+        var p1 = proj[arestas[i][0]], p2 = proj[arestas[i][1]];
+        var prof = (2 - (p1[2] + p2[2])) / 4;   // 0 (atrás) a 1 (frente)
+        if (prof < 0.25) continue;
+        ectx.strokeStyle = "rgba(63,180,255," + (prof * 0.32).toFixed(3) + ")";
+        ectx.beginPath(); ectx.moveTo(p1[0], p1[1]); ectx.lineTo(p2[0], p2[1]); ectx.stroke();
+      }
+      for (var j = 0; j < proj.length; j++) {
+        var p = proj[j], f = (1 - p[2]) / 2;
+        ectx.fillStyle = j % 9 === 0 ? "rgba(255,255,255," + (0.35 + f * 0.65).toFixed(3) + ")" : "rgba(63,180,255," + (0.15 + f * 0.75).toFixed(3) + ")";
+        ectx.beginPath(); ectx.arc(p[0], p[1], 0.6 + f * 1.6, 0, 6.283); ectx.fill();
+      }
+      // pulsos de luz correndo pelas ligações
+      if (!semMovimento) {
+        if (pulsos.length < (celular ? 5 : 10) && Math.random() < 0.08) pulsos.push({ a: arestas[Math.floor(Math.random() * arestas.length)], t: 0 });
+        pulsos = pulsos.filter(function (u) {
+          u.t += 0.025;
+          var q1 = proj[u.a[0]], q2 = proj[u.a[1]];
+          if ((q1[2] + q2[2]) / 2 > 0.2) return u.t < 1;
+          var x = q1[0] + (q2[0] - q1[0]) * u.t, y = q1[1] + (q2[1] - q1[1]) * u.t;
+          var g = ectx.createRadialGradient(x, y, 0, x, y, 7);
+          g.addColorStop(0, "rgba(255,255,255,.95)"); g.addColorStop(1, "rgba(63,180,255,0)");
+          ectx.fillStyle = g; ectx.beginPath(); ectx.arc(x, y, 7, 0, 6.283); ectx.fill();
+          return u.t < 1;
+        });
+      }
+    };
+    if (semMovimento) desenharEsfera();
+    else (function quadro() {
+      requestAnimationFrame(quadro);
+      if (!esferaVisivel || document.hidden) return;
+      girar += celular ? 0.0022 : 0.0028;
+      desenharEsfera();
+    })();
+  }
+
+  /* ------------------------------------------------------------ abas das demonstrações */
+  $$("[data-demo-centro]").forEach(function (centro) {
+    var abasD = $$('[role="tab"]', centro);
+    function mostrar(aba, focar) {
+      abasD.forEach(function (a) {
+        var ativa = a === aba;
+        a.setAttribute("aria-selected", ativa ? "true" : "false");
+        a.tabIndex = ativa ? 0 : -1;
+        var painel = document.getElementById(a.getAttribute("aria-controls"));
+        painel.hidden = !ativa;
+        if (ativa) {
+          $$(".revelar", painel).forEach(function (r) { r.classList.add("visivel"); });
+          painel.dispatchEvent(new CustomEvent("demo-visivel"));
+        }
+      });
+      if (focar) aba.focus();
+      aba.scrollIntoView({ block: "nearest", inline: "nearest" });
+    }
+    abasD.forEach(function (aba) {
+      aba.addEventListener("click", function () { mostrar(aba, false); });
+      aba.addEventListener("keydown", function (e) {
+        var i = abasD.indexOf(aba), alvo = null;
+        if (e.key === "ArrowRight") alvo = abasD[(i + 1) % abasD.length];
+        else if (e.key === "ArrowLeft") alvo = abasD[(i - 1 + abasD.length) % abasD.length];
+        else if (e.key === "Home") alvo = abasD[0];
+        else if (e.key === "End") alvo = abasD[abasD.length - 1];
+        if (alvo) { e.preventDefault(); mostrar(alvo, true); }
+      });
+    });
+  });
+  // começa a demonstração quando ela aparece (na tela ou ao trocar de aba)
+  function aoAparecer(no, fn) {
+    var feito = false, painel = no.closest(".demo-painel");
+    function tentar() { if (!feito && !no.closest("[hidden]")) { feito = true; fn(); } }
+    quandoVisivel(no, tentar, { threshold: 0.3 });
+    if (painel) painel.addEventListener("demo-visivel", function () { setTimeout(tentar, 50); });
+  }
+
+  /* ------------------------------------------------------------ chatbot com opções */
+  $$("[data-chatbot]").forEach(function (bot) {
+    var roteiro = {};
+    try { roteiro = JSON.parse(bot.getAttribute("data-roteiro")); } catch (e) { return; }
+    var corpo = $("[data-chat-corpo]", bot), opcoes = $("[data-chat-opcoes]", bot), estado = $("[data-chat-estado]", bot);
+    var digitando = el("div", "chat-digitando"); digitando.innerHTML = "<i></i><i></i><i></i>";
+    var vez = 0;
+    function rolarFim() { corpo.scrollTop = corpo.scrollHeight; }
+    function bolha(quem, html) {
+      var b = el("div", "chat-msg chat-" + quem + " entra");
+      var p = el("p"); p.innerHTML = html;   // o texto vem do roteiro fixo do site
+      b.appendChild(p); corpo.insertBefore(b, digitando); rolarFim();
+    }
+    function ir(chave) {
+      var no = roteiro[chave]; if (!no) return;
+      var minha = ++vez;
+      opcoes.innerHTML = "";
+      var fila = Promise.resolve();
+      no.msg.forEach(function (m) {
+        fila = fila.then(function () {
+          if (minha !== vez) return;
+          digitando.classList.add("mostra"); estado.textContent = "digitando"; rolarFim();
+          return espera(750);
+        }).then(function () {
+          if (minha !== vez) return;
+          digitando.classList.remove("mostra"); estado.textContent = "online";
+          bolha("ia", m);
+        });
+      });
+      fila.then(function () {
+        if (minha !== vez) return;
+        if (no.ok) {
+          var r = el("div", "chat-resultado entra");
+          r.innerHTML = '<span class="chat-resultado-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><strong></strong><small>Simulação demonstrativa</small></span>';
+          $("strong", r).textContent = no.ok;
+          corpo.insertBefore(r, digitando); rolarFim();
+        }
+        no.op.forEach(function (o) {
+          var bt = el("button", "chat-opcao", o[0]); bt.type = "button";
+          bt.addEventListener("click", function () {
+            if (o[1] === "inicio") { corpo.querySelectorAll(".chat-msg, .chat-resultado").forEach(function (x) { x.remove(); }); }
+            else bolha("cliente", o[0].replace(/</g, "&lt;"));
+            ir(o[1]);
+          });
+          opcoes.appendChild(bt);
+        });
+      });
+    }
+    corpo.appendChild(digitando);
+    aoAparecer(bot, function () { ir("inicio"); });
+  });
+
+  /* ------------------------------------------------------------ agendamento */
+  $$("[data-agendamento]").forEach(function (ag) {
+    var diasBox = $("[data-ag-dias]", ag), horasBox = $("[data-ag-horas]", ag), confirmar = $("[data-ag-confirmar]", ag);
+    var aviso = $("[data-ag-aviso]", ag), lista = $("[data-ag-lista]", ag);
+    var HORAS = ["09:00", "10:00", "11:00", "13:30", "14:30", "15:30", "16:30", "17:30"];
+    var NOMES = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+    var escolha = { servico: "Escova", dia: null, hora: null }, marcados = {};
+    function pressionar(grupo, alvo) { $$("button", grupo).forEach(function (b) { b.setAttribute("aria-pressed", b === alvo ? "true" : "false"); }); }
+    $$("[data-ag-servico]", ag).forEach(function (b) {
+      b.addEventListener("click", function () { escolha.servico = b.getAttribute("data-ag-servico"); pressionar(b.parentNode, b); });
+    });
+    function rotuloDia(i) {
+      var d = new Date(); d.setDate(d.getDate() + i);
+      return { curto: i === 0 ? "Hoje" : i === 1 ? "Amanhã" : NOMES[d.getDay()], num: d.getDate() + "/" + (d.getMonth() + 1) };
+    }
+    function desenharHoras() {
+      horasBox.innerHTML = "";
+      HORAS.forEach(function (h, j) {
+        var b = el("button", "ag-hora", h); b.type = "button"; b.setAttribute("aria-pressed", "false");
+        var ocupado = (escolha.dia * 5 + j * 3) % 4 === 0 || marcados[escolha.dia + h];
+        if (ocupado) { b.disabled = true; b.setAttribute("aria-label", h + ", ocupado"); }
+        b.addEventListener("click", function () { escolha.hora = h; pressionar(horasBox, b); confirmar.disabled = false; });
+        horasBox.appendChild(b);
+      });
+      escolha.hora = null; confirmar.disabled = true;
+    }
+    for (var i = 0; i < 5; i++) (function (i) {
+      var r = rotuloDia(i);
+      var b = el("button", "ag-dia"); b.type = "button"; b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+      b.innerHTML = "<span></span><small></small>"; b.firstChild.textContent = r.curto; b.lastChild.textContent = r.num;
+      b.addEventListener("click", function () { escolha.dia = i; pressionar(diasBox, b); desenharHoras(); });
+      diasBox.appendChild(b);
+    })(i);
+    escolha.dia = 0; desenharHoras();
+    confirmar.addEventListener("click", function () {
+      if (escolha.hora == null) return;
+      var r = rotuloDia(escolha.dia);
+      marcados[escolha.dia + escolha.hora] = true;
+      var li = el("li", "novo");
+      li.innerHTML = '<time></time><span><strong>Você</strong><small></small></span><em class="estado estado-novo">Confirmado</em>';
+      $("time", li).textContent = (escolha.dia === 0 ? "" : r.curto + " ") + escolha.hora;
+      $("small", li).textContent = escolha.servico;
+      lista.insertBefore(li, lista.firstChild);
+      aviso.hidden = false;
+      aviso.textContent = "Confirmado: " + escolha.servico.toLowerCase() + ", " + r.curto.toLowerCase() + " às " + escolha.hora + ". A confirmação foi pelo WhatsApp e o lembrete ficou programado para 1 hora antes.";
+      desenharHoras();
+    });
+  });
+
+  /* ------------------------------------------------------------ registro de pedidos */
+  $$("[data-pedidos]").forEach(function (pd) {
+    var total = $("[data-pd-total]", pd), registrar = $("[data-pd-registrar]", pd), lista = $("[data-pd-lista]", pd);
+    var numero = 1043;
+    var linhas = $$("[data-produto]", pd);
+    function brl(v) { return "R$ " + v.toFixed(2).replace(".", ","); }
+    function somar() {
+      var s = 0, n = 0;
+      linhas.forEach(function (l) { var q = +$("[data-qtd]", l).textContent; s += q * +l.getAttribute("data-preco"); n += q; });
+      total.textContent = brl(s); registrar.disabled = n === 0;
+    }
+    linhas.forEach(function (l) {
+      var q = $("[data-qtd]", l);
+      $("[data-mais]", l).addEventListener("click", function () { q.textContent = Math.min(9, +q.textContent + 1); somar(); });
+      $("[data-menos]", l).addEventListener("click", function () { q.textContent = Math.max(0, +q.textContent - 1); somar(); });
+    });
+    registrar.addEventListener("click", function () {
+      var itensP = linhas.filter(function (l) { return +$("[data-qtd]", l).textContent > 0; })
+        .map(function (l) { return $("[data-qtd]", l).textContent + " " + l.getAttribute("data-produto"); });
+      var li = el("li", "novo");
+      li.innerHTML = '<span class="pd-num"></span><span><strong>Você</strong><small></small></span><em class="estado estado-novo">Novo</em>';
+      $(".pd-num", li).textContent = "#" + numero++;
+      $("small", li).textContent = itensP.join(", ") + " · " + total.textContent;
+      lista.insertBefore(li, lista.firstChild);
+      linhas.forEach(function (l) { $("[data-qtd]", l).textContent = "0"; });
+      somar();
+      setTimeout(function () { var e = $("em", li); e.className = "estado estado-preparo"; e.textContent = "Em preparo"; }, semMovimento ? 0 : 1800);
+    });
+  });
+
+  /* ------------------------------------------------------------ organização de clientes */
+  $$("[data-clientes]").forEach(function (cl) {
+    var busca = $("[data-cl-busca]", cl), conta = $("[data-cl-conta]", cl), filtro = "todos";
+    var lis = $$("[data-cl-lista] li", cl);
+    function aplicar() {
+      var termo = busca.value.trim().toLowerCase(), n = 0;
+      lis.forEach(function (li) {
+        var ok = (filtro === "todos" || li.getAttribute("data-tipo") === filtro) && li.getAttribute("data-nome").indexOf(termo) > -1;
+        li.hidden = !ok; if (ok) n++;
+      });
+      conta.textContent = n === 0 ? "Nenhum cliente com esse filtro." : n + (n === 1 ? " cliente" : " clientes");
+    }
+    busca.addEventListener("input", aplicar);
+    $$("[data-cl-filtro]", cl).forEach(function (b) {
+      b.addEventListener("click", function () {
+        filtro = b.getAttribute("data-cl-filtro");
+        $$("[data-cl-filtro]", cl).forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        aplicar();
+      });
+    });
+    $$("[data-lembrar]", cl).forEach(function (b) {
+      b.addEventListener("click", function () { b.disabled = true; b.textContent = "Lembrete enviado pelo WhatsApp"; });
+    });
+  });
+
+  /* ------------------------------------------------------------ segmentos */
+  $$("[data-segmentos]").forEach(function (grupo) {
+    var chips = $$("[data-seg]", grupo);
+    chips.forEach(function (c) {
+      c.addEventListener("click", function () {
+        chips.forEach(function (x) { x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
+        $$(".seg-painel").forEach(function (p) { p.classList.toggle("ativo", p.id === "seg-" + c.getAttribute("data-seg")); });
+        c.scrollIntoView({ block: "nearest", inline: "center", behavior: semMovimento ? "auto" : "smooth" });
+      });
+    });
+  });
+
+  /* ------------------------------------------------------------ simulador de orçamento */
+  $$("[data-simulador]").forEach(function (form) {
+    var passos = $$("[data-passo]", form), atual = 0, aberto = Date.now();
+    var mapa = JSON.parse(form.getAttribute("data-mapa")), servMod = JSON.parse(form.getAttribute("data-servmod"));
+    var barra = $("[data-sim-barra]", form), num = $("[data-sim-num]", form), erro = $("[data-sim-erro]", form);
+    var voltar = $("[data-sim-voltar]", form), avancar = $("[data-sim-avancar]", form), enviar = $("[data-sim-enviar]", form);
+    var resultado = $("[data-sim-resultado]");
+    var limpo = function (v, max) { return String(v || "").replace(/[\u0000-\u0009\u000B-\u001F\u007F<>]/g, " ").replace(/\s{3,}/g, "  ").trim().slice(0, max); };
+    var marcados = function (nome) { return $$('input[name="' + nome + '"]:checked', form).map(function (i) { return i.value; }); };
+    var rotulo = function (input) { return input.closest(".sim-opcao").textContent.trim(); };
+
+    var pedido = /[?&]ramo=([a-z]+)/.exec(location.search);
+    if (pedido) { var r = $('input[name="negocio"][value="' + pedido[1] + '"]', form); if (r) r.checked = true; }
+
+    function mostrarErro(txt) { erro.textContent = txt; erro.hidden = !txt; }
+    function irPara(n, inicial) {
+      atual = n;
+      passos.forEach(function (p, i) { p.hidden = i !== n; });
+      barra.style.width = ((n + 1) / passos.length * 100) + "%";
+      num.textContent = "Passo " + (n + 1) + " de " + passos.length;
+      voltar.hidden = n === 0;
+      avancar.hidden = n === passos.length - 1;
+      enviar.hidden = n !== passos.length - 1;
+      mostrarErro("");
+      var primeiro = $("input, textarea", passos[n]);
+      if (primeiro && document.activeElement && form.contains(document.activeElement)) primeiro.focus({ preventScroll: true });
+      var topo = form.getBoundingClientRect().top;
+      if (!inicial && topo < 80) scrollTo({ top: scrollY + topo - 100, behavior: semMovimento ? "auto" : "smooth" });
+    }
+    function valido(n) {
+      if (n === 0 && !marcados("negocio").length) return "Escolha o seu tipo de negócio para continuar.";
+      if (n === 1 && !marcados("desafio").length) return "Marque pelo menos uma opção para continuar.";
+      if (n === 3) {
+        var nome = form.elements.nome;
+        var ok = limpo(nome.value, 60).length >= 2;
+        nome.setAttribute("aria-invalid", ok ? "false" : "true");
+        if (!ok) { nome.focus(); return "Escreva o seu nome para a gente saber com quem fala."; }
+      }
+      return "";
+    }
+    avancar.addEventListener("click", function () { var e = valido(atual); if (e) mostrarErro(e); else irPara(atual + 1); });
+    voltar.addEventListener("click", function () { irPara(atual - 1); });
+    form.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && e.target.tagName === "INPUT" && atual < passos.length - 1) { e.preventDefault(); avancar.click(); }
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var problema = valido(atual);
+      if (problema) { mostrarErro(problema); return; }
+      if (form.elements.site.value) return;   // campo-isca preenchido: robô
+      if (Date.now() - aberto < 3000) { mostrarErro("Confira as respostas e tente de novo em alguns segundos."); return; }
+
+      var negocioInput = $('input[name="negocio"]:checked', form);
+      var desafios = $$('input[name="desafio"]:checked', form);
+      var servicos = [];
+      desafios.forEach(function (d) { (mapa[d.value] || []).forEach(function (s) { if (servicos.indexOf(s) === -1) servicos.push(s); }); });
+      var grupos = {};
+      servicos.forEach(function (s) { var m = servMod[s]; (grupos[m[0]] = grupos[m[0]] || { pagina: m[1], nome: m[2], itens: [] }).itens.push(s); });
+
+      var dados = {
+        nome: limpo(form.elements.nome.value, 60), empresa: limpo(form.elements.empresa.value, 80),
+        cidade: limpo(form.elements.cidade.value, 60), obs: limpo(form.elements.obs.value, 400),
+        negocio: rotulo(negocioInput), canais: marcados("canal").join(", "), volume: marcados("volume")[0] || ""
+      };
+      var linhas = ["Olá, vim pelo site da Kyzent e fiz a simulação de orçamento.", "Nome: " + dados.nome];
+      if (dados.empresa) linhas.push("Empresa: " + dados.empresa);
+      if (dados.cidade) linhas.push("Cidade: " + dados.cidade);
+      linhas.push("Negócio: " + dados.negocio);
+      if (dados.canais) linhas.push("Canais: " + dados.canais);
+      if (dados.volume) linhas.push("Mensagens por dia: " + dados.volume);
+      linhas.push("", "O que mais toma tempo:");
+      desafios.forEach(function (d) { linhas.push("- " + rotulo(d)); });
+      linhas.push("", "Soluções recomendadas:");
+      servicos.forEach(function (s) { linhas.push("- " + s); });
+      if (dados.obs) linhas.push("", "Observação: " + dados.obs);
+      if (!isNaN(fimPromo) && Date.now() < fimPromo) linhas.push("", "Quero aproveitar a implantação grátis da Black Friday.");
+      var mensagem = linhas.join("\n");
+
+      resultado.innerHTML = "";
+      var h = el("h3"); h.textContent = dados.nome.split(" ")[0] + ", estas são as soluções que mais combinam com o seu negócio.";
+      resultado.appendChild(h);
+      var rec = el("div", "sim-rec");
+      Object.keys(grupos).forEach(function (k) {
+        var g = grupos[k], caixa = el("div", "sim-rec-grupo");
+        caixa.appendChild(el("h4", null, g.nome));
+        var ul = el("ul"); g.itens.forEach(function (s) { ul.appendChild(el("li", null, s)); });
+        caixa.appendChild(ul);
+        var a = el("a", null, "Conhecer a solução"); a.href = g.pagina; caixa.appendChild(a);
+        rec.appendChild(caixa);
+      });
+      resultado.appendChild(rec);
+      var acoes = el("div", "sim-rec-acoes");
+      var bWhats = el("button", "botao", "Enviar pelo WhatsApp"); bWhats.type = "button";
+      var bOrc = el("button", "botao botao-contorno", "Guardar no meu orçamento"); bOrc.type = "button";
+      acoes.appendChild(bWhats); acoes.appendChild(bOrc);
+      resultado.appendChild(acoes);
+      resultado.appendChild(el("p", "sim-rec-nota", "A recomendação é um ponto de partida. O orçamento final é combinado pelo WhatsApp, conforme o seu negócio."));
+      bWhats.addEventListener("click", function () {
+        if (bWhats.disabled) return;
+        if (NUMEROS.length) window.open(linkSorteado(mensagem), "_blank", "noopener");
+        bWhats.disabled = true; bWhats.textContent = "Mensagem aberta no WhatsApp";
+        setTimeout(function () { bWhats.disabled = false; bWhats.textContent = "Enviar pelo WhatsApp"; }, 4000);
+      });
+      bOrc.addEventListener("click", function () {
+        servicos.forEach(function (s) { if (!tem(s)) itens.push({ nome: s, area: servMod[s][2] }); });
+        salvar(); avisar(servicos.length + " " + palavra(servicos.length) + " no seu orçamento");
+      });
+      if (innerWidth < 1000) resultado.scrollIntoView({ behavior: semMovimento ? "auto" : "smooth", block: "start" });
+      h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: innerWidth >= 1000 });
+    });
+    irPara(0, true);
   });
 
   /* ------------------------------------------------------------ Black Friday: contador e fim da promoção */
