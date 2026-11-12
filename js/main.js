@@ -100,124 +100,6 @@
     });
   });
 
-  /* ------------------------------------------------------------ abas da página de serviços */
-  var abas = $$('.abas [role="tab"]');
-  var barraAbas = $(".abas");
-  var indicador;
-  if (barraAbas && abas.length) {
-    indicador = document.createElement("span");
-    indicador.className = "abas-indicador";
-    barraAbas.appendChild(indicador);
-    barraAbas.classList.add("com-indicador");
-  }
-  function moverIndicador(aba, instantaneo) {
-    if (!indicador) return;
-    if (instantaneo) indicador.style.transition = "none";
-    indicador.style.width = (aba.offsetWidth - 16) + "px";
-    indicador.style.transform = "translateX(" + (aba.offsetLeft + 8) + "px)";
-    if (instantaneo) { void indicador.offsetWidth; indicador.style.transition = ""; }
-  }
-  function rolarParaServicos() {
-    var secao = $(".secao-servicos");
-    if (!secao) return;
-    var topo = secao.getBoundingClientRect().top;
-    if (topo < 72) scrollTo({ top: topo + scrollY - 72, behavior: semMovimento ? "auto" : "smooth" });
-  }
-  function mostrarAba(aba, focar, rolar) {
-    abas.forEach(function (a) {
-      var ativa = a === aba;
-      a.setAttribute("aria-selected", ativa ? "true" : "false");
-      a.tabIndex = ativa ? 0 : -1;
-      var painel = document.getElementById(a.getAttribute("aria-controls"));
-      if (!painel) return;
-      painel.hidden = !ativa;
-      if (ativa) {
-        painel.removeAttribute("data-entrando");
-        void painel.offsetWidth;
-        painel.setAttribute("data-entrando", "");
-        $$(".revelar", painel).forEach(function (el) { el.classList.add("visivel"); });
-      }
-    });
-    moverIndicador(aba, !rolar && !focar);
-    if (focar) aba.focus();
-    if (rolar) rolarParaServicos();
-  }
-  if (abas.length) {
-    abas.forEach(function (aba, i) {
-      aba.addEventListener("click", function () {
-        mostrarAba(aba, false, true);
-        try { history.replaceState(null, "", location.pathname + location.search + "#" + aba.getAttribute("aria-controls")); } catch (e) {}
-      });
-      aba.addEventListener("keydown", function (e) {
-        var alvo = null;
-        var vis = abas.filter(function (a) { return !a.hidden; });
-        var k = vis.indexOf(aba);
-        if (e.key === "ArrowRight") alvo = vis[(k + 1) % vis.length];
-        else if (e.key === "ArrowLeft") alvo = vis[(k - 1 + vis.length) % vis.length];
-        else if (e.key === "Home") alvo = vis[0];
-        else if (e.key === "End") alvo = vis[vis.length - 1];
-        if (alvo) { e.preventDefault(); mostrarAba(alvo, true, false); }
-      });
-    });
-    var inicial = abas[0];
-    abas.forEach(function (a) { if ("#" + a.getAttribute("aria-controls") === location.hash) inicial = a; });
-    mostrarAba(inicial, false, false);
-
-    /* ---------------------------------------------------------- filtro por tipo de negócio */
-    var filtro = $("[data-filtro]");
-    if (filtro) {
-      var chips = $$("[data-ramo]");
-      var nomes = {};
-      try { nomes = JSON.parse(filtro.getAttribute("data-nomes")) || {}; } catch (e) {}
-      var atual = "todos";
-
-      function aplicarFiltro(ramo) {
-        atual = ramo;
-        chips.forEach(function (c) { c.setAttribute("aria-pressed", c.getAttribute("data-ramo") === ramo ? "true" : "false"); });
-        $$(".ex-var").forEach(function (v) { v.hidden = v.getAttribute("data-ex") !== ramo; });
-        var rotulo = $("[data-filtro-atual]");
-        if (rotulo) rotulo.textContent = ramo === "todos" ? "Todos" : (nomes[ramo] ? $("span", $('.filtro-chip[data-ramo="' + ramo + '"]')).textContent : ramo);
-        var total = 0, primeira = null;
-        abas.forEach(function (aba) {
-          var painel = document.getElementById(aba.getAttribute("aria-controls"));
-          var n = 0;
-          $$(".item", painel).forEach(function (it) {
-            var ramos = (it.getAttribute("data-ramos") || "").split(" ");
-            var ok = ramo === "todos" || ramos.indexOf(ramo) > -1;
-            it.hidden = !ok;
-            if (ok) n++;
-          });
-          total += n;
-          aba.hidden = n === 0;
-          if (n && !primeira) primeira = aba;
-          $("[data-qtd]", aba).textContent = n;
-          $("[data-painel-num]", painel).textContent = n + " " + (n === 1 ? "serviço" : "serviços");
-        });
-        var ativa = $('.abas [role="tab"][aria-selected="true"]');
-        if ((!ativa || ativa.hidden) && primeira) mostrarAba(primeira, false, false);
-        else if (ativa) moverIndicador(ativa, true);
-      }
-      chips.forEach(function (c) {
-        c.addEventListener("click", function () {
-          aplicarFiltro(c.getAttribute("data-ramo"));
-          var jan = c.closest("dialog");
-          if (jan) fecharJanela(jan);
-          try { history.replaceState(null, "", location.pathname + (atual === "todos" ? "" : "?ramo=" + atual) + location.hash); } catch (e) {}
-        });
-      });
-      var pedido = /[?&]ramo=([a-z]+)/.exec(location.search);
-      if (pedido && nomes[pedido[1]]) aplicarFiltro(pedido[1]);
-    }
-    addEventListener("resize", function () { moverIndicador($('.abas [role="tab"][aria-selected="true"]'), true); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { moverIndicador($('.abas [role="tab"][aria-selected="true"]'), true); });
-    if (inicial !== abas[0]) {
-      setTimeout(function () {
-        var secao = $(".secao-servicos");
-        if (secao) scrollTo({ top: secao.getBoundingClientRect().top + scrollY - 72, behavior: "instant" });
-      }, 0);
-    }
-  }
-
   /* ------------------------------------------------------------ animações
      Tudo leve: sem biblioteca, pausa fora da tela e desliga com prefers-reduced-motion. */
   var ponteiroFino = window.matchMedia && matchMedia("(pointer: fine)").matches;
@@ -541,6 +423,56 @@
       desenharEsfera();
     })();
   }
+
+  /* ------------------------------------------------------------ história do Início: o diagrama acompanha a leitura dos passos */
+  var palcoH = $("[data-historia-palco]");
+  if (palcoH) {
+    var passosH = $$("[data-historia]");
+    var marcarH = function (n) {
+      palcoH.setAttribute("data-etapa", n);
+      passosH.forEach(function (p) { p.classList.toggle("ativo", +p.getAttribute("data-historia") === n); });
+    };
+    marcarH(1);
+    if ("IntersectionObserver" in window) {
+      var obsH = new IntersectionObserver(function (es) {
+        es.forEach(function (en) { if (en.isIntersecting) marcarH(+en.target.getAttribute("data-historia")); });
+      }, { rootMargin: "-45% 0px -45% 0px" });
+      passosH.forEach(function (p) { obsH.observe(p); });
+    }
+    passosH.forEach(function (p) { p.addEventListener("click", function () { marcarH(+p.getAttribute("data-historia")); }); });
+    // as camadas do diagrama se movem com o cursor, cada uma numa profundidade
+    if (ponteiroFino && !semMovimento) {
+      var camadasH = $$(".camada", palcoH), alvoH = { x: 0, y: 0 }, atualH = { x: 0, y: 0 }, rodandoH = false;
+      var passoH = function () {
+        atualH.x += (alvoH.x - atualH.x) * .08; atualH.y += (alvoH.y - atualH.y) * .08;
+        camadasH.forEach(function (c) {
+          var f = parseFloat(c.getAttribute("data-prof"));
+          c.setAttribute("transform", "translate(" + (atualH.x * 10 * f).toFixed(1) + " " + (atualH.y * 8 * f).toFixed(1) + ")");
+        });
+        if (Math.abs(alvoH.x - atualH.x) > .002 || Math.abs(alvoH.y - atualH.y) > .002) requestAnimationFrame(passoH); else rodandoH = false;
+      };
+      palcoH.addEventListener("pointermove", function (e) {
+        var r = palcoH.getBoundingClientRect();
+        alvoH.x = (e.clientX - r.left) / r.width - .5; alvoH.y = (e.clientY - r.top) / r.height - .5;
+        if (!rodandoH) { rodandoH = true; requestAnimationFrame(passoH); }
+      });
+      palcoH.addEventListener("pointerleave", function () { alvoH.x = alvoH.y = 0; if (!rodandoH) { rodandoH = true; requestAnimationFrame(passoH); } });
+    }
+    if (semMovimento && palcoH.querySelector("svg").pauseAnimations) palcoH.querySelector("svg").pauseAnimations();
+  }
+
+  /* ------------------------------------------------------------ WhatsApp: no computador, um botão de cada vez
+     (o do topo aparece no começo; depois do primeiro bloco, ele dá lugar ao botão flutuante) */
+  var primeiroBloco = $("[data-hero]") || $(".pagina-topo");
+  if (primeiroBloco && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) { raiz.classList.toggle("passou-topo", !es[0].isIntersecting); }, { rootMargin: "-80px 0px 0px 0px" }).observe(primeiroBloco);
+  }
+
+  // gráfico da página de gestão se desenha quando aparece
+  $$("[data-desenhar]").forEach(function (el) {
+    if (semMovimento) { el.classList.add("crescer"); return; }
+    quandoVisivel(el, function () { el.classList.add("crescer"); });
+  });
 
   /* ------------------------------------------------------------ central de automações do topo: uma notificação nova a cada 3 s */
   var centralFeed = $("[data-central-feed]");
