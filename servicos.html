@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Serviços | Kyzent</title>
-  <meta name="description" content="WhatsApp, agendamento, gestão, site e IA sob medida para o seu comércio. Escolha o seu tipo de negócio e monte o seu orçamento.">
-  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0B0B0F" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="WhatsApp, agendamento, gestão, site e IA sob medida para o seu negócio. Escolha o seu tipo de negócio e monte o seu orçamento.">
+  <meta name="theme-color" content="#0B0B0F">
+  <meta name="color-scheme" content="dark">
   <link rel="canonical" href="https://kyzenttech-lang.github.io/site/servicos.html">
 
   <!-- Open Graph (prévia do link no WhatsApp e no Instagram) -->
@@ -14,7 +14,7 @@
   <meta property="og:locale" content="pt_BR">
   <meta property="og:site_name" content="Kyzent">
   <meta property="og:title" content="Serviços | Kyzent">
-  <meta property="og:description" content="WhatsApp, agendamento, gestão, site e IA sob medida para o seu comércio. Escolha o seu tipo de negócio e monte o seu orçamento.">
+  <meta property="og:description" content="WhatsApp, agendamento, gestão, site e IA sob medida para o seu negócio. Escolha o seu tipo de negócio e monte o seu orçamento.">
   <meta property="og:url" content="https://kyzenttech-lang.github.io/site/servicos.html">
   <meta property="og:image" content="https://kyzenttech-lang.github.io/site/assets/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -26,53 +26,70 @@
   <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 
-  <!-- aplica o tema antes de desenhar a página (evita piscar) -->
-  <script>(function(){var t;try{t=localStorage.getItem("kyzent-tema")}catch(e){}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);document.documentElement.classList.add("js")})();</script>
-
+  <script>document.documentElement.classList.add("js");</script>
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=32">
-  <script src="js/main.js?v=32" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=47">
+  <script src="js/main.js?v=47" defer></script>
 </head>
-<body>
+<body data-promo-fim="2026-12-05T23:59:59-03:00" data-whats="5519988728894 5519971246077">
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <div class="promo-faixa" data-promo>
+    <div class="container promo-faixa-conteudo">
+      <p class="promo-faixa-texto"><span class="promo-selo">Black Friday</span><span><strong>Implantação grátis</strong><span class="promo-faixa-extra"> em qualquer automação</span> até 05/12</span></p>
+      <div class="relogio relogio-mini" data-relogio role="timer" aria-label="A promoção termina em 05/12"><span class="relogio-parte"><b data-dias>00</b><small>dias</small></span><span class="relogio-parte"><b data-horas>00</b><small>horas</small></span><span class="relogio-parte"><b data-min>00</b><small>min</small></span><span class="relogio-parte"><b data-seg>00</b><small>seg</small></span></div>
+      <a class="promo-faixa-botao" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent%20e%20quero%20aproveitar%20a%20implanta%C3%A7%C3%A3o%20gr%C3%A1tis%20da%20Black%20Friday." target="_blank" rel="noopener" data-contato data-msg="Olá, vim pelo site da Kyzent e quero aproveitar a implantação grátis da Black Friday.">Garantir</a>
+    </div>
+  </div>
 
-  <header class="barra">
+  <header class="barra" data-barra>
     <div class="container barra-conteudo">
-      <a class="barra-logo" href="index.html" aria-label="Kyzent, página inicial"><img class="logo-claro" src="assets/img/kyzent-horizontal-claro.svg" alt="Kyzent, automação e IA" width="590" height="140"><img class="logo-escuro" src="assets/img/kyzent-horizontal-escuro.svg" alt="Kyzent, automação e IA" width="590" height="140"></a>
+      <a class="barra-logo" href="index.html" aria-label="Kyzent, página inicial"><img src="assets/img/kyzent-horizontal-escuro.svg" alt="Kyzent, automação e IA" width="590" height="140"></a>
       <nav aria-label="Principal"><ul class="menu"><li><a href="index.html">Início</a></li><li><a href="quem-somos.html">Quem somos</a></li><li><a href="servicos.html" aria-current="page">Serviços</a></li></ul></nav>
       <div class="barra-acoes">
-        <button class="orcamento-botao" type="button" data-abrir-carrinho hidden>Orçamento <span data-contador>(0)</span></button>
-        <button class="icone-botao tema-botao" type="button" data-trocar-tema aria-label="Trocar tema"><svg class="icone-lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 13.2A8.5 8.5 0 1 1 10.8 3.5a6.6 6.6 0 0 0 9.7 9.7z"/></svg><svg class="icone-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg></button>
-        <button class="icone-botao botao-menu" type="button" data-abrir-menu aria-expanded="false" aria-controls="menu-celular" aria-label="Abrir menu"><svg class="icone-abrir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="icone-fechar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-        <a class="botao" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato>Chamar no WhatsApp</a>
+        <button class="orcamento-botao" type="button" data-abrir-carrinho hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3.5h6v3H9z"/><path d="M9 5H6.5A1.5 1.5 0 0 0 5 6.5v13A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 17.5 5H15"/><path d="M9 11.5h6M9 15.5h4"/></svg>Orçamento <span data-contador>(0)</span></button>
+        <button class="icone-botao botao-menu" type="button" data-abrir-menu aria-expanded="false" aria-controls="menu-celular" aria-label="Abrir menu"><span class="hamburguer" aria-hidden="true"><i></i><i></i><i></i></span></button>
+        <a class="botao botao-barra" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato>Chamar no WhatsApp</a>
       </div>
     </div>
     <nav class="menu-celular" id="menu-celular" aria-label="Menu">
-      <ul class=""><li><a href="index.html">Início</a></li><li><a href="quem-somos.html">Quem somos</a></li><li><a href="servicos.html" aria-current="page">Serviços</a></li></ul>
-      <button class="menu-tema" type="button" data-trocar-tema><svg class="icone-lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 13.2A8.5 8.5 0 1 1 10.8 3.5a6.6 6.6 0 0 0 9.7 9.7z"/></svg><svg class="icone-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><span class="menu-tema-escuro">Usar tema escuro</span><span class="menu-tema-claro">Usar tema claro</span></button>
-      <a class="botao" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato>Chamar no WhatsApp</a>
+      <ul class="menu-celular-links"><li style="--i:0"><a href="index.html"><span class="menu-celular-nome">Início</span><small>Soluções, exemplos e a oferta</small></a></li><li style="--i:1"><a href="quem-somos.html"><span class="menu-celular-nome">Quem somos</span><small>Propósito, missão e valores</small></a></li><li style="--i:2"><a href="servicos.html" aria-current="page"><span class="menu-celular-nome">Serviços</span><small>Escolha e monte o seu orçamento</small></a></li></ul>
+      <div class="menu-celular-base">
+        <p class="menu-celular-promo" data-promo><span class="promo-selo">Black Friday</span>Implantação grátis até 05/12</p>
+        <a class="botao botao-grande" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg>Chamar no WhatsApp</a>
+        <a class="menu-celular-insta" href="https://www.instagram.com/kyzent.tech/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17 7h.01"/></svg>@kyzent.tech</a>
+      </div>
     </nav>
   </header>
+  <div class="menu-fundo" data-fechar-menu aria-hidden="true"></div>
 
   <main id="conteudo">
-    <section class="pagina-topo pagina-topo-servicos" aria-labelledby="titulo-pagina">
-      <div class="container topo-servicos">
+    <section class="pagina-topo" aria-labelledby="titulo-pagina">
+      <div class="pagina-topo-fundo" aria-hidden="true"></div>
+      <div class="container pagina-topo-grade">
         <div>
-          <h1 id="titulo-pagina">Automação inteligente para empresas.</h1>
-          <p>Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
+          <h1 id="titulo-pagina" data-revelar-texto>Automação inteligente para empresas.</h1>
+          <p class="pagina-topo-apoio">Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
+        </div>
+        <div class="pagina-topo-texto">
+          <p class="topo-bf" data-promo><span class="hero-bf-selo">Black Friday</span>Implantação grátis em qualquer módulo para quem fechar até 05/12.</p>
+          <p>Escolha o seu tipo de negócio, veja os serviços de cada módulo e adicione ao orçamento o que interessar. No fim, o orçamento vai pronto para o nosso WhatsApp.</p>
+          <a class="botao" href="#catalogo" data-magnetico>Ver os serviços</a>
         </div>
       </div>
     </section>
 
-    <section class="secao secao-faixa" aria-labelledby="titulo-etapas">
+    <section class="secao secao-faixa" id="como-trabalhamos" aria-labelledby="titulo-etapas">
       <div class="container">
         <div class="cabeca">
-          <h2 id="titulo-etapas">Como funciona.</h2>
+          <h2 id="titulo-etapas" data-revelar-texto>Como trabalhamos.</h2>
+          <p>Do primeiro contato ao suporte, cada etapa é feita junto com você.</p>
         </div>
-        <ol class="etapas">
-          <li class="etapa"><span class="etapa-num">1</span><h3>Você chama no WhatsApp</h3><p>Conta como funciona o seu comércio e o que mais toma o seu tempo.</p></li>
-          <li class="etapa"><span class="etapa-num">2</span><h3>A gente configura</h3><p>A IA aprende o seu cardápio, os preços, os horários e o jeito de atender do seu comércio.</p></li>
-          <li class="etapa"><span class="etapa-num">3</span><h3>A IA começa a atender</h3><p>E a gente acompanha, ajusta e dá suporte todo mês.</p></li>
+        <ol class="etapas" data-linha-tempo>
+          <li class="etapa"><span class="etapa-marca"><span class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></span></span><div class="etapa-cartao"><span class="etapa-num">Etapa 1</span><span class="etapa-grande" aria-hidden="true">01</span><h3>Diagnóstico</h3><p>Entendemos as necessidades do negócio: como você atende, vende e organiza o dia.</p></div></li>
+          <li class="etapa"><span class="etapa-marca"><span class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6z"/><path d="M9 4v14M15 6v14"/></svg></span></span><div class="etapa-cartao"><span class="etapa-num">Etapa 2</span><span class="etapa-grande" aria-hidden="true">02</span><h3>Planejamento</h3><p>Identificamos oportunidades de melhoria e definimos o que vale automatizar primeiro.</p></div></li>
+          <li class="etapa"><span class="etapa-marca"><span class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 7 3.5 12l5 5M15.5 7l5 5-5 5"/></svg></span></span><div class="etapa-cartao"><span class="etapa-num">Etapa 3</span><span class="etapa-grande" aria-hidden="true">03</span><h3>Desenvolvimento</h3><p>Construímos soluções adequadas ao seu negócio, com o seu jeito de atender.</p></div></li>
+          <li class="etapa"><span class="etapa-marca"><span class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15.5 8.5 12C10 7 13.5 3.8 20.5 3.5 20.2 10.5 17 14 12 15.5z"/><path d="M8.5 12 5 11.5l2.5-3.5h4M12 15.5l.5 3.5 3.5-2.5v-4"/><circle cx="15.5" cy="8.5" r="1.3"/></svg></span></span><div class="etapa-cartao"><span class="etapa-num">Etapa 4</span><span class="etapa-grande" aria-hidden="true">04</span><h3>Implementação</h3><p>Colocamos as soluções em funcionamento, junto com a sua equipe.</p></div></li>
+          <li class="etapa"><span class="etapa-marca"><span class="etapa-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.5M20 4v4.5h-4.5"/><path d="M20 12a8 8 0 0 1-13.7 5.6L4 15.5M4 20v-4.5h4.5"/></svg></span></span><div class="etapa-cartao"><span class="etapa-num">Etapa 5</span><span class="etapa-grande" aria-hidden="true">05</span><h3>Suporte e evolução</h3><p>Acompanhamos os resultados, fazemos a manutenção e evoluímos as soluções.</p></div></li>
         </ol>
       </div>
     </section>
@@ -104,28 +121,28 @@
             <p>Chatbots, respostas automáticas e triagem para atender bem o cliente a qualquer hora.</p>
           </div>
           <ul class="painel-itens">
-              <li class="item" data-ramos="lanchonete barbearia salao consultorio petshop">
+              <li class="item brilho" data-ramos="lanchonete barbearia salao consultorio petshop">
                 <h4>Chatbots inteligentes</h4>
                 <p>Atendimento automatizado pelo WhatsApp e Instagram, disponível 24 horas.</p>
                 <button class="item-add" type="button" data-servico="Chatbots inteligentes" data-area="WhatsApp e atendimento" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="lanchonete barbearia salao consultorio petshop">
+              <li class="item brilho" data-ramos="lanchonete barbearia salao consultorio petshop">
                 <h4>Respostas inteligentes</h4>
                 <p>Resolução automática de dúvidas e perguntas frequentes.</p>
                 <button class="item-add" type="button" data-servico="Respostas inteligentes" data-area="WhatsApp e atendimento" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="salao consultorio">
+              <li class="item brilho" data-ramos="salao consultorio">
                 <h4>Triagem de atendimento</h4>
                 <p>Identificação das necessidades dos clientes e encaminhamento para atendentes humanos.</p>
                 <button class="item-add" type="button" data-servico="Triagem de atendimento" data-area="WhatsApp e atendimento" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="">
+              <li class="item brilho" data-ramos="">
                 <h4>Centrais inteligentes de atendimento</h4>
                 <p>Múltiplos agentes de IA trabalhando em diferentes funções.</p>
                 <button class="item-add" type="button" data-servico="Centrais inteligentes de atendimento" data-area="WhatsApp e atendimento" aria-pressed="false">
@@ -152,7 +169,7 @@
             </div>
             <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span></div>
           </div>
-          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
+          <figcaption>Exemplo ilustrativo. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
         </figure></div>
 <div class="ex-var" data-ex="lanchonete" hidden><figure class="zap-figura">
           <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: um cliente pede um lanche às 21h47 e a IA anota o pedido, soma o total e combina o pagamento.">
@@ -172,7 +189,7 @@
             </div>
             <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span></div>
           </div>
-          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
+          <figcaption>Exemplo ilustrativo. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
         </figure></div>
 <div class="ex-var" data-ex="barbearia" hidden><figure class="zap-figura">
           <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: um cliente pede horário para corte e barba e a IA oferece horários livres e confirma a marcação.">
@@ -192,7 +209,7 @@
             </div>
             <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span></div>
           </div>
-          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
+          <figcaption>Exemplo ilustrativo. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
         </figure></div>
 <div class="ex-var" data-ex="salao" hidden><figure class="zap-figura">
           <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: uma cliente pede escova e hidratação e a IA oferece horários por profissional e confirma a marcação.">
@@ -212,7 +229,7 @@
             </div>
             <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span></div>
           </div>
-          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
+          <figcaption>Exemplo ilustrativo. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
         </figure></div>
 <div class="ex-var" data-ex="consultorio" hidden><figure class="zap-figura">
           <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: um paciente pede um retorno e a IA oferece horários e confirma a consulta.">
@@ -232,7 +249,7 @@
             </div>
             <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span></div>
           </div>
-          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
+          <figcaption>Exemplo ilustrativo. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
         </figure></div>
 <div class="ex-var" data-ex="petshop" hidden><figure class="zap-figura">
           <div class="zap" role="img" aria-label="Exemplo de conversa no WhatsApp: um tutor pergunta o valor do banho e tosa e a IA informa e agenda o horário.">
@@ -252,7 +269,7 @@
             </div>
             <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span></div>
           </div>
-          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
+          <figcaption>Exemplo ilustrativo. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
         </figure></div>
           </div>
         </section>
@@ -264,35 +281,35 @@
             <p>Horários marcados, clientes acompanhados e oportunidades que não se perdem.</p>
           </div>
           <ul class="painel-itens">
-              <li class="item" data-ramos="barbearia salao consultorio petshop">
+              <li class="item brilho" data-ramos="barbearia salao consultorio petshop">
                 <h4>Agendamentos automáticos</h4>
                 <p>Organização de reuniões, consultas e serviços.</p>
                 <button class="item-add" type="button" data-servico="Agendamentos automáticos" data-area="Agendamento e vendas" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="salao consultorio">
+              <li class="item brilho" data-ramos="salao consultorio">
                 <h4>Captação e qualificação de leads</h4>
                 <p>Identificação e classificação de potenciais clientes.</p>
                 <button class="item-add" type="button" data-servico="Captação e qualificação de leads" data-area="Agendamento e vendas" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="lanchonete barbearia salao consultorio petshop">
+              <li class="item brilho" data-ramos="lanchonete barbearia salao consultorio petshop">
                 <h4>Follow-up inteligente</h4>
                 <p>Acompanhamento automático de clientes e recuperação de oportunidades.</p>
                 <button class="item-add" type="button" data-servico="Follow-up inteligente" data-area="Agendamento e vendas" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="salao">
+              <li class="item brilho" data-ramos="salao">
                 <h4>Orçamentos automatizados</h4>
                 <p>Geração e envio de propostas comerciais.</p>
                 <button class="item-add" type="button" data-servico="Orçamentos automatizados" data-area="Agendamento e vendas" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="">
+              <li class="item brilho" data-ramos="">
                 <h4>Automação de processos comerciais</h4>
                 <p>Integração e otimização de etapas do processo de vendas.</p>
                 <button class="item-add" type="button" data-servico="Automação de processos comerciais" data-area="Agendamento e vendas" aria-pressed="false">
@@ -325,7 +342,7 @@
 <div class="ex-var" data-ex="salao" hidden><figure class="mock-figura">
           <div class="mock mock-agenda" role="img" aria-label="Exemplo de agenda de hoje, com mensagens e confirmações feitas automaticamente.">
             <div class="mock-topo" aria-hidden="true"><strong>Agenda de hoje</strong><span>4 horários</span></div>
-            <ul class="mock-corpo" aria-hidden="true"><li class="mock-linha mock-ok"><time>09:30</time><span class="mock-quem"><strong>Ana</strong><small>Escova · Camila</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-ok"><time>11:00</time><span class="mock-quem"><strong>Júlia</strong><small>Hidratação · Bia</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-livre"><time>13:30</time><span class="mock-quem"><small>Pode ser preenchido pela IA</small></span><span class="mock-chip">Horário livre</span></li><li class="mock-linha mock-lembrete"><time>15:00</time><span class="mock-quem"><strong>Paula</strong><small>Coloração · Camila</small></span><span class="mock-chip">Lembrete enviado</span></li></ul>
+            <ul class="mock-corpo" aria-hidden="true"><li class="mock-linha mock-ok"><time>09:30</time><span class="mock-quem"><strong>Ana</strong><small>Escova, com Camila</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-ok"><time>11:00</time><span class="mock-quem"><strong>Júlia</strong><small>Hidratação, com Bia</small></span><span class="mock-chip">Confirmado</span></li><li class="mock-linha mock-livre"><time>13:30</time><span class="mock-quem"><small>Pode ser preenchido pela IA</small></span><span class="mock-chip">Horário livre</span></li><li class="mock-linha mock-lembrete"><time>15:00</time><span class="mock-quem"><strong>Paula</strong><small>Coloração, com Camila</small></span><span class="mock-chip">Lembrete enviado</span></li></ul>
           </div>
           <figcaption>Exemplo ilustrativo. A IA marca, confirma e lembra o cliente, sem você parar o que está fazendo.</figcaption>
         </figure></div>
@@ -353,42 +370,42 @@
             <p>Cadastros, pedidos, relatórios e documentos organizados, com os seus sistemas conversando entre si.</p>
           </div>
           <ul class="painel-itens">
-              <li class="item" data-ramos="lanchonete petshop">
+              <li class="item brilho" data-ramos="lanchonete petshop">
                 <h4>Gestão de cadastros e pedidos</h4>
                 <p>Organização automatizada de informações e solicitações.</p>
                 <button class="item-add" type="button" data-servico="Gestão de cadastros e pedidos" data-area="Gestão e sistemas" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="barbearia salao consultorio petshop">
+              <li class="item brilho" data-ramos="barbearia salao consultorio petshop">
                 <h4>Integração com CRM</h4>
                 <p>Centralização e gerenciamento do relacionamento com clientes.</p>
                 <button class="item-add" type="button" data-servico="Integração com CRM" data-area="Gestão e sistemas" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="lanchonete barbearia petshop">
+              <li class="item brilho" data-ramos="lanchonete barbearia petshop">
                 <h4>Relatórios automatizados</h4>
                 <p>Geração de relatórios para acompanhamento empresarial.</p>
                 <button class="item-add" type="button" data-servico="Relatórios automatizados" data-area="Gestão e sistemas" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="consultorio">
+              <li class="item brilho" data-ramos="consultorio">
                 <h4>Automação de documentos</h4>
                 <p>Organização e envio automático de documentos.</p>
                 <button class="item-add" type="button" data-servico="Automação de documentos" data-area="Gestão e sistemas" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="">
+              <li class="item brilho" data-ramos="">
                 <h4>Integração de sistemas</h4>
                 <p>Conexão entre diferentes plataformas e ferramentas empresariais.</p>
                 <button class="item-add" type="button" data-servico="Integração de sistemas" data-area="Gestão e sistemas" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="lanchonete petshop">
+              <li class="item brilho" data-ramos="lanchonete petshop">
                 <h4>Integração com estoque e ERP</h4>
                 <p>Automatização e conexão de sistemas de gestão empresarial.</p>
                 <button class="item-add" type="button" data-servico="Integração com estoque e ERP" data-area="Gestão e sistemas" aria-pressed="false">
@@ -455,7 +472,7 @@
             <p>Um site feito sob medida para o seu negócio, do jeito que você quer apresentá-lo.</p>
           </div>
           <ul class="painel-itens">
-              <li class="item" data-ramos="lanchonete barbearia salao consultorio petshop">
+              <li class="item brilho" data-ramos="lanchonete barbearia salao consultorio petshop">
                 <h4>Site personalizado</h4>
                 <p>Site feito sob medida para o seu negócio, conforme o que você quer mostrar e o que mais interessa aos seus clientes.</p>
                 <button class="item-add" type="button" data-servico="Site personalizado" data-area="Site e presença online" aria-pressed="false">
@@ -546,21 +563,21 @@
             <p>Inteligência artificial desenvolvida para o jeito de trabalhar da sua empresa.</p>
           </div>
           <ul class="painel-itens">
-              <li class="item" data-ramos="">
+              <li class="item brilho" data-ramos="">
                 <h4>Agentes de IA personalizados</h4>
                 <p>Inteligência artificial desenvolvida conforme as necessidades da empresa.</p>
                 <button class="item-add" type="button" data-servico="Agentes de IA personalizados" data-area="IA sob medida" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="">
+              <li class="item brilho" data-ramos="">
                 <h4>Assistentes internos de IA</h4>
                 <p>Ferramentas inteligentes para auxiliar funcionários.</p>
                 <button class="item-add" type="button" data-servico="Assistentes internos de IA" data-area="IA sob medida" aria-pressed="false">
                   <span class="item-add-mais"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><span class="item-add-feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="item-add-rotulo">Adicionar</span>
                 </button>
               </li>
-              <li class="item" data-ramos="">
+              <li class="item brilho" data-ramos="">
                 <h4>Sistemas personalizados</h4>
                 <p>Desenvolvimento de soluções de atendimento e automação sob medida.</p>
                 <button class="item-add" type="button" data-servico="Sistemas personalizados" data-area="IA sob medida" aria-pressed="false">
@@ -647,35 +664,53 @@
       </div>
     </section>
 
+    <section class="chamada" aria-labelledby="titulo-chamada">
+      <div class="container">
+        <div class="chamada-caixa revelar-bloco">
+          <svg class="chamada-orbita" viewBox="0 0 800 400" aria-hidden="true"><ellipse cx="400" cy="200" rx="380" ry="110" transform="rotate(-24 400 200)"/><ellipse cx="400" cy="200" rx="300" ry="80" transform="rotate(-24 400 200)"/></svg>
+          <div class="chamada-texto">
+            <p class="hero-bf" data-promo><span class="hero-bf-selo">Black Friday</span><span>Implantação grátis até 05/12</span></p>
+            <h2 id="titulo-chamada" data-revelar-texto>Vamos transformar a maneira como sua empresa trabalha?</h2>
+            <p>Conte como é o seu dia a dia. A gente responde no WhatsApp e monta um orçamento personalizado para a sua empresa.</p>
+            <div data-promo><div class="relogio relogio-claro" data-relogio role="timer" aria-label="A promoção termina em 05/12"><span class="relogio-parte"><b data-dias>00</b><small>dias</small></span><span class="relogio-parte"><b data-horas>00</b><small>horas</small></span><span class="relogio-parte"><b data-min>00</b><small>min</small></span><span class="relogio-parte"><b data-seg>00</b><small>seg</small></span></div></div>
+          </div>
+          <div class="chamada-acoes">
+            <a class="botao botao-grande botao-claro" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent%20e%20quero%20aproveitar%20a%20implanta%C3%A7%C3%A3o%20gr%C3%A1tis%20da%20Black%20Friday." target="_blank" rel="noopener" data-contato data-msg="Olá, vim pelo site da Kyzent e quero aproveitar a implantação grátis da Black Friday." data-fora-msg="Olá, vim pelo site da Kyzent e quero começar um projeto." data-magnetico>Comece seu projeto com a Kyzent</a>
+            <a class="link-seta" href="servicos.html#catalogo">Ver todos os serviços</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer class="rodape">
     <div class="container">
       <div class="rodape-grade">
         <div class="rodape-marca">
-          <a href="index.html" aria-label="Kyzent, página inicial"><img class="logo-claro" src="assets/img/kyzent-horizontal-claro.svg" alt="Kyzent, automação e IA" width="590" height="140"><img class="logo-escuro" src="assets/img/kyzent-horizontal-escuro.svg" alt="Kyzent, automação e IA" width="590" height="140"></a>
-          <p>Automação inteligente e IA para comércios de Paulínia e região.</p>
+          <a href="index.html" aria-label="Kyzent, página inicial"><img src="assets/img/kyzent-horizontal-escuro.svg" alt="Kyzent, automação e IA" width="590" height="140"></a>
+          <p>Empresa de Tecnologia e Inovação de Paulínia/SP. Automação e Inteligência Artificial para o atendimento, as vendas e a gestão de pequenas empresas.</p>
+          <a class="botao botao-contorno" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg>Chamar no WhatsApp</a>
         </div>
         <div>
           <h2>Navegação</h2>
-          <ul class=""><li><a href="index.html">Início</a></li><li><a href="quem-somos.html">Quem somos</a></li><li><a href="servicos.html">Serviços</a></li></ul>
+          <ul><li><a href="index.html">Início</a></li><li><a href="quem-somos.html">Quem somos</a></li><li><a href="servicos.html">Serviços</a></li></ul>
         </div>
         <div>
-          <h2>WhatsApp</h2>
-          <ul>
-            <li><a href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener">(19) 98872-8894</a></li>
-            <li><a href="https://wa.me/5519971246077?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener">(19) 97124-6077</a></li>
-          </ul>
+          <h2>Serviços</h2>
+          <ul><li><a href="servicos.html#modulo-whatsapp">WhatsApp e atendimento</a></li><li><a href="servicos.html#modulo-agenda">Agendamento e vendas</a></li><li><a href="servicos.html#modulo-gestao">Gestão e sistemas</a></li><li><a href="servicos.html#modulo-site">Site e presença online</a></li><li><a href="servicos.html#modulo-ia">IA sob medida</a></li></ul>
         </div>
         <div>
-          <h2>Redes</h2>
+          <h2>Contato</h2>
           <ul>
+            <li><a href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener">WhatsApp (19) 98872-8894</a></li>
+            <li><a href="https://wa.me/5519971246077?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener">WhatsApp (19) 97124-6077</a></li>
             <li><a href="https://www.instagram.com/kyzent.tech/" target="_blank" rel="noopener">Instagram @kyzent.tech</a></li>
           </ul>
         </div>
       </div>
       <div class="rodape-base">
-        <p>© <span data-ano>2026</span> Kyzent Technology Solutions</p>
+        <p>© <span data-ano>2026</span> Kyzent Technology Solutions. Todos os direitos reservados.</p>
         <p>Paulínia/SP</p>
       </div>
     </div>
@@ -684,20 +719,6 @@
     <button class="barra-fixa-orcamento" type="button" data-abrir-carrinho hidden>Orçamento <span data-contador>(0)</span></button>
     <a class="whats-fixo" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg><span class="whats-longo">Chamar no WhatsApp</span><span class="whats-curto">WhatsApp</span></a>
   </div>
-
-  <dialog class="janela janela-pequena" id="janela-contato" aria-labelledby="contato-titulo">
-    <button class="janela-fechar" type="button" data-fechar-janela aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    <div class="janela-corpo">
-      <h2 id="contato-titulo" tabindex="-1" autofocus>Chamar no WhatsApp</h2>
-      <p class="janela-resumo">Escolha um número. A conversa abre com a mensagem pronta; é só enviar.</p>
-      <p class="contato-leva" data-contato-leva hidden></p>
-      <div class="numeros">
-        <a class="numero" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-numero="5519988728894"><span class="numero-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg></span><span class="numero-texto"><span class="numero-tipo">WhatsApp</span><span class="numero-valor">(19) 98872-8894</span></span></a>
-        <a class="numero" href="https://wa.me/5519971246077?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-numero="5519971246077"><span class="numero-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg></span><span class="numero-texto"><span class="numero-tipo">WhatsApp</span><span class="numero-valor">(19) 97124-6077</span></span></a>
-        <a class="numero numero-qualquer" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-numero="sorteio"><span class="numero-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3.5h4.5V8M4 20 20.5 3.5M20.5 16v4.5H16M14.5 14.5l6 6M4 4l5 5"/></svg></span><span class="numero-texto"><span class="numero-tipo">Tanto faz</span><span class="numero-valor">Qualquer um dos dois</span></span></a>
-      </div>
-    </div>
-  </dialog>
 
   <dialog class="gaveta" id="carrinho" aria-labelledby="carrinho-titulo">
     <div class="gaveta-topo">
@@ -708,8 +729,8 @@
       <div class="gaveta-vazia" data-carrinho-vazio>
         <span class="gaveta-vazia-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3.5h6v3H9z"/><path d="M9 5H6.5A1.5 1.5 0 0 0 5 6.5v13A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5v-13A1.5 1.5 0 0 0 17.5 5H15"/><path d="M9 11.5h6M9 15.5h4"/></svg></span>
         <p><strong>Nenhum serviço no orçamento ainda.</strong></p>
-        <p>Na página de serviços, toque em "Adicionar ao orçamento" no que interessar. Tudo fica guardado aqui.</p>
-        <a class="botao botao-contorno" href="servicos.html">Ver serviços</a>
+        <p>Na página de serviços, toque em "Adicionar" no que interessar. Tudo fica guardado aqui.</p>
+        <a class="botao botao-contorno" href="servicos.html#catalogo">Ver serviços</a>
       </div>
       <ul class="gaveta-lista" data-carrinho-lista></ul>
       <p class="gaveta-nota" data-carrinho-nota hidden>Valores combinados pelo WhatsApp, conforme a necessidade do seu negócio.</p>
@@ -722,7 +743,7 @@
       </form>
     </div>
     <div class="gaveta-base" data-carrinho-base>
-      <button class="botao" type="button" data-carrinho-enviar>Enviar orçamento pelo WhatsApp</button>
+      <button class="botao" type="button" data-carrinho-enviar><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg>Enviar orçamento pelo WhatsApp</button>
       <button class="link-botao" type="button" data-carrinho-limpar>Limpar orçamento</button>
     </div>
   </dialog>

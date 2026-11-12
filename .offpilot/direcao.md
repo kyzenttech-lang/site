@@ -7,20 +7,21 @@
 - Marca: K com braço em degradê azul e órbita; azul #1A5CFF, degradê #0A3DFF → #3FB4FF, preto #0B0B0F.
 
 ## Plano
-- Tema claro (padrão) e escuro, sólidos, sem vidro desfocado.
-- Azul só em botão, link e ícone; sem degradê em texto.
-- Forma: botões com canto de 8px, cartões 10px, fotos 14px. Nada de pílula.
-- Detalhe-assinatura: canto superior direito cortado em diagonal nas fotos e na faixa final, no ângulo das peças do K.
-- Sem rótulo em caixa alta sobre os títulos, sem setas nos links, sem numeração fora de sequência (só nas etapas de "Como funciona").
-- Celular: botão fixo "Chamar no WhatsApp", menu em tela cheia, abas com nome curto, janela do ramo abrindo de baixo.
+(Redesign de 2026-11-12, a partir do briefing do Otavio: referências Linear + Stripe + Framer. Substitui o plano claro/escuro de 2026-11-03.)
+- Ideia: a órbita com ponto do logo do K vira o fio do site: órbitas inclinadas a -24° (o mesmo ângulo do logo) com pontos que percorrem a trilha no topo, na chamada final e no núcleo da demonstração de IA; a rede de pontos ligados representa os sistemas conectados.
+- Tema escuro único (o briefing define a paleta escura); o botão de trocar tema saiu.
+- Cores (do briefing): fundo #090D18, fundo secundário #111827, cartões #151F32 (e #1B2740 no hover), azul #63A9FF, azul secundário #3978D6, roxo #876BFF, texto #E6EBF4, texto secundário #AAB5C9. Degradê azul -> roxo só em botão, bordas de cartão, linha da linha do tempo, gráficos e brilhos de fundo; nunca no texto.
+- Botão principal: degradê #3470CC -> #6A5CF0 (o início foi escurecido de #3978D6 para passar 4,5:1 com texto branco). Botão da chamada final: branco com texto escuro.
+- Forma: botões 10px, cartões 16px, painéis grandes 22px. Detalhe-assinatura mantido: canto superior direito cortado em diagonal na foto de Quem somos e na chamada final.
+- Exemplos (painel do topo, conversa, painel de gestão, fluxo da IA, desenhos dos módulos) sempre com o selo "Exemplo ilustrativo"; números deles são fictícios. Números do topo do Início são reais: 4 frentes, 19 serviços (contados do catálogo), 24 h.
+- Movimento: títulos palavra por palavra, blocos ao rolar (demos entram de lado, cartões de baixo), contadores, gráficos que crescem, botões magnéticos e brilho que segue o mouse (só com mouse), painel do topo com profundidade (mouse e rolagem), cartões flutuando, rede de pontos em canvas (pausa fora da tela, menos pontos no celular), gradiente de fundo lento, linha do tempo que se preenche com a rolagem, conversa digitada em tempo real, fluxo da IA passo a passo. Sem biblioteca (sem GSAP/Lenis): tudo em JS puro. prefers-reduced-motion desliga tudo e mostra o estado final.
+- Celular: botão fixo "Chamar no WhatsApp", menu em tela cheia, abas com nome curto, janelas abrindo de baixo, cartão flutuante da direita escondido abaixo de 480px.
 
-## Fontes
-- Data: 2026-11-03
-- Escolhida: Mona Sans (uma família só), larga (font-stretch 112%) nos títulos
-- Grupo: escritório funcional / produto digital
-- Por quê: a versão larga lembra o letreiro espaçado do logo KYZENT e dá cara de empresa de tecnologia séria, sem parecer o Inter de todo site feito por IA.
-- Descartadas: Urbanist + Hanken Grotesk; Chakra Petch + Bai Jamjuree
-- Servida pelo próprio site (assets/fonts), sem Google Fonts.
+## Páginas
+- Início: topo (título do briefing, 2 botões, 3 números reais, painel "Central de automações" de exemplo), 4 frentes oficiais em cartões, "Veja como funciona na prática" (3 demonstrações: atendimento, gestão, IA), "Como trabalhamos" (5 etapas do briefing), ramos com janelas, chamada final "Vamos transformar a maneira como sua empresa trabalha?" / "Comece seu projeto com a Kyzent".
+- Quem somos: topo com apresentação, propósito com foto, missão/visão/valores, proposta oficial em destaque, "Nosso compromisso com você" (3 pontos). Sem chamada final (pedido antigo do Otavio).
+- Serviços: topo, "Como trabalhamos" (5 etapas no lugar das 3 antigas), filtro por negócio, abas dos 5 módulos com "Adicionar" ao orçamento, chamada final.
+- Rodapé: logo, descrição, navegação, os 5 módulos, contato (2 WhatsApp e Instagram), direitos reservados.
 
 ## Histórico
 - 2026-11-03: troca da Inter pela Mona Sans; retirada dos vícios visuais de IA; melhorias de celular.
@@ -32,3 +33,16 @@
 - 2026-11-03: a pedido de Otavio: "Como funciona" vem primeiro na página Serviços (antes das abas); saiu a linha "Tem outro tipo de negócio? Chame a gente no WhatsApp" da seção dos ramos. Links dos cartões do Início para uma aba de Serviços agora chegam já rolados até as abas (salto direto, sem rolagem suave).
 - 2026-11-03: a pedido de Otavio, na página Quem somos o título repetido ("Tecnologia e inovação para o seu comércio.") virou "Quem somos", com a explicação oficial da empresa embaixo, e o bloco final "Quer ver funcionando no seu comércio?" saiu (continua no Início e em Serviços).
 - 2026-11-03: a pedido de Otavio, o texto de apresentação no topo de Quem somos foi ampliado para dois parágrafos (quem somos em Paulínia, o que fazemos com IA nas frentes de atendimento, vendas e gestão, soluções sob medida, e manutenção e suporte), sem números nem promessas novas.
+- 2026-11-12: redesign completo a pedido de Otavio (briefing Linear + Stripe + Framer): tema escuro único com a paleta do briefing, novo topo do Início com animações e painel de exemplo, seção de demonstrações ilustrativas, "Como trabalhamos" em 5 etapas (Início e Serviços), Quem somos com proposta e compromissos, rodapé novo. Mantidos: carrinho de orçamento, escolha de número do WhatsApp, filtro por negócio, abas, janelas dos ramos, textos oficiais. Saiu: botão de tema claro/escuro. Feito na branch redesign, sem publicar.
+- 2026-11-12: a pedido de Otavio ("tá parecido com o original, olha a Hostinger"): visual de site de vendas no estilo Hostinger, clima Black Friday. Cores puxadas para o roxo (fundo #0A0816, cartões #19132F, botão #6C4BF5 -> #7A45E8, destaque da promoção em amarelo #FFCF4A, títulos em peso 800). Entraram: faixa da Black Friday no topo de todas as páginas com contador regressivo, oferta no topo do Início ("Implantação cobrada à parte -> Grátis", contador, botão "Garantir implantação grátis"), lista de benefícios, faixa animada passando, faixa de números reais, as 4 frentes como cartões de "plano" (Atendimento com o selo "Porta de entrada"), perguntas frequentes e contador na chamada final. Promoção: implantação grátis até 05/12/2026 (PROMO_FIM no gerador); depois dessa data o JS esconde tudo que tem data-promo e os botões voltam ao texto normal.
+- 2026-11-12: a pedido de Otavio, a janela de escolha do número de WhatsApp saiu. Todo botão de contato abre o WhatsApp direto, com um dos dois números sorteado e a mensagem pronta (números em data-whats no <body>). O rodapé continua mostrando os dois números.
+- 2026-11-12: a pedido de Otavio ("tá roxo, traz para as cores da Kyzent"): o roxo saiu e as cores voltaram à marca. Fundo preto da marca #0B0B0F (secundário #0F1118, cartões #141822/#1A2030), botões no azul #1A5CFF (degradê #0A3DFF -> #1A5CFF, texto branco 5,2:1), destaques e links em #3FB4FF, degradê da marca #0A3DFF -> #3FB4FF em linhas, bordas e gráficos. Os selos da Black Friday ficaram brancos com texto preto e o "Grátis" em #3FB4FF (sem amarelo). O layout no estilo Hostinger continua.
+- 2026-11-12: "Como trabalhamos" redesenhada: cada etapa virou um cartão com o número grande em contorno, a linha liga exatamente o centro dos ícones e a etapa atual (conforme a rolagem) ganha destaque e uma onda em volta do ícone. Corrigido o bug que deixava as etapas 1 a 4 presas 16 px abaixo da linha.
+- 2026-11-12: complemento do Otavio sobre celular (referências Linear, Stripe, Vercel, Framer, Apple, Notion). Mudanças:
+  - Menu do celular virou painel lateral à direita, abaixo do topo, com fundo escurecido, hambúrguer que vira X, links em cartões com descrição entrando em sequência, promoção, botão de WhatsApp e Instagram. Fecha ao tocar fora, com Esc ou ao escolher uma página; trava a rolagem do fundo; o foco fica preso no menu.
+  - Abaixo de 760 px, as frentes (planos) e os ramos viram carrossel com encaixe, o próximo cartão aparecendo na borda e pontos que acompanham a rolagem e levam ao cartão.
+  - Nada depende de hover: em telas de toque, os efeitos de passar o mouse saem e o toque dá um retorno curto. O parallax e o brilho que segue o mouse só existem com mouse; a rede de pontos cai para 18 pontos e fica mais fraca no celular.
+  - Faixas de largura: 4 colunas de planos e a linha do tempo horizontal só a partir de 1180 px (entre 1000 e 1179, 2 colunas); os ramos ficam em 3 colunas entre 760 e 1179.
+  - Alvos de toque: links do rodapé e botão "Garantir" com 44 px.
+  - Correção: o topo do Início passava da tela em 320 px (itens da grade sem min-width: 0).
+  - Testado em 320x568, 360x800, 375x812, 390x844, 430x932, 768x1024, 1024x768, 1366x768 e 1920x1080, nas 3 páginas: sem rolagem lateral, sem texto cortado, sem imagem distorcida, sem erro de JS.

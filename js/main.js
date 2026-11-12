@@ -1,4 +1,4 @@
-// KYZENT — tema, menu, janelas, abas, orçamento (carrinho), escolha de número e animações.
+// KYZENT — menu, janelas, abas, orçamento (carrinho), WhatsApp com número sorteado e animações.
 (function () {
   "use strict";
   var raiz = document.documentElement;
@@ -12,54 +12,32 @@
     try { var v = JSON.parse(localStorage.getItem(chave)); return v == null ? padrao : v; } catch (e) { return padrao; }
   }
 
-  /* ------------------------------------------------------------ tema */
-  var botoesTema = $$("[data-trocar-tema]");
-  function rotuloTema() {
-    var escuro = raiz.getAttribute("data-theme") === "dark";
-    botoesTema.forEach(function (b) {
-      if (b.classList.contains("icone-botao")) b.setAttribute("aria-label", escuro ? "Usar tema claro" : "Usar tema escuro");
-    });
-  }
-  rotuloTema();
-  botoesTema.forEach(function (botao) {
-    botao.addEventListener("click", function () {
-      var novo = raiz.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      function aplicar() {
-        raiz.setAttribute("data-theme", novo);
-        try { localStorage.setItem("kyzent-tema", novo); } catch (e) {}
-        rotuloTema();
-      }
-      // troca em círculo, saindo do botão
-      if (!document.startViewTransition || semMovimento) { aplicar(); return; }
-      var r = botao.getBoundingClientRect();
-      var x = r.left + r.width / 2, y = r.top + r.height / 2;
-      var raio = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-      raiz.classList.add("trocando-tema");
-      var t = document.startViewTransition(aplicar);
-      t.ready.then(function () {
-        raiz.animate(
-          { clipPath: ["circle(0px at " + x + "px " + y + "px)", "circle(" + raio + "px at " + x + "px " + y + "px)"] },
-          { duration: 520, easing: "cubic-bezier(.2,.8,.2,1)", pseudoElement: "::view-transition-new(root)" }
-        );
-      });
-      t.finished.then(function () { raiz.classList.remove("trocando-tema"); });
-    });
-  });
-
-  /* ------------------------------------------------------------ menu do celular */
+  /* ------------------------------------------------------------ menu do celular (painel lateral) */
   var botaoMenu = $("[data-abrir-menu]");
   var menu = document.getElementById("menu-celular");
+  var barraTopo = $("[data-barra]");
   function menuAberto(aberto) {
+    if (aberto && barraTopo) raiz.style.setProperty("--menu-topo", Math.max(0, barraTopo.getBoundingClientRect().bottom) + "px");
     menu.classList.toggle("aberto", aberto);
     raiz.classList.toggle("menu-aberto", aberto);
     botaoMenu.setAttribute("aria-expanded", aberto ? "true" : "false");
     botaoMenu.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+    if (aberto) setTimeout(function () { var l = $("a", menu); if (l) l.focus({ preventScroll: true }); }, 120);
   }
   if (botaoMenu && menu) {
     botaoMenu.addEventListener("click", function () { menuAberto(!menu.classList.contains("aberto")); });
     $$("a", menu).forEach(function (a) { a.addEventListener("click", function () { menuAberto(false); }); });
+    $$("[data-fechar-menu]").forEach(function (f) { f.addEventListener("click", function () { menuAberto(false); }); });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && menu.classList.contains("aberto")) { menuAberto(false); botaoMenu.focus(); }
+      if (!menu.classList.contains("aberto")) return;
+      if (e.key === "Escape") { menuAberto(false); botaoMenu.focus(); return; }
+      if (e.key === "Tab") {
+        // o foco circula só entre o botão do menu e o painel
+        var foco = [botaoMenu].concat($$("a, button", menu));
+        var i = foco.indexOf(document.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); foco[foco.length - 1].focus(); }
+        else if (!e.shiftKey && i === foco.length - 1) { e.preventDefault(); foco[0].focus(); }
+      }
     });
     addEventListener("resize", function () {
       if (innerWidth >= 1000 && menu.classList.contains("aberto")) menuAberto(false);
@@ -237,6 +215,7 @@
 
   function mensagemOrcamento() {
     var linhas = ["Olá, vim pelo site da Kyzent e quero um orçamento."];
+    if (!isNaN(fimPromo) && Date.now() < fimPromo) linhas.push("Quero aproveitar a implantação grátis da Black Friday.");
     if (dados.nome) linhas.push("Nome: " + dados.nome.trim());
     if (dados.negocio) linhas.push("Negócio: " + dados.negocio.trim());
     linhas.push("", "Serviços:");
@@ -245,57 +224,32 @@
     return linhas.join("\n");
   }
 
-  /* ------------------------------------------------------------ escolher o número */
-  var janelaContato = document.getElementById("janela-contato");
-  var mensagemAtual = MSG_PADRAO;
-
-  function abrirContato(msg, comOrcamento) {
-    if (!janelaContato) return false;
-    mensagemAtual = msg;
-    var leva = $("[data-contato-leva]", janelaContato);
-    if (comOrcamento && itens.length) {
-      leva.textContent = "Vai junto na mensagem: " + itens.length + " " + palavra(itens.length) + " do seu orçamento.";
-      leva.hidden = false;
-    } else {
-      leva.hidden = true;
-    }
-    $$("[data-numero]", janelaContato).forEach(function (a) {
-      var num = a.getAttribute("data-numero");
-      if (num !== "sorteio") a.href = "https://wa.me/" + num + "?text=" + encodeURIComponent(msg);
-    });
-    return abrirJanela(janelaContato);
+  /* ------------------------------------------------------------ WhatsApp: número sorteado entre os dois, direto, sem janela de escolha */
+  var NUMEROS = (document.body.getAttribute("data-whats") || "").split(" ").filter(Boolean);
+  function linkSorteado(msg) {
+    var num = NUMEROS[Math.floor(Math.random() * NUMEROS.length)];
+    return "https://wa.me/" + num + "?text=" + encodeURIComponent(msg);
   }
-
-  if (janelaContato) {
-    var numeros = $$("[data-numero]", janelaContato)
-      .map(function (a) { return a.getAttribute("data-numero"); })
-      .filter(function (n) { return n !== "sorteio"; });
-    $$("[data-numero]", janelaContato).forEach(function (a) {
-      a.addEventListener("click", function () {
-        if (a.getAttribute("data-numero") === "sorteio") {
-          var num = numeros[Math.floor(Math.random() * numeros.length)];
-          a.href = "https://wa.me/" + num + "?text=" + encodeURIComponent(mensagemAtual);
-        }
-        setTimeout(function () { fecharJanela(janelaContato); }, 150);
-      });
-    });
+  function mensagemDo(b) {
+    var msg = b.getAttribute("data-msg");
+    if (msg) return msg;
+    if (itens.length) return mensagemOrcamento();
+    return /orçamento/i.test(b.textContent) ? "Olá, vim pelo site da Kyzent e quero um orçamento." : MSG_PADRAO;
   }
-
   $$("[data-contato]").forEach(function (b) {
-    b.addEventListener("click", function (e) {
-      var msg = b.getAttribute("data-msg");
-      var comOrcamento = !msg && itens.length > 0;
-      if (!msg) msg = comOrcamento ? mensagemOrcamento() : (/orçamento/i.test(b.textContent) ? "Olá, vim pelo site da Kyzent e quero um orçamento." : MSG_PADRAO);
+    // o link segue normal (abre em outra aba); só trocamos o endereço na hora do clique
+    b.addEventListener("click", function () {
+      if (!NUMEROS.length) return;
+      b.href = linkSorteado(mensagemDo(b));
       var origem = b.closest("dialog");
-      e.preventDefault();
-      if (origem && origem !== janelaContato) fecharJanela(origem, function () { abrirContato(msg, comOrcamento); });
-      else abrirContato(msg, comOrcamento);
+      if (origem) setTimeout(function () { fecharJanela(origem); }, 150);
     });
   });
 
   var enviar = $("[data-carrinho-enviar]");
   if (enviar) enviar.addEventListener("click", function () {
-    fecharJanela(gaveta, function () { abrirContato(mensagemOrcamento(), true); });
+    if (NUMEROS.length) window.open(linkSorteado(mensagemOrcamento()), "_blank", "noopener");
+    fecharJanela(gaveta);
   });
 
   desenharCarrinho();
@@ -419,30 +373,360 @@
     }
   }
 
-  /* ------------------------------------------------------------ aparecer ao rolar (leve, uma vez só) */
+  /* ------------------------------------------------------------ animações
+     Tudo leve: sem biblioteca, pausa fora da tela e desliga com prefers-reduced-motion. */
+  var ponteiroFino = window.matchMedia && matchMedia("(pointer: fine)").matches;
+  function quandoVisivel(el, fn, opcoes) {
+    if (!("IntersectionObserver" in window)) { fn(el); return; }
+    var o = new IntersectionObserver(function (es) {
+      es.forEach(function (en) { if (en.isIntersecting) { o.unobserve(en.target); fn(en.target); } });
+    }, opcoes || { rootMargin: "0px 0px -10% 0px", threshold: 0.12 });
+    o.observe(el);
+  }
+  function naTela(el) { var r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; }
+  function duasVezes(fn) { requestAnimationFrame(function () { requestAnimationFrame(fn); }); }
+
+  // títulos que surgem palavra por palavra
+  $$("[data-revelar-texto]").forEach(function (t) {
+    if (semMovimento || t.children.length) return;
+    var texto = t.textContent.trim();
+    t.setAttribute("aria-label", texto);
+    t.innerHTML = texto.split(/\s+/).map(function (p, i) {
+      return '<span class="palavra" aria-hidden="true"><span style="--i:' + i + '">' + p + "</span></span>";
+    }).join(" ");
+    if (naTela(t)) duasVezes(function () { t.classList.add("texto-visivel"); });
+    else quandoVisivel(t, function () { t.classList.add("texto-visivel"); });
+  });
+
+  // blocos que aparecem ao rolar
   if (!semMovimento && "IntersectionObserver" in window) {
     var grupos = ".grade, .ramos, .etapas, .painel-itens";
-    var soltos = ".cabeca, .dupla-foto, .dupla-texto, .inicio-foto, .chamada-caixa, .pilar";
+    var soltos = ".cabeca > p, .cabeca-linha > .link-seta, .dupla-foto, .dupla-texto, .demo-texto, .demo-visual, .pagina-topo-apoio, .pagina-topo-texto";
     var alvos = [];
     $$(grupos).forEach(function (g) {
       Array.prototype.forEach.call(g.children, function (filho, i) {
-        filho.style.setProperty("--atraso", Math.min(i, 6) * 70 + "ms");
+        filho.style.setProperty("--atraso", Math.min(i, 6) * 80 + "ms");
         alvos.push(filho);
       });
     });
     $$(soltos).forEach(function (el) { if (alvos.indexOf(el) === -1) alvos.push(el); });
+    [[".hero-apoio", 260], [".hero-acoes", 380], [".hero-numeros", 500], [".hero-palco", 180]].forEach(function (p) {
+      var el = $(p[0]); if (el) { el.style.setProperty("--atraso", p[1] + "ms"); alvos.push(el); }
+    });
     var observador = new IntersectionObserver(function (entradas) {
       entradas.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add("visivel"); observador.unobserve(en.target); }
       });
     }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
     alvos.forEach(function (el) {
-      // o que já está na tela ao abrir aparece sem esperar
-      var r = el.getBoundingClientRect();
       el.classList.add("revelar");
-      if (r.top < innerHeight && r.bottom > 0) requestAnimationFrame(function () { el.classList.add("visivel"); });
+      if (naTela(el)) duasVezes(function () { el.classList.add("visivel"); });
       else observador.observe(el);
     });
+    $$(".revelar-bloco").forEach(function (el) { quandoVisivel(el, function () { el.classList.add("visivel"); }); });
+  } else {
+    $$(".revelar-bloco").forEach(function (el) { el.classList.add("visivel"); });
+  }
+
+  // contadores (os números do topo são reais; os dos desenhos são do exemplo)
+  $$("[data-contar]").forEach(function (el) {
+    if (semMovimento) return;
+    var alvo = parseInt(el.getAttribute("data-contar"), 10);
+    if (!alvo) return;
+    el.textContent = "0";
+    quandoVisivel(el, function () {
+      var ini = performance.now(), dur = alvo > 50 ? 1600 : 1100;
+      (function passo(agora) {
+        var t = Math.min(1, Math.max(0, (agora - ini) / dur));
+        el.textContent = Math.round(alvo * (1 - Math.pow(1 - t, 4))).toLocaleString("pt-BR");
+        if (t < 1) requestAnimationFrame(passo);
+      })(ini);
+    });
+  });
+
+  // gráficos que crescem quando aparecem
+  $$(".hero-painel, .gd").forEach(function (el) {
+    if (semMovimento) { el.classList.add("crescer"); return; }
+    quandoVisivel(el, function () { setTimeout(function () { el.classList.add("crescer"); }, 250); });
+  });
+
+  // botões magnéticos e brilho que segue o mouse
+  if (ponteiroFino && !semMovimento) {
+    $$("[data-magnetico]").forEach(function (b) {
+      b.addEventListener("pointermove", function (e) {
+        var r = b.getBoundingClientRect();
+        var x = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+        var y = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+        b.style.translate = (x * 6).toFixed(1) + "px " + (y * 5).toFixed(1) + "px";
+      });
+      b.addEventListener("pointerleave", function () { b.style.translate = ""; });
+    });
+    $$(".brilho").forEach(function (c) {
+      c.addEventListener("pointermove", function (e) {
+        var r = c.getBoundingClientRect();
+        c.style.setProperty("--mx", (e.clientX - r.left) + "px");
+        c.style.setProperty("--my", (e.clientY - r.top) + "px");
+      });
+    });
+  }
+
+  // topo do Início: rede de pontos, órbitas, painel com profundidade e lista que gira
+  var hero = $(".hero");
+  var heroVisivel = true;
+  if (hero && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) { heroVisivel = es[0].isIntersecting; }).observe(hero);
+  }
+  var orbitas = $(".hero-orbitas");
+  if (orbitas && semMovimento && orbitas.pauseAnimations) orbitas.pauseAnimations();
+
+  var tela = $("[data-rede]");
+  if (tela && tela.getContext && !semMovimento) {
+    var ctx = tela.getContext("2d"), pontos = [], W = 0, H = 0;
+    var mouse = { x: -9999, y: -9999 };
+    var medir = function () {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = tela.clientWidth; H = tela.clientHeight;
+      tela.width = W * dpr; tela.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var n = Math.round(Math.min(W < 700 ? 18 : 64, (W * H) / 16000));
+      pontos = [];
+      for (var i = 0; i < n; i++) {
+        pontos.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .22, vy: (Math.random() - .5) * .22, r: Math.random() * 1.4 + .6 });
+      }
+    };
+    medir();
+    var tempoRes, larguraAntes = innerWidth;
+    addEventListener("resize", function () {
+      if (innerWidth === larguraAntes) return;   // no celular, a barra do navegador some e muda só a altura
+      larguraAntes = innerWidth;
+      clearTimeout(tempoRes); tempoRes = setTimeout(medir, 200);
+    });
+    if (ponteiroFino) {
+      hero.addEventListener("pointermove", function (e) { var r = tela.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
+      hero.addEventListener("pointerleave", function () { mouse.x = mouse.y = -9999; });
+    }
+    var LIG = 130;
+    (function desenhar() {
+      requestAnimationFrame(desenhar);
+      if (!heroVisivel || document.hidden) return;
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < pontos.length; i++) {
+        var p = pontos[i];
+        var dxm = mouse.x - p.x, dym = mouse.y - p.y;
+        if (dxm * dxm + dym * dym < 32400) { p.x += dxm * .004; p.y += dym * .004; }
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+        for (var j = i + 1; j < pontos.length; j++) {
+          var q = pontos[j], dx = p.x - q.x, dy = p.y - q.y, d = dx * dx + dy * dy;
+          if (d < LIG * LIG) {
+            ctx.strokeStyle = "rgba(63,180,255," + (0.16 * (1 - Math.sqrt(d) / LIG)).toFixed(3) + ")";
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+          }
+        }
+        ctx.fillStyle = i % 5 === 0 ? "rgba(26,92,255,.85)" : "rgba(63,180,255,.6)";
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
+      }
+    })();
+  }
+
+  var palco = $("[data-parallax-palco]");
+  if (palco && hero && !semMovimento && ponteiroFino) {
+    var camadas = $$("[data-profundidade]", palco);
+    var alvoM = { x: 0, y: 0 }, atualM = { x: 0, y: 0 };
+    if (ponteiroFino) {
+      hero.addEventListener("pointermove", function (e) {
+        alvoM.x = (e.clientX / innerWidth - .5) * 2;
+        alvoM.y = (e.clientY / innerHeight - .5) * 2;
+      });
+      hero.addEventListener("pointerleave", function () { alvoM.x = alvoM.y = 0; });
+    }
+    (function mover() {
+      requestAnimationFrame(mover);
+      if (!heroVisivel) return;
+      atualM.x += (alvoM.x - atualM.x) * .06;
+      atualM.y += (alvoM.y - atualM.y) * .06;
+      var rol = Math.min(scrollY, innerHeight);
+      camadas.forEach(function (c) {
+        var p = parseFloat(c.getAttribute("data-profundidade"));
+        var tx = atualM.x * 10 * p, ty = atualM.y * 8 * p - rol * .06 * p;
+        var giro = c.classList.contains("hero-painel") ? " rotateY(" + (atualM.x * 3).toFixed(2) + "deg) rotateX(" + (-atualM.y * 3).toFixed(2) + "deg)" : "";
+        c.style.transform = "translate3d(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px,0)" + giro;
+      });
+    })();
+  }
+
+  var feed = $("[data-feed]");
+  if (feed && !semMovimento) {
+    setInterval(function () {
+      if (!heroVisivel || document.hidden) return;
+      var ultimo = feed.lastElementChild;
+      ultimo.classList.remove("entrando");
+      feed.insertBefore(ultimo, feed.firstElementChild);
+      void ultimo.offsetWidth;
+      ultimo.classList.add("entrando");
+    }, 2800);
+  }
+
+  // demonstração: conversa que acontece em tempo real
+  $$("[data-chat]").forEach(function (chat) {
+    var repetir = chat.parentNode.querySelector("[data-chat-repetir]");
+    if (semMovimento) { if (repetir) repetir.hidden = true; return; }
+    var corpo = $(".chat-corpo", chat);
+    var passos = $$("[data-passo]", chat);
+    var digitando = $("[data-digitando]", chat);
+    var estado = $("[data-chat-estado]", chat);
+    var vez = 0;
+    chat.classList.add("animando");
+    function esperar(ms, minhaVez) {
+      return new Promise(function (ok, nao) { setTimeout(function () { if (minhaVez === vez) ok(); else nao(); }, ms); });
+    }
+    function tocar() {
+      var minhaVez = ++vez;
+      passos.forEach(function (p) { p.classList.remove("mostra"); corpo.appendChild(p); });
+      corpo.appendChild(digitando);
+      digitando.classList.remove("mostra");
+      estado.textContent = "online";
+      var fila = Promise.resolve();
+      passos.forEach(function (passo) {
+        var quem = passo.getAttribute("data-quem");
+        fila = fila.then(function () {
+          if (quem === "cliente") return esperar(900, minhaVez);
+          corpo.insertBefore(digitando, passo);
+          digitando.classList.add("mostra");
+          if (quem === "ia") estado.textContent = "digitando";
+          return esperar(quem === "ia" ? 1300 : 700, minhaVez);
+        }).then(function () {
+          digitando.classList.remove("mostra");
+          estado.textContent = "online";
+          passo.classList.add("mostra");
+        });
+      });
+      fila.catch(function () {});
+    }
+    quandoVisivel(chat, tocar, { threshold: 0.4 });
+    if (repetir) repetir.addEventListener("click", tocar);
+  });
+
+  // demonstração: a IA passando pelas etapas
+  $$("[data-fluxo]").forEach(function (fluxo) {
+    if (semMovimento || !("IntersectionObserver" in window)) return;
+    var passos = $$("[data-passo]", fluxo);
+    var visivel = false, rodando = false;
+    fluxo.classList.add("animando");
+    function ciclo() {
+      if (!visivel) { rodando = false; return; }
+      rodando = true;
+      passos.forEach(function (p) { p.classList.remove("ativo", "feito"); });
+      passos.forEach(function (p, i) {
+        setTimeout(function () { p.classList.add("ativo"); }, 500 + i * 1100);
+        setTimeout(function () { p.classList.remove("ativo"); p.classList.add("feito"); }, 1350 + i * 1100);
+      });
+      setTimeout(ciclo, 500 + passos.length * 1100 + 2600);
+    }
+    new IntersectionObserver(function (es) {
+      visivel = es[0].isIntersecting;
+      if (visivel && !rodando) ciclo();
+    }, { threshold: 0.35 }).observe(fluxo);
+  });
+
+  // linha do tempo que se preenche com a rolagem; topo que ganha borda ao rolar
+  var barra = $("[data-barra]");
+  var linhas = $$("[data-linha-tempo]");
+  function aoRolar() {
+    if (barra) barra.classList.toggle("rolou", scrollY > 8);
+    linhas.forEach(function (l) {
+      var r = l.getBoundingClientRect();
+      var prog = semMovimento ? 1 : Math.max(0, Math.min(1, (innerHeight * .78 - r.top) / (r.height * .85)));
+      l.style.setProperty("--progresso", prog.toFixed(3));
+      var etapas = $$(".etapa", l), n = etapas.length;
+      var ultima = -1;
+      etapas.forEach(function (e, i) {
+        var ativa = n < 2 || i / (n - 1) <= prog + .02;
+        e.classList.toggle("ativa", ativa);
+        if (ativa) ultima = i;
+      });
+      etapas.forEach(function (e, i) { e.classList.toggle("atual", !semMovimento && i === ultima && prog < 1); });
+    });
+  }
+  var pedidoRolar = false;
+  addEventListener("scroll", function () {
+    if (pedidoRolar) return;
+    pedidoRolar = true;
+    requestAnimationFrame(function () { pedidoRolar = false; aoRolar(); });
+  }, { passive: true });
+  addEventListener("resize", aoRolar);
+  aoRolar();
+
+  /* ------------------------------------------------------------ carrosséis do celular: pontos que acompanham a rolagem */
+  $$("[data-carrossel]").forEach(function (c) {
+    var filhos = Array.prototype.slice.call(c.children);
+    if (filhos.length < 2) return;
+    var pontos = document.createElement("div");
+    pontos.className = "carrossel-pontos";
+    var botoes = filhos.map(function (f, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "carrossel-ponto";
+      b.setAttribute("aria-label", "Mostrar o cartão " + (i + 1) + " de " + filhos.length);
+      b.addEventListener("click", function () {
+        c.scrollTo({ left: f.offsetLeft - filhos[0].offsetLeft, behavior: semMovimento ? "auto" : "smooth" });
+      });
+      pontos.appendChild(b);
+      return b;
+    });
+    c.parentNode.insertBefore(pontos, c.nextSibling);
+    function marcar() {
+      var passo = filhos[1].offsetLeft - filhos[0].offsetLeft || 1;
+      var atual = Math.min(filhos.length - 1, Math.round(c.scrollLeft / passo));
+      if (c.scrollLeft + c.clientWidth >= c.scrollWidth - 4) atual = filhos.length - 1;
+      botoes.forEach(function (b, i) { b.setAttribute("aria-current", i === atual ? "true" : "false"); });
+    }
+    var pedido = false;
+    c.addEventListener("scroll", function () {
+      if (pedido) return; pedido = true;
+      requestAnimationFrame(function () { pedido = false; marcar(); });
+    }, { passive: true });
+    marcar();
+  });
+
+  /* ------------------------------------------------------------ Black Friday: contador e fim da promoção */
+  var fimPromo = Date.parse(document.body.getAttribute("data-promo-fim") || "");
+  function encerrarPromo() {
+    $$("[data-promo]").forEach(function (el) { el.hidden = true; });
+    $$("[data-fora-texto]").forEach(function (b) {
+      var t = $("[data-texto-botao]", b);
+      if (t) t.textContent = b.getAttribute("data-fora-texto");
+      b.removeAttribute("data-msg");
+    });
+    $$("[data-fora-msg]").forEach(function (b) { b.setAttribute("data-msg", b.getAttribute("data-fora-msg")); });
+  }
+  if (!isNaN(fimPromo)) {
+    var relogios = $$("[data-relogio]");
+    var antes = {};
+    var doisDigitos = function (n) { return (n < 10 ? "0" : "") + n; };
+    var tique = function () {
+      var falta = fimPromo - Date.now();
+      if (falta <= 0) { encerrarPromo(); clearInterval(intervalo); return; }
+      var s = Math.floor(falta / 1000);
+      var v = { dias: Math.floor(s / 86400), horas: Math.floor(s % 86400 / 3600), min: Math.floor(s % 3600 / 60), seg: s % 60 };
+      relogios.forEach(function (r) {
+        Object.keys(v).forEach(function (k) {
+          var el = $("[data-" + k + "]", r);
+          if (!el) return;
+          var txt = doisDigitos(v[k]);
+          if (el.textContent !== txt) {
+            el.textContent = txt;
+            if (!semMovimento && antes[k] !== undefined) { el.classList.remove("virou"); void el.offsetWidth; el.classList.add("virou"); }
+          }
+        });
+        r.setAttribute("aria-label", "A promoção termina em " + v.dias + " dias e " + v.horas + " horas");
+      });
+      antes = v;
+    };
+    var intervalo = setInterval(tique, 1000);
+    tique();
   }
 
   /* ------------------------------------------------------------ ano do rodapé */

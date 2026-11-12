@@ -7,17 +7,19 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "32"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "47"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
-BOTAO = "Chamar no WhatsApp"   # o mesmo nome em todo botão de contato
+BOTAO = "Chamar no WhatsApp"   # o nome dos botões de contato do topo, menu, janelas e barra fixa
+
+# Black Friday: implantação grátis (decisão do Otavio, 2026-11-12). Depois do fim, o JS esconde o que é da promoção.
+PROMO_FIM = "2026-12-05T23:59:59-03:00"
+PROMO_DATA = "05/12"
+MSG_BF = "Olá, vim pelo site da Kyzent e quero aproveitar a implantação grátis da Black Friday."
 
 def link_whats(msg=None, n=0):
     return f"https://wa.me/{WHATS[n][0]}?text={quote(msg) if msg else MSG}"
-
-def brl(v):
-    return "R$ " + f"{v:,}".replace(",", ".")
 
 def svg(d, cls=""):
     c = f' class="{cls}"' if cls else ""
@@ -25,8 +27,6 @@ def svg(d, cls=""):
             f'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{d}</svg>')
 
 I = {
-    "lua": svg('<path d="M20.5 13.2A8.5 8.5 0 1 1 10.8 3.5a6.6 6.6 0 0 0 9.7 9.7z"/>', "icone-lua"),
-    "sol": svg('<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/>', "icone-sol"),
     "fechar": svg('<path d="M6 6l12 12M18 6L6 18"/>'),
     "mais": svg('<path d="M12 5v14M5 12h14"/>'),
     "conversa": svg('<path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/>'),
@@ -47,6 +47,21 @@ I = {
     "cruz": svg('<path d="M9 4h6v5h5v6h-5v5H9v-5H4V9h5z"/>'),
     "voltar": svg('<path d="M15 5l-7 7 7 7"/>'),
     "mic": svg('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>'),
+    "alvo": svg('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/>'),
+    "olho": svg('<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>'),
+    "escudo": svg('<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.3-7.5 9.5-4.3-1.2-7.5-4.9-7.5-9.5V6z"/><path d="M8.8 12l2.2 2.2 4.2-4.4"/>'),
+    "suporte": svg('<path d="M4.5 13.5v-2a7.5 7.5 0 0 1 15 0v2"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M19 19c0 1.4-1.6 2-4 2h-2"/>'),
+    "medida": svg('<path d="M3.5 16.5 16.5 3.5l4 4-13 13z"/><path d="M7 13l1.5 1.5M10 10l1.5 1.5M13 7l1.5 1.5"/>'),
+    "raio": svg('<path d="M13 2.5 4.5 13.5H12l-1 8 8.5-11H12z"/>'),
+    "busca": svg('<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>'),
+    "mapa": svg('<path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6z"/><path d="M9 4v14M15 6v14"/>'),
+    "codigo": svg('<path d="M8.5 7 3.5 12l5 5M15.5 7l5 5-5 5"/>'),
+    "foguete": svg('<path d="M12 15.5 8.5 12C10 7 13.5 3.8 20.5 3.5 20.2 10.5 17 14 12 15.5z"/><path d="M8.5 12 5 11.5l2.5-3.5h4M12 15.5l.5 3.5 3.5-2.5v-4"/><circle cx="15.5" cy="8.5" r="1.3"/>'),
+    "grafico": svg('<path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/>'),
+    "estoque": svg('<path d="M3.5 8 12 3.5 20.5 8v8.5L12 21l-8.5-4.5z"/><path d="M3.5 8 12 12.5 20.5 8M12 12.5V21"/>'),
+    "repetir": svg('<path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.5M20 4v4.5h-4.5"/><path d="M20 12a8 8 0 0 1-13.7 5.6L4 15.5M4 20v-4.5h4.5"/>'),
+    "valores": svg('<path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/>'),
+    "instagram": svg('<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17 7h.01"/>'),
 }
 TIQUES = ('<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" '
           'fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>')
@@ -97,16 +112,20 @@ MODULOS = [
      ["Agentes de IA personalizados", "Assistentes internos de IA", "Sistemas personalizados"]),
 ]
 
-# as 4 frentes oficiais da empresa (Início): (n, título, ícone, curto, resumo, módulo que abre, serviços)
+# as 4 frentes oficiais da empresa (Início): (título, ícone, resumo, módulo que abre, serviços)
 AREAS = [
-    ("01", "Atendimento e relacionamento", "conversa", "Atendimento", "", "whatsapp",
+    ("Atendimento e relacionamento", "conversa",
+     "Chatbots no WhatsApp e no Instagram, respostas automáticas e triagem para atendentes.", "whatsapp",
      ["Chatbots inteligentes", "Respostas inteligentes", "Triagem de atendimento"]),
-    ("02", "Vendas e captação de clientes", "vendas", "Vendas", "", "agenda",
+    ("Vendas e captação de clientes", "vendas",
+     "Leads qualificados, agendamentos, follow-up e orçamentos no automático.", "agenda",
      ["Captação e qualificação de leads", "Agendamentos automáticos", "Follow-up inteligente", "Orçamentos automatizados"]),
-    ("03", "Administração e gestão empresarial", "gestao", "Gestão", "", "gestao",
+    ("Administração e gestão empresarial", "gestao",
+     "Cadastros, pedidos, CRM, relatórios, documentos e sistemas conectados.", "gestao",
      ["Gestão de cadastros e pedidos", "Integração com CRM", "Relatórios automatizados", "Automação de documentos",
       "Assistentes internos de IA", "Integração de sistemas"]),
-    ("04", "Soluções avançadas e personalizadas", "avancado", "Avançadas", "", "ia",
+    ("Soluções avançadas e personalizadas", "avancado",
+     "Agentes de IA, integração com ERP e sistemas sob medida para a sua empresa.", "ia",
      ["Agentes de IA personalizados", "Integração com estoque e ERP", "Centrais inteligentes de atendimento",
       "Automação de processos comerciais", "Sistemas personalizados"]),
 ]
@@ -171,14 +190,15 @@ FOTO_RAMO = {
 
 def ramos_cartoes():
     cartoes = []
-    for rid, nome, *_ in RAMOS:
+    for rid, nome, ic, _, curta, *_ in RAMOS:
         foto, w, h = FOTO_RAMO[rid]
         cartoes.append(
-            f'<button class="ramo" type="button" data-abrir-janela="janela-{rid}" aria-haspopup="dialog">'
+            f'<li><button class="ramo" type="button" data-abrir-janela="janela-{rid}" aria-haspopup="dialog">'
             f'<img src="assets/fotos/{foto}" alt="" width="{w}" height="{h}" loading="lazy">'
-            f'<span class="ramo-texto"><span class="ramo-nome">{nome}</span>'
-            f'<span class="ramo-ver">Ver mais {I["mais"]}</span></span></button>')
-    return '<div class="ramos">\n          ' + "\n          ".join(cartoes) + "\n        </div>"
+            f'<span class="ramo-texto"><span class="ramo-icone">{I[ic]}</span><span class="ramo-nome">{nome}</span>'
+            f'<span class="ramo-frase">{curta}</span>'
+            f'<span class="ramo-ver">Ver o que fazemos {I["mais"]}</span></span></button></li>')
+    return '<ul class="ramos carrossel" data-carrossel aria-label="Tipos de negócio">\n          ' + "\n          ".join(cartoes) + "\n        </ul>"
 
 def ramos_janelas():
     janelas = []
@@ -194,7 +214,7 @@ def ramos_janelas():
       <p class="janela-resumo">{resumo}</p>
       <ul class="lista-check">{lis}</ul>
       <div class="janela-acoes">
-        <a class="botao" href="{link_whats(msg)}" target="_blank" rel="noopener" data-contato data-msg="{msg}">{BOTAO}</a>
+        <a class="botao" href="{link_whats(msg)}" target="_blank" rel="noopener" data-contato data-msg="{msg}">{I["conversa"]}{BOTAO}</a>
         <a class="link-seta" href="servicos.html?ramo={rid}">Ver serviços para {nome.lower()}</a>
       </div>
     </div>
@@ -207,34 +227,24 @@ def menu(atual, classe):
     for arq, nome in PAGINAS:
         cur = ' aria-current="page"' if arq == atual else ""
         itens.append(f'<li><a href="{arq}"{cur}>{nome}</a></li>')
-    return f'<ul class="{classe}">' + "".join(itens) + "</ul>"
+    c = f' class="{classe}"' if classe else ""
+    return f'<ul{c}>' + "".join(itens) + "</ul>"
 
-def logos():
-    return ('<img class="logo-claro" src="assets/img/kyzent-horizontal-claro.svg" alt="Kyzent, automação e IA" width="590" height="140">'
-            '<img class="logo-escuro" src="assets/img/kyzent-horizontal-escuro.svg" alt="Kyzent, automação e IA" width="590" height="140">')
+MENU_DESCRICAO = {"index.html": "Soluções, exemplos e a oferta", "quem-somos.html": "Propósito, missão e valores",
+                  "servicos.html": "Escolha e monte o seu orçamento"}
+def menu_celular(atual):
+    return "".join(
+        f'<li style="--i:{i}"><a href="{arq}"{ATUAL if arq == atual else ""}>'
+        f'<span class="menu-celular-nome">{nome}</span><small>{MENU_DESCRICAO[arq]}</small></a></li>'
+        for i, (arq, nome) in enumerate(PAGINAS))
+ATUAL = ' aria-current="page"'
 
-def numero_opcao(n):
-    return (f'<a class="numero" href="{link_whats(None, n)}" target="_blank" rel="noopener" data-numero="{WHATS[n][0]}">'
-            f'<span class="numero-icone">{I["conversa"]}</span>'
-            f'<span class="numero-texto"><span class="numero-tipo">WhatsApp</span><span class="numero-valor">{WHATS[n][1]}</span></span></a>')
+def logo():
+    return '<img src="assets/img/kyzent-horizontal-escuro.svg" alt="Kyzent, automação e IA" width="590" height="140">'
 
 RAMOS_NOMES = ["Lanchonete", "Barbearia", "Salão de beleza", "Clínica", "Pet shop", "Restaurante", "Loja"]
 
-JANELAS_GERAIS = f"""  <dialog class="janela janela-pequena" id="janela-contato" aria-labelledby="contato-titulo">
-    <button class="janela-fechar" type="button" data-fechar-janela aria-label="Fechar">{I["fechar"]}</button>
-    <div class="janela-corpo">
-      <h2 id="contato-titulo" tabindex="-1" autofocus>{BOTAO}</h2>
-      <p class="janela-resumo">Escolha um número. A conversa abre com a mensagem pronta; é só enviar.</p>
-      <p class="contato-leva" data-contato-leva hidden></p>
-      <div class="numeros">
-        {numero_opcao(0)}
-        {numero_opcao(1)}
-        <a class="numero numero-qualquer" href="{link_whats(None, 0)}" target="_blank" rel="noopener" data-numero="sorteio"><span class="numero-icone">{I["sorteio"]}</span><span class="numero-texto"><span class="numero-tipo">Tanto faz</span><span class="numero-valor">Qualquer um dos dois</span></span></a>
-      </div>
-    </div>
-  </dialog>
-
-  <dialog class="gaveta" id="carrinho" aria-labelledby="carrinho-titulo">
+JANELAS_GERAIS = f"""  <dialog class="gaveta" id="carrinho" aria-labelledby="carrinho-titulo">
     <div class="gaveta-topo">
       <h2 id="carrinho-titulo" tabindex="-1" autofocus>Seu orçamento <span class="gaveta-qtd" data-carrinho-qtd></span></h2>
       <button class="icone-botao" type="button" data-fechar-janela aria-label="Fechar">{I["fechar"]}</button>
@@ -243,8 +253,8 @@ JANELAS_GERAIS = f"""  <dialog class="janela janela-pequena" id="janela-contato"
       <div class="gaveta-vazia" data-carrinho-vazio>
         <span class="gaveta-vazia-icone">{I["orcamento"]}</span>
         <p><strong>Nenhum serviço no orçamento ainda.</strong></p>
-        <p>Na página de serviços, toque em "Adicionar ao orçamento" no que interessar. Tudo fica guardado aqui.</p>
-        <a class="botao botao-contorno" href="servicos.html">Ver serviços</a>
+        <p>Na página de serviços, toque em "Adicionar" no que interessar. Tudo fica guardado aqui.</p>
+        <a class="botao botao-contorno" href="servicos.html#catalogo">Ver serviços</a>
       </div>
       <ul class="gaveta-lista" data-carrinho-lista></ul>
       <p class="gaveta-nota" data-carrinho-nota hidden>Valores combinados pelo WhatsApp, conforme a necessidade do seu negócio.</p>
@@ -257,7 +267,7 @@ JANELAS_GERAIS = f"""  <dialog class="janela janela-pequena" id="janela-contato"
       </form>
     </div>
     <div class="gaveta-base" data-carrinho-base>
-      <button class="botao" type="button" data-carrinho-enviar>Enviar orçamento pelo WhatsApp</button>
+      <button class="botao" type="button" data-carrinho-enviar>{I["conversa"]}Enviar orçamento pelo WhatsApp</button>
       <button class="link-botao" type="button" data-carrinho-limpar>Limpar orçamento</button>
     </div>
   </dialog>
@@ -269,18 +279,34 @@ JANELAS_GERAIS = f"""  <dialog class="janela janela-pequena" id="janela-contato"
   </div>
 """
 
+def relogio(cls=""):
+    """Contador regressivo até o fim da Black Friday (o JS atualiza a cada segundo)."""
+    partes = "".join(f'<span class="relogio-parte"><b data-{k}>00</b><small>{n}</small></span>' for k, n in
+                     (("dias", "dias"), ("horas", "horas"), ("min", "min"), ("seg", "seg")))
+    return f'<div class="relogio {cls}" data-relogio role="timer" aria-label="A promoção termina em {PROMO_DATA}">{partes}</div>'
+
+def faixa_promo():
+    return f"""  <div class="promo-faixa" data-promo>
+    <div class="container promo-faixa-conteudo">
+      <p class="promo-faixa-texto"><span class="promo-selo">Black Friday</span><span><strong>Implantação grátis</strong><span class="promo-faixa-extra"> em qualquer automação</span> até {PROMO_DATA}</span></p>
+      {relogio("relogio-mini")}
+      <a class="promo-faixa-botao" href="{link_whats(MSG_BF)}" target="_blank" rel="noopener" data-contato data-msg="{MSG_BF}">Garantir</a>
+    </div>
+  </div>
+"""
 
 def pagina(arq, titulo, descricao, corpo, janelas=""):
     url = BASE + ("" if arq == "index.html" else arq)
+    servicos_rodape = "".join(f'<li><a href="servicos.html#modulo-{mid}">{nome}</a></li>' for mid, nome, *_ in MODULOS)
     return f"""<!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{titulo}</title>
   <meta name="description" content="{descricao}">
-  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0B0B0F" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#0B0B0F">
+  <meta name="color-scheme" content="dark">
   <link rel="canonical" href="{url}">
 
   <!-- Open Graph (prévia do link no WhatsApp e no Instagram) -->
@@ -300,33 +326,34 @@ def pagina(arq, titulo, descricao, corpo, janelas=""):
   <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 
-  <!-- aplica o tema antes de desenhar a página (evita piscar) -->
-  <script>(function(){{var t;try{{t=localStorage.getItem("kyzent-tema")}}catch(e){{}}if(t!=="light"&&t!=="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t);document.documentElement.classList.add("js")}})();</script>
-
+  <script>document.documentElement.classList.add("js");</script>
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css?v={VERSAO}">
   <script src="js/main.js?v={VERSAO}" defer></script>
 </head>
-<body>
+<body data-promo-fim="{PROMO_FIM}" data-whats="{" ".join(n for n, _ in WHATS)}">
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
-
-  <header class="barra">
+{faixa_promo()}
+  <header class="barra" data-barra>
     <div class="container barra-conteudo">
-      <a class="barra-logo" href="index.html" aria-label="Kyzent, página inicial">{logos()}</a>
+      <a class="barra-logo" href="index.html" aria-label="Kyzent, página inicial">{logo()}</a>
       <nav aria-label="Principal">{menu(arq, "menu")}</nav>
       <div class="barra-acoes">
-        <button class="orcamento-botao" type="button" data-abrir-carrinho hidden>Orçamento <span data-contador>(0)</span></button>
-        <button class="icone-botao tema-botao" type="button" data-trocar-tema aria-label="Trocar tema">{I["lua"]}{I["sol"]}</button>
-        <button class="icone-botao botao-menu" type="button" data-abrir-menu aria-expanded="false" aria-controls="menu-celular" aria-label="Abrir menu">{svg('<path d="M4 7h16M4 12h16M4 17h16"/>', "icone-abrir")}{svg('<path d="M6 6l12 12M18 6L6 18"/>', "icone-fechar")}</button>
-        <a class="botao" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{BOTAO}</a>
+        <button class="orcamento-botao" type="button" data-abrir-carrinho hidden>{I["orcamento"]}Orçamento <span data-contador>(0)</span></button>
+        <button class="icone-botao botao-menu" type="button" data-abrir-menu aria-expanded="false" aria-controls="menu-celular" aria-label="Abrir menu"><span class="hamburguer" aria-hidden="true"><i></i><i></i><i></i></span></button>
+        <a class="botao botao-barra" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{BOTAO}</a>
       </div>
     </div>
     <nav class="menu-celular" id="menu-celular" aria-label="Menu">
-      {menu(arq, "")}
-      <button class="menu-tema" type="button" data-trocar-tema>{I["lua"]}{I["sol"]}<span class="menu-tema-escuro">Usar tema escuro</span><span class="menu-tema-claro">Usar tema claro</span></button>
-      <a class="botao" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{BOTAO}</a>
+      <ul class="menu-celular-links">{menu_celular(arq)}</ul>
+      <div class="menu-celular-base">
+        <p class="menu-celular-promo" data-promo><span class="promo-selo">Black Friday</span>Implantação grátis até {PROMO_DATA}</p>
+        <a class="botao botao-grande" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{I["conversa"]}{BOTAO}</a>
+        <a class="menu-celular-insta" href="https://www.instagram.com/kyzent.tech/" target="_blank" rel="noopener">{I["instagram"]}@kyzent.tech</a>
+      </div>
     </nav>
   </header>
+  <div class="menu-fundo" data-fechar-menu aria-hidden="true"></div>
 
   <main id="conteudo">
 {corpo}
@@ -336,29 +363,29 @@ def pagina(arq, titulo, descricao, corpo, janelas=""):
     <div class="container">
       <div class="rodape-grade">
         <div class="rodape-marca">
-          <a href="index.html" aria-label="Kyzent, página inicial">{logos()}</a>
-          <p>Automação inteligente e IA para comércios de Paulínia e região.</p>
+          <a href="index.html" aria-label="Kyzent, página inicial">{logo()}</a>
+          <p>Empresa de Tecnologia e Inovação de Paulínia/SP. Automação e Inteligência Artificial para o atendimento, as vendas e a gestão de pequenas empresas.</p>
+          <a class="botao botao-contorno" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{I["conversa"]}{BOTAO}</a>
         </div>
         <div>
           <h2>Navegação</h2>
           {menu(None, "")}
         </div>
         <div>
-          <h2>WhatsApp</h2>
-          <ul>
-            <li><a href="{link_whats(None, 0)}" target="_blank" rel="noopener">{WHATS[0][1]}</a></li>
-            <li><a href="{link_whats(None, 1)}" target="_blank" rel="noopener">{WHATS[1][1]}</a></li>
-          </ul>
+          <h2>Serviços</h2>
+          <ul>{servicos_rodape}</ul>
         </div>
         <div>
-          <h2>Redes</h2>
+          <h2>Contato</h2>
           <ul>
+            <li><a href="{link_whats(None, 0)}" target="_blank" rel="noopener">WhatsApp {WHATS[0][1]}</a></li>
+            <li><a href="{link_whats(None, 1)}" target="_blank" rel="noopener">WhatsApp {WHATS[1][1]}</a></li>
             <li><a href="https://www.instagram.com/kyzent.tech/" target="_blank" rel="noopener">Instagram @kyzent.tech</a></li>
           </ul>
         </div>
       </div>
       <div class="rodape-base">
-        <p>© <span data-ano>2026</span> Kyzent Technology Solutions</p>
+        <p>© <span data-ano>2026</span> Kyzent Technology Solutions. Todos os direitos reservados.</p>
         <p>Paulínia/SP</p>
       </div>
     </div>
@@ -374,22 +401,30 @@ def pagina(arq, titulo, descricao, corpo, janelas=""):
 </html>
 """
 
-CHAMADA = f"""    <section class="chamada" aria-labelledby="titulo-chamada">
+# ------------------------------------------------------------------ blocos comuns
+def chamada(titulo="Vamos transformar a maneira como sua empresa trabalha?"):
+    return f"""    <section class="chamada" aria-labelledby="titulo-chamada">
       <div class="container">
-        <div class="chamada-caixa">
-          <div>
-            <h2 id="titulo-chamada">Quer ver funcionando no seu comércio?</h2>
-            <p>Conte como é o seu dia a dia. A gente responde no WhatsApp e monta um orçamento personalizado.</p>
+        <div class="chamada-caixa revelar-bloco">
+          <svg class="chamada-orbita" viewBox="0 0 800 400" aria-hidden="true"><ellipse cx="400" cy="200" rx="380" ry="110" transform="rotate(-24 400 200)"/><ellipse cx="400" cy="200" rx="300" ry="80" transform="rotate(-24 400 200)"/></svg>
+          <div class="chamada-texto">
+            <p class="hero-bf" data-promo><span class="hero-bf-selo">Black Friday</span><span>Implantação grátis até {PROMO_DATA}</span></p>
+            <h2 id="titulo-chamada" data-revelar-texto>{titulo}</h2>
+            <p>Conte como é o seu dia a dia. A gente responde no WhatsApp e monta um orçamento personalizado para a sua empresa.</p>
+            <div data-promo>{relogio("relogio-claro")}</div>
           </div>
-          <a class="botao" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{BOTAO}</a>
+          <div class="chamada-acoes">
+            <a class="botao botao-grande botao-claro" href="{link_whats(MSG_BF)}" target="_blank" rel="noopener" data-contato data-msg="{MSG_BF}" data-fora-msg="Olá, vim pelo site da Kyzent e quero começar um projeto." data-magnetico>Comece seu projeto com a Kyzent</a>
+            <a class="link-seta" href="servicos.html#catalogo">Ver todos os serviços</a>
+          </div>
         </div>
       </div>
     </section>"""
 
-PARA_QUEM = f"""    <section class="secao secao-faixa" id="para-quem" aria-labelledby="titulo-ramos">
+PARA_QUEM = f"""    <section class="secao" id="para-quem" aria-labelledby="titulo-ramos">
       <div class="container">
         <div class="cabeca">
-          <h2 id="titulo-ramos">Feito para o seu tipo de comércio.</h2>
+          <h2 id="titulo-ramos" data-revelar-texto>Feito para o seu tipo de negócio.</h2>
           <p>Toque no seu ramo e veja o que a Kyzent faz no seu dia a dia.</p>
         </div>
         {ramos_cartoes()}
@@ -397,36 +432,47 @@ PARA_QUEM = f"""    <section class="secao secao-faixa" id="para-quem" aria-label
     </section>"""
 
 ETAPAS = [
-    ("Você chama no WhatsApp", "Conta como funciona o seu comércio e o que mais toma o seu tempo."),
-    ("A gente configura", "A IA aprende o seu cardápio, os preços, os horários e o jeito de atender do seu comércio."),
-    ("A IA começa a atender", "E a gente acompanha, ajusta e dá suporte todo mês."),
+    ("Diagnóstico", "busca", "Entendemos as necessidades do negócio: como você atende, vende e organiza o dia."),
+    ("Planejamento", "mapa", "Identificamos oportunidades de melhoria e definimos o que vale automatizar primeiro."),
+    ("Desenvolvimento", "codigo", "Construímos soluções adequadas ao seu negócio, com o seu jeito de atender."),
+    ("Implementação", "foguete", "Colocamos as soluções em funcionamento, junto com a sua equipe."),
+    ("Suporte e evolução", "repetir", "Acompanhamos os resultados, fazemos a manutenção e evoluímos as soluções."),
 ]
-COMO_FUNCIONA = f"""    <section class="secao" aria-labelledby="titulo-etapas">
+def como_trabalhamos(faixa=True):
+    passos = "\n".join(
+        f'          <li class="etapa"><span class="etapa-marca"><span class="etapa-icone">{I[ic]}</span></span>'
+        f'<div class="etapa-cartao"><span class="etapa-num">Etapa {i+1}</span><span class="etapa-grande" aria-hidden="true">{i+1:02d}</span><h3>{t}</h3><p>{d}</p></div></li>'
+        for i, (t, ic, d) in enumerate(ETAPAS))
+    return f"""    <section class="secao{' secao-faixa' if faixa else ''}" id="como-trabalhamos" aria-labelledby="titulo-etapas">
       <div class="container">
         <div class="cabeca">
-          <h2 id="titulo-etapas">Como funciona.</h2>
+          <h2 id="titulo-etapas" data-revelar-texto>Como trabalhamos.</h2>
+          <p>Do primeiro contato ao suporte, cada etapa é feita junto com você.</p>
         </div>
-        <ol class="etapas">
-{chr(10).join(f'          <li class="etapa"><span class="etapa-num">{i+1}</span><h3>{t}</h3><p>{d}</p></li>' for i, (t, d) in enumerate(ETAPAS))}
+        <ol class="etapas" data-linha-tempo>
+{passos}
         </ol>
       </div>
     </section>"""
 
-PILARES = """    <section class="secao secao-faixa" aria-labelledby="titulo-pilares">
+PILARES = f"""    <section class="secao secao-faixa" aria-labelledby="titulo-pilares">
       <div class="container">
         <div class="cabeca">
-          <h2 id="titulo-pilares">Missão, visão e valores.</h2>
+          <h2 id="titulo-pilares" data-revelar-texto>Missão, visão e valores.</h2>
         </div>
-        <div class="grade grade-3 grade-pilares">
-          <article class="pilar">
+        <div class="grade grade-3">
+          <article class="pilar brilho">
+            <span class="pilar-icone">{I["alvo"]}</span>
             <h3>Nossa missão</h3>
             <p>Oferecer soluções tecnológicas que promovam produtividade, automação e crescimento, otimizando processos e potencializando os resultados dos nossos clientes.</p>
           </article>
-          <article class="pilar">
+          <article class="pilar brilho">
+            <span class="pilar-icone">{I["olho"]}</span>
             <h3>Nossa visão</h3>
             <p>Ser referência em Tecnologia e Inovação, reconhecida por transformar negócios e contribuir para a evolução do mercado.</p>
           </article>
-          <article class="pilar">
+          <article class="pilar brilho">
+            <span class="pilar-icone">{I["valores"]}</span>
             <h3>Nossos valores</h3>
             <p>Atuar com respeito, ética e compromisso com nossos clientes e colaboradores, construindo relações sólidas e duradouras, pautadas na lealdade, transparência e dignidade.</p>
           </article>
@@ -435,83 +481,351 @@ PILARES = """    <section class="secao secao-faixa" aria-labelledby="titulo-pila
     </section>"""
 
 # ------------------------------------------------------------------ Início
-# Textos oficiais: empresa/KYZENT.md (Quem somos, missão, visão, valores) e a lista de serviços.
-# foto de cada frente: arquivo, largura, altura e posição do recorte
-FOTO_FRENTE = {
-    "01": ("celular-mensagem.jpg", 733, 1100, "50% 45%"),
-    "02": ("comercio-balcao.jpg", 1600, 900, "50% 50%"),
-    "03": ("equipe-reuniao.jpg", 1600, 900, "50% 50%"),
-    "04": ("cafeteria.jpg", 733, 1100, "50% 62%"),
-}
+# painel do topo: exemplo ilustrativo de uma central de automações
+FEED = [  # (ícone, texto, onde) — o JS faz a lista girar; tudo exemplo
+    ("lanche", "2 X-salada anotados para entrega", "Lanchonete, pelo WhatsApp"),
+    ("tesoura", "Corte e barba confirmado às 18h", "Barbearia, pela agenda"),
+    ("pata", "Tutor do Thor lembrado da vacina", "Pet shop, lembrete automático"),
+    ("dente", "Retorno de quinta confirmado", "Clínica, pelo WhatsApp"),
+    ("pente", "Escova com a Camila marcada", "Salão, pelo Instagram"),
+    ("grafico", "Resumo da semana enviado ao dono", "Relatório automático"),
+    ("estoque", "Pão de hambúrguer abaixo do mínimo", "Lanchonete, aviso de estoque"),
+]
+def item_feed(ic, texto, canal, tempo="agora"):
+    return (f'<li class="feed-item"><span class="feed-icone">{I[ic]}</span>'
+            f'<span class="feed-texto"><strong>{texto}</strong><small>{canal}</small></span>'
+            f'<span class="feed-ok">{I["check"]}</span></li>')
 
-def frente(n, titulo, modulo, itens):
-    foto, w, h, pos = FOTO_FRENTE[n]
-    lista = "".join(f"<li>{a}</li>" for a in itens)
-    return (f'          <li><article class="cartao cartao-link">'
-            f'<div class="cartao-foto"><img src="assets/fotos/{foto}" alt="" width="{w}" height="{h}" loading="lazy" style="object-position:{pos}"></div>'
-            f'<div class="cartao-corpo"><h3>{titulo}</h3><ul class="cartao-itens">{lista}</ul>'
-            f'<a class="cartao-ver" href="servicos.html#modulo-{modulo}">Ver serviços</a></div></article></li>')
-
-FRENTES = "\n".join(frente(n, t, mod, itens) for n, t, ic, curto, resumo, mod, itens in AREAS)
-
-INICIO = f"""    <section class="inicio" aria-labelledby="titulo-inicio">
-      <div class="container inicio-grade">
-        <div class="inicio-texto">
-          <h1 id="titulo-inicio">Tecnologia e inovação para o seu comércio.</h1>
-          <p class="inicio-apoio">Automatizamos o atendimento, as vendas e a gestão de pequenas empresas de Paulínia e região.</p>
-          <div class="inicio-acoes">
-            <a class="botao botao-grande" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{I["conversa"]}{BOTAO}</a>
+BARRAS_HERO = [34, 48, 41, 62, 55, 78, 70, 88, 66, 74, 92, 80]
+PAINEL_HERO = f"""        <div class="hero-palco" data-parallax-palco aria-hidden="true">
+          <div class="hero-painel" data-profundidade="0.6">
+            <div class="hp-topo">
+              <span class="hp-pontos"><i></i><i></i><i></i></span>
+              <strong>Central de automações</strong>
+              <span class="selo-exemplo">Exemplo ilustrativo</span>
+            </div>
+            <div class="hp-corpo">
+              <div class="hp-numeros">
+                <div><small>Conversas atendidas</small><strong data-contar="128">128</strong></div>
+                <div><small>Agendamentos</small><strong data-contar="24">24</strong></div>
+                <div><small>Tarefas automáticas</small><strong data-contar="312">312</strong></div>
+              </div>
+              <div class="hp-grafico">
+                <div class="hp-grafico-topo"><small>Mensagens por hora</small><small>Hoje</small></div>
+                <div class="hp-barras">{"".join(f'<i style="--h:{h}%;--d:{n*60}ms"></i>' for n, h in enumerate(BARRAS_HERO))}</div>
+              </div>
+              <ul class="feed" data-feed>
+                {"".join(item_feed(*f) for f in FEED)}
+              </ul>
+            </div>
           </div>
+          <div class="hero-flutua hero-flutua-1" data-profundidade="1.4">
+            <span class="flutua-icone">{I["agenda"]}</span><span><strong>Novo agendamento</strong><small>Sábado, 10h</small></span>
+          </div>
+          <div class="hero-flutua hero-flutua-2" data-profundidade="1.1">
+            <span class="flutua-icone">{I["conversa"]}</span><span><strong>Cliente atendido</strong><small>Respondido no WhatsApp</small></span>
+          </div>
+        </div>"""
+
+def frente(n, titulo, ic, resumo, modulo, itens):
+    """Cartão de 'plano', no formato das lojas de hospedagem: selo, oferta, botão e lista."""
+    lista = "".join(f"<li>{I['check']}{a}</li>" for a in itens)
+    destaque = n == 0   # Atendimento é a porta de entrada da Kyzent (KYZENT.md)
+    selo = '<span class="plano-selo">Porta de entrada</span>' if destaque else ""
+    msg = f"Olá, vim pelo site da Kyzent e quero aproveitar a implantação grátis da Black Friday em {titulo.lower()}."
+    return (f'          <li><article class="plano brilho{" plano-destaque" if destaque else ""}">{selo}'
+            f'<div class="plano-cabeca"><span class="frente-icone">{I[ic]}</span><h3>{titulo}</h3></div>'
+            f'<p class="plano-resumo">{resumo}</p>'
+            f'<div class="plano-oferta" data-promo><span class="plano-de">Implantação <s>cobrada à parte</s></span>'
+            f'<strong class="plano-por">Grátis</strong><small>na Black Friday, até {PROMO_DATA}</small></div>'
+            f'<a class="botao plano-botao{"" if destaque else " botao-contorno"}" href="{link_whats(msg)}" target="_blank" rel="noopener" data-contato data-msg="{msg}">Quero começar por aqui</a>'
+            f'<ul class="frente-itens">{lista}</ul>'
+            f'<a class="frente-ver" href="servicos.html#modulo-{modulo}">Ver todos os serviços<span class="visualmente-oculto"> de {titulo.lower()}</span></a></article></li>')
+
+FRENTES = "\n".join(frente(i, *a) for i, a in enumerate(AREAS))
+
+FAIXA_PALAVRAS = ["Black Friday Kyzent", f"Implantação grátis até {PROMO_DATA}", "Atendimento 24 horas no WhatsApp",
+                  "Agendamentos automáticos", "Pedidos organizados", "IA sob medida", "Relatórios automáticos", "Suporte da nossa equipe"]
+def faixa_animada():
+    itens = "".join(f'<li>{p}<span class="faixa-orbita"></span></li>' for p in FAIXA_PALAVRAS)
+    return f"""    <div class="faixa-animada" aria-hidden="true" data-promo>
+      <ul class="faixa-trilho">{itens}{itens}</ul>
+    </div>"""
+
+# perguntas frequentes (texto do Claude a partir do KYZENT.md; os sócios precisam confirmar)
+PERGUNTAS = [
+    ("Como funciona a implantação grátis da Black Friday?",
+     f"Quem fechar com a Kyzent até {PROMO_DATA}/2026 não paga a implantação: a configuração inicial da automação fica por nossa conta. Você paga só a mensalidade, combinada conforme o seu negócio."),
+    ("Quanto custa a mensalidade?",
+     "Depende do que for automatizado, das integrações e do volume de uso. A gente entende como funciona o seu negócio pelo WhatsApp e monta um orçamento personalizado, sem compromisso."),
+    ("O WhatsApp da minha empresa corre risco de bloqueio?",
+     "Usamos a API oficial da Meta, a conexão aprovada pelo próprio WhatsApp. Não usamos conexões não oficiais por QR Code, que podem levar ao bloqueio do número."),
+    ("Vocês dão suporte depois que a automação está funcionando?",
+     "Sim. Cada solução vem com manutenção e suporte da nossa equipe, para a tecnologia seguir funcionando sem você se preocupar com a parte técnica."),
+    ("Para quais tipos de negócio a Kyzent trabalha?",
+     "Lanchonetes, barbearias, salões de beleza, clínicas, pet shops e comércios parecidos, em Paulínia e região. Se o seu ramo não está na lista, chame no WhatsApp e conte como é o seu dia a dia."),
+]
+def perguntas():
+    itens = "\n".join(
+        f'          <details class="pergunta"{" open" if i == 0 else ""}><summary><span>{q}</span><span class="pergunta-icone">{I["mais"]}</span></summary><div class="pergunta-resposta"><p>{r}</p></div></details>'
+        for i, (q, r) in enumerate(PERGUNTAS))
+    return f"""    <section class="secao" id="perguntas" aria-labelledby="titulo-perguntas">
+      <div class="container perguntas-grade">
+        <div class="cabeca">
+          <h2 id="titulo-perguntas" data-revelar-texto>Perguntas frequentes.</h2>
+          <p>Ficou alguma dúvida? A gente responde no WhatsApp.</p>
+          <a class="botao botao-contorno" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{I["conversa"]}{BOTAO}</a>
         </div>
-        <div class="inicio-marca" aria-hidden="true">
-          <img class="logo-claro" src="assets/img/kyzent-k-claro.svg" alt="" width="1080" height="520">
-          <img class="logo-escuro" src="assets/img/kyzent-k-escuro.svg" alt="" width="1080" height="520">
+        <div class="perguntas">
+{itens}
         </div>
+      </div>
+    </section>"""
+
+# demonstrações (todas exemplos ilustrativos)
+CHAT_DEMO = [
+    ("ia", "Olá! Gostaria de agendar um horário?"),
+    ("cliente", "Sim, gostaria de amanhã!"),
+    ("ia", "Claro! Temos horários às 10h e 14h."),
+    ("cliente", "Às 14h, por favor."),
+]
+def demo_chat():
+    msgs = "".join(f'<div class="chat-msg chat-{q}" data-passo data-quem="{q}"><p>{t}</p></div>' for q, t in CHAT_DEMO)
+    return f"""<figure class="demo-visual">
+            <div class="chat" data-chat role="img" aria-label="Exemplo ilustrativo de conversa: o assistente virtual oferece horários e confirma o agendamento para amanhã às 14h.">
+              <div class="chat-topo" aria-hidden="true">
+                <span class="chat-avatar">{I["avancado"]}</span>
+                <span class="chat-nome"><strong>Assistente virtual</strong><small data-chat-estado>online</small></span>
+              </div>
+              <div class="chat-corpo" aria-hidden="true">
+                {msgs}
+                <div class="chat-digitando" data-digitando><i></i><i></i><i></i></div>
+                <div class="chat-resultado" data-passo data-quem="resultado"><span class="chat-resultado-icone">{I["check"]}</span><span><strong>Agendamento realizado com sucesso.</strong><small>Amanhã, 14h. Lembrete enviado ao cliente.</small></span></div>
+              </div>
+            </div>
+            <figcaption><span class="selo-exemplo">Exemplo ilustrativo</span> <button class="link-botao" type="button" data-chat-repetir>Ver a conversa de novo</button></figcaption>
+          </figure>"""
+
+PEDIDOS_DEMO = [("#1043", "Marina", "2 marmitas", "preparo", "Em preparo"),
+                ("#1042", "Carlos", "1 X-salada e 1 suco", "rota", "Saiu para entrega"),
+                ("#1041", "Ana", "3 pastéis", "ok", "Entregue")]
+SEMANA = [("Seg", 42), ("Ter", 55), ("Qua", 48), ("Qui", 63), ("Sex", 86), ("Sáb", 100), ("Dom", 71)]
+def demo_gestao():
+    pedidos = "".join(f'<li><span class="pd-num">{n}</span><span class="pd-quem"><strong>{q}</strong><small>{o}</small></span><span class="estado estado-{c}">{e}</span></li>'
+                      for n, q, o, c, e in PEDIDOS_DEMO)
+    barras = "".join(f'<div class="gd-barra"><i style="--h:{h}%;--d:{k*70}ms"></i><small>{d}</small></div>' for k, (d, h) in enumerate(SEMANA))
+    return f"""<figure class="demo-visual">
+            <div class="gd" data-gestao role="img" aria-label="Exemplo ilustrativo de painel de gestão com pedidos, gráfico da semana, lista de pedidos e o andamento de um processo.">
+              <div class="gd-topo" aria-hidden="true"><strong>Painel da semana</strong><span>Atualizado às 18:40</span></div>
+              <div class="gd-kpis" aria-hidden="true">
+                <div><small>Pedidos</small><strong data-contar="312">312</strong></div>
+                <div><small>Clientes novos</small><strong data-contar="46">46</strong></div>
+                <div><small>Entregas no prazo</small><strong><span data-contar="96">96</span>%</strong></div>
+              </div>
+              <div class="gd-meio" aria-hidden="true">
+                <div class="gd-grafico"><p>Pedidos por dia</p><div class="gd-barras">{barras}</div></div>
+                <div class="gd-processo">
+                  <p>Processos</p>
+                  <div class="gd-proc"><span>Reposição de estoque</span><span class="gd-trilho"><i style="--p:72%"></i></span><small>72%</small></div>
+                  <div class="gd-proc"><span>Notas do mês</span><span class="gd-trilho"><i style="--p:45%"></i></span><small>45%</small></div>
+                  <div class="gd-proc"><span>Retornos agendados</span><span class="gd-trilho"><i style="--p:90%"></i></span><small>90%</small></div>
+                </div>
+              </div>
+              <ul class="gd-pedidos" aria-hidden="true">{pedidos}</ul>
+            </div>
+            <figcaption><span class="selo-exemplo">Exemplo ilustrativo com dados fictícios</span></figcaption>
+          </figure>"""
+
+FLUXO_IA = [("busca", "Entende o pedido", "2 marmitas, sexta, entrega ao meio-dia"),
+            ("estoque", "Confere o estoque", "Ingredientes disponíveis"),
+            ("agenda", "Agenda a entrega", "Sexta, 12h, na rota do centro"),
+            ("conversa", "Responde e avisa a equipe", "Cliente confirmado, cozinha avisada")]
+def demo_ia():
+    passos = "".join(f'<li class="fluxo-passo" data-passo><span class="fluxo-icone">{I[ic]}</span><span><strong>{t}</strong><small>{d}</small></span><span class="fluxo-ok">{I["check"]}</span></li>'
+                     for ic, t, d in FLUXO_IA)
+    return f"""<figure class="demo-visual">
+            <div class="fluxo" data-fluxo role="img" aria-label="Exemplo ilustrativo: a IA recebe a mensagem de um cliente, entende o pedido, confere o estoque, agenda a entrega e responde o cliente.">
+              <div class="fluxo-entrada" aria-hidden="true"><small>Mensagem recebida</small><p>"Quero 2 marmitas para sexta, com entrega ao meio-dia."</p></div>
+              <div class="fluxo-nucleo" aria-hidden="true"><span class="fluxo-orbita"></span>{I["avancado"]}<strong>Assistente de IA</strong></div>
+              <ol class="fluxo-passos" aria-hidden="true">{passos}</ol>
+            </div>
+            <figcaption><span class="selo-exemplo">Exemplo ilustrativo</span></figcaption>
+          </figure>"""
+
+DEMOS = [
+    ("atendimento", "Automação de atendimento", "conversa",
+     "O assistente virtual conversa com o cliente no WhatsApp ou no Instagram, oferece os horários livres e confirma o agendamento, a qualquer hora.",
+     ["Chatbots inteligentes, disponíveis 24 horas", "Respostas para as dúvidas mais frequentes", "Triagem e encaminhamento para a sua equipe"],
+     "whatsapp", "Ver serviços de atendimento", demo_chat()),
+    ("gestao", "Gestão empresarial", "gestao",
+     "Pedidos, clientes, processos e indicadores reunidos num painel, atualizado sem ninguém precisar montar planilha.",
+     ["Gestão de cadastros e pedidos", "Relatórios automatizados", "Integração com CRM, estoque e ERP"],
+     "gestao", "Ver serviços de gestão", demo_gestao()),
+    ("ia", "Inteligência artificial no dia a dia", "avancado",
+     "A IA entende o que o cliente pediu, consulta os sistemas da empresa, organiza a tarefa e avisa quem precisa saber.",
+     ["Agentes de IA personalizados", "Assistentes internos para a equipe", "Integração com os sistemas que você já usa"],
+     "ia", "Ver soluções de IA", demo_ia()),
+]
+def demos():
+    blocos = []
+    for i, (did, titulo, ic, texto, pontos, mod, link, visual) in enumerate(DEMOS):
+        lis = "".join(f"<li>{I['check']}{p}</li>" for p in pontos)
+        blocos.append(f"""        <article class="demo{' demo-invertida' if i % 2 else ''}" id="demo-{did}" aria-labelledby="demo-{did}-titulo">
+          <div class="demo-texto">
+            <span class="demo-icone">{I[ic]}</span>
+            <h3 id="demo-{did}-titulo">{titulo}</h3>
+            <p>{texto}</p>
+            <ul class="lista-simples">{lis}</ul>
+            <a class="link-seta" href="servicos.html#modulo-{mod}">{link}</a>
+          </div>
+          {visual}
+        </article>""")
+    return "\n".join(blocos)
+
+N_SERVICOS = len(CATALOGO)
+
+INICIO = f"""    <section class="hero" aria-labelledby="titulo-inicio">
+      <div class="hero-fundo" aria-hidden="true">
+        <div class="hero-gradiente"></div>
+        <canvas class="hero-rede" data-rede></canvas>
+        <svg class="hero-orbitas" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="orbita-cor" x1="0" x2="1"><stop offset="0" stop-color="#3FB4FF" stop-opacity="0"/><stop offset=".5" stop-color="#3FB4FF" stop-opacity=".6"/><stop offset="1" stop-color="#1A5CFF" stop-opacity="0"/></linearGradient>
+          </defs>
+          <g transform="rotate(-24 820 360)">
+            <ellipse id="orbita-1" cx="820" cy="360" rx="560" ry="170" fill="none" stroke="url(#orbita-cor)" stroke-width="1.2"/>
+            <ellipse id="orbita-2" cx="820" cy="360" rx="420" ry="120" fill="none" stroke="url(#orbita-cor)" stroke-width="1"/>
+            <circle r="4" fill="#3FB4FF" class="orbita-ponto"><animateMotion dur="26s" repeatCount="indefinite" path="M260 360a560 170 0 1 0 1120 0a560 170 0 1 0-1120 0"/></circle>
+            <circle r="3" fill="#1A5CFF" class="orbita-ponto"><animateMotion dur="19s" repeatCount="indefinite" path="M1240 360a420 120 0 1 0-840 0a420 120 0 1 0 840 0"/></circle>
+          </g>
+        </svg>
+      </div>
+      <div class="container hero-grade">
+        <div class="hero-texto">
+          <p class="hero-bf" data-promo><span class="hero-bf-selo">Black Friday</span><span>Implantação grátis até {PROMO_DATA}</span></p>
+          <h1 id="titulo-inicio" data-revelar-texto>Seu negócio merece trabalhar de forma mais inteligente.</h1>
+          <p class="hero-apoio">Automatizamos processos, conectamos sistemas e transformamos operações através da tecnologia.</p>
+          <ul class="hero-lista">
+            <li>{I["check"]}Atendimento 24 horas no WhatsApp e no Instagram</li>
+            <li>{I["check"]}Agendamentos, pedidos e orçamentos no automático</li>
+            <li>{I["check"]}Manutenção e suporte da nossa equipe</li>
+          </ul>
+          <div class="hero-oferta" data-promo>
+            <div class="hero-oferta-texto">
+              <span class="plano-de">Implantação <s>cobrada à parte</s></span>
+              <strong class="hero-oferta-preco">Grátis</strong>
+              <small>Você paga só a mensalidade, combinada conforme o seu negócio.</small>
+            </div>
+            <div class="hero-oferta-relogio"><small>A oferta termina em</small>{relogio()}</div>
+          </div>
+          <div class="hero-acoes">
+            <a class="botao botao-grande botao-oferta" href="{link_whats(MSG_BF)}" target="_blank" rel="noopener" data-contato data-msg="{MSG_BF}" data-fora-texto="Fale com a Kyzent" data-magnetico>{I["conversa"]}<span data-texto-botao>Garantir implantação grátis</span></a>
+            <a class="botao botao-grande botao-contorno" href="#solucoes" data-magnetico>Conheça nossas soluções</a>
+          </div>
+          <p class="hero-garantia">{I["escudo"]}WhatsApp pela API oficial da Meta. Pedir orçamento não tem compromisso.</p>
+        </div>
+{PAINEL_HERO}
       </div>
     </section>
 
-    <section class="secao secao-faixa" aria-labelledby="titulo-frentes">
+{faixa_animada()}
+
+    <section class="numeros-faixa" aria-label="A Kyzent em números">
+      <div class="container">
+        <ul class="hero-numeros">
+          <li><strong data-contar="4">4</strong><span>frentes de atuação</span></li>
+          <li><strong data-contar="{N_SERVICOS}">{N_SERVICOS}</strong><span>serviços de automação</span></li>
+          <li><strong data-contar="5">5</strong><span>tipos de negócio com soluções prontas</span></li>
+          <li><strong><span data-contar="24">24</span> h</strong><span>de atendimento no WhatsApp e no Instagram</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="secao" id="solucoes" aria-labelledby="titulo-frentes">
       <div class="container">
         <div class="cabeca-linha">
           <div class="cabeca">
-            <h2 id="titulo-frentes">Automação inteligente para empresas.</h2>
+            <p class="cabeca-bf" data-promo>Black Friday: implantação grátis em qualquer frente</p>
+            <h2 id="titulo-frentes" data-revelar-texto>Automação inteligente para empresas.</h2>
             <p>Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
           </div>
-          <a class="link-seta" href="servicos.html">Ver serviços</a>
+          <a class="link-seta" href="servicos.html#catalogo">Ver todos os serviços</a>
         </div>
-        <ol class="grade grade-4">
+        <ul class="grade grade-4 planos carrossel" data-carrossel aria-label="Frentes de serviço com a oferta">
 {FRENTES}
-        </ol>
+        </ul>
       </div>
     </section>
 
-{PARA_QUEM.replace('class="secao secao-faixa"', 'class="secao"', 1)}
+    <section class="secao secao-faixa secao-demos" id="exemplos" aria-labelledby="titulo-demos">
+      <div class="container">
+        <div class="cabeca cabeca-centro">
+          <h2 id="titulo-demos" data-revelar-texto>Veja como funciona na prática.</h2>
+          <p>Três situações do dia a dia de um comércio, desenhadas para mostrar o que cada automação faz. Cada projeto é montado conforme o seu negócio.</p>
+        </div>
+        <div class="demos">
+{demos()}
+        </div>
+      </div>
+    </section>
 
-{CHAMADA}"""
+{como_trabalhamos(faixa=False)}
+
+{PARA_QUEM.replace('class="secao"', 'class="secao secao-faixa"', 1)}
+
+{perguntas()}
+
+{chamada()}"""
 
 # ------------------------------------------------------------------ Quem somos
-QUEM = f"""    <section class="pagina-topo pagina-topo-larga" aria-labelledby="titulo-pagina">
-      <div class="container">
-        <h1 id="titulo-pagina">Quem somos</h1>
-        <p>Somos a Kyzent, uma empresa de Tecnologia e Inovação de Paulínia, dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio. Trabalhamos com Inteligência Artificial para melhorar o atendimento, apoiar as vendas e organizar a gestão do dia a dia, e também criamos soluções sob medida quando o seu negócio pede algo diferente.</p>
-        <p>Cada solução é pensada para a realidade do seu comércio e vem com manutenção e suporte da nossa equipe, para você ter a tecnologia funcionando sem se preocupar com a parte técnica.</p>
+COMPROMISSOS = [
+    ("medida", "Solução pensada para o seu negócio", "Cada projeto parte da realidade do seu comércio: como você atende, vende e organiza o dia."),
+    ("suporte", "Manutenção e suporte", "A nossa equipe acompanha cada solução depois de pronta, para a tecnologia seguir funcionando."),
+    ("escudo", "WhatsApp pela API oficial", "Usamos a conexão oficial da Meta, sem atalhos que coloquem o número da sua empresa em risco."),
+]
+QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
+      <div class="pagina-topo-fundo" aria-hidden="true"></div>
+      <div class="container pagina-topo-grade">
+        <div>
+          <h1 id="titulo-pagina" data-revelar-texto>Quem somos</h1>
+          <p class="pagina-topo-apoio">Somos a Kyzent, uma empresa de Tecnologia e Inovação de Paulínia, dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</p>
+        </div>
+        <div class="pagina-topo-texto">
+          <p>Trabalhamos com Inteligência Artificial para melhorar o atendimento, apoiar as vendas e organizar a gestão do dia a dia, e também criamos soluções sob medida quando o seu negócio pede algo diferente.</p>
+          <p>Cada solução é pensada para a realidade do seu comércio e vem com manutenção e suporte da nossa equipe, para você ter a tecnologia funcionando sem se preocupar com a parte técnica.</p>
+        </div>
       </div>
     </section>
 
     <section class="secao" aria-labelledby="titulo-proposito">
       <div class="container dupla">
         <div class="dupla-foto">
-          <img src="assets/fotos/equipe-reuniao.jpg" alt="Equipe conversando em uma reunião num escritório" width="1600" height="900">
+          <img src="assets/fotos/equipe-reuniao.jpg" alt="Equipe conversando em uma reunião num escritório" width="1600" height="900" loading="lazy">
         </div>
         <div class="dupla-texto">
-          <h2 id="titulo-proposito">Transformar processos por meio da tecnologia.</h2>
+          <h2 id="titulo-proposito" data-revelar-texto>Transformar processos por meio da tecnologia.</h2>
           <p>Nosso propósito é transformar processos por meio da tecnologia, oferecendo mais produtividade, automação e eficiência para impulsionar os resultados dos nossos clientes.</p>
           <p>A Kyzent é uma empresa de tecnologia de Paulínia que automatiza o trabalho repetitivo do seu comércio. Em vez de contratar mais gente, você assina um serviço que trabalha junto com a sua equipe.</p>
         </div>
       </div>
     </section>
 
-{PILARES}"""
+{PILARES}
+
+    <section class="secao" aria-labelledby="titulo-proposta">
+      <div class="container">
+        <div class="proposta revelar-bloco">
+          <h2 id="titulo-proposta" data-revelar-texto>Mais eficiência, menos tarefas manuais e processos mais inteligentes.</h2>
+          <p>Transformamos tecnologia em resultados para o seu negócio.</p>
+        </div>
+        <div class="cabeca cabeca-compromisso">
+          <h2 id="titulo-compromisso">Nosso compromisso com você.</h2>
+        </div>
+        <ul class="grade grade-3 compromissos" aria-labelledby="titulo-compromisso">
+{chr(10).join(f'          <li class="compromisso brilho"><span class="pilar-icone">{I[ic]}</span><h3>{t}</h3><p>{d}</p></li>' for ic, t, d in COMPROMISSOS)}
+        </ul>
+      </div>
+    </section>"""
 
 # ------------------------------------------------------------------ Serviços
 def balao(quem, texto, hora):
@@ -576,10 +890,9 @@ def conversa(r):
             </div>
             <div class="zap-base" aria-hidden="true"><span class="zap-campo">Mensagem</span><span class="zap-mic">{I["mic"]}</span></div>
           </div>
-          <figcaption>Exemplo de conversa. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
+          <figcaption>Exemplo ilustrativo. A IA responde com os serviços, os preços e o horário do seu negócio.</figcaption>
         </figure>"""
 
-# ilustrações de cada módulo (no lugar das fotos de banco): exemplos desenhados em HTML/CSS
 # agenda: (título, resumo, [(hora, nome, serviço, estado, texto do estado)])
 AGENDAS = {
     "todos": ("Agenda de hoje", "4 horários", [("09:00", "Carlos", "Corte", "ok", "Confirmado"), ("10:30", "Marina", "Retorno", "ok", "Confirmado"),
@@ -588,8 +901,8 @@ AGENDAS = {
               ("20 d", "Marina", "Não pede há 20 dias", "lembrete", "Mensagem enviada"), ("30 d", "João", "Não pede há 30 dias", "ok", "Voltou a pedir")]),
     "barbearia": ("Agenda de hoje", "4 horários", [("09:00", "Carlos", "Corte e barba", "ok", "Confirmado"), ("10:30", "Lucas", "Corte", "ok", "Confirmado"),
               ("11:15", "", "", "livre", "Horário livre"), ("14:00", "André", "Barba", "lembrete", "Lembrete enviado")]),
-    "salao": ("Agenda de hoje", "4 horários", [("09:30", "Ana", "Escova · Camila", "ok", "Confirmado"), ("11:00", "Júlia", "Hidratação · Bia", "ok", "Confirmado"),
-              ("13:30", "", "", "livre", "Horário livre"), ("15:00", "Paula", "Coloração · Camila", "lembrete", "Lembrete enviado")]),
+    "salao": ("Agenda de hoje", "4 horários", [("09:30", "Ana", "Escova, com Camila", "ok", "Confirmado"), ("11:00", "Júlia", "Hidratação, com Bia", "ok", "Confirmado"),
+              ("13:30", "", "", "livre", "Horário livre"), ("15:00", "Paula", "Coloração, com Camila", "lembrete", "Lembrete enviado")]),
     "consultorio": ("Agenda de hoje", "4 horários", [("09:00", "Marina", "Retorno", "ok", "Confirmado"), ("10:30", "João", "Consulta", "ok", "Confirmado"),
               ("11:15", "", "", "livre", "Horário livre"), ("14:00", "Rita", "Exame", "lembrete", "Lembrete enviado")]),
     "petshop": ("Agenda de hoje", "4 horários", [("09:00", "Thor", "Banho e tosa", "ok", "Confirmado"), ("10:30", "Mel", "Vacina", "ok", "Confirmado"),
@@ -612,7 +925,6 @@ def mock_agenda(r):
           <figcaption>Exemplo ilustrativo. {legenda}</figcaption>
         </figure>"""
 
-# gestão: (rótulo, valor) x3
 GESTOES = {
     "todos": [("Pedidos", "128"), ("Clientes", "214"), ("Retornos", "37")],
     "lanchonete": [("Pedidos", "128"), ("Clientes", "214"), ("Entregas", "96")],
@@ -634,7 +946,6 @@ def mock_gestao(r):
           <figcaption>Exemplo ilustrativo. Cadastros, pedidos e relatórios organizados sem planilha na mão.</figcaption>
         </figure>"""
 
-# site: (endereço, título, subtítulo)
 SITES = {
     "todos": ("seunegocio.com.br", "O seu negócio, do seu jeito.", "Serviços, horários e contato num lugar só."),
     "lanchonete": ("sualanchonete.com.br", "Peça o seu lanche sem fila.", "Cardápio, entrega e horários num lugar só."),
@@ -659,7 +970,6 @@ def mock_site(r):
           <figcaption>Exemplo ilustrativo. O site é feito sob medida, com o seu jeito e o que você quer mostrar.</figcaption>
         </figure>"""
 
-# IA sob medida: com o que a IA conversa (saída)
 SAIDAS_IA = {"todos": ["Agenda", "Estoque", "Clientes"], "lanchonete": ["Pedidos", "Estoque", "Clientes"],
              "petshop": ["Agenda", "Estoque", "Clientes"]}
 
@@ -687,7 +997,6 @@ def variantes(fn):
 EXEMPLOS = {"whatsapp": variantes(conversa), "agenda": variantes(mock_agenda), "gestao": variantes(mock_gestao),
             "site": variantes(mock_site), "ia": variantes(mock_ia)}
 
-# nome do ramo (filtro): id -> (texto do botão, ícone)
 FILTRO_RAMOS = {"lanchonete": ("Lanchonete", "lanche"), "barbearia": ("Barbearia", "tesoura"),
                 "salao": ("Salão de beleza", "pente"), "consultorio": ("Clínica", "cruz"), "petshop": ("Pet shop", "pata")}
 
@@ -700,7 +1009,7 @@ for i, (mid, t, curto, ic, resumo, nomes) in enumerate(MODULOS):
         f'<span class="aba-icone">{I[ic]}</span><span class="aba-texto"><span class="aba-longo">{t}</span><span class="aba-curto">{curto}</span></span>'
         f'<span class="aba-qtd" data-qtd>{len(nomes)}</span></button>')
     cards = "\n".join(
-        f'''              <li class="item" data-ramos="{" ".join(CATALOGO[a][1])}">
+        f'''              <li class="item brilho" data-ramos="{" ".join(CATALOGO[a][1])}">
                 <h4>{a}</h4>
                 <p>{CATALOGO[a][0]}</p>
                 <button class="item-add" type="button" data-servico="{a}" data-area="{t}" aria-pressed="false">
@@ -740,16 +1049,22 @@ chips = "".join(
 NOMES_RAMOS = {rid: nome for rid, nome, *_ in RAMOS}
 nomes_js = json.dumps(NOMES_RAMOS, ensure_ascii=False)
 
-SERVICOS_PAG = f"""    <section class="pagina-topo pagina-topo-servicos" aria-labelledby="titulo-pagina">
-      <div class="container topo-servicos">
+SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
+      <div class="pagina-topo-fundo" aria-hidden="true"></div>
+      <div class="container pagina-topo-grade">
         <div>
-          <h1 id="titulo-pagina">Automação inteligente para empresas.</h1>
-          <p>Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
+          <h1 id="titulo-pagina" data-revelar-texto>Automação inteligente para empresas.</h1>
+          <p class="pagina-topo-apoio">Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
+        </div>
+        <div class="pagina-topo-texto">
+          <p class="topo-bf" data-promo><span class="hero-bf-selo">Black Friday</span>Implantação grátis em qualquer módulo para quem fechar até {PROMO_DATA}.</p>
+          <p>Escolha o seu tipo de negócio, veja os serviços de cada módulo e adicione ao orçamento o que interessar. No fim, o orçamento vai pronto para o nosso WhatsApp.</p>
+          <a class="botao" href="#catalogo" data-magnetico>Ver os serviços</a>
         </div>
       </div>
     </section>
 
-{COMO_FUNCIONA.replace('class="secao"', 'class="secao secao-faixa"', 1)}
+{como_trabalhamos(faixa=True)}
 
     <section class="secao secao-servicos" id="catalogo" aria-label="Serviços por módulo">
       <div class="container filtro" data-filtro data-nomes='{nomes_js}'>
@@ -774,14 +1089,16 @@ SERVICOS_PAG = f"""    <section class="pagina-topo pagina-topo-servicos" aria-la
         <p class="precos-nota">Valores combinados conforme a necessidade de cada negócio.</p>
       </div>
     </section>
+
+{chamada()}
 """
 
-DESC = "A Kyzent é uma empresa de Tecnologia e Inovação dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio. Paulínia e região."
+DESC = "A Kyzent é uma empresa de Tecnologia e Inovação de Paulínia/SP que automatiza processos, conecta sistemas e leva Inteligência Artificial ao atendimento, às vendas e à gestão de pequenas empresas."
 
 saidas = [
-    ("index.html", "Kyzent | Tecnologia e Inovação para o seu comércio", DESC, INICIO, ramos_janelas()),
-    ("quem-somos.html", "Quem somos | Kyzent", "A Kyzent é uma empresa de Tecnologia e Inovação de Paulínia. Conheça os sócios, a missão, a visão e os valores.", QUEM, ""),
-    ("servicos.html", "Serviços | Kyzent", "WhatsApp, agendamento, gestão, site e IA sob medida para o seu comércio. Escolha o seu tipo de negócio e monte o seu orçamento.", SERVICOS_PAG, FILTRO_JANELA),
+    ("index.html", "Kyzent | Tecnologia e Inovação para o seu negócio", DESC, INICIO, ramos_janelas()),
+    ("quem-somos.html", "Quem somos | Kyzent", "A Kyzent é uma empresa de Tecnologia e Inovação de Paulínia/SP. Conheça o nosso propósito, a missão, a visão e os valores.", QUEM, ""),
+    ("servicos.html", "Serviços | Kyzent", "WhatsApp, agendamento, gestão, site e IA sob medida para o seu negócio. Escolha o seu tipo de negócio e monte o seu orçamento.", SERVICOS_PAG, FILTRO_JANELA),
 ]
 for arq, titulo, desc, corpo, janelas in saidas:
     with open(os.path.join(SITE, arq), "w", encoding="utf-8", newline="\n") as f:
