@@ -376,7 +376,7 @@
       hero.addEventListener("pointerleave", function () { inclAlvo.x = inclAlvo.y = 0; });
     }
     var desenharEsfera = function () {
-      var R = Math.min(EW, EH) * 0.36, cx = EW / 2, cy = EH / 2;
+      var R = Math.min(EW, EH) * 0.4, cx = EW / 2, cy = EH / 2;
       incl.x += (inclAlvo.x - incl.x) * .05; incl.y += (inclAlvo.y - incl.y) * .05;
       var ay = girar + incl.y, ax = -0.35 + incl.x;
       var cyy = Math.cos(ay), syy = Math.sin(ay), cxx = Math.cos(ax), sxx = Math.sin(ax);
@@ -433,11 +433,21 @@
       passosH.forEach(function (p) { p.classList.toggle("ativo", +p.getAttribute("data-historia") === n); });
     };
     marcarH(1);
-    if ("IntersectionObserver" in window) {
-      var obsH = new IntersectionObserver(function (es) {
-        es.forEach(function (en) { if (en.isIntersecting) marcarH(+en.target.getAttribute("data-historia")); });
-      }, { rootMargin: "-45% 0px -45% 0px" });
-      passosH.forEach(function (p) { obsH.observe(p); });
+    // o diagrama avança sozinho de passo em passo enquanto está na tela; passar o mouse ou tocar escolhe o passo
+    var autoH = null, visivelH = false, pausaH = false;
+    var proximoH = function () { if (!pausaH) marcarH(+palcoH.getAttribute("data-etapa") % passosH.length + 1); };
+    if ("IntersectionObserver" in window && !semMovimento) {
+      new IntersectionObserver(function (es) {
+        visivelH = es[0].isIntersecting;
+        clearInterval(autoH);
+        if (visivelH) autoH = setInterval(proximoH, 3200);
+      }, { threshold: .35 }).observe(palcoH);
+    }
+    var lista = $("[data-historia-lista]");
+    if (lista) {
+      lista.addEventListener("pointerenter", function () { pausaH = true; });
+      lista.addEventListener("pointerleave", function () { pausaH = false; });
+      passosH.forEach(function (p) { p.addEventListener("pointerenter", function () { marcarH(+p.getAttribute("data-historia")); }); });
     }
     passosH.forEach(function (p) { p.addEventListener("click", function () { marcarH(+p.getAttribute("data-historia")); }); });
     // as camadas do diagrama se movem com o cursor, cada uma numa profundidade
@@ -715,7 +725,8 @@
       passos.forEach(function (p, i) { p.hidden = i !== n; });
       barra.style.width = ((n + 1) / passos.length * 100) + "%";
       num.textContent = "Passo " + (n + 1) + " de " + passos.length;
-      voltar.hidden = n === 0;
+      voltar.hidden = false;
+      voltar.textContent = n === 0 ? "Voltar à página anterior" : "Voltar";
       avancar.hidden = n === passos.length - 1;
       enviar.hidden = n !== passos.length - 1;
       mostrarErro("");
@@ -736,7 +747,11 @@
       return "";
     }
     avancar.addEventListener("click", function () { var e = valido(atual); if (e) mostrarErro(e); else irPara(atual + 1); });
-    voltar.addEventListener("click", function () { irPara(atual - 1); });
+    voltar.addEventListener("click", function () {
+      if (atual > 0) { irPara(atual - 1); return; }
+      var veioDoSite = document.referrer && document.referrer.indexOf(location.host) > -1;
+      if (veioDoSite && history.length > 1) history.back(); else location.href = "index.html";
+    });
     form.addEventListener("keydown", function (e) {
       if (e.key === "Enter" && e.target.tagName === "INPUT" && atual < passos.length - 1) { e.preventDefault(); avancar.click(); }
     });

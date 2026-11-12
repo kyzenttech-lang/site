@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "71"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "73"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -309,7 +309,6 @@ def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
         <div class="rodape-marca">
           <a href="index.html" aria-label="Kyzent, página inicial">{logo()}</a>
           <p>Empresa de Tecnologia e Inovação de Paulínia/SP. Automação e Inteligência Artificial para o atendimento, as vendas e a gestão de pequenas empresas.</p>
-          <a class="botao botao-contorno" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{I["conversa"]}{BOTAO}</a>
         </div>
         <div>
           <h2>Navegação</h2>
@@ -700,18 +699,15 @@ ORCAMENTO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina"
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-contato" data-revelar-texto>Fale com a Kyzent.</h2>
-          <p>Atendemos Paulínia e região. A conversa começa pelo WhatsApp.</p>
+          <p>Atendemos Paulínia/SP e região. As soluções funcionam pela internet, então tudo começa por uma conversa no WhatsApp.</p>
         </div>
-        <ul class="grade grade-3 contatos">
+        <ul class="grade contatos">
           <li class="contato-cartao brilho"><h3>WhatsApp</h3>
             <p><a href="{link_whats(None, 0)}" target="_blank" rel="noopener">{WHATS[0][1]}</a><br><a href="{link_whats(None, 1)}" target="_blank" rel="noopener">{WHATS[1][1]}</a></p>
             <a class="botao" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{BOTAO}</a></li>
           <li class="contato-cartao brilho"><h3>Instagram</h3>
             <p>Novidades, exemplos e bastidores da Kyzent.</p>
             <a class="botao botao-contorno" href="https://www.instagram.com/kyzent.tech/" target="_blank" rel="noopener">@kyzent.tech</a></li>
-          <li class="contato-cartao brilho"><h3>Onde atendemos</h3>
-            <p>Paulínia/SP e região. As soluções funcionam pela internet, então o atendimento acontece pelo WhatsApp.</p>
-            <a class="botao botao-contorno" href="#simulador">Simular meu orçamento</a></li>
         </ul>
       </div>
     </section>"""
@@ -877,7 +873,7 @@ HISTORIA = f"""    <section class="secao historia" id="como-funciona" aria-label
             <h2 id="titulo-historia" data-revelar-texto>Uma mensagem entra. O trabalho sai feito.</h2>
             <p>O que acontece por trás de cada conversa quando o seu negócio tem automação.</p>
           </div>
-          <ol class="historia-passos">
+          <ol class="historia-passos" data-historia-lista>
 {chr(10).join(f'            <li class="historia-passo" data-historia="{i + 1}"><span class="historia-n">{i + 1}</span><h3>{t}</h3><p>{d}</p></li>' for i, (t, d) in enumerate(HISTORIA_PASSOS))}
           </ol>
         </div>
@@ -970,6 +966,8 @@ SOBRE_CURTO = """    <section class="secao secao-faixa sobre-curto" aria-labelle
     </section>"""
 
 def projetos_secao():
+    if not PROJETOS:   # sem case autorizado, a seção não aparece (pedido do Otavio, 2026-11-12)
+        return ""
     if PROJETOS:
         cards = "".join(f'<li class="projeto"><h3>{n}</h3><p class="projeto-seg">{s}</p><p>{d}</p></li>' for n, s, d, _ in PROJETOS)
     else:
@@ -1050,9 +1048,7 @@ INICIO = f"""{HERO}
 
 {SOBRE_CURTO}
 
-{projetos_secao()}
-
-{perguntas().replace('class="secao"', 'class="secao claro"', 1)}
+{projetos_secao()}{perguntas().replace('class="secao"', 'class="secao claro"', 1)}
 
 {chamada("index.html")}"""
 
