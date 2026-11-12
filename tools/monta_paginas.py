@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "51"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "53"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -210,42 +210,8 @@ ATUAL = ' aria-current="page"'
 def logo():
     return '<img src="assets/img/kyzent-horizontal-escuro.svg" alt="Kyzent, automação e IA" width="590" height="140">'
 
-RAMOS_NOMES = ["Lanchonete", "Barbearia", "Salão de beleza", "Clínica", "Pet shop", "Restaurante", "Loja"]
 
-JANELAS_GERAIS = f"""  <dialog class="gaveta" id="carrinho" aria-labelledby="carrinho-titulo">
-    <div class="gaveta-topo">
-      <h2 id="carrinho-titulo" tabindex="-1" autofocus>Seu orçamento <span class="gaveta-qtd" data-carrinho-qtd></span></h2>
-      <button class="icone-botao" type="button" data-fechar-janela aria-label="Fechar">{I["fechar"]}</button>
-    </div>
-    <div class="gaveta-corpo">
-      <div class="gaveta-vazia" data-carrinho-vazio>
-        <span class="gaveta-vazia-icone">{I["orcamento"]}</span>
-        <p><strong>Nenhum serviço no orçamento ainda.</strong></p>
-        <p>Na página de serviços, toque em "Adicionar" no que interessar. Tudo fica guardado aqui.</p>
-        <a class="botao botao-contorno" href="servicos.html#catalogo">Ver serviços</a>
-      </div>
-      <ul class="gaveta-lista" data-carrinho-lista></ul>
-      <p class="gaveta-nota" data-carrinho-nota hidden>Valores combinados pelo WhatsApp, conforme a necessidade do seu negócio.</p>
-      <form class="gaveta-form" data-carrinho-form>
-        <p class="gaveta-form-titulo">Para a gente já chegar preparado <span>(opcional)</span></p>
-        <label>Seu nome<input name="nome" autocomplete="name"></label>
-        <label>Tipo de negócio<input name="negocio" list="lista-negocios" placeholder="Ex.: barbearia"></label>
-        <datalist id="lista-negocios">{"".join(f'<option value="{r}">' for r in RAMOS_NOMES)}</datalist>
-        <label>Observação<textarea name="obs" rows="3" placeholder="Ex.: atendo 40 clientes por dia no WhatsApp"></textarea></label>
-      </form>
-    </div>
-    <div class="gaveta-base" data-carrinho-base>
-      <button class="botao" type="button" data-carrinho-enviar>{I["conversa"]}Enviar orçamento pelo WhatsApp</button>
-      <button class="link-botao" type="button" data-carrinho-limpar>Limpar orçamento</button>
-    </div>
-  </dialog>
-
-  <div class="aviso" role="status" aria-live="polite" data-aviso hidden>
-    <span class="aviso-icone">{I["check"]}</span>
-    <span class="aviso-texto" data-aviso-texto></span>
-    <button class="aviso-botao" type="button" data-abrir-carrinho>Ver orçamento</button>
-  </div>
-"""
+JANELAS_GERAIS = ""   # o carrinho de orçamento saiu em 2026-11-12: o orçamento agora é pelo simulador (orcamento.html)
 
 def relogio(cls=""):
     """Contador regressivo até o fim da Black Friday (o JS atualiza a cada segundo)."""
@@ -318,7 +284,6 @@ def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
       <a class="barra-logo" href="index.html" aria-label="Kyzent, página inicial">{logo()}</a>
       <nav aria-label="Principal">{menu(ativo, "menu")}</nav>
       <div class="barra-acoes">
-        <button class="orcamento-botao" type="button" data-abrir-carrinho hidden>{I["orcamento"]}Orçamento <span data-contador>(0)</span></button>
         <button class="icone-botao botao-menu" type="button" data-abrir-menu aria-expanded="false" aria-controls="menu-celular" aria-label="Abrir menu"><span class="hamburguer" aria-hidden="true"><i></i><i></i><i></i></span></button>
         <a class="botao botao-barra" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{BOTAO}</a>
       </div>
@@ -371,7 +336,6 @@ def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
   </footer>
   <a class="whats-flutuante" href="{link_whats()}" target="_blank" rel="noopener" data-contato aria-label="{BOTAO}">{I["conversa"]}<span>Fale com a gente</span></a>
   <div class="barra-fixa">
-    <button class="barra-fixa-orcamento" type="button" data-abrir-carrinho hidden>Orçamento <span data-contador>(0)</span></button>
     <a class="whats-fixo" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{I["conversa"]}<span class="whats-longo">{BOTAO}</span><span class="whats-curto">WhatsApp</span></a>
   </div>
 
@@ -902,9 +866,6 @@ def pagina_solucao(mid):
         f'''              <li class="item brilho">
                 <h4>{a}</h4>
                 <p>{CATALOGO[a][0]}</p>
-                <button class="item-add" type="button" data-servico="{a}" data-area="{nome}" aria-pressed="false">
-                  <span class="item-add-mais">{I["mais"]}</span><span class="item-add-feito">{I["check"]}</span><span class="item-add-rotulo">Adicionar</span>
-                </button>
               </li>''' for a in servs)
     ramos = sorted({r for a in servs for r in CATALOGO[a][1]}, key=TODOS.index)
     seg_nomes = {s[0]: s[1] for s in SEGMENTOS}
@@ -957,11 +918,12 @@ def pagina_solucao(mid):
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-incluido" data-revelar-texto>O que está incluído.</h2>
-          <p>Escolha os serviços que fazem sentido para você e monte o seu orçamento. Ele vai pronto para o nosso WhatsApp.</p>
+          <p>Todos os serviços desta solução. No simulador, você responde quatro perguntas e recebe a recomendação certa para o seu negócio.</p>
         </div>
         <ul class="painel-itens itens-solucao">
 {itens}
         </ul>
+        <div class="itens-acao"><a class="botao" href="orcamento.html">Simular o meu orçamento</a></div>
       </div>
     </section>
 
@@ -1310,9 +1272,6 @@ for i, (mid, t, curto, ic, resumo, nomes) in enumerate(MODULOS):
         f'''              <li class="item brilho" data-ramos="{" ".join(CATALOGO[a][1])}">
                 <h4>{a}</h4>
                 <p>{CATALOGO[a][0]}</p>
-                <button class="item-add" type="button" data-servico="{a}" data-area="{t}" aria-pressed="false">
-                  <span class="item-add-mais">{I["mais"]}</span><span class="item-add-feito">{I["check"]}</span><span class="item-add-rotulo">Adicionar</span>
-                </button>
               </li>''' for a in nomes)
     paineis.append(f"""        <section class="painel tem-exemplo" id="modulo-{mid}" role="tabpanel" aria-labelledby="aba-{mid}" tabindex="-1">
           <div class="painel-lado">
@@ -1357,8 +1316,9 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
         </div>
         <div class="pagina-topo-texto">
           <p class="topo-bf" data-promo><span class="hero-bf-selo">Black Friday</span>Implantação grátis em qualquer módulo para quem fechar até {PROMO_DATA}.</p>
-          <p>Escolha o seu tipo de negócio, veja os serviços de cada módulo e adicione ao orçamento o que interessar. No fim, o orçamento vai pronto para o nosso WhatsApp.</p>
-          <a class="botao" href="#catalogo" data-magnetico>Ver os serviços</a>
+          <p>Escolha o seu tipo de negócio e veja os serviços de cada solução. Para receber uma recomendação, responda as perguntas do simulador de orçamento.</p>
+          <a class="botao" href="orcamento.html" data-magnetico>Simular o meu orçamento</a>
+          <a class="link-seta" href="#catalogo">Ver os serviços</a>
         </div>
       </div>
     </section>
@@ -1383,7 +1343,7 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
       </div>
       <div class="container paineis">
 {chr(10).join(paineis)}
-        <p class="precos-nota">Valores combinados conforme a necessidade de cada negócio.</p>
+        <div class="itens-acao"><p class="precos-nota">Valores combinados conforme a necessidade de cada negócio.</p><a class="botao" href="orcamento.html">Simular o meu orçamento</a></div>
       </div>
     </section>
 
@@ -1394,7 +1354,7 @@ DESC = "A Kyzent é uma empresa de Tecnologia e Inovação de Paulínia/SP que a
 
 saidas = [
     ("index.html", "Kyzent | Inteligência artificial e automação para o seu negócio", DESC, INICIO, "", None),
-    ("servicos.html", "Soluções e serviços | Kyzent", "Catálogo de soluções da Kyzent: atendimento com IA no WhatsApp, agendamento e vendas, gestão, site e IA sob medida. Monte o seu orçamento.", SERVICOS_PAG, FILTRO_JANELA, None),
+    ("servicos.html", "Soluções e serviços | Kyzent", "Catálogo de soluções da Kyzent: atendimento com IA no WhatsApp, agendamento e vendas, gestão, site e IA sob medida. Simule o seu orçamento.", SERVICOS_PAG, FILTRO_JANELA, None),
     ("quem-somos.html", "Quem somos | Kyzent", "A Kyzent é uma empresa de Tecnologia e Inovação de Paulínia/SP. Conheça o nosso propósito, a missão, a visão, os valores e os diferenciais.", QUEM, "", None),
     ("orcamento.html", "Orçamento | Kyzent", "Simule o seu orçamento em quatro passos e receba uma recomendação de solução da Kyzent pelo WhatsApp.", ORCAMENTO, "", None),
 ] + [(PAGINA_MOD[mid], f"{SOLUCOES[mid][0]} | Kyzent", SOLUCOES[mid][1], pagina_solucao(mid), "", "servicos.html") for mid in MOD]

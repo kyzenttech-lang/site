@@ -1,4 +1,4 @@
-// KYZENT — menu, janelas, abas, orçamento (carrinho), WhatsApp com número sorteado e animações.
+// KYZENT — menu, janelas, abas, WhatsApp com número sorteado, simulador de orçamento e animações.
 (function () {
   "use strict";
   var raiz = document.documentElement;
@@ -79,151 +79,6 @@
     b.addEventListener("click", function () { abrirJanela(document.getElementById(b.getAttribute("data-abrir-janela"))); });
   });
 
-  /* ------------------------------------------------------------ orçamento (carrinho) */
-  var CHAVE = "kyzent-orcamento";
-  var itens = ler(CHAVE, []);
-  if (!Array.isArray(itens)) itens = [];
-  var dados = ler("kyzent-orcamento-dados", {});
-  var gaveta = document.getElementById("carrinho");
-  var lista = $("[data-carrinho-lista]");
-  var form = $("[data-carrinho-form]");
-
-  function tem(nome) { return itens.some(function (i) { return i.nome === nome; }); }
-  function palavra(n) { return n === 1 ? "serviço" : "serviços"; }
-
-  function atualizarBotoesServico() {
-    $$("[data-servico]").forEach(function (b) {
-      var ligado = tem(b.getAttribute("data-servico"));
-      b.setAttribute("aria-pressed", ligado ? "true" : "false");
-      var rot = $(".item-add-rotulo", b);
-      if (rot) rot.textContent = ligado ? "No orçamento" : "Adicionar";
-      var item = b.closest(".item");
-      if (item) item.classList.toggle("escolhido", ligado);
-    });
-  }
-
-  function desenharCarrinho() {
-    var n = itens.length;
-    $$("[data-contador]").forEach(function (c) { c.textContent = "(" + n + ")"; });
-    $$(".orcamento-botao, .barra-fixa-orcamento").forEach(function (b) {
-      b.hidden = n === 0;
-      b.setAttribute("aria-label", "Ver orçamento, " + n + " " + palavra(n));
-    });
-    raiz.classList.toggle("tem-orcamento", n > 0);
-    if (!gaveta) return;
-    $("[data-carrinho-qtd]").textContent = n ? "(" + n + ")" : "";
-    $("[data-carrinho-vazio]").hidden = n > 0;
-    form.hidden = n === 0;
-    $("[data-carrinho-base]").hidden = n === 0;
-    var nota = $("[data-carrinho-nota]");
-    if (nota) nota.hidden = n === 0;
-    lista.innerHTML = "";
-    itens.forEach(function (i) {
-      var li = document.createElement("li");
-      li.className = "gaveta-item";
-      li.innerHTML = '<div><strong></strong><span></span></div>' +
-        '<button type="button" class="gaveta-remover" aria-label="Tirar do orçamento">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';
-      $("strong", li).textContent = i.nome;
-      $("span", li).textContent = i.area || "";
-      $(".gaveta-remover", li).addEventListener("click", function () {
-        li.classList.add("saindo");
-        setTimeout(function () { remover(i.nome); }, semMovimento ? 0 : 180);
-      });
-      lista.appendChild(li);
-    });
-  }
-
-  function salvar() { guardar(CHAVE, itens); desenharCarrinho(); atualizarBotoesServico(); }
-  function remover(nome) { itens = itens.filter(function (i) { return i.nome !== nome; }); salvar(); }
-
-  // outras abas do navegador com o site aberto ficam iguais
-  addEventListener("storage", function (e) {
-    if (e.key === CHAVE) { itens = ler(CHAVE, []); desenharCarrinho(); atualizarBotoesServico(); }
-  });
-
-  // bolinha que voa do botão até o ícone do orçamento
-  function voar(origem) {
-    if (semMovimento || !origem.animate) return;
-    var alvo = $$(".orcamento-botao, .barra-fixa-orcamento").filter(function (el) {
-      var r = el.getBoundingClientRect(); return r.width > 0 && r.top < innerHeight && r.bottom > 0;
-    })[0];
-    if (!alvo) return;
-    var a = origem.getBoundingClientRect(), b = alvo.getBoundingClientRect();
-    var bola = document.createElement("span");
-    bola.className = "bolinha";
-    bola.style.left = (a.left + 18) + "px";
-    bola.style.top = (a.top + a.height / 2 - 6) + "px";
-    document.body.appendChild(bola);
-    var dx = b.left + b.width / 2 - (a.left + 24), dy = b.top + b.height / 2 - (a.top + a.height / 2);
-    bola.animate([
-      { transform: "translate(0,0) scale(1)", opacity: 1 },
-      { transform: "translate(" + dx * 0.5 + "px," + (dy * 0.5 - 60) + "px) scale(1.15)", opacity: 1, offset: 0.5 },
-      { transform: "translate(" + dx + "px," + dy + "px) scale(.5)", opacity: .6 }
-    ], { duration: 650, easing: "cubic-bezier(.5,0,.3,1)" }).onfinish = function () {
-      bola.remove();
-      $$("[data-contador]").forEach(function (c) { c.classList.remove("pulo"); void c.offsetWidth; c.classList.add("pulo"); });
-    };
-  }
-
-  var aviso = $("[data-aviso]"), avisoTempo;
-  function avisar(texto) {
-    if (!aviso) return;
-    $("[data-aviso-texto]", aviso).textContent = texto;
-    aviso.hidden = false;
-    aviso.classList.remove("saindo");
-    clearTimeout(avisoTempo);
-    avisoTempo = setTimeout(function () {
-      aviso.classList.add("saindo");
-      setTimeout(function () { aviso.hidden = true; aviso.classList.remove("saindo"); }, 220);
-    }, 3200);
-  }
-
-  $$("[data-servico]").forEach(function (b) {
-    b.addEventListener("click", function () {
-      var nome = b.getAttribute("data-servico");
-      if (tem(nome)) {
-        remover(nome);
-        avisar("Tirado do orçamento: " + nome);
-      } else {
-        itens.push({ nome: nome, area: b.getAttribute("data-area") || "" });
-        salvar();
-        voar(b);
-        avisar("Adicionado ao orçamento: " + nome);
-      }
-    });
-  });
-
-  $$("[data-abrir-carrinho]").forEach(function (b) {
-    b.addEventListener("click", function () {
-      if (aviso) aviso.hidden = true;
-      abrirJanela(gaveta);
-    });
-  });
-
-  if (form) {
-    ["nome", "negocio", "obs"].forEach(function (campo) {
-      var el = form.elements[campo];
-      if (!el) return;
-      if (dados[campo]) el.value = dados[campo];
-      el.addEventListener("input", function () { dados[campo] = el.value; guardar("kyzent-orcamento-dados", dados); });
-    });
-    form.addEventListener("submit", function (e) { e.preventDefault(); });
-  }
-  var limpar = $("[data-carrinho-limpar]");
-  if (limpar) limpar.addEventListener("click", function () { itens = []; salvar(); });
-
-  function mensagemOrcamento() {
-    var linhas = ["Olá, vim pelo site da Kyzent e quero um orçamento."];
-    if (!isNaN(fimPromo) && Date.now() < fimPromo) linhas.push("Quero aproveitar a implantação grátis da Black Friday.");
-    if (dados.nome) linhas.push("Nome: " + dados.nome.trim());
-    if (dados.negocio) linhas.push("Negócio: " + dados.negocio.trim());
-    linhas.push("", "Serviços:");
-    itens.forEach(function (i) { linhas.push("- " + i.nome + (i.area ? " (" + i.area + ")" : "")); });
-    if (dados.obs) linhas.push("", "Observação: " + dados.obs.trim());
-    return linhas.join("\n");
-  }
-
   /* ------------------------------------------------------------ WhatsApp: número sorteado entre os dois, direto, sem janela de escolha */
   var NUMEROS = (document.body.getAttribute("data-whats") || "").split(" ").filter(Boolean);
   function linkSorteado(msg) {
@@ -233,7 +88,6 @@
   function mensagemDo(b) {
     var msg = b.getAttribute("data-msg");
     if (msg) return msg;
-    if (itens.length) return mensagemOrcamento();
     return /orçamento/i.test(b.textContent) ? "Olá, vim pelo site da Kyzent e quero um orçamento." : MSG_PADRAO;
   }
   $$("[data-contato]").forEach(function (b) {
@@ -245,15 +99,6 @@
       if (origem) setTimeout(function () { fecharJanela(origem); }, 150);
     });
   });
-
-  var enviar = $("[data-carrinho-enviar]");
-  if (enviar) enviar.addEventListener("click", function () {
-    if (NUMEROS.length) window.open(linkSorteado(mensagemOrcamento()), "_blank", "noopener");
-    fecharJanela(gaveta);
-  });
-
-  desenharCarrinho();
-  atualizarBotoesServico();
 
   /* ------------------------------------------------------------ abas da página de serviços */
   var abas = $$('.abas [role="tab"]');
@@ -997,8 +842,7 @@
       resultado.appendChild(rec);
       var acoes = el("div", "sim-rec-acoes");
       var bWhats = el("button", "botao", "Enviar pelo WhatsApp"); bWhats.type = "button";
-      var bOrc = el("button", "botao botao-contorno", "Guardar no meu orçamento"); bOrc.type = "button";
-      acoes.appendChild(bWhats); acoes.appendChild(bOrc);
+      acoes.appendChild(bWhats);
       resultado.appendChild(acoes);
       resultado.appendChild(el("p", "sim-rec-nota", "A recomendação é um ponto de partida. O orçamento final é combinado pelo WhatsApp, conforme o seu negócio."));
       bWhats.addEventListener("click", function () {
@@ -1006,10 +850,6 @@
         if (NUMEROS.length) window.open(linkSorteado(mensagem), "_blank", "noopener");
         bWhats.disabled = true; bWhats.textContent = "Mensagem aberta no WhatsApp";
         setTimeout(function () { bWhats.disabled = false; bWhats.textContent = "Enviar pelo WhatsApp"; }, 4000);
-      });
-      bOrc.addEventListener("click", function () {
-        servicos.forEach(function (s) { if (!tem(s)) itens.push({ nome: s, area: servMod[s][2] }); });
-        salvar(); avisar(servicos.length + " " + palavra(servicos.length) + " no seu orçamento");
       });
       if (innerWidth < 1000) resultado.scrollIntoView({ behavior: semMovimento ? "auto" : "smooth", block: "start" });
       h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: innerWidth >= 1000 });
