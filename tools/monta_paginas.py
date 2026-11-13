@@ -8,10 +8,12 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "104"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "106"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
+EMAIL = "kyzent.tech@gmail.com"   # contato geral e de privacidade (LGPD)
+PRIVACIDADE_DATA = "13 de novembro de 2026"   # mude ao alterar o texto da política
 BOTAO = "Conversar no WhatsApp"   # o nome dos botões de contato do topo, menu, janelas e barra fixa
 
 # Black Friday: implantação grátis (decisão do Otavio, 2026-11-12). Depois do fim, o JS esconde o que é da promoção.
@@ -324,16 +326,17 @@ def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
             <li><a href="{link_whats(None, 0)}" target="_blank" rel="noopener">WhatsApp {WHATS[0][1]}</a></li>
             <li><a href="{link_whats(None, 1)}" target="_blank" rel="noopener">WhatsApp {WHATS[1][1]}</a></li>
             <li><a href="https://www.instagram.com/kyzent.tech/" target="_blank" rel="noopener">Instagram @kyzent.tech</a></li>
+            <li><a href="mailto:{EMAIL}">{EMAIL}</a></li>
           </ul>
         </div>
       </div>
       <div class="rodape-base">
         <p>© <span data-ano>2026</span> Kyzent Technology Solutions. Todos os direitos reservados.</p>
-        <p>Paulínia/SP</p>
+        <p><a href="privacidade.html">Política de Privacidade</a> · Paulínia/SP</p>
       </div>
     </div>
   </footer>
-  <a class="whats-flutuante" href="{link_whats()}" target="_blank" rel="noopener" data-contato aria-label="{BOTAO}">{I["conversa"]}<span>Fale com a gente</span></a>
+  <a class="whats-flutuante" href="{link_whats()}" target="_blank" rel="noopener" data-contato aria-label="Fale com a gente no WhatsApp">{I["conversa"]}<span>Fale com a gente</span></a>
   <div class="barra-fixa">
     <a class="whats-fixo" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{I["conversa"]}<span class="whats-longo">{BOTAO}</span><span class="whats-curto">WhatsApp</span></a>
   </div>
@@ -374,21 +377,43 @@ def perguntas():
       </div>
     </section>"""
 
-# demonstrações (todas exemplos ilustrativos)
-PEDIDOS_DEMO = [("#1043", "Marina", "2 marmitas", "preparo", "Em preparo"),
-                ("#1042", "Carlos", "1 X-salada e 1 suco", "rota", "Saiu para entrega"),
-                ("#1041", "Ana", "3 pastéis", "ok", "Entregue")]
-SEMANA = [("Seg", 42), ("Ter", 55), ("Qua", 48), ("Qui", 63), ("Sex", 86), ("Sáb", 100), ("Dom", 71)]
+# ------------------------------------------------------------------ base fictícia das demonstrações
+# Pedidos, Clientes, Painel e Automação são da mesma Lanchonete Exemplo e leem daqui, para nunca se contradizerem.
+# Os itens dos pedidos usam só produtos do CARDAPIO. (Chatbot é da Barbearia Exemplo e Agendamento do Salão Exemplo.)
+CARDAPIO = [("X-salada", 22), ("X-bacon", 26), ("Porção de batata", 15), ("Refrigerante lata", 6)]
+# (nome completo, tipo, situação)
+CLIENTES = [("Marina Lopes", "recorrente", "Pediu hoje, cliente há 8 meses"), ("Carlos Souza", "recorrente", "Pediu hoje, último pedido há 5 dias"),
+            ("Ana Ribeiro", "novo", "Primeiro pedido hoje"), ("João Pereira", "recorrente", "Último pedido há 12 dias"),
+            ("Paula Martins", "inativo", "Sem pedir há 35 dias"), ("Rita Alves", "novo", "Primeiro pedido há 3 dias"),
+            ("Roberto Lima", "inativo", "Sem pedir há 42 dias"), ("Bia Santos", "inativo", "Sem pedir há 60 dias")]
+# pedidos de hoje: (número, cliente, itens, classe do estado, estado)
+PEDIDOS_DEMO = [("#1043", "Marina", "2 X-bacon e 2 refrigerantes lata", "preparo", "Em preparo"),
+                ("#1042", "Carlos", "1 X-salada e 1 refrigerante lata", "rota", "Saiu para entrega"),
+                ("#1041", "Ana", "2 porções de batata", "ok", "Entregue")]
+PROXIMO_PEDIDO = 1044   # o primeiro pedido registrado na demo recebe este número
+# pedidos por dia na semana; a soma é o KPI "Pedidos" do painel
+SEMANA = [("Seg", 28), ("Ter", 36), ("Qua", 33), ("Qui", 43), ("Sex", 59), ("Sáb", 68), ("Dom", 45)]
+DIA_EXTENSO = {"Seg": "segunda", "Ter": "terça", "Qua": "quarta", "Qui": "quinta", "Sex": "sexta", "Sáb": "sábado", "Dom": "domingo"}
+NOVOS_SEMANA = sum(1 for _, t, _ in CLIENTES if t == "novo")
+for _n, _q, _o, _c, _e in PEDIDOS_DEMO:   # trava: quem pediu hoje existe na base e não está inativo
+    assert any(c.split()[0] == _q and t != "inativo" for c, t, _ in CLIENTES), f"pedido {_n}: {_q} fora da base ou inativo"
+
 def demo_gestao():
     pedidos = "".join(f'<li><span class="pd-num">{n}</span><span class="pd-quem"><strong>{q}</strong><small>{o}</small></span><span class="estado estado-{c}">{e}</span></li>'
                       for n, q, o, c, e in PEDIDOS_DEMO)
-    barras = "".join(f'<div class="gd-barra"><i style="--h:{h}%;--d:{k*70}ms"></i><small>{d}</small></div>' for k, (d, h) in enumerate(SEMANA))
+    maior = max(v for _, v in SEMANA)
+    total = sum(v for _, v in SEMANA)
+    barras = "".join(f'<div class="gd-barra"><i style="--h:{round(v * 100 / maior)}%;--d:{k*70}ms"></i><small>{d}</small></div>' for k, (d, v) in enumerate(SEMANA))
+    por_dia = ", ".join(f"{DIA_EXTENSO[d]} {v}" for d, v in SEMANA)
+    ultimos = "; ".join(f"{n} de {q}, {o}, {e.lower()}" for n, q, o, _, e in PEDIDOS_DEMO)
+    rotulo = (f"Exemplo ilustrativo de painel de gestão da semana: {total} pedidos, {NOVOS_SEMANA} clientes novos e 96% das entregas no prazo. "
+              f"Pedidos por dia: {por_dia}. Processos: reposição de estoque 72%, notas do mês 45%, retornos agendados 90%. Últimos pedidos: {ultimos}.")
     return f"""<figure class="demo-visual">
-            <div class="gd" data-gestao role="img" aria-label="Exemplo ilustrativo de painel de gestão com pedidos, gráfico da semana, lista de pedidos e o andamento de um processo.">
+            <div class="gd" data-gestao role="img" aria-label="{escape(rotulo)}">
               <div class="gd-topo" aria-hidden="true"><strong>Painel da semana</strong><span>Atualizado às 18:40</span></div>
               <div class="gd-kpis" aria-hidden="true">
-                <div><small>Pedidos</small><strong data-contar="312">312</strong></div>
-                <div><small>Clientes novos</small><strong data-contar="46">46</strong></div>
+                <div><small>Pedidos</small><strong data-contar="{total}">{total}</strong></div>
+                <div><small>Clientes novos</small><strong data-contar="{NOVOS_SEMANA}">{NOVOS_SEMANA}</strong></div>
                 <div><small>Entregas no prazo</small><strong><span data-contar="96">96</span>%</strong></div>
               </div>
               <div class="gd-meio" aria-hidden="true">
@@ -405,16 +430,16 @@ def demo_gestao():
             <figcaption><span class="selo-exemplo">Exemplo ilustrativo com dados fictícios</span></figcaption>
           </figure>"""
 
-FLUXO_IA = [("busca", "Entende o pedido", "2 marmitas, sexta, entrega ao meio-dia"),
-            ("estoque", "Confere o estoque", "Ingredientes disponíveis"),
+FLUXO_IA = [("busca", "Entende o pedido", "2 X-bacon, sexta, entrega ao meio-dia"),
+            ("estoque", "Confere o estoque", "Pão, carne e bacon disponíveis"),
             ("agenda", "Agenda a entrega", "Sexta, 12h, na rota do centro"),
             ("conversa", "Responde e avisa a equipe", "Cliente confirmado, cozinha avisada")]
 def demo_ia():
     passos = "".join(f'<li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>{t}</strong><small>{d}</small></span><span class="fluxo-ok">{I["check"]}</span></li>'
                      for ic, t, d in FLUXO_IA)
     return f"""<figure class="demo-visual">
-            <div class="fluxo" data-fluxo role="img" aria-label="Exemplo ilustrativo: a IA recebe a mensagem de um cliente, entende o pedido, confere o estoque, agenda a entrega e responde o cliente.">
-              <div class="fluxo-entrada" aria-hidden="true"><small>Mensagem recebida</small><p>"Quero 2 marmitas para sexta, com entrega ao meio-dia."</p></div>
+            <div class="fluxo" data-fluxo role="img" aria-label="Exemplo ilustrativo: chega a mensagem &quot;Quero 2 X-bacon para sexta, com entrega ao meio-dia.&quot; A IA entende o pedido, confere o estoque, agenda a entrega para sexta às 12h e responde o cliente, avisando a cozinha.">
+              <div class="fluxo-entrada" aria-hidden="true"><small>Mensagem recebida</small><p>"Quero 2 X-bacon para sexta, com entrega ao meio-dia."</p></div>
               <div class="fluxo-nucleo" aria-hidden="true"><span class="fluxo-orbita"></span><strong>Assistente de IA</strong></div>
               <ol class="fluxo-passos" aria-hidden="true">{passos}</ol>
             </div>
@@ -510,31 +535,25 @@ def tela_agendamento():
                 <p class="ag-aviso" data-ag-aviso role="status" hidden></p>
               </div>
               <div class="ag-lista-caixa"><p>Agenda de hoje</p><ul class="ag-lista" data-ag-lista>
-                <li><time>09:00</time><span><strong>Ana</strong><small>Escova</small></span><em class="estado estado-ok">Confirmado</em></li>
-                <li><time>11:00</time><span><strong>Júlia</strong><small>Manicure</small></span><em class="estado estado-ok">Confirmado</em></li>
+                <li><time>09:00</time><span><strong>Fernanda</strong><small>Escova</small></span><em class="estado estado-ok">Confirmado</em></li>
+                <li><time>11:00</time><span><strong>Camila</strong><small>Manicure</small></span><em class="estado estado-ok">Confirmado</em></li>
               </ul></div>
             </div>"""
 
-CARDAPIO = [("X-salada", 22), ("X-bacon", 26), ("Porção de batata", 15), ("Refrigerante lata", 6)]
 def tela_pedidos():
     itens = "".join(
         f'<li data-produto="{n}" data-preco="{p}"><span><strong>{n}</strong><small>R$ {p},00</small></span>'
         f'<span class="pd-qtd"><button type="button" data-menos aria-label="Tirar um {n}">−</button><output data-qtd>0</output>'
         f'<button type="button" data-mais aria-label="Pôr mais um {n}">+</button></span></li>' for n, p in CARDAPIO)
-    return f"""<div class="pd" data-pedidos>
+    fila = "".join(f'<li><span class="pd-num">{n}</span><span><strong>{q}</strong><small>{o}</small></span><em class="estado estado-{c}">{e}</em></li>'
+                   for n, q, o, c, e in PEDIDOS_DEMO)
+    return f"""<div class="pd" data-pedidos data-proximo="{PROXIMO_PEDIDO}">
               <div class="pd-cardapio"><p class="pd-titulo">Cardápio da Lanchonete Exemplo</p><ul>{itens}</ul>
                 <div class="pd-total"><span>Total</span><strong data-pd-total>R$ 0,00</strong></div>
                 <button type="button" class="botao" data-pd-registrar disabled>Registrar pedido</button></div>
-              <div class="pd-fila"><p class="pd-titulo">Pedidos de hoje</p><ul data-pd-lista aria-live="polite">
-                <li><span class="pd-num">#1042</span><span><strong>Carlos</strong><small>1 X-salada, 1 refrigerante</small></span><em class="estado estado-rota">Saiu para entrega</em></li>
-                <li><span class="pd-num">#1041</span><span><strong>Ana</strong><small>2 porções de batata</small></span><em class="estado estado-ok">Entregue</em></li>
-              </ul></div>
+              <div class="pd-fila"><p class="pd-titulo">Pedidos de hoje</p><ul data-pd-lista aria-live="polite">{fila}</ul></div>
             </div>"""
 
-CLIENTES = [("Marina Lopes", "recorrente", "Último atendimento há 6 dias"), ("Carlos Souza", "inativo", "Sem visita há 42 dias"),
-            ("Ana Ribeiro", "novo", "Primeiro atendimento ontem"), ("João Pereira", "recorrente", "Último atendimento há 12 dias"),
-            ("Paula Martins", "inativo", "Sem visita há 35 dias"), ("Rita Alves", "novo", "Primeiro atendimento há 3 dias"),
-            ("Lucas Ferreira", "recorrente", "Último atendimento há 9 dias"), ("Bia Santos", "inativo", "Sem visita há 60 dias")]
 ROTULO_CLIENTE = {"recorrente": "Recorrente", "novo": "Novo", "inativo": "Inativo"}
 def tela_clientes():
     lis = "".join(
@@ -683,7 +702,7 @@ ORCAMENTO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina"
                 <label class="sim-campo-largo">Observação <span>(opcional)</span><textarea name="obs" rows="3" maxlength="400" placeholder="Ex.: atendo 40 clientes por dia no WhatsApp"></textarea></label>
                 <div class="sim-mel" aria-hidden="true"><label>Não preencha este campo<input name="site" tabindex="-1" autocomplete="off"></label></div>
               </div>
-              <p class="sim-dica">Seus dados vão só na mensagem do WhatsApp que você mesmo envia. O site não guarda nada em servidor.</p>
+              <p class="sim-dica">Seus dados vão só na mensagem do WhatsApp que você mesmo envia. O site não guarda nada em servidor. Veja a <a href="privacidade.html">Política de Privacidade</a>.</p>
             </fieldset>
             <p class="sim-erro" role="alert" data-sim-erro hidden></p>
             <div class="sim-nav">
@@ -1064,7 +1083,7 @@ def comparar():
             <ul>{auto}</ul>
           </div>
           <div class="cmp-divisoria" aria-hidden="true"><span class="cmp-alca"></span></div>
-          <label class="visualmente-oculto" for="cmp-faixa">Mostrar mais do jeito manual ou do automático</label>
+          <label class="visualmente-oculto" for="cmp-faixa">Comparar o jeito manual e o automático</label>
           <input class="cmp-faixa" id="cmp-faixa" type="range" min="0" max="100" value="50" data-comparar-faixa>
         </div>
       </div>
@@ -1273,6 +1292,66 @@ QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
       </div>
     </section>"""
 
+# ---------- Política de Privacidade (LGPD). Texto escrito pelo Claude a partir de como o site funciona; os sócios precisam confirmar.
+PRIVACIDADE = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
+      <div class="pagina-topo-fundo" aria-hidden="true"></div>
+      <div class="container">
+        <h1 id="titulo-pagina">Política de Privacidade</h1>
+        <p class="pagina-topo-apoio">Como a Kyzent trata os seus dados pessoais, de acordo com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018).</p>
+        <p class="legal-data">Última atualização: {PRIVACIDADE_DATA}</p>
+      </div>
+    </section>
+
+    <section class="secao legal">
+      <div class="container legal-texto">
+        <h2>1. Quem cuida dos seus dados</h2>
+        <p>A Kyzent Technology Solutions, de Paulínia/SP, é a responsável (controladora) pelos dados pessoais tratados por este site e pelos nossos canais de atendimento. Para qualquer assunto sobre privacidade, fale com a gente pelo e-mail <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
+
+        <h2>2. Quais dados recebemos</h2>
+        <ul>
+          <li><strong>Simulador de orçamento:</strong> as respostas que você marca e, se quiser, o seu nome, o nome da empresa, a cidade e uma observação. O simulador funciona só no seu navegador: nada é enviado ao nosso servidor nem guardado no site. Esses dados só chegam até nós se você enviar a mensagem pronta pelo WhatsApp.</li>
+          <li><strong>WhatsApp, Instagram e e-mail:</strong> o que você nos manda nas conversas e os dados do seu perfil nesses aplicativos, como nome e número de telefone.</li>
+          <li><strong>Navegação:</strong> o site não usa cookies, Google Analytics, pixel da Meta nem outra ferramenta de rastreamento. A hospedagem (GitHub Pages) registra dados técnicos de acesso, como o endereço IP, para manter o site funcionando e seguro.</li>
+        </ul>
+
+        <h2>3. Para que usamos</h2>
+        <ul>
+          <li>Responder o seu contato e preparar o orçamento que você pediu;</li>
+          <li>Conversar sobre a contratação e prestar os serviços combinados;</li>
+          <li>Cumprir obrigações legais.</li>
+        </ul>
+        <p>Não vendemos os seus dados e não enviamos propaganda sem a sua autorização.</p>
+
+        <h2>4. Com quem compartilhamos</h2>
+        <ul>
+          <li><strong>Meta</strong> (WhatsApp e Instagram), por onde as conversas acontecem;</li>
+          <li><strong>GitHub</strong>, que hospeda este site;</li>
+          <li><strong>Google</strong>, quando a conversa for por e-mail (Gmail).</li>
+        </ul>
+        <p>Essas empresas podem tratar dados fora do Brasil e seguem as suas próprias políticas de privacidade. Também compartilhamos dados quando a lei ou uma autoridade exigir.</p>
+
+        <h2>5. Por quanto tempo guardamos</h2>
+        <p>Guardamos as conversas e os dados de contato enquanto houver uma negociação ou um contrato em andamento e, depois disso, pelo tempo necessário para cumprir obrigações legais. Se você não fechar negócio, pode pedir que a gente apague os seus dados a qualquer momento.</p>
+
+        <h2>6. Os seus direitos</h2>
+        <p>Pela LGPD, você pode pedir a qualquer momento:</p>
+        <ul>
+          <li>a confirmação de que tratamos os seus dados e o acesso a eles;</li>
+          <li>a correção de dados incompletos ou errados;</li>
+          <li>a exclusão dos seus dados ou o bloqueio dos dados desnecessários;</li>
+          <li>informações sobre com quem compartilhamos os seus dados;</li>
+          <li>a revogação de um consentimento que você tenha dado.</li>
+        </ul>
+        <p>Para isso, mande um e-mail para <a href="mailto:{EMAIL}">{EMAIL}</a>. Respondemos em até 15 dias. Você também pode reclamar na Autoridade Nacional de Proteção de Dados (ANPD).</p>
+
+        <h2>7. Segurança</h2>
+        <p>Usamos as medidas de segurança dos próprios aplicativos e limitamos o acesso às conversas às pessoas da Kyzent que precisam delas para atender você.</p>
+
+        <h2>8. Mudanças nesta política</h2>
+        <p>Podemos atualizar esta política quando o site ou os nossos serviços mudarem. A data da última atualização fica no topo desta página.</p>
+      </div>
+    </section>"""
+
 # ---------- Soluções: central de navegação (5 cartões, os 19 serviços em lista, um único acesso ao simulador)
 def lista_servicos():
     grupos = []
@@ -1345,6 +1424,7 @@ saidas = [
     ("index.html", "Kyzent | Inteligência artificial e automação para o seu negócio", DESC, INICIO, "", None),
     ("servicos.html", "Soluções e serviços | Kyzent", "Catálogo de soluções da Kyzent: atendimento com IA no WhatsApp, agendamento e vendas, gestão, site e IA sob medida. Simule o seu orçamento.", SERVICOS_PAG, FILTRO_JANELA, None),
     ("quem-somos.html", "Quem somos | Kyzent", "A Kyzent é uma empresa de Tecnologia e Inovação de Paulínia/SP. Conheça o nosso propósito, a missão, a visão, os valores e os diferenciais.", QUEM, "", None),
+    ("privacidade.html", "Política de Privacidade | Kyzent", "Como a Kyzent trata os seus dados pessoais, de acordo com a LGPD: quais dados recebemos, para que usamos, com quem compartilhamos e como exercer os seus direitos.", PRIVACIDADE, "", None),
     ("orcamento.html", "Orçamento | Kyzent", "Simule o seu orçamento em quatro passos e receba uma recomendação de solução da Kyzent pelo WhatsApp.", ORCAMENTO, "", None),
 ] + [(PAGINA_MOD[mid], f"{SOLUCOES[mid][0]} | Kyzent", SOLUCOES[mid][1], pagina_solucao(mid), "", "servicos.html") for mid in MOD]
 

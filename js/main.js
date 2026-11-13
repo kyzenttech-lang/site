@@ -516,7 +516,11 @@
   /* ------------------------------------------------------------ do jeito manual ao automático: divisória arrastável */
   $$("[data-comparar]").forEach(function (cmp) {
     var faixa = $("[data-comparar-faixa]", cmp);
-    var aplicar = function () { cmp.style.setProperty("--corte", faixa.value + "%"); };
+    var aplicar = function () {
+      cmp.style.setProperty("--corte", faixa.value + "%");
+      var m = Math.round(+faixa.value);
+      faixa.setAttribute("aria-valuetext", m >= 100 ? "Só o jeito manual" : m <= 0 ? "Só com a Kyzent" : m + "% manual, " + (100 - m) + "% com a Kyzent");
+    };
     faixa.addEventListener("input", aplicar);
     var estreito = innerWidth < 640;
     if (estreito) faixa.value = 100;   // no celular começa no jeito manual inteiro
@@ -712,7 +716,7 @@
   /* ------------------------------------------------------------ registro de pedidos */
   $$("[data-pedidos]").forEach(function (pd) {
     var total = $("[data-pd-total]", pd), registrar = $("[data-pd-registrar]", pd), lista = $("[data-pd-lista]", pd);
-    var numero = 1043;
+    var numero = +pd.getAttribute("data-proximo") || 1044;
     var linhas = $$("[data-produto]", pd);
     function brl(v) { return "R$ " + v.toFixed(2).replace(".", ","); }
     function somar() {

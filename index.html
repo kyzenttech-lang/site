@@ -30,8 +30,8 @@
 
   <script>document.documentElement.classList.add("js");</script>
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=104">
-  <script src="js/main.js?v=104" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=106">
+  <script src="js/main.js?v=106" defer></script>
 </head>
 <body data-promo-fim="2026-12-05T23:59:59-03:00" data-whats="5519988728894 5519971246077">
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -111,7 +111,7 @@
             <ul><li class="cmp-item cmp-auto-item"><span class="cmp-estado cmp-feito">Feito</span><span>A IA responde na hora, com o horário certo</span></li><li class="cmp-item cmp-auto-item"><span class="cmp-estado cmp-feito">Feito</span><span>O pedido chega organizado e soma o total</span></li><li class="cmp-item cmp-auto-item"><span class="cmp-estado cmp-feito">Feito</span><span>A confirmação sai sozinha pelo WhatsApp</span></li><li class="cmp-item cmp-auto-item"><span class="cmp-estado cmp-feito">Feito</span><span>O lembrete de retorno é enviado no dia certo</span></li></ul>
           </div>
           <div class="cmp-divisoria" aria-hidden="true"><span class="cmp-alca"></span></div>
-          <label class="visualmente-oculto" for="cmp-faixa">Mostrar mais do jeito manual ou do automático</label>
+          <label class="visualmente-oculto" for="cmp-faixa">Comparar o jeito manual e o automático</label>
           <input class="cmp-faixa" id="cmp-faixa" type="range" min="0" max="100" value="50" data-comparar-faixa>
         </div>
       </div>
@@ -253,8 +253,8 @@
                 <p class="ag-aviso" data-ag-aviso role="status" hidden></p>
               </div>
               <div class="ag-lista-caixa"><p>Agenda de hoje</p><ul class="ag-lista" data-ag-lista>
-                <li><time>09:00</time><span><strong>Ana</strong><small>Escova</small></span><em class="estado estado-ok">Confirmado</em></li>
-                <li><time>11:00</time><span><strong>Júlia</strong><small>Manicure</small></span><em class="estado estado-ok">Confirmado</em></li>
+                <li><time>09:00</time><span><strong>Fernanda</strong><small>Escova</small></span><em class="estado estado-ok">Confirmado</em></li>
+                <li><time>11:00</time><span><strong>Camila</strong><small>Manicure</small></span><em class="estado estado-ok">Confirmado</em></li>
               </ul></div>
             </div></div>
           </div>
@@ -265,14 +265,11 @@
               <p>Monte um pedido no cardápio e registre. Ele entra na fila da cozinha com o total calculado.</p>
               <a class="link-seta" href="solucao-gestao.html">Conhecer solução</a>
             </div>
-            <div class="demo-tela"><div class="pd" data-pedidos>
+            <div class="demo-tela"><div class="pd" data-pedidos data-proximo="1044">
               <div class="pd-cardapio"><p class="pd-titulo">Cardápio da Lanchonete Exemplo</p><ul><li data-produto="X-salada" data-preco="22"><span><strong>X-salada</strong><small>R$ 22,00</small></span><span class="pd-qtd"><button type="button" data-menos aria-label="Tirar um X-salada">−</button><output data-qtd>0</output><button type="button" data-mais aria-label="Pôr mais um X-salada">+</button></span></li><li data-produto="X-bacon" data-preco="26"><span><strong>X-bacon</strong><small>R$ 26,00</small></span><span class="pd-qtd"><button type="button" data-menos aria-label="Tirar um X-bacon">−</button><output data-qtd>0</output><button type="button" data-mais aria-label="Pôr mais um X-bacon">+</button></span></li><li data-produto="Porção de batata" data-preco="15"><span><strong>Porção de batata</strong><small>R$ 15,00</small></span><span class="pd-qtd"><button type="button" data-menos aria-label="Tirar um Porção de batata">−</button><output data-qtd>0</output><button type="button" data-mais aria-label="Pôr mais um Porção de batata">+</button></span></li><li data-produto="Refrigerante lata" data-preco="6"><span><strong>Refrigerante lata</strong><small>R$ 6,00</small></span><span class="pd-qtd"><button type="button" data-menos aria-label="Tirar um Refrigerante lata">−</button><output data-qtd>0</output><button type="button" data-mais aria-label="Pôr mais um Refrigerante lata">+</button></span></li></ul>
                 <div class="pd-total"><span>Total</span><strong data-pd-total>R$ 0,00</strong></div>
                 <button type="button" class="botao" data-pd-registrar disabled>Registrar pedido</button></div>
-              <div class="pd-fila"><p class="pd-titulo">Pedidos de hoje</p><ul data-pd-lista aria-live="polite">
-                <li><span class="pd-num">#1042</span><span><strong>Carlos</strong><small>1 X-salada, 1 refrigerante</small></span><em class="estado estado-rota">Saiu para entrega</em></li>
-                <li><span class="pd-num">#1041</span><span><strong>Ana</strong><small>2 porções de batata</small></span><em class="estado estado-ok">Entregue</em></li>
-              </ul></div>
+              <div class="pd-fila"><p class="pd-titulo">Pedidos de hoje</p><ul data-pd-lista aria-live="polite"><li><span class="pd-num">#1043</span><span><strong>Marina</strong><small>2 X-bacon e 2 refrigerantes lata</small></span><em class="estado estado-preparo">Em preparo</em></li><li><span class="pd-num">#1042</span><span><strong>Carlos</strong><small>1 X-salada e 1 refrigerante lata</small></span><em class="estado estado-rota">Saiu para entrega</em></li><li><span class="pd-num">#1041</span><span><strong>Ana</strong><small>2 porções de batata</small></span><em class="estado estado-ok">Entregue</em></li></ul></div>
             </div></div>
           </div>
           <div class="demo-painel" id="dpainel-clientes" role="tabpanel" aria-labelledby="daba-clientes" hidden>
@@ -287,7 +284,7 @@
                 <div class="cl-filtros" role="group" aria-label="Filtrar clientes">
                   <button type="button" data-cl-filtro="todos" aria-pressed="true">Todos</button><button type="button" data-cl-filtro="recorrente" aria-pressed="false">Recorrentes</button><button type="button" data-cl-filtro="novo" aria-pressed="false">Novos</button><button type="button" data-cl-filtro="inativo" aria-pressed="false">Inativos</button>
                 </div></div>
-              <ul class="cl-lista" data-cl-lista><li data-tipo="recorrente" data-nome="marina lopes"><span class="cl-avatar">ML</span><span class="cl-info"><strong>Marina Lopes</strong><small>Último atendimento há 6 dias</small></span><em class="cl-tag cl-recorrente">Recorrente</em></li><li data-tipo="inativo" data-nome="carlos souza"><span class="cl-avatar">CS</span><span class="cl-info"><strong>Carlos Souza</strong><small>Sem visita há 42 dias</small></span><em class="cl-tag cl-inativo">Inativo</em><button type="button" class="cl-lembrar" data-lembrar>Enviar lembrete</button></li><li data-tipo="novo" data-nome="ana ribeiro"><span class="cl-avatar">AR</span><span class="cl-info"><strong>Ana Ribeiro</strong><small>Primeiro atendimento ontem</small></span><em class="cl-tag cl-novo">Novo</em></li><li data-tipo="recorrente" data-nome="joão pereira"><span class="cl-avatar">JP</span><span class="cl-info"><strong>João Pereira</strong><small>Último atendimento há 12 dias</small></span><em class="cl-tag cl-recorrente">Recorrente</em></li><li data-tipo="inativo" data-nome="paula martins"><span class="cl-avatar">PM</span><span class="cl-info"><strong>Paula Martins</strong><small>Sem visita há 35 dias</small></span><em class="cl-tag cl-inativo">Inativo</em><button type="button" class="cl-lembrar" data-lembrar>Enviar lembrete</button></li><li data-tipo="novo" data-nome="rita alves"><span class="cl-avatar">RA</span><span class="cl-info"><strong>Rita Alves</strong><small>Primeiro atendimento há 3 dias</small></span><em class="cl-tag cl-novo">Novo</em></li><li data-tipo="recorrente" data-nome="lucas ferreira"><span class="cl-avatar">LF</span><span class="cl-info"><strong>Lucas Ferreira</strong><small>Último atendimento há 9 dias</small></span><em class="cl-tag cl-recorrente">Recorrente</em></li><li data-tipo="inativo" data-nome="bia santos"><span class="cl-avatar">BS</span><span class="cl-info"><strong>Bia Santos</strong><small>Sem visita há 60 dias</small></span><em class="cl-tag cl-inativo">Inativo</em><button type="button" class="cl-lembrar" data-lembrar>Enviar lembrete</button></li></ul>
+              <ul class="cl-lista" data-cl-lista><li data-tipo="recorrente" data-nome="marina lopes"><span class="cl-avatar">ML</span><span class="cl-info"><strong>Marina Lopes</strong><small>Pediu hoje, cliente há 8 meses</small></span><em class="cl-tag cl-recorrente">Recorrente</em></li><li data-tipo="recorrente" data-nome="carlos souza"><span class="cl-avatar">CS</span><span class="cl-info"><strong>Carlos Souza</strong><small>Pediu hoje, último pedido há 5 dias</small></span><em class="cl-tag cl-recorrente">Recorrente</em></li><li data-tipo="novo" data-nome="ana ribeiro"><span class="cl-avatar">AR</span><span class="cl-info"><strong>Ana Ribeiro</strong><small>Primeiro pedido hoje</small></span><em class="cl-tag cl-novo">Novo</em></li><li data-tipo="recorrente" data-nome="joão pereira"><span class="cl-avatar">JP</span><span class="cl-info"><strong>João Pereira</strong><small>Último pedido há 12 dias</small></span><em class="cl-tag cl-recorrente">Recorrente</em></li><li data-tipo="inativo" data-nome="paula martins"><span class="cl-avatar">PM</span><span class="cl-info"><strong>Paula Martins</strong><small>Sem pedir há 35 dias</small></span><em class="cl-tag cl-inativo">Inativo</em><button type="button" class="cl-lembrar" data-lembrar>Enviar lembrete</button></li><li data-tipo="novo" data-nome="rita alves"><span class="cl-avatar">RA</span><span class="cl-info"><strong>Rita Alves</strong><small>Primeiro pedido há 3 dias</small></span><em class="cl-tag cl-novo">Novo</em></li><li data-tipo="inativo" data-nome="roberto lima"><span class="cl-avatar">RL</span><span class="cl-info"><strong>Roberto Lima</strong><small>Sem pedir há 42 dias</small></span><em class="cl-tag cl-inativo">Inativo</em><button type="button" class="cl-lembrar" data-lembrar>Enviar lembrete</button></li><li data-tipo="inativo" data-nome="bia santos"><span class="cl-avatar">BS</span><span class="cl-info"><strong>Bia Santos</strong><small>Sem pedir há 60 dias</small></span><em class="cl-tag cl-inativo">Inativo</em><button type="button" class="cl-lembrar" data-lembrar>Enviar lembrete</button></li></ul>
               <p class="cl-rodape" data-cl-conta aria-live="polite">8 clientes</p>
             </div></div>
           </div>
@@ -299,15 +296,15 @@
               <a class="link-seta" href="solucao-gestao.html">Conhecer solução</a>
             </div>
             <div class="demo-tela"><figure class="demo-visual">
-            <div class="gd" data-gestao role="img" aria-label="Exemplo ilustrativo de painel de gestão com pedidos, gráfico da semana, lista de pedidos e o andamento de um processo.">
+            <div class="gd" data-gestao role="img" aria-label="Exemplo ilustrativo de painel de gestão da semana: 312 pedidos, 2 clientes novos e 96% das entregas no prazo. Pedidos por dia: segunda 28, terça 36, quarta 33, quinta 43, sexta 59, sábado 68, domingo 45. Processos: reposição de estoque 72%, notas do mês 45%, retornos agendados 90%. Últimos pedidos: #1043 de Marina, 2 X-bacon e 2 refrigerantes lata, em preparo; #1042 de Carlos, 1 X-salada e 1 refrigerante lata, saiu para entrega; #1041 de Ana, 2 porções de batata, entregue.">
               <div class="gd-topo" aria-hidden="true"><strong>Painel da semana</strong><span>Atualizado às 18:40</span></div>
               <div class="gd-kpis" aria-hidden="true">
                 <div><small>Pedidos</small><strong data-contar="312">312</strong></div>
-                <div><small>Clientes novos</small><strong data-contar="46">46</strong></div>
+                <div><small>Clientes novos</small><strong data-contar="2">2</strong></div>
                 <div><small>Entregas no prazo</small><strong><span data-contar="96">96</span>%</strong></div>
               </div>
               <div class="gd-meio" aria-hidden="true">
-                <div class="gd-grafico"><p>Pedidos por dia</p><div class="gd-barras"><div class="gd-barra"><i style="--h:42%;--d:0ms"></i><small>Seg</small></div><div class="gd-barra"><i style="--h:55%;--d:70ms"></i><small>Ter</small></div><div class="gd-barra"><i style="--h:48%;--d:140ms"></i><small>Qua</small></div><div class="gd-barra"><i style="--h:63%;--d:210ms"></i><small>Qui</small></div><div class="gd-barra"><i style="--h:86%;--d:280ms"></i><small>Sex</small></div><div class="gd-barra"><i style="--h:100%;--d:350ms"></i><small>Sáb</small></div><div class="gd-barra"><i style="--h:71%;--d:420ms"></i><small>Dom</small></div></div></div>
+                <div class="gd-grafico"><p>Pedidos por dia</p><div class="gd-barras"><div class="gd-barra"><i style="--h:41%;--d:0ms"></i><small>Seg</small></div><div class="gd-barra"><i style="--h:53%;--d:70ms"></i><small>Ter</small></div><div class="gd-barra"><i style="--h:49%;--d:140ms"></i><small>Qua</small></div><div class="gd-barra"><i style="--h:63%;--d:210ms"></i><small>Qui</small></div><div class="gd-barra"><i style="--h:87%;--d:280ms"></i><small>Sex</small></div><div class="gd-barra"><i style="--h:100%;--d:350ms"></i><small>Sáb</small></div><div class="gd-barra"><i style="--h:66%;--d:420ms"></i><small>Dom</small></div></div></div>
                 <div class="gd-processo">
                   <p>Processos</p>
                   <div class="gd-proc"><span>Reposição de estoque</span><span class="gd-trilho"><i style="--p:72%"></i></span><small>72%</small></div>
@@ -315,7 +312,7 @@
                   <div class="gd-proc"><span>Retornos agendados</span><span class="gd-trilho"><i style="--p:90%"></i></span><small>90%</small></div>
                 </div>
               </div>
-              <ul class="gd-pedidos" aria-hidden="true"><li><span class="pd-num">#1043</span><span class="pd-quem"><strong>Marina</strong><small>2 marmitas</small></span><span class="estado estado-preparo">Em preparo</span></li><li><span class="pd-num">#1042</span><span class="pd-quem"><strong>Carlos</strong><small>1 X-salada e 1 suco</small></span><span class="estado estado-rota">Saiu para entrega</span></li><li><span class="pd-num">#1041</span><span class="pd-quem"><strong>Ana</strong><small>3 pastéis</small></span><span class="estado estado-ok">Entregue</span></li></ul>
+              <ul class="gd-pedidos" aria-hidden="true"><li><span class="pd-num">#1043</span><span class="pd-quem"><strong>Marina</strong><small>2 X-bacon e 2 refrigerantes lata</small></span><span class="estado estado-preparo">Em preparo</span></li><li><span class="pd-num">#1042</span><span class="pd-quem"><strong>Carlos</strong><small>1 X-salada e 1 refrigerante lata</small></span><span class="estado estado-rota">Saiu para entrega</span></li><li><span class="pd-num">#1041</span><span class="pd-quem"><strong>Ana</strong><small>2 porções de batata</small></span><span class="estado estado-ok">Entregue</span></li></ul>
             </div>
             <figcaption><span class="selo-exemplo">Exemplo ilustrativo com dados fictícios</span></figcaption>
           </figure></div>
@@ -328,10 +325,10 @@
               <a class="link-seta" href="solucao-ia.html">Conhecer solução</a>
             </div>
             <div class="demo-tela"><figure class="demo-visual">
-            <div class="fluxo" data-fluxo role="img" aria-label="Exemplo ilustrativo: a IA recebe a mensagem de um cliente, entende o pedido, confere o estoque, agenda a entrega e responde o cliente.">
-              <div class="fluxo-entrada" aria-hidden="true"><small>Mensagem recebida</small><p>"Quero 2 marmitas para sexta, com entrega ao meio-dia."</p></div>
+            <div class="fluxo" data-fluxo role="img" aria-label="Exemplo ilustrativo: chega a mensagem &quot;Quero 2 X-bacon para sexta, com entrega ao meio-dia.&quot; A IA entende o pedido, confere o estoque, agenda a entrega para sexta às 12h e responde o cliente, avisando a cozinha.">
+              <div class="fluxo-entrada" aria-hidden="true"><small>Mensagem recebida</small><p>"Quero 2 X-bacon para sexta, com entrega ao meio-dia."</p></div>
               <div class="fluxo-nucleo" aria-hidden="true"><span class="fluxo-orbita"></span><strong>Assistente de IA</strong></div>
-              <ol class="fluxo-passos" aria-hidden="true"><li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>Entende o pedido</strong><small>2 marmitas, sexta, entrega ao meio-dia</small></span><span class="fluxo-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li><li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>Confere o estoque</strong><small>Ingredientes disponíveis</small></span><span class="fluxo-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li><li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>Agenda a entrega</strong><small>Sexta, 12h, na rota do centro</small></span><span class="fluxo-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li><li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>Responde e avisa a equipe</strong><small>Cliente confirmado, cozinha avisada</small></span><span class="fluxo-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li></ol>
+              <ol class="fluxo-passos" aria-hidden="true"><li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>Entende o pedido</strong><small>2 X-bacon, sexta, entrega ao meio-dia</small></span><span class="fluxo-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li><li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>Confere o estoque</strong><small>Pão, carne e bacon disponíveis</small></span><span class="fluxo-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li><li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>Agenda a entrega</strong><small>Sexta, 12h, na rota do centro</small></span><span class="fluxo-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li><li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>Responde e avisa a equipe</strong><small>Cliente confirmado, cozinha avisada</small></span><span class="fluxo-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li></ol>
             </div>
             <figcaption><span class="selo-exemplo">Exemplo ilustrativo</span></figcaption>
           </figure></div>
@@ -503,16 +500,17 @@
             <li><a href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener">WhatsApp (19) 98872-8894</a></li>
             <li><a href="https://wa.me/5519971246077?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener">WhatsApp (19) 97124-6077</a></li>
             <li><a href="https://www.instagram.com/kyzent.tech/" target="_blank" rel="noopener">Instagram @kyzent.tech</a></li>
+            <li><a href="mailto:kyzent.tech@gmail.com">kyzent.tech@gmail.com</a></li>
           </ul>
         </div>
       </div>
       <div class="rodape-base">
         <p>© <span data-ano>2026</span> Kyzent Technology Solutions. Todos os direitos reservados.</p>
-        <p>Paulínia/SP</p>
+        <p><a href="privacidade.html">Política de Privacidade</a> · Paulínia/SP</p>
       </div>
     </div>
   </footer>
-  <a class="whats-flutuante" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato aria-label="Conversar no WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg><span>Fale com a gente</span></a>
+  <a class="whats-flutuante" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato aria-label="Fale com a gente no WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg><span>Fale com a gente</span></a>
   <div class="barra-fixa">
     <a class="whats-fixo" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg><span class="whats-longo">Conversar no WhatsApp</span><span class="whats-curto">WhatsApp</span></a>
   </div>
