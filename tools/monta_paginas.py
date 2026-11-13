@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "106"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "107"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -394,7 +394,6 @@ PROXIMO_PEDIDO = 1044   # o primeiro pedido registrado na demo recebe este núme
 # pedidos por dia na semana; a soma é o KPI "Pedidos" do painel
 SEMANA = [("Seg", 28), ("Ter", 36), ("Qua", 33), ("Qui", 43), ("Sex", 59), ("Sáb", 68), ("Dom", 45)]
 DIA_EXTENSO = {"Seg": "segunda", "Ter": "terça", "Qua": "quarta", "Qui": "quinta", "Sex": "sexta", "Sáb": "sábado", "Dom": "domingo"}
-NOVOS_SEMANA = sum(1 for _, t, _ in CLIENTES if t == "novo")
 for _n, _q, _o, _c, _e in PEDIDOS_DEMO:   # trava: quem pediu hoje existe na base e não está inativo
     assert any(c.split()[0] == _q and t != "inativo" for c, t, _ in CLIENTES), f"pedido {_n}: {_q} fora da base ou inativo"
 
@@ -406,14 +405,13 @@ def demo_gestao():
     barras = "".join(f'<div class="gd-barra"><i style="--h:{round(v * 100 / maior)}%;--d:{k*70}ms"></i><small>{d}</small></div>' for k, (d, v) in enumerate(SEMANA))
     por_dia = ", ".join(f"{DIA_EXTENSO[d]} {v}" for d, v in SEMANA)
     ultimos = "; ".join(f"{n} de {q}, {o}, {e.lower()}" for n, q, o, _, e in PEDIDOS_DEMO)
-    rotulo = (f"Exemplo ilustrativo de painel de gestão da semana: {total} pedidos, {NOVOS_SEMANA} clientes novos e 96% das entregas no prazo. "
-              f"Pedidos por dia: {por_dia}. Processos: reposição de estoque 72%, notas do mês 45%, retornos agendados 90%. Últimos pedidos: {ultimos}.")
+    rotulo = (f"Exemplo ilustrativo de painel de gestão da semana: {total} pedidos e 96% das entregas no prazo. "
+              f"Pedidos por dia: {por_dia}. Processos: reposição de estoque 72%, notas fiscais emitidas 45%, retornos agendados 90%. Últimos pedidos: {ultimos}.")
     return f"""<figure class="demo-visual">
             <div class="gd" data-gestao role="img" aria-label="{escape(rotulo)}">
               <div class="gd-topo" aria-hidden="true"><strong>Painel da semana</strong><span>Atualizado às 18:40</span></div>
               <div class="gd-kpis" aria-hidden="true">
                 <div><small>Pedidos</small><strong data-contar="{total}">{total}</strong></div>
-                <div><small>Clientes novos</small><strong data-contar="{NOVOS_SEMANA}">{NOVOS_SEMANA}</strong></div>
                 <div><small>Entregas no prazo</small><strong><span data-contar="96">96</span>%</strong></div>
               </div>
               <div class="gd-meio" aria-hidden="true">
@@ -421,7 +419,7 @@ def demo_gestao():
                 <div class="gd-processo">
                   <p>Processos</p>
                   <div class="gd-proc"><span>Reposição de estoque</span><span class="gd-trilho"><i style="--p:72%"></i></span><small>72%</small></div>
-                  <div class="gd-proc"><span>Notas do mês</span><span class="gd-trilho"><i style="--p:45%"></i></span><small>45%</small></div>
+                  <div class="gd-proc"><span>Notas fiscais emitidas</span><span class="gd-trilho"><i style="--p:45%"></i></span><small>45%</small></div>
                   <div class="gd-proc"><span>Retornos agendados</span><span class="gd-trilho"><i style="--p:90%"></i></span><small>90%</small></div>
                 </div>
               </div>
