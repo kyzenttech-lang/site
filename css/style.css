@@ -1732,16 +1732,16 @@ a.solucao { color: inherit; text-decoration: none; }
 .comparar-secao { background: radial-gradient(50% 60% at 50% 100%, rgba(26,92,255,.12), transparent 70%), var(--fundo); }
 .comparar { position: relative; max-width: 980px; margin: 0 auto; border-radius: var(--r-grande); overflow: hidden; box-shadow: 0 0 0 1px var(--linha) inset, 0 30px 70px -30px rgba(0,0,0,.85); }
 .cmp-lado { padding: 28px 28px 32px; }
-.cmp-manual { background: repeating-linear-gradient(135deg, rgba(255,255,255,.015) 0 12px, transparent 12px 24px), #15120F; }
+.cmp-manual { background: repeating-linear-gradient(135deg, rgba(255,255,255,.015) 0 12px, transparent 12px 24px), #170B0D; }
 .cmp-auto { position: absolute; inset: 0; background: linear-gradient(160deg, #0D1A3A, #0B1530 60%, #0A1228); clip-path: inset(0 0 0 var(--corte)); }
 .cmp-rotulo { margin-bottom: 18px; font-size: .8rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
-.cmp-manual .cmp-rotulo { color: #E0A869; }
+.cmp-manual .cmp-rotulo { color: #FF6B6B; }
 .cmp-auto .cmp-rotulo { color: var(--azul); text-align: right; }
 .cmp-lado ul { display: grid; gap: 12px; }
 .cmp-item { display: flex; align-items: center; gap: 14px; min-height: 58px; padding: 12px 16px; border-radius: 12px; font-size: 1rem; }
-.cmp-manual-item { background: #221C16; box-shadow: 0 0 0 1px rgba(224,168,105,.18) inset; color: #E9DCCB; transform: rotate(calc((var(--i) - 1.5) * .6deg)); }
+.cmp-manual-item { background: #251114; box-shadow: 0 0 0 1px rgba(255,90,90,.22) inset; color: #F3DCDC; transform: rotate(calc((var(--i) - 1.5) * .6deg)); }
 .cmp-auto-item { background: rgba(26,92,255,.1); box-shadow: 0 0 0 1px rgba(63,180,255,.28) inset; color: #E6EEFF; justify-content: flex-end; text-align: right; flex-direction: row-reverse; }
-.cmp-estado { flex: none; padding: 4px 10px; border-radius: 6px; background: rgba(224,168,105,.14); color: #F0BE84; font-size: .74rem; font-weight: 700; }
+.cmp-estado { flex: none; padding: 4px 10px; border-radius: 6px; background: rgba(255,90,90,.16); color: #FF8F8F; font-size: .74rem; font-weight: 700; }
 .cmp-feito { background: rgba(74,222,155,.14); color: var(--verde); }
 .cmp-divisoria { position: absolute; top: 0; bottom: 0; left: var(--corte); width: 2px; margin-left: -1px; background: linear-gradient(#3FB4FF, #1A5CFF); box-shadow: 0 0 16px rgba(63,180,255,.8); pointer-events: none; }
 .cmp-alca { position: absolute; top: 50%; left: 50%; width: 44px; height: 44px; border-radius: 50%; transform: translate(-50%, -50%); background: #1A5CFF; box-shadow: 0 0 0 6px rgba(26,92,255,.25), 0 10px 24px rgba(0,0,0,.6); }
