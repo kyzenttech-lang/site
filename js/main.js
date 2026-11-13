@@ -513,6 +513,40 @@
     quandoVisivel(el, function () { el.classList.add("crescer"); });
   });
 
+  /* ------------------------------------------------------------ emblema 3D: o ponto de luz percorre o anel e passa por trás da esfera */
+  $$("[data-emblema]").forEach(function (em, n) {
+    var rastro = $("[data-rastro]", em), tras = $("[data-tras]", em), frente = $("[data-frente]", em);
+    var bolas = $$("circle", rastro), visivelE = true, ang = n * 1.7;
+    var posicionar = function () {
+      bolas.forEach(function (b, i) {
+        var a = ang - i * .07;
+        b.setAttribute("cx", (200 + 170 * Math.cos(a)).toFixed(1));
+        b.setAttribute("cy", (200 + 52 * Math.sin(a)).toFixed(1));
+      });
+      var naFrente = Math.sin(ang) > 0;
+      (naFrente ? frente : tras).appendChild(rastro);
+      rastro.style.opacity = naFrente ? 1 : .45;
+    };
+    posicionar();
+    if (semMovimento) return;
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { visivelE = es[0].isIntersecting; }).observe(em);
+    (function giro() {
+      requestAnimationFrame(giro);
+      if (!visivelE || document.hidden) return;
+      ang += .018; posicionar();
+    })();
+    // o emblema inteiro se inclina na direção do cursor (só com mouse)
+    if (ponteiroFino) {
+      var area = em.closest("section") || document.body;
+      area.addEventListener("pointermove", function (e) {
+        var r = em.getBoundingClientRect();
+        var x = (e.clientX - (r.left + r.width / 2)) / innerWidth, y = (e.clientY - (r.top + r.height / 2)) / innerHeight;
+        em.style.transform = "perspective(700px) rotateY(" + (x * 26).toFixed(2) + "deg) rotateX(" + (-y * 22).toFixed(2) + "deg)";
+      });
+      area.addEventListener("pointerleave", function () { em.style.transform = ""; });
+    }
+  });
+
   /* ------------------------------------------------------------ do jeito manual ao automático: divisória arrastável */
   $$("[data-comparar]").forEach(function (cmp) {
     var faixa = $("[data-comparar-faixa]", cmp);

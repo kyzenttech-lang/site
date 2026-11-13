@@ -1706,15 +1706,7 @@ a.solucao { color: inherit; text-decoration: none; }
 /* =====================================================================
    ASSINATURA KYZENT: a órbita do logo em cada página
    ===================================================================== */
-.assinatura { position: absolute; right: -60px; top: 50%; z-index: 0; width: min(640px, 70vw); transform: translateY(-50%); opacity: .9; pointer-events: none; }
-.assin-orbita { fill: none; stroke: rgba(63,180,255,.35); stroke-width: 1.2; }
-.assinatura-aneis .assin-orbita:nth-of-type(2) { stroke: rgba(63,180,255,.25); }
-.assin-ponto { fill: #fff; filter: drop-shadow(0 0 6px #3FB4FF); }
-.assin-nucleo { fill: #1A5CFF; filter: drop-shadow(0 0 18px rgba(26,92,255,.9)); }
-.assin-no { fill: #141822; stroke: #3FB4FF; stroke-width: 1.4; }
-.assin-n { fill: #fff; font: 800 9px var(--fonte); text-anchor: middle; }
 .pagina-topo > .container { position: relative; z-index: 1; }
-@media (max-width: 999px) { .assinatura { right: -40%; width: 120vw; opacity: .35; } }
 
 /* ---------- Soluções: o ecossistema ---------- */
 @media (min-width: 1000px) { .eco-grade { grid-template-columns: .85fr 1.15fr; align-items: center; } }
@@ -1761,9 +1753,31 @@ a.solucao { color: inherit; text-decoration: none; }
 @media (max-width: 639px) { .cmp-lado { padding: 20px 16px 22px; } .cmp-item { font-size: .88rem; gap: 10px; padding: 10px 12px; } }
 @media (prefers-reduced-motion: reduce) { .eco-no { animation: none; } }
 .cmp-auto-item { justify-content: flex-start; }
-.assinatura { right: -260px; top: 0; transform: none; width: 620px; opacity: .55; }
-@media (max-width: 999px) { .assinatura { right: -55%; top: auto; bottom: -20%; width: 110vw; opacity: .3; } }
 @media (max-width: 479px) { .cmp-estado { display: none; } .cmp-item { min-height: 52px; } }
 .cmp-divisoria { left: clamp(24px, var(--corte), calc(100% - 24px)); }
 .sim-nav { flex-wrap: wrap; }
 @media (max-width: 479px) { .sim-nav .botao { flex: 1 1 100%; } .sim-nav [data-sim-avancar], .sim-nav [data-sim-enviar] { order: -1; } }
+
+/* =====================================================================
+   EMBLEMA KYZENT 3D
+   ===================================================================== */
+.emblema { display: block; overflow: visible; transition: transform .6s var(--ease); will-change: transform; }
+.em-halo { animation: respirar 6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.em-anel { fill: none; stroke-width: 9; stroke-linecap: round; }
+.em-anel-luz { fill: none; stroke: rgba(255,255,255,.55); stroke-width: 1.4; stroke-linecap: round; transform: translateY(-3px); }
+.em-anel-fino { fill: none; stroke: rgba(63,180,255,.35); stroke-width: 1.2; stroke-dasharray: 3 7; }
+.em-globo ellipse { fill: none; stroke: rgba(255,255,255,.13); stroke-width: 1; }
+.em-meridiano { animation: em-meridiano 9s linear infinite; transform-box: fill-box; transform-origin: center; }
+.em-meridiano.m2 { animation-delay: -4.5s; }
+@keyframes em-meridiano { 0% { transform: scaleX(.05); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
+.em-k, .em-k-sombra { font: 800 104px var(--fonte); font-stretch: var(--largo); text-anchor: middle; }
+.em-k-sombra { fill: rgba(4,12,42,.55); }
+.em-rastro circle { fill: #fff; filter: drop-shadow(0 0 5px #8FD3FF) drop-shadow(0 0 12px #3FB4FF); }
+.emblema-topo { width: 150px; height: 150px; margin: -18px 0 10px -18px; animation: em-flutua 7s ease-in-out infinite; }
+@keyframes em-flutua { 50% { translate: 0 -8px; } }
+.emblema-mini { display: inline-block; width: 30px; height: 30px; margin: -6px 2px -6px -4px; vertical-align: middle; }
+.emblema-mini .em-halo { display: none; }
+.hero-marca { gap: 8px; }
+.ecossistema .eco-emblema { position: absolute; inset: auto; left: 50%; top: 50%; width: 38%; height: auto; aspect-ratio: 1; translate: -50% -50%; }
+@media (max-width: 639px) { .emblema-topo { width: 110px; height: 110px; } }
+@media (prefers-reduced-motion: reduce) { .em-halo, .em-meridiano, .emblema-topo { animation: none; } }

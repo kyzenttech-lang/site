@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "83"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "91"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -434,29 +434,50 @@ def foto(arquivo, w, h, alt="", sizes="(max-width: 760px) 100vw, 50vw", eager=Fa
             f'<img src="assets/fotos/{arquivo}" alt="{alt}" width="{w}" height="{h}" loading="{"eager" if eager else "lazy"}" decoding="async"{estilo}></picture>')
 
 
-# ------------------------------------------------------------------ ASSINATURA KYZENT: a órbita do logo (elipse a -24°, ponto de luz e nós)
-def assinatura(variante="anel"):
-    """Variação da órbita para o topo de cada página. anel: uma órbita; aneis: três (Quem somos);
-    passos: uma órbita com 4 pontos (Orçamento)."""
-    if variante == "aneis":
-        orbitas = [(250, 70, 18), (190, 52, 13), (130, 36, 9)]
-    else:
-        orbitas = [(240, 66, 16)]
-    els = []
-    for i, (rx, ry, dur) in enumerate(orbitas):
-        d = f"M{300 - rx} 200a{rx} {ry} 0 1 0 {2 * rx} 0a{rx} {ry} 0 1 0 {-2 * rx} 0"
-        els.append(f'<path id="orb-{variante}-{i}" class="assin-orbita" d="{d}"/>')
-        els.append(f'<circle class="assin-ponto" r="{5 - i}"><animateMotion dur="{dur}s" repeatCount="indefinite" begin="-{i * 3}s"><mpath href="#orb-{variante}-{i}"/></animateMotion></circle>')
-    if variante == "passos":
-        rx, ry = orbitas[0][:2]
-        import math
-        for k in range(4):
-            a = math.pi * (0.85 + k * 0.36)
-            x, y = 300 + rx * math.cos(a), 200 + ry * math.sin(a)
-            els.append(f'<circle class="assin-no" cx="{x:.1f}" cy="{y:.1f}" r="7"/><text class="assin-n" x="{x:.1f}" y="{y + 4:.1f}">{k + 1}</text>')
-    els.append('<circle class="assin-nucleo" cx="300" cy="200" r="10"/>')
-    return (f'<svg class="assinatura assinatura-{variante}" viewBox="0 0 600 400" aria-hidden="true" focusable="false">'
-            f'<g transform="rotate(-24 300 200)">{"".join(els)}</g></svg>')
+
+# ------------------------------------------------------------------ EMBLEMA KYZENT 3D: esfera de vidro com o K e o anel do logo (-24 graus)
+_EMB = [0]
+def emblema(cls="", animado=True, aneis=1, satelites=0):
+    _EMB[0] += 1
+    u = f"e{_EMB[0]}"
+    traseiro = '<path class="em-anel" d="M30 200A170 52 0 0 1 370 200" stroke="url(#{u}-anel)"/><path class="em-anel-luz" d="M30 200A170 52 0 0 1 370 200"/>'.format(u=u)
+    frontal = '<path class="em-anel" d="M30 200A170 52 0 0 0 370 200" stroke="url(#{u}-anel)"/><path class="em-anel-luz" d="M30 200A170 52 0 0 0 370 200"/>'.format(u=u)
+    extra = ""
+    if aneis > 1:
+        extra = '<ellipse class="em-anel-fino" cx="200" cy="200" rx="192" ry="66"/>'
+    sats = ""
+    import math
+    for k in range(satelites):
+        a = math.pi * (0.25 + k * 0.5 / max(1, satelites - 1)) if satelites > 1 else math.pi * .5
+        x, y = 200 + 170 * math.cos(a), 200 + 52 * math.sin(a)
+        sats += f'<circle cx="{x:.1f}" cy="{y:.1f}" r="9" fill="url(#{u}-esf)"/><circle cx="{x - 3:.1f}" cy="{y - 3:.1f}" r="2.5" fill="#fff" opacity=".7"/>'
+    ponto = '<g class="em-rastro" data-rastro>' + "".join(f'<circle cx="{200 - i * 10}" cy="252" r="{6 - i}" opacity="{.9 - i * .2:.1f}"/>' for i in range(4)) + "</g>"
+    return f"""<svg class="emblema {cls}" viewBox="0 0 400 400" aria-hidden="true" focusable="false"{' data-emblema' if animado else ''}>
+  <defs>
+    <radialGradient id="{u}-esf" cx="36%" cy="30%" r="72%"><stop offset="0" stop-color="#EAF7FF"/><stop offset=".16" stop-color="#8FD3FF"/><stop offset=".42" stop-color="#1A5CFF"/><stop offset=".76" stop-color="#0A2BB8"/><stop offset="1" stop-color="#040C2A"/></radialGradient>
+    <radialGradient id="{u}-halo"><stop offset="0" stop-color="#3FB4FF" stop-opacity=".5"/><stop offset=".55" stop-color="#1A5CFF" stop-opacity=".18"/><stop offset="1" stop-color="#1A5CFF" stop-opacity="0"/></radialGradient>
+    <linearGradient id="{u}-anel" x1="0" x2="1"><stop offset="0" stop-color="#1A5CFF" stop-opacity=".25"/><stop offset=".45" stop-color="#BFE6FF"/><stop offset=".6" stop-color="#3FB4FF"/><stop offset="1" stop-color="#0A3DFF" stop-opacity=".3"/></linearGradient>
+    <linearGradient id="{u}-borda" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".8"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#3FB4FF" stop-opacity=".7"/></linearGradient>
+    <linearGradient id="{u}-k" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#B8E2FF"/></linearGradient>
+    <filter id="{u}-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
+    <filter id="{u}-brilho" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3"/></filter>
+    <clipPath id="{u}-clip"><circle cx="200" cy="200" r="92"/></clipPath>
+  </defs>
+  <circle class="em-halo" cx="200" cy="200" r="180" fill="url(#{u}-halo)"/>
+  <g class="em-giro" transform="rotate(-24 200 200)">{extra}{traseiro}<g data-tras></g></g>
+  <g class="em-esfera">
+    <circle cx="200" cy="200" r="92" fill="url(#{u}-esf)"/>
+    <g clip-path="url(#{u}-clip)" class="em-globo">
+      <ellipse cx="200" cy="200" rx="92" ry="30"/><ellipse cx="200" cy="200" rx="92" ry="62"/>
+      <ellipse class="em-meridiano" cx="200" cy="200" rx="44" ry="92"/><ellipse class="em-meridiano m2" cx="200" cy="200" rx="78" ry="92"/>
+    </g>
+    <text class="em-k-sombra" x="204" y="236">K</text>
+    <text class="em-k" x="200" y="232" fill="url(#{u}-k)">K</text>
+    <ellipse cx="168" cy="152" rx="36" ry="18" fill="#fff" opacity=".42" filter="url(#{u}-blur)" transform="rotate(-28 168 152)"/>
+    <circle cx="200" cy="200" r="91" fill="none" stroke="url(#{u}-borda)" stroke-width="1.6"/>
+  </g>
+  <g class="em-giro" transform="rotate(-24 200 200)">{frontal}{sats}<g data-frente>{ponto}</g></g>
+</svg>"""
 
 # ------------------------------------------------------------------ soluções (uma página para cada módulo)
 # textos comerciais escritos pelo Claude a partir do catálogo oficial; os sócios precisam confirmar
@@ -656,9 +677,10 @@ def opcao(tipo, nome, valor, texto, icone=""):
 
 SIM_NEGOCIOS = [(s[0], s[1], s[2]) for s in SEGMENTOS] + [("outro", "Outro tipo de negócio", "site")]
 ORCAMENTO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
-      <div class="pagina-topo-fundo" aria-hidden="true"></div>{assinatura("passos")}
+      <div class="pagina-topo-fundo" aria-hidden="true"></div>
       <div class="container pagina-topo-grade">
         <div>
+          {emblema("emblema-topo", satelites=4)}
           <h1 id="titulo-pagina" data-revelar-texto>Monte o seu projeto.</h1>
           <p class="pagina-topo-apoio">Responda quatro perguntas rápidas e receba uma recomendação de solução. No fim, ela vai pronta para o nosso WhatsApp, sem compromisso.</p>
         </div>
@@ -1029,7 +1051,7 @@ HERO = f"""    <section class="hero hero-cinema" aria-labelledby="titulo-inicio"
       </div>
       <div class="container hero-grade">
         <div class="hero-texto">
-          <p class="hero-marca"><span class="hero-marca-orbita" aria-hidden="true"></span>Kyzent Technology Solutions</p>
+          <p class="hero-marca">{emblema("emblema-mini", animado=False)}Kyzent Technology Solutions</p>
           <h1 id="titulo-inicio" data-revelar-texto>Seu negócio no próximo nível.</h1>
           <p class="hero-apoio">Inteligência artificial, automação e tecnologia para transformar a maneira como sua empresa trabalha, vende e cresce.</p>
           <div class="hero-acoes">
@@ -1195,7 +1217,7 @@ def pagina_solucao(mid):
     probs = "".join(f"<li>{p}</li>" for p in problemas)
     bens = "".join(f"<li>{I['check']}{b}</li>" for b in benef)
     return f"""    <section class="pagina-topo solucao-topo" aria-labelledby="titulo-pagina">
-      <div class="pagina-topo-fundo" aria-hidden="true"></div>{assinatura("anel")}
+      <div class="pagina-topo-fundo" aria-hidden="true"></div>
       <div class="container pagina-topo-grade">
         <div>
           <a class="voltar-link" href="servicos.html">{I["voltar"]}Todas as soluções</a>
@@ -1253,9 +1275,10 @@ def pagina_solucao(mid):
 
 # ---------- Quem somos: a empresa apresentada uma vez; propósito, missão e proposta com papéis diferentes
 QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
-      <div class="pagina-topo-fundo" aria-hidden="true"></div>{assinatura("aneis")}
+      <div class="pagina-topo-fundo" aria-hidden="true"></div>
       <div class="container pagina-topo-grade">
         <div>
+          {emblema("emblema-topo", aneis=2)}
           <h1 id="titulo-pagina" data-revelar-texto>Quem somos</h1>
           <p class="pagina-topo-apoio">Somos a Kyzent, uma empresa de Tecnologia e Inovação de Paulínia, dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</p>
         </div>
@@ -1318,10 +1341,8 @@ def ecossistema():
             <path id="eco-trilho" d="M{320 - rx} 190a{rx} {ry} 0 1 0 {2 * rx} 0a{rx} {ry} 0 1 0 {-2 * rx} 0" fill="none"/>
             <circle class="eco-luz" r="5"><animateMotion dur="14s" repeatCount="indefinite"><mpath href="#eco-trilho"/></animateMotion></circle>
             {"".join(f'<line class="eco-raio" x1="320" y1="190" x2="{320 + rx * math.cos(math.radians(-90 + k * 72)):.1f}" y2="{190 + ry * math.sin(math.radians(-90 + k * 72)):.1f}"/>' for k in range(5))}
-            <circle class="eco-nucleo-luz" cx="320" cy="190" r="70"/>
-            <circle class="eco-nucleo" cx="320" cy="190" r="34"/>
-            <text class="eco-k" x="320" y="198">K</text>
           </svg>
+          {emblema("eco-emblema")}
           <nav class="eco-nos" aria-label="Soluções">{"".join(nos)}</nav>
         </div>"""
 
