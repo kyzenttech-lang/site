@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "103"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "104"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -888,7 +888,7 @@ HISTORIA = f"""    <section class="secao historia" id="como-funciona" aria-label
         <div class="historia-palco" data-historia-palco data-etapa="1" aria-hidden="true">
           <svg class="rede" viewBox="0 0 560 460">
             <defs>
-              <linearGradient id="rede-linha" x1="0" x2="1"><stop offset="0" stop-color="#3FB4FF"/><stop offset="1" stop-color="#1A5CFF"/></linearGradient>
+              <linearGradient id="rede-linha" gradientUnits="userSpaceOnUse" x1="96" y1="0" x2="464" y2="0"><stop offset="0" stop-color="#3FB4FF"/><stop offset="1" stop-color="#1A5CFF"/></linearGradient>
               <radialGradient id="rede-nucleo"><stop offset="0" stop-color="#3FB4FF"/><stop offset=".6" stop-color="#1A5CFF"/><stop offset="1" stop-color="#0A3DFF" stop-opacity="0"/></radialGradient>
             </defs>
             <g class="camada" data-prof="0.4">
@@ -914,7 +914,7 @@ HISTORIA = f"""    <section class="secao historia" id="como-funciona" aria-label
               <circle class="nucleo-anel a2" cx="280" cy="230" r="40"/>
               <circle class="nucleo" cx="280" cy="230" r="28"/>
               <text class="nucleo-texto" x="280" y="235">IA</text>
-              <g class="balao-ia n2" transform="translate(280 150)"><rect x="-92" y="-18" width="184" height="36" rx="18"/><text y="5">Quer agendar para amanhã</text></g>
+              <g class="balao-ia n2" transform="translate(280 150)"><rect x="-108" y="-18" width="216" height="36" rx="18"/><text y="5">Quer agendar para amanhã</text></g>
             </g>
             <g class="camada no-saida" data-prof="1.2">
               <g class="no n3" transform="translate(504 90)"><rect x="-44" y="-20" width="88" height="40" rx="12"/><text y="5">Agenda</text></g>
