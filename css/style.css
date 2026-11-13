@@ -1762,7 +1762,7 @@ a.solucao { color: inherit; text-decoration: none; }
    O K DA MARCA EM 3D (js/k3d.js)
    ===================================================================== */
 .k3d { position: relative; display: grid; place-items: center; aspect-ratio: 1.25; }
-.k3d canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; opacity: 0; transition: opacity .9s var(--ease); }
+.k3d canvas { position: absolute; inset: -30%; width: 160% !important; height: 160% !important; pointer-events: none; opacity: 0; transition: opacity .9s var(--ease); }
 .k3d-pronto canvas { opacity: 1; }
 .k3d-reserva { width: 78%; height: auto; transition: opacity .6s; filter: drop-shadow(0 20px 40px rgba(26,92,255,.35)); }
 .k3d-pronto .k3d-reserva { opacity: 0; }

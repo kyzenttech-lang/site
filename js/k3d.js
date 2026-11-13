@@ -23,6 +23,7 @@ const PECAS = [
   },
 ];
 const CENTRO = { x: 549, y: 286 };
+const FOLGA = 1.6;   // a tela de desenho tem 160% do tamanho da caixa do K
 
 function grad(t, paradas) {
   t = Math.min(1, Math.max(0, t));
@@ -103,10 +104,11 @@ function montar(caixa) {
 
   // tamanho
   const ajustar = () => {
-    const w = caixa.clientWidth, h = caixa.clientHeight || w;
+    // a tela de desenho é maior que a caixa (veja o CSS), para o brilho e o anel nunca baterem na borda
+    const tela = renderer.domElement, w = tela.clientWidth || caixa.clientWidth, h = tela.clientHeight || w;
     renderer.setSize(w, h, false);
     camera.aspect = w / h; camera.updateProjectionMatrix();
-    const raio = 560, dist = raio / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) / Math.min(1, camera.aspect);
+    const raio = 560 * FOLGA, dist = raio / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) / Math.min(1, camera.aspect);
     camera.position.z = dist * .8;
   };
   ajustar();
