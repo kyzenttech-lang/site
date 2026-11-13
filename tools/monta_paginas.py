@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "108"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "109"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -336,9 +336,9 @@ def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
       </div>
     </div>
   </footer>
-  <a class="whats-flutuante" href="{link_whats()}" target="_blank" rel="noopener" data-contato aria-label="Fale com a gente no WhatsApp">{I["conversa"]}<span>Fale com a gente</span></a>
+  <a class="whats-flutuante" href="{link_whats()}" target="_blank" rel="noopener" data-contato aria-label="Fale com a gente no WhatsApp">{avatar_aurora("whats-aurora")}<span>Fale com a gente</span></a>
   <div class="barra-fixa">
-    <a class="whats-fixo" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{I["conversa"]}<span class="whats-longo">{BOTAO}</span><span class="whats-curto">WhatsApp</span></a>
+    <a class="whats-fixo" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{avatar_aurora("whats-aurora")}<span class="whats-longo">{BOTAO}</span><span class="whats-curto">WhatsApp</span></a>
   </div>
 
 {JANELAS_GERAIS}
@@ -355,6 +355,8 @@ PERGUNTAS = [
      "Depende do que for automatizado, das integrações e do volume de uso. A gente entende como funciona o seu negócio pelo WhatsApp e monta um orçamento personalizado, sem compromisso."),
     ("O WhatsApp da minha empresa corre risco de bloqueio?",
      "Usamos a API oficial da Meta, a conexão aprovada pelo próprio WhatsApp. Não usamos conexões não oficiais por QR Code, que podem levar ao bloqueio do número."),
+    ("Quem responde os meus clientes: uma pessoa ou a IA?",
+     "A Aurora, a IA de atendimento da Kyzent, responde o que é rotina com o nome e as informações do seu negócio, e sempre se apresenta como assistente virtual. Quando o cliente precisa de uma pessoa, ela chama a sua equipe."),
     ("Vocês dão suporte depois que a automação está funcionando?",
      "Sim. Cada solução vem com manutenção e suporte da nossa equipe, para a tecnologia seguir funcionando sem você se preocupar com a parte técnica."),
     ("Para quais tipos de negócio a Kyzent trabalha?",
@@ -436,9 +438,9 @@ def demo_ia():
     passos = "".join(f'<li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>{t}</strong><small>{d}</small></span><span class="fluxo-ok">{I["check"]}</span></li>'
                      for ic, t, d in FLUXO_IA)
     return f"""<figure class="demo-visual">
-            <div class="fluxo" data-fluxo role="img" aria-label="Exemplo ilustrativo: chega a mensagem &quot;Quero 2 X-bacon para sexta, com entrega ao meio-dia.&quot; A IA entende o pedido, confere o estoque, agenda a entrega para sexta às 12h e responde o cliente, avisando a cozinha.">
+            <div class="fluxo" data-fluxo role="img" aria-label="Exemplo ilustrativo: chega a mensagem &quot;Quero 2 X-bacon para sexta, com entrega ao meio-dia.&quot; A Aurora entende o pedido, confere o estoque, agenda a entrega para sexta às 12h e responde o cliente, avisando a cozinha.">
               <div class="fluxo-entrada" aria-hidden="true"><small>Mensagem recebida</small><p>"Quero 2 X-bacon para sexta, com entrega ao meio-dia."</p></div>
-              <div class="fluxo-nucleo" aria-hidden="true"><span class="fluxo-orbita"></span><strong>Assistente de IA</strong></div>
+              <div class="fluxo-nucleo" aria-hidden="true"><span class="fluxo-orbita"></span>{avatar_aurora("fluxo-aurora")}<strong>Aurora</strong></div>
               <ol class="fluxo-passos" aria-hidden="true">{passos}</ol>
             </div>
             <figcaption><span class="selo-exemplo">Exemplo ilustrativo</span></figcaption>
@@ -458,6 +460,39 @@ def foto(arquivo, w, h, alt="", sizes="(max-width: 760px) 100vw, 50vw", eager=Fa
 
 
 
+
+# ------------------------------------------------------------------ Aurora: o rosto da IA de atendimento (assets/img/aurora)
+def avatar_aurora(cls=""):
+    """Recorte do rosto (o traço fino embola em tamanho pequeno). Só o pulso dos olhos se mexe."""
+    return (f'<span class="aurora-avatar {cls}" aria-hidden="true"><img src="assets/img/aurora/aurora-rosto-96.webp" '
+            f'alt="" width="96" height="96" decoding="async"><i class="aurora-avatar-olhos"></i></span>')
+
+AURORA_SECAO = f"""    <section class="secao aurora-secao" id="aurora" aria-labelledby="titulo-aurora">
+      <div class="container aurora-grade">
+        <figure class="aurora" data-aurora>
+          <span class="aurora-halo" aria-hidden="true"></span>
+          <div class="aurora-quadro" data-aurora-quadro>
+            <picture>
+              <source type="image/webp" srcset="assets/img/aurora/aurora-640.webp 640w, assets/img/aurora/aurora.webp 1000w" sizes="(max-width: 999px) 86vw, 520px">
+              <img src="assets/img/aurora/aurora.webp" alt="Aurora, a coruja mascote da IA de atendimento da Kyzent" width="1000" height="1000" loading="lazy" decoding="async">
+            </picture>
+            <span class="aurora-olhos" aria-hidden="true"></span>
+          </div>
+        </figure>
+        <div class="aurora-texto">
+          <p class="pilar-rotulo">A IA da Kyzent</p>
+          <h2 id="titulo-aurora" data-revelar-texto>Conheça a Aurora, a IA de atendimento da Kyzent.</h2>
+          <p>A Aurora trabalha para o seu negócio, com o nome e as informações dele. Ela atende os seus clientes no WhatsApp e no Instagram, 24 horas por dia, e sempre se apresenta como assistente virtual.</p>
+          <ul class="aurora-faz">
+            <li><strong>Agenda</strong><span>horários, com confirmação e lembrete</span></li>
+            <li><strong>Tira dúvidas</strong><span>sobre preço, horário, endereço e serviços</span></li>
+            <li><strong>Registra pedidos</strong><span>e manda para a sua equipe organizados</span></li>
+            <li><strong>Chama uma pessoa</strong><span>da equipe quando o cliente precisa</span></li>
+          </ul>
+          <a class="botao" href="#demonstracoes">Ver a Aurora atendendo</a>
+        </div>
+      </div>
+    </section>"""
 
 # ------------------------------------------------------------------ o K da marca em 3D (js/k3d.js, Three.js); a imagem do logo fica de reserva
 def k3d(cls=""):
@@ -497,7 +532,7 @@ def msg_modulo(mid):
 
 # ------------------------------------------------------------------ central de demonstrações (simulações)
 ROTEIRO = {
-    "inicio": {"msg": ["Olá! Sou o assistente virtual da Barbearia Exemplo.", "Como posso ajudar?"],
+    "inicio": {"msg": ["Oi! Eu sou a Aurora, assistente virtual da Barbearia Exemplo.", "Como posso ajudar?"],
                "op": [["Agendar um horário", "agendar"], ["Ver os preços", "precos"], ["Falar com uma pessoa", "humano"]]},
     "agendar": {"msg": ["Claro! Para quando você quer marcar?"], "op": [["Hoje", "hoje"], ["Amanhã", "amanha"]]},
     "hoje": {"msg": ["Hoje ainda temos 16h30 e 18h. Qual prefere?"], "op": [["16h30", "h1"], ["18h", "h2"]]},
@@ -513,8 +548,8 @@ ROTEIRO = {
 def tela_chatbot():
     roteiro = escape(json.dumps(ROTEIRO, ensure_ascii=False))
     return f"""<div class="chat chat-interativo" data-chatbot data-roteiro="{roteiro}">
-              <div class="chat-topo"><span class="chat-avatar">K</span><span class="chat-nome"><strong>Assistente virtual</strong><small data-chat-estado>online</small></span></div>
-              <div class="chat-corpo" data-chat-corpo aria-live="polite"><p class="demo-sem-js">Ative o JavaScript para conversar com o assistente.</p></div>
+              <div class="chat-topo">{avatar_aurora("chat-avatar")}<span class="chat-nome"><strong>Aurora</strong><small>Assistente virtual · <span data-chat-estado>online</span></small></span></div>
+              <div class="chat-corpo" data-chat-corpo aria-live="polite"><p class="demo-sem-js">Ative o JavaScript para conversar com a Aurora.</p></div>
               <div class="chat-opcoes" data-chat-opcoes role="group" aria-label="Respostas"></div>
             </div>"""
 
@@ -569,12 +604,12 @@ def tela_clientes():
             </div>"""
 
 ABAS_DEMO = [
-    ("chatbot", "Chatbot", "conversa", "Atendimento com IA", "Escolha as respostas e veja o assistente conduzir a conversa: agendar, informar preços ou passar para uma pessoa da equipe.", "whatsapp", tela_chatbot),
+    ("chatbot", "Chatbot", "conversa", "Atendimento com IA", "Escolha as respostas e veja a Aurora conduzir a conversa: agendar, informar preços ou passar para uma pessoa da equipe.", "whatsapp", tela_chatbot),
     ("agendamento", "Agendamento", "agenda", "Agendamento automático", "Escolha o serviço, o dia e o horário. O agendamento entra na agenda e o lembrete fica programado.", "agenda", tela_agendamento),
     ("pedidos", "Pedidos", "lanche", "Registro de pedidos", "Monte um pedido no cardápio e registre. Ele entra na fila da cozinha com o total calculado.", "gestao", tela_pedidos),
     ("clientes", "Clientes", "olho", "Organização de clientes", "Busque, filtre e envie um lembrete para quem não aparece há algum tempo.", "agenda", tela_clientes),
     ("painel", "Painel", "grafico", "Painel administrativo", "Pedidos, clientes, processos e indicadores reunidos num painel atualizado sozinho.", "gestao", demo_gestao),
-    ("automacao", "Automação", "avancado", "Automação de processos", "A IA entende o pedido, consulta os sistemas, organiza a tarefa e avisa quem precisa saber.", "ia", demo_ia),
+    ("automacao", "Automação", "avancado", "Automação de processos", "A Aurora entende o pedido, consulta os sistemas, organiza a tarefa e avisa quem precisa saber.", "ia", demo_ia),
 ]
 def central_demos(ids=None, titulo="Veja a Kyzent funcionando.", classe=""):
     abas_ = [a for a in ABAS_DEMO if ids is None or a[0] in ids]
@@ -864,8 +899,10 @@ def cartao_solucao(mid, destaque=False):
     titulo, chamada_txt, benef, _ = SOLUCOES[mid]
     lis = "".join(f"<li>{b}</li>" for b in benef)
     selo = '<span class="plano-selo">Porta de entrada</span>' if destaque else ""
+    aurora = (f'<span class="solucao-aurora">{avatar_aurora()}<span>Com a <strong>Aurora</strong>, a IA de atendimento da Kyzent</span></span>'
+              if destaque else "")
     return (f'<li><a class="solucao brilho{" solucao-destaque" if destaque else ""}" href="{PAGINA_MOD[mid]}">{selo}'
-            f'{ilustra(mid)}<h3>{titulo}</h3><p>{chamada_txt}</p><ul class="frente-itens">{lis}</ul>'
+            f'{ilustra(mid)}<h3>{titulo}</h3><p>{chamada_txt}</p><ul class="frente-itens">{lis}</ul>{aurora}'
             f'<span class="solucao-rodape"><span class="solucao-qtd">{len(servs)} {"serviço" if len(servs) == 1 else "serviços"}</span>'
             f'<span class="solucao-ir">Conhecer solução</span></span></a></li>')
 
@@ -1074,6 +1111,8 @@ def comparar():
 
 INICIO = f"""{HERO}
 
+{AURORA_SECAO}
+
 {comparar()}
 
 {HISTORIA}
@@ -1162,7 +1201,7 @@ def visual_site():
               <span class="selo-exemplo site-selo">Exemplo ilustrativo</span>
             </div>"""
 
-VISUAL_MOD = {"whatsapp": (visual_atendimento, "Cada mensagem no lugar certo.", "A IA responde o que é rotina e passa para a equipe só o que precisa de uma pessoa."),
+VISUAL_MOD = {"whatsapp": (visual_atendimento, "Cada mensagem no lugar certo.", "A Aurora responde o que é rotina e passa para a equipe só o que precisa de uma pessoa."),
               "agenda": (visual_funil, "Nenhuma oportunidade parada.", "Contatos qualificados, horários marcados e clientes chamados de volta no momento certo."),
               "gestao": (visual_gestao, "Os números do negócio, sem planilha.", "Pedidos, clientes e faturamento reunidos e atualizados sozinhos."),
               "site": (visual_site, "Um site que trabalha por você.", "Feito para o seu negócio, rápido no celular e com o caminho direto para a conversa."),

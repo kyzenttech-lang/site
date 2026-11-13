@@ -448,11 +448,11 @@
       no.msg.forEach(function (m) {
         fila = fila.then(function () {
           if (minha !== vez) return;
-          digitando.classList.add("mostra"); estado.textContent = "digitando"; rolarFim();
+          digitando.classList.add("mostra"); estado.textContent = "digitando"; bot.classList.add("digitando"); rolarFim();   // os olhos da Aurora aceleram
           return espera(750);
         }).then(function () {
           if (minha !== vez) return;
-          digitando.classList.remove("mostra"); estado.textContent = "online";
+          digitando.classList.remove("mostra"); estado.textContent = "online"; bot.classList.remove("digitando");
           bolha("ia", m);
         });
       });
@@ -746,6 +746,27 @@
     var intervalo = setInterval(tique, 1000);
     tique();
   }
+
+  /* ------------------------------------------------------------ Aurora: entrada uma vez e inclinação que segue o cursor (só com mouse) */
+  $$("[data-aurora]").forEach(function (fig) {
+    if (semMovimento || !("IntersectionObserver" in window)) return;
+    fig.classList.add("vai-aparecer");
+    var obs = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      fig.classList.add("aparece"); obs.disconnect();
+      setTimeout(function () { fig.classList.add("pronta"); }, 1700);   // depois da entrada, a inclinação volta a responder rápido
+    }, { threshold: .3 });
+    obs.observe(fig);
+    if (!ponteiroFino) return;   // no toque: só o flutuar lento do CSS
+    var quadro = $("[data-aurora-quadro]", fig), secao = fig.closest("section") || fig, pedido = 0, rx = 0, ry = 0;
+    secao.addEventListener("pointermove", function (e) {
+      var r = fig.getBoundingClientRect();
+      ry = ((e.clientX - r.left) / r.width - .5) * 10;   // até 5 graus para cada lado
+      rx = -((e.clientY - r.top) / r.height - .5) * 8;
+      if (!pedido) pedido = requestAnimationFrame(function () { pedido = 0; quadro.style.setProperty("--rx", rx.toFixed(2) + "deg"); quadro.style.setProperty("--ry", ry.toFixed(2) + "deg"); });
+    });
+    secao.addEventListener("pointerleave", function () { quadro.style.setProperty("--rx", "0deg"); quadro.style.setProperty("--ry", "0deg"); });
+  });
 
   /* ------------------------------------------------------------ hero 3D do Início (js/hero-3d.js)
      O texto e o botão de WhatsApp já funcionam antes. O 3D só é baixado depois que a página
