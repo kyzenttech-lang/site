@@ -30,8 +30,8 @@
 
   <script>document.documentElement.classList.add("js");</script>
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=75">
-  <script src="js/main.js?v=75" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=83">
+  <script src="js/main.js?v=83" defer></script>
 </head>
 <body data-promo-fim="2026-12-05T23:59:59-03:00" data-whats="5519988728894 5519971246077">
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -66,9 +66,24 @@
   <main id="conteudo">
     <section class="pagina-topo" aria-labelledby="titulo-pagina">
       <div class="pagina-topo-fundo" aria-hidden="true"></div>
-      <div class="container">
-        <h1 id="titulo-pagina" data-revelar-texto>Soluções</h1>
-        <p class="pagina-topo-apoio">Cinco soluções e 19 serviços para automatizar o atendimento, as vendas e a gestão. Escolha por onde começar.</p>
+      <div class="container pagina-topo-grade eco-grade">
+        <div>
+          <h1 id="titulo-pagina" data-revelar-texto>Soluções</h1>
+          <p class="pagina-topo-apoio">Cinco soluções e 19 serviços para automatizar o atendimento, as vendas e a gestão. Escolha por onde começar.</p>
+        </div>
+        <div class="ecossistema" data-ecossistema>
+          <svg viewBox="0 0 640 380" aria-hidden="true" focusable="false">
+            <ellipse class="eco-orbita" cx="320" cy="190" rx="250" ry="120"/>
+            <ellipse class="eco-orbita eco-orbita-2" cx="320" cy="190" rx="155" ry="74"/>
+            <path id="eco-trilho" d="M70 190a250 120 0 1 0 500 0a250 120 0 1 0 -500 0" fill="none"/>
+            <circle class="eco-luz" r="5"><animateMotion dur="14s" repeatCount="indefinite"><mpath href="#eco-trilho"/></animateMotion></circle>
+            <line class="eco-raio" x1="320" y1="190" x2="320.0" y2="70.0"/><line class="eco-raio" x1="320" y1="190" x2="557.8" y2="152.9"/><line class="eco-raio" x1="320" y1="190" x2="466.9" y2="287.1"/><line class="eco-raio" x1="320" y1="190" x2="173.1" y2="287.1"/><line class="eco-raio" x1="320" y1="190" x2="82.2" y2="152.9"/>
+            <circle class="eco-nucleo-luz" cx="320" cy="190" r="70"/>
+            <circle class="eco-nucleo" cx="320" cy="190" r="34"/>
+            <text class="eco-k" x="320" y="198">K</text>
+          </svg>
+          <nav class="eco-nos" aria-label="Soluções"><a class="eco-no" href="solucao-atendimento.html" style="--x:50.00%;--y:18.42%;--i:0"><span class="eco-bola"></span><span class="eco-nome">WhatsApp</span></a><a class="eco-no" href="solucao-vendas.html" style="--x:87.15%;--y:40.24%;--i:1"><span class="eco-bola"></span><span class="eco-nome">Agenda</span></a><a class="eco-no" href="solucao-gestao.html" style="--x:72.96%;--y:75.55%;--i:2"><span class="eco-bola"></span><span class="eco-nome">Gestão</span></a><a class="eco-no" href="solucao-site.html" style="--x:27.04%;--y:75.55%;--i:3"><span class="eco-bola"></span><span class="eco-nome">Site</span></a><a class="eco-no" href="solucao-ia.html" style="--x:12.85%;--y:40.24%;--i:4"><span class="eco-bola"></span><span class="eco-nome">IA</span></a></nav>
+        </div>
       </div>
     </section>
 

@@ -361,6 +361,7 @@
       var dx = pts[a][0] - pts[b][0], dy = pts[a][1] - pts[b][1], dz = pts[a][2] - pts[b][2];
       if (dx * dx + dy * dy + dz * dz < limite * limite) arestas.push([a, b]);
     }
+    var mouseE = { x: -9999, y: -9999 };
     var EW = 0, EH = 0, girar = 0, incl = { x: 0, y: 0 }, inclAlvo = { x: 0, y: 0 }, esferaVisivel = true;
     var medirEsfera = function () {
       var d = Math.min(window.devicePixelRatio || 1, 2);
@@ -373,7 +374,8 @@
     if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { esferaVisivel = es[0].isIntersecting; }).observe(esfera);
     if (ponteiroFino && !semMovimento && hero) {
       hero.addEventListener("pointermove", function (e) { inclAlvo.x = (e.clientY / innerHeight - .5) * .5; inclAlvo.y = (e.clientX / innerWidth - .5) * .7; });
-      hero.addEventListener("pointerleave", function () { inclAlvo.x = inclAlvo.y = 0; });
+      hero.addEventListener("pointerleave", function () { inclAlvo.x = inclAlvo.y = 0; mouseE.x = mouseE.y = -9999; });
+      hero.addEventListener("pointermove", function (e) { var r = esfera.getBoundingClientRect(); mouseE.x = e.clientX - r.left; mouseE.y = e.clientY - r.top; });
     }
     var desenharEsfera = function () {
       var R = Math.min(EW, EH) * 0.4, cx = EW / 2, cy = EH / 2;
@@ -400,6 +402,33 @@
         ectx.fillStyle = j % 9 === 0 ? "rgba(255,255,255," + (0.35 + f * 0.65).toFixed(3) + ")" : "rgba(63,180,255," + (0.15 + f * 0.75).toFixed(3) + ")";
         ectx.beginPath(); ectx.arc(p[0], p[1], 0.6 + f * 1.6, 0, 6.283); ectx.fill();
       }
+      // nós perto do cursor acendem e se ligam a ele
+      if (mouseE.x > -999) {
+        for (var m = 0; m < proj.length; m++) {
+          var q = proj[m]; if (q[2] > 0.3) continue;
+          var ddx = q[0] - mouseE.x, ddy = q[1] - mouseE.y, dd = Math.sqrt(ddx * ddx + ddy * ddy);
+          if (dd < 90) {
+            var forca = 1 - dd / 90;
+            ectx.strokeStyle = "rgba(143,211,255," + (forca * .55).toFixed(3) + ")";
+            ectx.beginPath(); ectx.moveTo(q[0], q[1]); ectx.lineTo(mouseE.x, mouseE.y); ectx.stroke();
+            ectx.fillStyle = "rgba(255,255,255," + (.4 + forca * .6).toFixed(3) + ")";
+            ectx.beginPath(); ectx.arc(q[0], q[1], 1.6 + forca * 2.2, 0, 6.283); ectx.fill();
+          }
+        }
+      }
+      // a órbita do logo (inclinada a -24 graus) com o ponto de luz passando por trás e pela frente
+      var orx = R * 1.32, ory = R * 0.36, ang = -24 * Math.PI / 180;
+      var og = ectx.createLinearGradient(cx - orx, cy, cx + orx, cy);
+      og.addColorStop(0, "rgba(63,180,255,0)"); og.addColorStop(.5, "rgba(63,180,255,.75)"); og.addColorStop(1, "rgba(26,92,255,0)");
+      ectx.strokeStyle = og; ectx.lineWidth = 1.4;
+      ectx.beginPath(); ectx.ellipse(cx, cy, orx, ory, ang, 0, 6.283); ectx.stroke();
+      ectx.lineWidth = 1;
+      var ta = girar * 4.5, ex = Math.cos(ta) * orx, ey = Math.sin(ta) * ory;
+      var ox = cx + ex * Math.cos(ang) - ey * Math.sin(ang), oy = cy + ex * Math.sin(ang) + ey * Math.cos(ang);
+      var frente = Math.sin(ta) > 0, tam = frente ? 9 : 6;
+      var gp = ectx.createRadialGradient(ox, oy, 0, ox, oy, tam * 2.2);
+      gp.addColorStop(0, frente ? "rgba(255,255,255,1)" : "rgba(143,211,255,.5)"); gp.addColorStop(1, "rgba(63,180,255,0)");
+      ectx.fillStyle = gp; ectx.beginPath(); ectx.arc(ox, oy, tam * 2.2, 0, 6.283); ectx.fill();
       // pulsos de luz correndo pelas ligações
       if (!semMovimento) {
         if (pulsos.length < (celular ? 5 : 10) && Math.random() < 0.08) pulsos.push({ a: arestas[Math.floor(Math.random() * arestas.length)], t: 0 });
@@ -482,6 +511,28 @@
   $$("[data-desenhar]").forEach(function (el) {
     if (semMovimento) { el.classList.add("crescer"); return; }
     quandoVisivel(el, function () { el.classList.add("crescer"); });
+  });
+
+  /* ------------------------------------------------------------ do jeito manual ao automático: divisória arrastável */
+  $$("[data-comparar]").forEach(function (cmp) {
+    var faixa = $("[data-comparar-faixa]", cmp);
+    var aplicar = function () { cmp.style.setProperty("--corte", faixa.value + "%"); };
+    faixa.addEventListener("input", aplicar);
+    var estreito = innerWidth < 640;
+    if (estreito) faixa.value = 100;   // no celular começa no jeito manual inteiro
+    aplicar();
+    // uma dica de movimento na primeira vez que aparece: a divisória desliza e volta ao meio
+    if (!semMovimento) quandoVisivel(cmp, function () {
+      var ini = performance.now();
+      (function passo(t) {
+        var k = Math.min(1, (t - ini) / (estreito ? 2600 : 1800));
+        if (document.activeElement === faixa) return;
+        var suave = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        faixa.value = estreito ? 100 - suave * 100 : 50 + Math.sin(k * Math.PI * 2) * 22 * (1 - k);
+        aplicar();
+        if (k < 1) requestAnimationFrame(passo);
+      })(ini);
+    }, { threshold: .5 });
   });
 
   /* ------------------------------------------------------------ central de automações do topo: uma notificação nova a cada 3 s */

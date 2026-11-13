@@ -30,8 +30,8 @@
 
   <script>document.documentElement.classList.add("js");</script>
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=75">
-  <script src="js/main.js?v=75" defer></script>
+  <link rel="stylesheet" href="css/style.css?v=83">
+  <script src="js/main.js?v=83" defer></script>
 </head>
 <body data-promo-fim="2026-12-05T23:59:59-03:00" data-whats="5519988728894 5519971246077">
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -91,6 +91,28 @@
             </div>
             <ul class="central-feed" data-central-feed><li><span class="feed-ponto"></span><span class="feed-texto"><strong>Pedido anotado no WhatsApp</strong><small>Lanchonete</small></span><span class="feed-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li><li><span class="feed-ponto"></span><span class="feed-texto"><strong>Corte confirmado para as 18h</strong><small>Barbearia</small></span><span class="feed-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li><li><span class="feed-ponto"></span><span class="feed-texto"><strong>Tutor lembrado da vacina</strong><small>Pet shop</small></span><span class="feed-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li><li><span class="feed-ponto"></span><span class="feed-texto"><strong>Resumo da semana enviado</strong><small>Relatório</small></span><span class="feed-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li><li><span class="feed-ponto"></span><span class="feed-texto"><strong>Retorno de quinta confirmado</strong><small>Clínica</small></span><span class="feed-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li></ul>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="secao comparar-secao" id="manual-automatico" aria-labelledby="titulo-comparar">
+      <div class="container">
+        <div class="cabeca cabeca-centro">
+          <h2 id="titulo-comparar" data-revelar-texto>Do jeito manual ao automático.</h2>
+          <p>Arraste a divisória e veja as mesmas tarefas do dia com e sem automação.</p>
+        </div>
+        <div class="comparar" data-comparar style="--corte:50%">
+          <div class="cmp-lado cmp-manual">
+            <p class="cmp-rotulo">Do jeito manual</p>
+            <ul><li class="cmp-item cmp-manual-item" style="--i:0"><span class="cmp-estado">Pendente</span><span>Responder "qual o horário de sábado?" pela 15ª vez</span></li><li class="cmp-item cmp-manual-item" style="--i:1"><span class="cmp-estado">Pendente</span><span>Anotar o pedido no papel no meio do movimento</span></li><li class="cmp-item cmp-manual-item" style="--i:2"><span class="cmp-estado">Pendente</span><span>Ligar para confirmar o horário de amanhã</span></li><li class="cmp-item cmp-manual-item" style="--i:3"><span class="cmp-estado">Pendente</span><span>Procurar o cliente que não volta há um mês</span></li></ul>
+          </div>
+          <div class="cmp-lado cmp-auto">
+            <p class="cmp-rotulo">Com a Kyzent</p>
+            <ul><li class="cmp-item cmp-auto-item"><span class="cmp-estado cmp-feito">Feito</span><span>A IA responde na hora, com o horário certo</span></li><li class="cmp-item cmp-auto-item"><span class="cmp-estado cmp-feito">Feito</span><span>O pedido chega organizado e soma o total</span></li><li class="cmp-item cmp-auto-item"><span class="cmp-estado cmp-feito">Feito</span><span>A confirmação sai sozinha pelo WhatsApp</span></li><li class="cmp-item cmp-auto-item"><span class="cmp-estado cmp-feito">Feito</span><span>O lembrete de retorno é enviado no dia certo</span></li></ul>
+          </div>
+          <div class="cmp-divisoria" aria-hidden="true"><span class="cmp-alca"></span></div>
+          <label class="visualmente-oculto" for="cmp-faixa">Mostrar mais do jeito manual ou do automático</label>
+          <input class="cmp-faixa" id="cmp-faixa" type="range" min="0" max="100" value="50" data-comparar-faixa>
         </div>
       </div>
     </section>

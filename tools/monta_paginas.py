@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "75"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "83"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -433,6 +433,31 @@ def foto(arquivo, w, h, alt="", sizes="(max-width: 760px) 100vw, 50vw", eager=Fa
             f'<source type="image/webp" srcset="{srcset("webp")}" sizes="{sizes}">'
             f'<img src="assets/fotos/{arquivo}" alt="{alt}" width="{w}" height="{h}" loading="{"eager" if eager else "lazy"}" decoding="async"{estilo}></picture>')
 
+
+# ------------------------------------------------------------------ ASSINATURA KYZENT: a órbita do logo (elipse a -24°, ponto de luz e nós)
+def assinatura(variante="anel"):
+    """Variação da órbita para o topo de cada página. anel: uma órbita; aneis: três (Quem somos);
+    passos: uma órbita com 4 pontos (Orçamento)."""
+    if variante == "aneis":
+        orbitas = [(250, 70, 18), (190, 52, 13), (130, 36, 9)]
+    else:
+        orbitas = [(240, 66, 16)]
+    els = []
+    for i, (rx, ry, dur) in enumerate(orbitas):
+        d = f"M{300 - rx} 200a{rx} {ry} 0 1 0 {2 * rx} 0a{rx} {ry} 0 1 0 {-2 * rx} 0"
+        els.append(f'<path id="orb-{variante}-{i}" class="assin-orbita" d="{d}"/>')
+        els.append(f'<circle class="assin-ponto" r="{5 - i}"><animateMotion dur="{dur}s" repeatCount="indefinite" begin="-{i * 3}s"><mpath href="#orb-{variante}-{i}"/></animateMotion></circle>')
+    if variante == "passos":
+        rx, ry = orbitas[0][:2]
+        import math
+        for k in range(4):
+            a = math.pi * (0.85 + k * 0.36)
+            x, y = 300 + rx * math.cos(a), 200 + ry * math.sin(a)
+            els.append(f'<circle class="assin-no" cx="{x:.1f}" cy="{y:.1f}" r="7"/><text class="assin-n" x="{x:.1f}" y="{y + 4:.1f}">{k + 1}</text>')
+    els.append('<circle class="assin-nucleo" cx="300" cy="200" r="10"/>')
+    return (f'<svg class="assinatura assinatura-{variante}" viewBox="0 0 600 400" aria-hidden="true" focusable="false">'
+            f'<g transform="rotate(-24 300 200)">{"".join(els)}</g></svg>')
+
 # ------------------------------------------------------------------ soluções (uma página para cada módulo)
 # textos comerciais escritos pelo Claude a partir do catálogo oficial; os sócios precisam confirmar
 PAGINA_MOD = {"whatsapp": "solucao-atendimento.html", "agenda": "solucao-vendas.html", "gestao": "solucao-gestao.html",
@@ -631,7 +656,7 @@ def opcao(tipo, nome, valor, texto, icone=""):
 
 SIM_NEGOCIOS = [(s[0], s[1], s[2]) for s in SEGMENTOS] + [("outro", "Outro tipo de negócio", "site")]
 ORCAMENTO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
-      <div class="pagina-topo-fundo" aria-hidden="true"></div>
+      <div class="pagina-topo-fundo" aria-hidden="true"></div>{assinatura("passos")}
       <div class="container pagina-topo-grade">
         <div>
           <h1 id="titulo-pagina" data-revelar-texto>Monte o seu projeto.</h1>
@@ -1032,7 +1057,39 @@ NUMEROS = f"""    <section class="numeros-faixa claro" aria-label="A Kyzent em n
       </div>
     </section>"""
 
+
+TAREFAS = [("Responder \"qual o horário de sábado?\" pela 15ª vez", "A IA responde na hora, com o horário certo"),
+           ("Anotar o pedido no papel no meio do movimento", "O pedido chega organizado e soma o total"),
+           ("Ligar para confirmar o horário de amanhã", "A confirmação sai sozinha pelo WhatsApp"),
+           ("Procurar o cliente que não volta há um mês", "O lembrete de retorno é enviado no dia certo")]
+def comparar():
+    manual = "".join(f'<li class="cmp-item cmp-manual-item" style="--i:{k}"><span class="cmp-estado">Pendente</span><span>{a}</span></li>' for k, (a, _) in enumerate(TAREFAS))
+    auto = "".join(f'<li class="cmp-item cmp-auto-item"><span class="cmp-estado cmp-feito">Feito</span><span>{b}</span></li>' for _, b in TAREFAS)
+    return f"""    <section class="secao comparar-secao" id="manual-automatico" aria-labelledby="titulo-comparar">
+      <div class="container">
+        <div class="cabeca cabeca-centro">
+          <h2 id="titulo-comparar" data-revelar-texto>Do jeito manual ao automático.</h2>
+          <p>Arraste a divisória e veja as mesmas tarefas do dia com e sem automação.</p>
+        </div>
+        <div class="comparar" data-comparar style="--corte:50%">
+          <div class="cmp-lado cmp-manual">
+            <p class="cmp-rotulo">Do jeito manual</p>
+            <ul>{manual}</ul>
+          </div>
+          <div class="cmp-lado cmp-auto">
+            <p class="cmp-rotulo">Com a Kyzent</p>
+            <ul>{auto}</ul>
+          </div>
+          <div class="cmp-divisoria" aria-hidden="true"><span class="cmp-alca"></span></div>
+          <label class="visualmente-oculto" for="cmp-faixa">Mostrar mais do jeito manual ou do automático</label>
+          <input class="cmp-faixa" id="cmp-faixa" type="range" min="0" max="100" value="50" data-comparar-faixa>
+        </div>
+      </div>
+    </section>"""
+
 INICIO = f"""{HERO}
+
+{comparar()}
 
 {HISTORIA}
 
@@ -1138,7 +1195,7 @@ def pagina_solucao(mid):
     probs = "".join(f"<li>{p}</li>" for p in problemas)
     bens = "".join(f"<li>{I['check']}{b}</li>" for b in benef)
     return f"""    <section class="pagina-topo solucao-topo" aria-labelledby="titulo-pagina">
-      <div class="pagina-topo-fundo" aria-hidden="true"></div>
+      <div class="pagina-topo-fundo" aria-hidden="true"></div>{assinatura("anel")}
       <div class="container pagina-topo-grade">
         <div>
           <a class="voltar-link" href="servicos.html">{I["voltar"]}Todas as soluções</a>
@@ -1196,7 +1253,7 @@ def pagina_solucao(mid):
 
 # ---------- Quem somos: a empresa apresentada uma vez; propósito, missão e proposta com papéis diferentes
 QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
-      <div class="pagina-topo-fundo" aria-hidden="true"></div>
+      <div class="pagina-topo-fundo" aria-hidden="true"></div>{assinatura("aneis")}
       <div class="container pagina-topo-grade">
         <div>
           <h1 id="titulo-pagina" data-revelar-texto>Quem somos</h1>
@@ -1243,11 +1300,39 @@ def lista_servicos():
         grupos.append(f'<div class="cat-grupo"><h3><a href="{PAGINA_MOD[mid]}">{nome}</a></h3><ul>{lis}</ul></div>')
     return "".join(grupos)
 
+
+def ecossistema():
+    import math
+    rx, ry = 250, 120
+    nos = []
+    for k, mid in enumerate(MOD):
+        a = math.radians(-90 + k * 72)
+        x, y = 320 + rx * math.cos(a), 190 + ry * math.sin(a)
+        nome = MOD[mid][1]
+        nos.append(f'<a class="eco-no" href="{PAGINA_MOD[mid]}" style="--x:{x / 640 * 100:.2f}%;--y:{y / 380 * 100:.2f}%;--i:{k}">'
+                   f'<span class="eco-bola"></span><span class="eco-nome">{nome}</span></a>')
+    return f"""<div class="ecossistema" data-ecossistema>
+          <svg viewBox="0 0 640 380" aria-hidden="true" focusable="false">
+            <ellipse class="eco-orbita" cx="320" cy="190" rx="{rx}" ry="{ry}"/>
+            <ellipse class="eco-orbita eco-orbita-2" cx="320" cy="190" rx="{rx * .62:.0f}" ry="{ry * .62:.0f}"/>
+            <path id="eco-trilho" d="M{320 - rx} 190a{rx} {ry} 0 1 0 {2 * rx} 0a{rx} {ry} 0 1 0 {-2 * rx} 0" fill="none"/>
+            <circle class="eco-luz" r="5"><animateMotion dur="14s" repeatCount="indefinite"><mpath href="#eco-trilho"/></animateMotion></circle>
+            {"".join(f'<line class="eco-raio" x1="320" y1="190" x2="{320 + rx * math.cos(math.radians(-90 + k * 72)):.1f}" y2="{190 + ry * math.sin(math.radians(-90 + k * 72)):.1f}"/>' for k in range(5))}
+            <circle class="eco-nucleo-luz" cx="320" cy="190" r="70"/>
+            <circle class="eco-nucleo" cx="320" cy="190" r="34"/>
+            <text class="eco-k" x="320" y="198">K</text>
+          </svg>
+          <nav class="eco-nos" aria-label="Soluções">{"".join(nos)}</nav>
+        </div>"""
+
 SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
       <div class="pagina-topo-fundo" aria-hidden="true"></div>
-      <div class="container">
-        <h1 id="titulo-pagina" data-revelar-texto>Soluções</h1>
-        <p class="pagina-topo-apoio">Cinco soluções e {N_SERVICOS} serviços para automatizar o atendimento, as vendas e a gestão. Escolha por onde começar.</p>
+      <div class="container pagina-topo-grade eco-grade">
+        <div>
+          <h1 id="titulo-pagina" data-revelar-texto>Soluções</h1>
+          <p class="pagina-topo-apoio">Cinco soluções e {N_SERVICOS} serviços para automatizar o atendimento, as vendas e a gestão. Escolha por onde começar.</p>
+        </div>
+        {ecossistema()}
       </div>
     </section>
 
