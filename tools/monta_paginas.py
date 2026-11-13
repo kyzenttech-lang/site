@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "91"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "100"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -435,49 +435,11 @@ def foto(arquivo, w, h, alt="", sizes="(max-width: 760px) 100vw, 50vw", eager=Fa
 
 
 
-# ------------------------------------------------------------------ EMBLEMA KYZENT 3D: esfera de vidro com o K e o anel do logo (-24 graus)
-_EMB = [0]
-def emblema(cls="", animado=True, aneis=1, satelites=0):
-    _EMB[0] += 1
-    u = f"e{_EMB[0]}"
-    traseiro = '<path class="em-anel" d="M30 200A170 52 0 0 1 370 200" stroke="url(#{u}-anel)"/><path class="em-anel-luz" d="M30 200A170 52 0 0 1 370 200"/>'.format(u=u)
-    frontal = '<path class="em-anel" d="M30 200A170 52 0 0 0 370 200" stroke="url(#{u}-anel)"/><path class="em-anel-luz" d="M30 200A170 52 0 0 0 370 200"/>'.format(u=u)
-    extra = ""
-    if aneis > 1:
-        extra = '<ellipse class="em-anel-fino" cx="200" cy="200" rx="192" ry="66"/>'
-    sats = ""
-    import math
-    for k in range(satelites):
-        a = math.pi * (0.25 + k * 0.5 / max(1, satelites - 1)) if satelites > 1 else math.pi * .5
-        x, y = 200 + 170 * math.cos(a), 200 + 52 * math.sin(a)
-        sats += f'<circle cx="{x:.1f}" cy="{y:.1f}" r="9" fill="url(#{u}-esf)"/><circle cx="{x - 3:.1f}" cy="{y - 3:.1f}" r="2.5" fill="#fff" opacity=".7"/>'
-    ponto = '<g class="em-rastro" data-rastro>' + "".join(f'<circle cx="{200 - i * 10}" cy="252" r="{6 - i}" opacity="{.9 - i * .2:.1f}"/>' for i in range(4)) + "</g>"
-    return f"""<svg class="emblema {cls}" viewBox="0 0 400 400" aria-hidden="true" focusable="false"{' data-emblema' if animado else ''}>
-  <defs>
-    <radialGradient id="{u}-esf" cx="36%" cy="30%" r="72%"><stop offset="0" stop-color="#EAF7FF"/><stop offset=".16" stop-color="#8FD3FF"/><stop offset=".42" stop-color="#1A5CFF"/><stop offset=".76" stop-color="#0A2BB8"/><stop offset="1" stop-color="#040C2A"/></radialGradient>
-    <radialGradient id="{u}-halo"><stop offset="0" stop-color="#3FB4FF" stop-opacity=".5"/><stop offset=".55" stop-color="#1A5CFF" stop-opacity=".18"/><stop offset="1" stop-color="#1A5CFF" stop-opacity="0"/></radialGradient>
-    <linearGradient id="{u}-anel" x1="0" x2="1"><stop offset="0" stop-color="#1A5CFF" stop-opacity=".25"/><stop offset=".45" stop-color="#BFE6FF"/><stop offset=".6" stop-color="#3FB4FF"/><stop offset="1" stop-color="#0A3DFF" stop-opacity=".3"/></linearGradient>
-    <linearGradient id="{u}-borda" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".8"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#3FB4FF" stop-opacity=".7"/></linearGradient>
-    <linearGradient id="{u}-k" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#B8E2FF"/></linearGradient>
-    <filter id="{u}-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
-    <filter id="{u}-brilho" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3"/></filter>
-    <clipPath id="{u}-clip"><circle cx="200" cy="200" r="92"/></clipPath>
-  </defs>
-  <circle class="em-halo" cx="200" cy="200" r="180" fill="url(#{u}-halo)"/>
-  <g class="em-giro" transform="rotate(-24 200 200)">{extra}{traseiro}<g data-tras></g></g>
-  <g class="em-esfera">
-    <circle cx="200" cy="200" r="92" fill="url(#{u}-esf)"/>
-    <g clip-path="url(#{u}-clip)" class="em-globo">
-      <ellipse cx="200" cy="200" rx="92" ry="30"/><ellipse cx="200" cy="200" rx="92" ry="62"/>
-      <ellipse class="em-meridiano" cx="200" cy="200" rx="44" ry="92"/><ellipse class="em-meridiano m2" cx="200" cy="200" rx="78" ry="92"/>
-    </g>
-    <text class="em-k-sombra" x="204" y="236">K</text>
-    <text class="em-k" x="200" y="232" fill="url(#{u}-k)">K</text>
-    <ellipse cx="168" cy="152" rx="36" ry="18" fill="#fff" opacity=".42" filter="url(#{u}-blur)" transform="rotate(-28 168 152)"/>
-    <circle cx="200" cy="200" r="91" fill="none" stroke="url(#{u}-borda)" stroke-width="1.6"/>
-  </g>
-  <g class="em-giro" transform="rotate(-24 200 200)">{frontal}{sats}<g data-frente>{ponto}</g></g>
-</svg>"""
+
+# ------------------------------------------------------------------ o K da marca em 3D (js/k3d.js, Three.js); a imagem do logo fica de reserva
+def k3d(cls=""):
+    return (f'<div class="k3d {cls}" data-k3d aria-hidden="true">'
+            '<img class="k3d-reserva" src="assets/img/kyzent-k-escuro.svg" alt="" width="1080" height="520" decoding="async"></div>')
 
 # ------------------------------------------------------------------ soluções (uma página para cada módulo)
 # textos comerciais escritos pelo Claude a partir do catálogo oficial; os sócios precisam confirmar
@@ -680,13 +642,11 @@ ORCAMENTO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina"
       <div class="pagina-topo-fundo" aria-hidden="true"></div>
       <div class="container pagina-topo-grade">
         <div>
-          {emblema("emblema-topo", satelites=4)}
           <h1 id="titulo-pagina" data-revelar-texto>Monte o seu projeto.</h1>
           <p class="pagina-topo-apoio">Responda quatro perguntas rápidas e receba uma recomendação de solução. No fim, ela vai pronta para o nosso WhatsApp, sem compromisso.</p>
+          <p class="topo-alternativa">Prefere conversar direto? <a href="{link_whats()}" target="_blank" rel="noopener" data-contato>Chame no WhatsApp</a>.</p>
         </div>
-        <div class="pagina-topo-texto">
-          <p>Prefere conversar direto? <a href="{link_whats()}" target="_blank" rel="noopener" data-contato>Chame no WhatsApp</a>.</p>
-        </div>
+        {k3d("k3d-topo")}
       </div>
     </section>
 
@@ -1051,7 +1011,7 @@ HERO = f"""    <section class="hero hero-cinema" aria-labelledby="titulo-inicio"
       </div>
       <div class="container hero-grade">
         <div class="hero-texto">
-          <p class="hero-marca">{emblema("emblema-mini", animado=False)}Kyzent Technology Solutions</p>
+          <p class="hero-marca"><img class="marca-mini" src="assets/img/kyzent-k-escuro.svg" alt="" width="1080" height="520">Kyzent Technology Solutions</p>
           <h1 id="titulo-inicio" data-revelar-texto>Seu negócio no próximo nível.</h1>
           <p class="hero-apoio">Inteligência artificial, automação e tecnologia para transformar a maneira como sua empresa trabalha, vende e cresce.</p>
           <div class="hero-acoes">
@@ -1278,13 +1238,11 @@ QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
       <div class="pagina-topo-fundo" aria-hidden="true"></div>
       <div class="container pagina-topo-grade">
         <div>
-          {emblema("emblema-topo", aneis=2)}
           <h1 id="titulo-pagina" data-revelar-texto>Quem somos</h1>
           <p class="pagina-topo-apoio">Somos a Kyzent, uma empresa de Tecnologia e Inovação de Paulínia, dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</p>
+          <p class="topo-alternativa">Trabalhamos com Inteligência Artificial para melhorar o atendimento, apoiar as vendas e organizar a gestão do dia a dia, e também criamos soluções sob medida quando o seu negócio pede algo diferente.</p>
         </div>
-        <div class="pagina-topo-texto">
-          <p>Trabalhamos com Inteligência Artificial para melhorar o atendimento, apoiar as vendas e organizar a gestão do dia a dia, e também criamos soluções sob medida quando o seu negócio pede algo diferente.</p>
-        </div>
+        {k3d("k3d-topo")}
       </div>
     </section>
 
@@ -1342,7 +1300,7 @@ def ecossistema():
             <circle class="eco-luz" r="5"><animateMotion dur="14s" repeatCount="indefinite"><mpath href="#eco-trilho"/></animateMotion></circle>
             {"".join(f'<line class="eco-raio" x1="320" y1="190" x2="{320 + rx * math.cos(math.radians(-90 + k * 72)):.1f}" y2="{190 + ry * math.sin(math.radians(-90 + k * 72)):.1f}"/>' for k in range(5))}
           </svg>
-          {emblema("eco-emblema")}
+          {k3d("eco-k3d")}
           <nav class="eco-nos" aria-label="Soluções">{"".join(nos)}</nav>
         </div>"""
 
