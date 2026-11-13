@@ -1772,3 +1772,19 @@ a.solucao { color: inherit; text-decoration: none; }
 .ecossistema .eco-k3d { position: absolute; left: 50%; top: 50%; width: 46%; translate: -50% -50%; }
 .topo-alternativa { margin-top: 16px; color: var(--texto-2); max-width: 36rem; }
 .marca-mini { width: 34px; height: auto; margin: -4px 0; }
+
+/* demonstrações no celular: deslizar entre elas e nada de rolagem dentro da conversa ou da lista */
+.demo-dica { display: none; }
+@keyframes demo-da-direita { from { opacity: 0; transform: translateX(40px); } }
+@keyframes demo-da-esquerda { from { opacity: 0; transform: translateX(-40px); } }
+.demo-painel[data-entra="dir"]:not([hidden]) { animation: demo-da-direita .45s var(--ease) both; }
+.demo-painel[data-entra="esq"]:not([hidden]) { animation: demo-da-esquerda .45s var(--ease) both; }
+@media (max-width: 759px) {
+  .demo-dica { display: block; margin: -12px 0 0; color: var(--texto-3); font-size: .84rem; text-align: center; }
+  .demo-centro { touch-action: pan-y; }
+  .chat-interativo .chat-corpo { max-height: none; min-height: 0; overflow: visible; }
+  .cl-lista { max-height: none; overflow: visible; }
+  .demo-info p { font-size: .98rem; }
+  .chat-msg { max-width: 88%; }
+  .chat-msg p { font-size: .92rem; }
+}

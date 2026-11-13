@@ -553,7 +553,7 @@
   /* ------------------------------------------------------------ abas das demonstrações */
   $$("[data-demo-centro]").forEach(function (centro) {
     var abasD = $$('[role="tab"]', centro);
-    function mostrar(aba, focar) {
+    function mostrar(aba, focar, sentido) {
       abasD.forEach(function (a) {
         var ativa = a === aba;
         a.setAttribute("aria-selected", ativa ? "true" : "false");
@@ -561,13 +561,33 @@
         var painel = document.getElementById(a.getAttribute("aria-controls"));
         painel.hidden = !ativa;
         if (ativa) {
+          painel.removeAttribute("data-entra"); void painel.offsetWidth;
+          if (sentido) painel.setAttribute("data-entra", sentido);
           $$(".revelar", painel).forEach(function (r) { r.classList.add("visivel"); });
           painel.dispatchEvent(new CustomEvent("demo-visivel"));
         }
       });
       if (focar) aba.focus();
-      aba.scrollIntoView({ block: "nearest", inline: "nearest" });
+      // a aba escolhida fica visível na faixa de abas, sem mexer na rolagem da página
+      var faixa = aba.parentNode;
+      faixa.scrollTo({ left: aba.offsetLeft - (faixa.clientWidth - aba.offsetWidth) / 2, behavior: semMovimento ? "auto" : "smooth" });
     }
+    // celular: deslizar o dedo para o lado sobre a demonstração passa para a próxima ou volta à anterior
+    var toque = null;
+    centro.addEventListener("touchstart", function (e) {
+      if (e.target.closest("input, textarea, .cl-lista, .demo-abas")) { toque = null; return; }
+      toque = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }, { passive: true });
+    centro.addEventListener("touchend", function (e) {
+      if (!toque) return;
+      var dx = e.changedTouches[0].clientX - toque.x, dy = e.changedTouches[0].clientY - toque.y;
+      toque = null;
+      if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+      var atual = abasD.filter(function (a) { return a.getAttribute("aria-selected") === "true"; })[0];
+      var i = abasD.indexOf(atual), n = abasD.length;
+      if (dx < 0) mostrar(abasD[(i + 1) % n], false, "dir");
+      else mostrar(abasD[(i - 1 + n) % n], false, "esq");
+    }, { passive: true });
     abasD.forEach(function (aba) {
       aba.addEventListener("click", function () { mostrar(aba, false); });
       aba.addEventListener("keydown", function (e) {
