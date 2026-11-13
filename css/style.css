@@ -1855,3 +1855,25 @@ a.solucao { color: inherit; text-decoration: none; }
   .numeros-faixa .hero-numeros li:first-child { grid-row: span 2; min-height: 280px; }
   .numeros-faixa .hero-numeros li:last-child { grid-column: span 2; }
 }
+
+/* ---------- (b) Hero 3D do Início (js/hero-3d.js) ----------
+   O canvas cobre o topo inteiro (partículas e cartões), atrás do texto.
+   .hero-k reserva o lugar do K: a imagem fica ali enquanto o 3D carrega,
+   e o 3D se posiciona pelo tamanho dessa caixa. Nada muda de tamanho: sem CLS. */
+.hero-3d .hero-palco { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.hero-canvas { display: block; width: 100%; height: 100%; opacity: 0; transition: opacity .8s var(--ease); }
+.hero-3d-pronto .hero-canvas { opacity: 1; }
+.hero-k { position: relative; display: grid; place-items: center; height: clamp(190px, 30dvh, 290px); pointer-events: none; }
+.hero-poster { width: min(88%, 520px); height: auto; filter: drop-shadow(0 20px 50px rgba(26, 92, 255, .45)); transition: opacity .6s var(--ease); }
+.hero-3d-pronto .hero-poster { opacity: 0; }
+.hero-3d .hero-grade { gap: 8px; }
+.hero-3d .hero-marca .marca-mini { display: none; }
+@media (min-width: 1000px) {
+  .hero-3d { min-height: calc(100dvh - var(--barra-h)); display: flex; align-items: center; }
+  .hero-3d .hero-grade { grid-template-columns: 1.05fr .95fr; gap: 32px; }
+  .hero-3d .hero-k { order: 2; height: clamp(380px, 58dvh, 580px); }
+  .hero-poster { width: 92%; max-width: 600px; }
+}
+/* com movimento reduzido, economia de dados, sem WebGL ou aparelho lento: só a imagem */
+.sem-3d .hero-canvas { display: none; }
+.sem-3d .hero-poster { opacity: 1; }

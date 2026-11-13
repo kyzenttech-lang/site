@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "107"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "108"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -244,7 +244,7 @@ def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
     ativo = ativo or arq
     servicos_rodape = "".join(f'<li><a href="{PAGINA_MOD[mid]}">{nome}</a></li>' for mid, nome, *_ in MODULOS)
     return f"""<!doctype html>
-<html lang="pt-BR" data-theme="dark">
+<html lang="pt-BR" data-theme="dark" data-v="{VERSAO}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1011,23 +1011,13 @@ def projetos_secao():
 
 # ---------- Início
 MSG_ESPECIALISTA = MSG_CONVERSA
-CENTRAL_FEED = [("Pedido anotado no WhatsApp", "Lanchonete"), ("Corte confirmado para as 18h", "Barbearia"),
-                ("Tutor lembrado da vacina", "Pet shop"), ("Resumo da semana enviado", "Relatório"), ("Retorno de quinta confirmado", "Clínica")]
-CENTRAL = f"""<div class="central vidro" data-central>
-            <div class="central-topo"><span class="hp-pontos"><i></i><i></i><i></i></span><strong>Central de automações</strong><span class="selo-exemplo">Simulação</span></div>
-            <div class="central-numeros">
-              <div><small>Conversas hoje</small><strong data-contar="128">128</strong></div>
-              <div><small>Agendamentos</small><strong data-contar="24">24</strong></div>
-              <div><small>Tarefas feitas</small><strong data-contar="312">312</strong></div>
-            </div>
-            <ul class="central-feed" data-central-feed>{"".join(f'<li><span class="feed-ponto"></span><span class="feed-texto"><strong>{t}</strong><small>{o}</small></span><span class="feed-ok">{I["check"]}</span></li>' for t, o in CENTRAL_FEED)}</ul>
-          </div>"""
-HERO = f"""    <section class="hero hero-cinema" aria-labelledby="titulo-inicio" data-hero>
-      <div class="hero-fundo" aria-hidden="true">
-        <div class="hero-gradiente"></div>
-        <canvas class="hero-rede" data-rede></canvas>
-      </div>
+HERO = f"""    <section class="hero hero-cinema hero-3d" aria-labelledby="titulo-inicio" data-hero>
+      <div class="hero-fundo" aria-hidden="true"><div class="hero-gradiente"></div></div>
+      <div class="hero-palco" data-hero-palco aria-hidden="true"></div>
       <div class="container hero-grade">
+        <div class="hero-k" aria-hidden="true">
+          <img class="hero-poster" src="assets/img/kyzent-k-escuro.svg" alt="" width="1080" height="520" decoding="async">
+        </div>
         <div class="hero-texto">
           <p class="hero-marca"><img class="marca-mini" src="assets/img/kyzent-k-escuro.svg" alt="" width="1080" height="520">Kyzent Technology Solutions</p>
           <h1 id="titulo-inicio" data-revelar-texto>Seu negócio no próximo nível.</h1>
@@ -1036,11 +1026,6 @@ HERO = f"""    <section class="hero hero-cinema" aria-labelledby="titulo-inicio"
             <a class="botao botao-grande" href="#solucoes" data-magnetico>Conhecer nossas soluções</a>
             <a class="botao botao-grande botao-vidro" href="{link_whats(MSG_CONVERSA)}" target="_blank" rel="noopener" data-contato data-msg="{MSG_CONVERSA}" data-magnetico>Conversar no WhatsApp</a>
           </div>
-        </div>
-        <div class="hero-visual" aria-hidden="true">
-          <div class="esfera-luz"></div>
-          <canvas class="esfera" data-esfera></canvas>
-          {CENTRAL}
         </div>
       </div>
     </section>"""

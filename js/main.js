@@ -197,67 +197,6 @@
     });
   }
 
-  // topo do Início: rede de pontos, órbitas, painel com profundidade e lista que gira
-  var hero = $(".hero");
-  var heroVisivel = true;
-  if (hero && "IntersectionObserver" in window) {
-    new IntersectionObserver(function (es) { heroVisivel = es[0].isIntersecting; }).observe(hero);
-  }
-  var orbitas = $(".hero-orbitas");
-  if (orbitas && semMovimento && orbitas.pauseAnimations) orbitas.pauseAnimations();
-
-  var tela = $("[data-rede]");
-  if (tela && tela.getContext && !semMovimento) {
-    var ctx = tela.getContext("2d"), pontos = [], W = 0, H = 0;
-    var mouse = { x: -9999, y: -9999 };
-    var medir = function () {
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      W = tela.clientWidth; H = tela.clientHeight;
-      tela.width = W * dpr; tela.height = H * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var n = Math.round(Math.min(W < 700 ? 18 : 64, (W * H) / 16000));
-      pontos = [];
-      for (var i = 0; i < n; i++) {
-        pontos.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .22, vy: (Math.random() - .5) * .22, r: Math.random() * 1.4 + .6 });
-      }
-    };
-    medir();
-    var tempoRes, larguraAntes = innerWidth;
-    addEventListener("resize", function () {
-      if (innerWidth === larguraAntes) return;   // no celular, a barra do navegador some e muda só a altura
-      larguraAntes = innerWidth;
-      clearTimeout(tempoRes); tempoRes = setTimeout(medir, 200);
-    });
-    if (ponteiroFino) {
-      hero.addEventListener("pointermove", function (e) { var r = tela.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
-      hero.addEventListener("pointerleave", function () { mouse.x = mouse.y = -9999; });
-    }
-    var LIG = 130;
-    (function desenhar() {
-      requestAnimationFrame(desenhar);
-      if (!heroVisivel || document.hidden) return;
-      ctx.clearRect(0, 0, W, H);
-      for (var i = 0; i < pontos.length; i++) {
-        var p = pontos[i];
-        var dxm = mouse.x - p.x, dym = mouse.y - p.y;
-        if (dxm * dxm + dym * dym < 32400) { p.x += dxm * .004; p.y += dym * .004; }
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > W) p.vx *= -1;
-        if (p.y < 0 || p.y > H) p.vy *= -1;
-        for (var j = i + 1; j < pontos.length; j++) {
-          var q = pontos[j], dx = p.x - q.x, dy = p.y - q.y, d = dx * dx + dy * dy;
-          if (d < LIG * LIG) {
-            ctx.strokeStyle = "rgba(63,180,255," + (0.16 * (1 - Math.sqrt(d) / LIG)).toFixed(3) + ")";
-            ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
-          }
-        }
-        ctx.fillStyle = i % 5 === 0 ? "rgba(26,92,255,.85)" : "rgba(63,180,255,.6)";
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
-      }
-    })();
-  }
-
   // demonstração: a IA passando pelas etapas
   $$("[data-fluxo]").forEach(function (fluxo) {
     if (semMovimento || !("IntersectionObserver" in window)) return;
@@ -344,115 +283,6 @@
   function el(tag, cls, texto) { var e = document.createElement(tag); if (cls) e.className = cls; if (texto != null) e.textContent = texto; return e; }
   function espera(ms) { return new Promise(function (ok) { setTimeout(ok, semMovimento ? 0 : ms); }); }
 
-  /* ------------------------------------------------------------ esfera neural do topo (canvas, sem biblioteca) */
-  var esfera = $("[data-esfera]");
-  if (esfera && esfera.getContext) {
-    var ectx = esfera.getContext("2d");
-    var celular = innerWidth < 760;
-    var N = celular ? 170 : 340;
-    var pts = [], arestas = [], pulsos = [];
-    var ouro = Math.PI * (3 - Math.sqrt(5));
-    for (var k = 0; k < N; k++) {
-      var y = 1 - (k / (N - 1)) * 2, r = Math.sqrt(1 - y * y), t = ouro * k;
-      pts.push([Math.cos(t) * r, y, Math.sin(t) * r]);
-    }
-    var limite = celular ? 0.3 : 0.22;
-    for (var a = 0; a < N; a++) for (var b = a + 1; b < N; b++) {
-      var dx = pts[a][0] - pts[b][0], dy = pts[a][1] - pts[b][1], dz = pts[a][2] - pts[b][2];
-      if (dx * dx + dy * dy + dz * dz < limite * limite) arestas.push([a, b]);
-    }
-    var mouseE = { x: -9999, y: -9999 };
-    var EW = 0, EH = 0, girar = 0, incl = { x: 0, y: 0 }, inclAlvo = { x: 0, y: 0 }, esferaVisivel = true;
-    var medirEsfera = function () {
-      var d = Math.min(window.devicePixelRatio || 1, 2);
-      EW = esfera.clientWidth; EH = esfera.clientHeight;
-      esfera.width = EW * d; esfera.height = EH * d;
-      ectx.setTransform(d, 0, 0, d, 0, 0);
-    };
-    medirEsfera();
-    addEventListener("resize", function () { if (Math.abs(esfera.clientWidth - EW) > 2) medirEsfera(); });
-    if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { esferaVisivel = es[0].isIntersecting; }).observe(esfera);
-    if (ponteiroFino && !semMovimento && hero) {
-      hero.addEventListener("pointermove", function (e) { inclAlvo.x = (e.clientY / innerHeight - .5) * .5; inclAlvo.y = (e.clientX / innerWidth - .5) * .7; });
-      hero.addEventListener("pointerleave", function () { inclAlvo.x = inclAlvo.y = 0; mouseE.x = mouseE.y = -9999; });
-      hero.addEventListener("pointermove", function (e) { var r = esfera.getBoundingClientRect(); mouseE.x = e.clientX - r.left; mouseE.y = e.clientY - r.top; });
-    }
-    var desenharEsfera = function () {
-      var R = Math.min(EW, EH) * 0.4, cx = EW / 2, cy = EH / 2;
-      incl.x += (inclAlvo.x - incl.x) * .05; incl.y += (inclAlvo.y - incl.y) * .05;
-      var ay = girar + incl.y, ax = -0.35 + incl.x;
-      var cyy = Math.cos(ay), syy = Math.sin(ay), cxx = Math.cos(ax), sxx = Math.sin(ax);
-      var proj = pts.map(function (p) {
-        var x = p[0] * cyy - p[2] * syy, z = p[0] * syy + p[2] * cyy;
-        var y2 = p[1] * cxx - z * sxx, z2 = p[1] * sxx + z * cxx;
-        var esc = 2.6 / (2.6 + z2);
-        return [cx + x * R * esc, cy + y2 * R * esc, z2];
-      });
-      ectx.clearRect(0, 0, EW, EH);
-      ectx.lineWidth = 1;
-      for (var i = 0; i < arestas.length; i++) {
-        var p1 = proj[arestas[i][0]], p2 = proj[arestas[i][1]];
-        var prof = (2 - (p1[2] + p2[2])) / 4;   // 0 (atrás) a 1 (frente)
-        if (prof < 0.25) continue;
-        ectx.strokeStyle = "rgba(63,180,255," + (prof * 0.32).toFixed(3) + ")";
-        ectx.beginPath(); ectx.moveTo(p1[0], p1[1]); ectx.lineTo(p2[0], p2[1]); ectx.stroke();
-      }
-      for (var j = 0; j < proj.length; j++) {
-        var p = proj[j], f = (1 - p[2]) / 2;
-        ectx.fillStyle = j % 9 === 0 ? "rgba(255,255,255," + (0.35 + f * 0.65).toFixed(3) + ")" : "rgba(63,180,255," + (0.15 + f * 0.75).toFixed(3) + ")";
-        ectx.beginPath(); ectx.arc(p[0], p[1], 0.6 + f * 1.6, 0, 6.283); ectx.fill();
-      }
-      // nós perto do cursor acendem e se ligam a ele
-      if (mouseE.x > -999) {
-        for (var m = 0; m < proj.length; m++) {
-          var q = proj[m]; if (q[2] > 0.3) continue;
-          var ddx = q[0] - mouseE.x, ddy = q[1] - mouseE.y, dd = Math.sqrt(ddx * ddx + ddy * ddy);
-          if (dd < 90) {
-            var forca = 1 - dd / 90;
-            ectx.strokeStyle = "rgba(143,211,255," + (forca * .55).toFixed(3) + ")";
-            ectx.beginPath(); ectx.moveTo(q[0], q[1]); ectx.lineTo(mouseE.x, mouseE.y); ectx.stroke();
-            ectx.fillStyle = "rgba(255,255,255," + (.4 + forca * .6).toFixed(3) + ")";
-            ectx.beginPath(); ectx.arc(q[0], q[1], 1.6 + forca * 2.2, 0, 6.283); ectx.fill();
-          }
-        }
-      }
-      // a órbita do logo (inclinada a -24 graus) com o ponto de luz passando por trás e pela frente
-      var orx = R * 1.32, ory = R * 0.36, ang = -24 * Math.PI / 180;
-      var og = ectx.createLinearGradient(cx - orx, cy, cx + orx, cy);
-      og.addColorStop(0, "rgba(63,180,255,0)"); og.addColorStop(.5, "rgba(63,180,255,.75)"); og.addColorStop(1, "rgba(26,92,255,0)");
-      ectx.strokeStyle = og; ectx.lineWidth = 1.4;
-      ectx.beginPath(); ectx.ellipse(cx, cy, orx, ory, ang, 0, 6.283); ectx.stroke();
-      ectx.lineWidth = 1;
-      var ta = girar * 4.5, ex = Math.cos(ta) * orx, ey = Math.sin(ta) * ory;
-      var ox = cx + ex * Math.cos(ang) - ey * Math.sin(ang), oy = cy + ex * Math.sin(ang) + ey * Math.cos(ang);
-      var frente = Math.sin(ta) > 0, tam = frente ? 9 : 6;
-      var gp = ectx.createRadialGradient(ox, oy, 0, ox, oy, tam * 2.2);
-      gp.addColorStop(0, frente ? "rgba(255,255,255,1)" : "rgba(143,211,255,.5)"); gp.addColorStop(1, "rgba(63,180,255,0)");
-      ectx.fillStyle = gp; ectx.beginPath(); ectx.arc(ox, oy, tam * 2.2, 0, 6.283); ectx.fill();
-      // pulsos de luz correndo pelas ligações
-      if (!semMovimento) {
-        if (pulsos.length < (celular ? 5 : 10) && Math.random() < 0.08) pulsos.push({ a: arestas[Math.floor(Math.random() * arestas.length)], t: 0 });
-        pulsos = pulsos.filter(function (u) {
-          u.t += 0.025;
-          var q1 = proj[u.a[0]], q2 = proj[u.a[1]];
-          if ((q1[2] + q2[2]) / 2 > 0.2) return u.t < 1;
-          var x = q1[0] + (q2[0] - q1[0]) * u.t, y = q1[1] + (q2[1] - q1[1]) * u.t;
-          var g = ectx.createRadialGradient(x, y, 0, x, y, 7);
-          g.addColorStop(0, "rgba(255,255,255,.95)"); g.addColorStop(1, "rgba(63,180,255,0)");
-          ectx.fillStyle = g; ectx.beginPath(); ectx.arc(x, y, 7, 0, 6.283); ectx.fill();
-          return u.t < 1;
-        });
-      }
-    };
-    if (semMovimento) desenharEsfera();
-    else (function quadro() {
-      requestAnimationFrame(quadro);
-      if (!esferaVisivel || document.hidden) return;
-      girar += celular ? 0.0022 : 0.0028;
-      desenharEsfera();
-    })();
-  }
-
   /* ------------------------------------------------------------ história do Início: o diagrama acompanha a leitura dos passos */
   var palcoH = $("[data-historia-palco]");
   if (palcoH) {
@@ -538,21 +368,6 @@
       })(ini);
     }, { threshold: .5 });
   });
-
-  /* ------------------------------------------------------------ central de automações do topo: uma notificação nova a cada 3 s */
-  var centralFeed = $("[data-central-feed]");
-  if (centralFeed && !semMovimento) {
-    var centralVisivel = true;
-    if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { centralVisivel = es[0].isIntersecting; }).observe(centralFeed);
-    setInterval(function () {
-      if (!centralVisivel || document.hidden) return;
-      var ultimo = centralFeed.lastElementChild;
-      ultimo.classList.remove("entrando");
-      centralFeed.insertBefore(ultimo, centralFeed.firstElementChild);
-      void ultimo.offsetWidth;
-      ultimo.classList.add("entrando");
-    }, 3000);
-  }
 
   /* ------------------------------------------------------------ abas das demonstrações */
   $$("[data-demo-centro]").forEach(function (centro) {
@@ -930,6 +745,19 @@
     };
     var intervalo = setInterval(tique, 1000);
     tique();
+  }
+
+  /* ------------------------------------------------------------ hero 3D do Início (js/hero-3d.js)
+     O texto e o botão de WhatsApp já funcionam antes. O 3D só é baixado depois que a página
+     abriu, e nunca com movimento reduzido ou economia de dados: aí fica a imagem do K. */
+  var economia = navigator.connection && navigator.connection.saveData;
+  if ($("[data-hero-palco]")) {
+    if (semMovimento || economia) document.documentElement.classList.add("sem-3d");
+    else {
+      var carregarHero = function () { import("./hero-3d.js?v=" + (document.documentElement.getAttribute("data-v") || "1")).catch(function () { document.documentElement.classList.add("sem-3d"); }); };
+      var depoisDeAbrir = function () { if ("requestIdleCallback" in window) requestIdleCallback(carregarHero, { timeout: 2000 }); else setTimeout(carregarHero, 300); };
+      if (document.readyState === "complete") depoisDeAbrir(); else addEventListener("load", depoisDeAbrir);
+    }
   }
 
   /* ------------------------------------------------------------ o K da marca em 3D: carrega o Three.js só onde precisa, depois que a página abriu */
