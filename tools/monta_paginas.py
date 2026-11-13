@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "74"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "75"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1214,9 +1214,8 @@ QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
           {foto("equipe-reuniao.jpg", 1600, 900, "Equipe conversando em uma reunião num escritório")}
         </div>
         <div class="dupla-texto">
-          <p class="pilar-rotulo">Nosso propósito</p>
-          <h2 id="titulo-proposito" data-revelar-texto>Transformar processos por meio da tecnologia.</h2>
-          <p>Nosso propósito é transformar processos por meio da tecnologia, oferecendo mais produtividade, automação e eficiência para impulsionar os resultados dos nossos clientes.</p>
+          <h2 id="titulo-proposito" data-revelar-texto>Nosso propósito.</h2>
+          <p class="proposito-texto">Transformar processos por meio da tecnologia, oferecendo mais produtividade, automação e eficiência para impulsionar os resultados dos nossos clientes.</p>
         </div>
       </div>
     </section>
