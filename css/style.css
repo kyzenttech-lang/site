@@ -808,7 +808,7 @@ body { padding-bottom: 72px; }
 
 /* perguntas frequentes */
 .perguntas-grade { display: grid; gap: 32px; }
-@media (min-width: 1000px) { .perguntas-grade { grid-template-columns: .8fr 1.2fr; gap: 72px; align-items: start; } .perguntas-grade .cabeca { position: sticky; top: calc(var(--barra-h) + 32px); } }
+@media (min-width: 1000px) { .perguntas-grade { grid-template-columns: .8fr 1.2fr; gap: 72px; align-items: start; } }
 .perguntas-grade .cabeca .botao { margin-top: 24px; }
 .perguntas { display: grid; gap: 10px; }
 .pergunta { border-radius: 14px; background: var(--cartao); box-shadow: 0 0 0 1px var(--linha) inset; transition: background-color .3s, box-shadow .3s; }
