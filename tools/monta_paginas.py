@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "124"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "125"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -725,17 +725,14 @@ SEG_FRASE = {'lanchonete': 'Do pedido ao caixa fechado, sem anotação perdida.'
 # Projetos reais entram aqui, com a autorização de cada cliente: (nome, segmento, o que foi feito, foto ou "")
 PROJETOS = []
 # ------------------------------------------------------------------ Orçamento: simulador e contato
-DESAFIOS = [
-    ("perguntas", "Responder as mesmas perguntas no WhatsApp", ["Respostas inteligentes", "Chatbots inteligentes"]),
-    ("horarios", "Marcar e confirmar horários", ["Agendamento online"]),
-    ("pedidos", "Anotar e organizar pedidos", ["Gestão de cadastros e pedidos", "Chatbots inteligentes"]),
-    ("retorno", "Clientes que somem e não voltam", ["Follow-up inteligente"]),
-    ("orcamentos", "Montar e enviar orçamentos", ["Orçamentos automatizados"]),
-    ("dados", "Organizar os dados dos clientes", ["Integração com CRM"]),
-    ("numeros", "Acompanhar os números do negócio", ["Relatórios e painel de indicadores"]),
-    ("estoque", "Controlar o estoque", ["Controle de estoque"]),
-    ("site", "Ter um site profissional", ["Site personalizado"]),
-    ("medida", "Algo sob medida para a minha empresa", ["Agentes de IA personalizados", "Sistemas personalizados"]),
+# o que a pessoa precisa -> serviços recomendados
+NECESSIDADES = [
+    ("sistema", "Sistema de gestão (estoque, caixa, clientes)", ["Sistema de gestão sob medida (ERP)", "Controle de estoque", "Financeiro e fluxo de caixa", "Relatórios e painel de indicadores"]),
+    ("cardapio", "Cardápio online e pedidos", ["Cardápio online com pedidos", "Gestão de cadastros e pedidos"]),
+    ("agendamento", "Agendamento online", ["Agendamento online", "Follow-up inteligente"]),
+    ("aurora", "Atendimento com IA (Aurora)", ["Chatbots inteligentes", "Respostas inteligentes", "Sistema de atendimento"]),
+    ("site", "Site", ["Site personalizado"]),
+    ("outro", "Outra coisa", ["Sistemas personalizados"]),
 ]
 SERV_MOD = {a: (mid, PAGINA_MOD[mid], MOD[mid][0]) for mid in MOD for a in MOD[mid][4]}
 def opcao(tipo, nome, valor, texto, icone=""):
@@ -743,12 +740,13 @@ def opcao(tipo, nome, valor, texto, icone=""):
             f'<span class="sim-opcao-caixa"><span>{texto}</span><span class="sim-marca">{I["check"]}</span></span></label>')
 
 SIM_NEGOCIOS = [(s[0], s[1], s[2]) for s in SEGMENTOS] + [("outro", "Outro tipo de negócio", "site")]
-ORCAMENTO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
+SIM_ETAPAS = ["O que precisa", "Seu negócio", "Tamanho", "Contato"]
+ORCAMENTO = f"""    <section class="pagina-topo orc-topo" aria-labelledby="titulo-pagina">
       <div class="pagina-topo-fundo" aria-hidden="true"></div>
       <div class="container pagina-topo-grade">
         <div>
           <h1 id="titulo-pagina" data-revelar-texto>Monte o seu projeto.</h1>
-          <p class="pagina-topo-apoio">Responda quatro perguntas rápidas e receba uma recomendação de solução. No fim, ela vai pronta para o nosso WhatsApp, sem compromisso.</p>
+          <p class="pagina-topo-apoio">Responda quatro perguntas rápidas e receba uma recomendação de solução. No fim, você envia para a Kyzent pelo WhatsApp ou por e-mail, sem compromisso.</p>
           <p class="topo-alternativa">Prefere conversar direto? <a href="{link_whats()}" target="_blank" rel="noopener" data-contato>Chame no WhatsApp</a>.</p>
         </div>
         {k3d("k3d-topo")}
@@ -760,35 +758,41 @@ ORCAMENTO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina"
         <h2 id="titulo-simulador" class="visualmente-oculto">Simulador de orçamento</h2>
         <noscript><p class="sim-sem-js">O simulador precisa de JavaScript. Você pode chamar a Kyzent direto no WhatsApp: {WHATS[0][1]} ou {WHATS[1][1]}.</p></noscript>
         <div class="simulador-grade">
-          <form class="simulador" data-simulador novalidate data-mapa="{escape(json.dumps({k: v for k, _, v in DESAFIOS}, ensure_ascii=False))}" data-servmod="{escape(json.dumps(SERV_MOD, ensure_ascii=False))}">
+          <form class="simulador" data-simulador novalidate data-mapa="{escape(json.dumps({k: v for k, _, v in NECESSIDADES}, ensure_ascii=False))}" data-servmod="{escape(json.dumps(SERV_MOD, ensure_ascii=False))}" data-email="{EMAIL}">
             <div class="sim-progresso" aria-hidden="true"><span data-sim-barra></span></div>
-            <p class="sim-num" data-sim-num aria-live="polite">Passo 1 de 4</p>
+            <p class="sim-num" data-sim-num data-etapas="{escape(json.dumps(SIM_ETAPAS, ensure_ascii=False))}" aria-live="polite">Passo 1 de 4 · {SIM_ETAPAS[0]}</p>
             <fieldset class="sim-passo" data-passo="1">
+              <legend>O que você precisa?</legend>
+              <p class="sim-dica">Marque quantas quiser.</p>
+              <div class="sim-opcoes sim-opcoes-2">{"".join(opcao("checkbox", "necessidade", k, t) for k, t, _ in NECESSIDADES)}</div>
+              <label class="sim-outro" data-sim-outra-necessidade hidden>O que você precisa?<input name="necessidade_outra" maxlength="80" autocomplete="off" placeholder="Ex.: controle de ordens de serviço"></label>
+            </fieldset>
+            <fieldset class="sim-passo" data-passo="2" hidden>
               <legend>Qual é o seu tipo de negócio?</legend>
               <div class="sim-opcoes sim-opcoes-2">{"".join(opcao("radio", "negocio", sid, nome, ic) for sid, nome, ic in SIM_NEGOCIOS)}</div>
               <label class="sim-outro" data-sim-outro hidden>Qual é o seu negócio?<input name="negocio_outro" maxlength="60" autocomplete="off" placeholder="Ex.: academia, oficina, loja de roupas"></label>
             </fieldset>
-            <fieldset class="sim-passo" data-passo="2" hidden>
-              <legend>O que mais toma o seu tempo hoje?</legend>
-              <p class="sim-dica">Marque quantas quiser.</p>
-              <div class="sim-opcoes sim-opcoes-2">{"".join(opcao("checkbox", "desafio", k, t) for k, t, _ in DESAFIOS)}</div>
-            </fieldset>
             <fieldset class="sim-passo" data-passo="3" hidden>
-              <legend>Como os clientes falam com você?</legend>
-              <div class="sim-opcoes sim-opcoes-4">{"".join(opcao("checkbox", "canal", c, c) for c in ("WhatsApp", "Instagram", "Telefone", "Presencial"))}</div>
-              <p class="sim-subtitulo" id="sim-volume">Quantas mensagens por dia, mais ou menos?</p>
-              <div class="sim-opcoes sim-opcoes-4" role="radiogroup" aria-labelledby="sim-volume">{"".join(opcao("radio", "volume", v, v) for v in ("Até 20", "De 20 a 50", "De 50 a 100", "Mais de 100"))}</div>
+              <legend>Quantas pessoas trabalham no negócio?</legend>
+              <div class="sim-opcoes sim-opcoes-4">{"".join(opcao("radio", "equipe", v, v) for v in ("Só eu", "De 2 a 5", "De 6 a 20", "Mais de 20"))}</div>
+              <p class="sim-subtitulo" id="sim-quando">Quando quer começar? <span class="sim-opcional">(opcional)</span></p>
+              <div class="sim-opcoes sim-opcoes-3" role="radiogroup" aria-labelledby="sim-quando">{"".join(opcao("radio", "quando", v, v) for v in ("O quanto antes", "Nos próximos meses", "Só estou pesquisando"))}</div>
             </fieldset>
             <fieldset class="sim-passo" data-passo="4" hidden>
               <legend>Para a gente falar com você</legend>
               <div class="sim-campos">
                 <label>Seu nome <span class="sim-obrigatorio">(obrigatório)</span><input name="nome" autocomplete="name" maxlength="60" required></label>
                 <label>Nome da empresa <span>(opcional)</span><input name="empresa" autocomplete="organization" maxlength="80"></label>
-                <label>Cidade<input name="cidade" autocomplete="address-level2" maxlength="60" value="Paulínia"></label>
-                <label class="sim-campo-largo">Observação <span>(opcional)</span><textarea name="obs" rows="3" maxlength="400" placeholder="Ex.: atendo 40 clientes por dia no WhatsApp"></textarea></label>
+                <fieldset class="sim-canal sim-campo-largo">
+                  <legend>Como prefere receber o retorno?</legend>
+                  <label><input type="radio" name="canal_retorno" value="whatsapp" checked> WhatsApp</label>
+                  <label><input type="radio" name="canal_retorno" value="email"> E-mail</label>
+                </fieldset>
+                <label class="sim-campo-largo" data-sim-email hidden>Seu e-mail <span class="sim-obrigatorio">(obrigatório)</span><input name="email" type="email" autocomplete="email" maxlength="80"></label>
+                <label class="sim-campo-largo">Observação <span>(opcional)</span><textarea name="obs" rows="3" maxlength="400" placeholder="Ex.: hoje controlo o estoque numa planilha"></textarea></label>
                 <div class="sim-mel" aria-hidden="true"><label>Não preencha este campo<input name="site" tabindex="-1" autocomplete="off"></label></div>
               </div>
-              <p class="sim-dica">Seus dados vão só na mensagem do WhatsApp que você mesmo envia. O site não guarda nada em servidor.</p>
+              <p class="sim-dica">Seus dados vão só na mensagem que você mesmo envia. O site não guarda nada em servidor.</p>
               <label class="sim-consentimento"><input type="checkbox" name="privacidade" required> <span>Li e concordo com a <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
             </fieldset>
             <p class="sim-erro" role="alert" data-sim-erro hidden></p>
@@ -802,7 +806,7 @@ ORCAMENTO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina"
             <div class="sim-vazio">
               
               <h3>A sua recomendação aparece aqui.</h3>
-              <p>Com base nas respostas, mostramos as soluções que mais combinam com o seu negócio e montamos a mensagem para o WhatsApp.</p>
+              <p>Com base nas respostas, mostramos as soluções que mais combinam com o seu negócio e montamos a mensagem para você enviar pelo WhatsApp ou por e-mail.</p>
             </div>
           </aside>
         </div>
@@ -864,7 +868,7 @@ CHAMADAS = {
     "servicos.html": ("Não sabe por onde começar?", "Responda quatro perguntas rápidas e receba a recomendação certa para o seu negócio."),
     "whatsapp": ("Seu atendimento pode trabalhar de forma mais inteligente.", "Mostre como é o atendimento hoje e veja o que a IA pode assumir."),
     "agenda": ("Organize seus horários e aproveite melhor cada oportunidade.", "Agenda, lembretes, retorno de clientes e orçamentos no automático."),
-    "gestao": ("Tenha mais controle sobre o que acontece no seu negócio.", "Pedidos, clientes e números organizados, com os seus sistemas conectados."),
+    "gestao": ("Tenha mais controle sobre o que acontece no seu negócio.", "A Kyzent desenvolve o sistema do seu negócio, com só as partes que você precisa."),
     "site": ("Sua empresa merece uma presença digital à altura do seu negócio.", "Um site feito para o seu negócio, com o caminho direto para a conversa."),
     "ia": ("Descubra o que a inteligência artificial pode fazer pela sua empresa.", "Conte o processo que mais toma tempo e veja como uma IA sob medida pode ajudar."),
 }
@@ -1324,10 +1328,10 @@ def visual_site():
               <span class="selo-exemplo site-selo">Exemplo ilustrativo</span>
             </div>"""
 
-VISUAL_MOD = {"whatsapp": (visual_atendimento, "Cada mensagem no lugar certo.", "A IA responde o que é rotina e passa para a equipe só o que precisa de uma pessoa."),
+VISUAL_MOD = {"whatsapp": (visual_atendimento, "Cada mensagem no lugar certo.", "A Aurora responde o que é rotina e o sistema de atendimento passa para a equipe só o que precisa de uma pessoa."),
               "agenda": (visual_funil, "Nenhuma oportunidade parada.", "Contatos qualificados, horários marcados e clientes chamados de volta no momento certo."),
-              "gestao": (visual_gestao, "Os números do negócio, sem planilha.", "Pedidos, clientes e faturamento reunidos e atualizados sozinhos."),
-              "site": (visual_site, "Um site que trabalha por você.", "Feito para o seu negócio, rápido no celular e com o caminho direto para a conversa."),
+              "gestao": (visual_gestao, "Os números do negócio, sem planilha.", "Estoque, financeiro, pedidos e clientes num sistema só, com os números atualizados sozinhos."),
+              "site": (visual_site, "Um site que trabalha por você.", "Feito para o seu negócio, rápido no celular e com a cara da sua marca."),
               "ia": (visual_ia, "Uma IA que conhece a sua empresa.", "Pergunte em português e receba a resposta com base nos seus próprios sistemas.")}
 
 def pagina_solucao(mid):
@@ -1348,7 +1352,7 @@ def pagina_solucao(mid):
         </div>
         <div class="pagina-topo-texto">
           <a class="botao botao-grande" href="orcamento.html" data-magnetico>Pedir orçamento</a>
-          <a class="link-seta" href="{link_whats(msg_modulo(mid))}" target="_blank" rel="noopener" data-contato data-msg="{msg_modulo(mid)}">Conversar no WhatsApp</a>
+          <a class="link-seta" href="demonstracoes.html">Testar uma demonstração</a>
         </div>
       </div>
     </section>
@@ -1380,15 +1384,78 @@ def pagina_solucao(mid):
     <section class="secao claro secao-faixa" aria-labelledby="titulo-incluido">
       <div class="container">
         <div class="cabeca">
-          <h2 id="titulo-incluido" data-revelar-texto>O que está incluído.</h2>
+          <h2 id="titulo-incluido" data-revelar-texto>{"Módulos possíveis." if mid == "gestao" else "O que está incluído."}</h2>
+          {"<p>O seu sistema tem só os módulos que o seu negócio precisa. Dá para começar com um e acrescentar os outros depois.</p>" if mid == "gestao" else ""}
         </div>
         <ul class="painel-itens itens-solucao">
 {itens}
         </ul>
       </div>
     </section>
-
+{SOLUCAO_EXTRA.get(mid, lambda: "")()}
 {chamada(mid)}"""
+
+# ---------- o que cada página de solução tem a mais
+PROCESSO_SISTEMA = [
+    ("Diagnóstico", "Conversamos sobre como o seu negócio funciona hoje: o que vende, como controla o estoque e o caixa, onde perde tempo."),
+    ("Protótipo", "Mostramos as telas do sistema antes de desenvolver, para você ajustar o que quiser."),
+    ("Desenvolvimento", "Construímos o sistema com as partes que o seu negócio precisa, já com os seus produtos, serviços e clientes."),
+    ("Treinamento", "Ensinamos a sua equipe a usar o sistema no dia a dia."),
+    ("Suporte", "Acompanhamos, corrigimos e evoluímos o sistema conforme o seu negócio cresce."),
+]
+def extra_gestao():
+    passos = "".join(f'<li class="processo-passo"><span class="processo-n">{k + 1}</span><h3>{t}</h3><p>{d}</p></li>' for k, (t, d) in enumerate(PROCESSO_SISTEMA))
+    return f"""
+    <section class="secao" aria-labelledby="titulo-processo">
+      <div class="container">
+        <div class="cabeca">
+          <h2 id="titulo-processo" data-revelar-texto>Como a Kyzent desenvolve o seu sistema.</h2>
+        </div>
+        <ol class="processo">{passos}</ol>
+      </div>
+    </section>
+
+    <section class="secao secao-faixa" aria-labelledby="titulo-para-quem">
+      <div class="container solucao-duas">
+        <div>
+          <h2 id="titulo-para-quem" data-revelar-texto>Para quem é.</h2>
+          <p class="para-quem-texto">Para pequenos e médios negócios que controlam estoque, caixa e clientes em caderno, planilha ou em sistemas que não conversam entre si: lanchonetes e restaurantes, lojas, pet shops, salões, barbearias, clínicas e empresas de serviço.</p>
+        </div>
+        <div class="solucao-beneficios">
+          <h3>Quer ver funcionando?</h3>
+          <p>As simulações de Painel, Estoque e Pedidos mostram um sistema de gestão com a mesma base de dados.</p>
+          <a class="link-seta" href="index.html#demonstracoes">Ver o sistema funcionando</a>
+        </div>
+      </div>
+    </section>"""
+def extra_vendas():
+    return f"""
+    <section class="secao testar" aria-labelledby="titulo-vendas-demos">
+      <div class="container">
+        <div class="cabeca">
+          <h2 id="titulo-vendas-demos" data-revelar-texto>Teste o cardápio e o agendamento.</h2>
+          <p>Dois sistemas que a Kyzent desenvolveu, cada um com a cara do negócio de exemplo.</p>
+        </div>
+        <ul class="demos-completas">{"".join(cartao_demo(*d) for d in DEMOS_COMPLETAS)}</ul>
+      </div>
+    </section>"""
+def extra_atendimento():
+    return f"""
+    <section class="secao" aria-labelledby="titulo-partes-atendimento">
+      <div class="container">
+        <div class="cabeca">
+          <h2 id="titulo-partes-atendimento" data-revelar-texto>As partes do atendimento.</h2>
+          <p>A Aurora é uma das partes. O atendimento também passa pelo cardápio online, pelo agendamento e pelo sistema onde a sua equipe responde.</p>
+        </div>
+        <ul class="mini-cards mini-cards-4">
+          {mini_card("Aurora", "A IA que responde no WhatsApp e no Instagram", "aurora.html")}
+          {mini_card("Sistema de atendimento", "Toda conversa num lugar só para a equipe", "#titulo-incluido")}
+          {mini_card("Cardápio online", "Teste a demonstração", DEMO_CARDAPIO, True)}
+          {mini_card("Agendamento online", "Teste a demonstração", DEMO_AGENDAMENTO, True)}
+        </ul>
+      </div>
+    </section>"""
+SOLUCAO_EXTRA = {"gestao": extra_gestao, "agenda": extra_vendas, "whatsapp": extra_atendimento}
 
 # ---------- Quem somos: a empresa apresentada uma vez; propósito, missão e proposta com papéis diferentes
 QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
@@ -1397,7 +1464,7 @@ QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
         <div>
           <h1 id="titulo-pagina" data-revelar-texto>Quem somos</h1>
           <p class="pagina-topo-apoio">Somos a Kyzent, uma empresa de Tecnologia e Inovação dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</p>
-          <p class="topo-alternativa">Trabalhamos com Inteligência Artificial para melhorar o atendimento, apoiar as vendas e organizar a gestão do dia a dia, e também criamos soluções sob medida quando o seu negócio pede algo diferente.</p>
+          <p class="topo-alternativa">A Kyzent desenvolve sistemas de gestão sob medida, com experiência em sistemas de estoque e almoxarifado, além de atendimento, vendas e Inteligência Artificial. Quando o seu negócio pede algo diferente, construímos do zero.</p><!-- [CONFIRMAR] texto da experiência em estoque e almoxarifado -->
         </div>
         {k3d("k3d-topo")}
       </div>
@@ -1509,7 +1576,7 @@ PRIVACIDADE = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagin
 
         <h2>2. Quais dados recebemos</h2>
         <ul>
-          <li><strong>Simulador de orçamento:</strong> as respostas que você marca e, se quiser, o seu nome, o nome da empresa, a cidade e uma observação. O simulador funciona só no seu navegador: nada é enviado ao nosso servidor nem guardado no site. Esses dados só chegam até nós se você enviar a mensagem pronta pelo WhatsApp.</li>
+          <li><strong>Simulador de orçamento:</strong> as respostas que você marca, o seu nome e, se quiser, o nome da empresa, o seu e-mail e uma observação. O simulador funciona só no seu navegador: nada é enviado ao nosso servidor nem guardado no site. Esses dados só chegam até nós se você enviar a mensagem pronta pelo WhatsApp ou por e-mail.</li>
           <li><strong>WhatsApp, Instagram e e-mail:</strong> o que você nos manda nas conversas e os dados do seu perfil nesses aplicativos, como nome e número de telefone.</li>
           <li><strong>Navegação:</strong> o site não usa cookies, Google Analytics, pixel da Meta nem outra ferramenta de rastreamento. A hospedagem (GitHub Pages) registra dados técnicos de acesso, como o endereço IP, para manter o site funcionando e seguro.</li>
         </ul>
@@ -1554,12 +1621,15 @@ PRIVACIDADE = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagin
 
 # ---------- Soluções: central de navegação (5 cartões, os 19 serviços em lista, um único acesso ao simulador)
 def lista_servicos():
-    grupos = []
-    for mid in MOD:
-        nome, curto, ic, resumo, servs = MOD[mid]
-        lis = "".join(f'<li><strong>{a}</strong><span>{CATALOGO[a][0]}</span></li>' for a in servs)
-        grupos.append(f'<div class="cat-grupo"><h3><a href="{PAGINA_MOD[mid]}">{nome}</a></h3><ul>{lis}</ul></div>')
-    return "".join(grupos)
+    blocos = []
+    for pid, titulo, apoio, *_resto, mods in PILARES_SOL:
+        grupos = []
+        for mid in mods:
+            nome, curto, ic, resumo, servs = MOD[mid]
+            lis = "".join(f'<li><strong>{a}</strong><span>{CATALOGO[a][0]}</span></li>' for a in servs)
+            grupos.append(f'<div class="cat-grupo"><h4><a href="{PAGINA_MOD[mid]}">{nome}</a></h4><ul>{lis}</ul></div>')
+        blocos.append(f'<div class="cat-pilar"><h3>{titulo}</h3><div class="catalogo">{"".join(grupos)}</div></div>')
+    return "".join(blocos)
 
 
 def ecossistema():
@@ -1589,7 +1659,7 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
       <div class="container pagina-topo-grade eco-grade">
         <div>
           <h1 id="titulo-pagina" data-revelar-texto>Soluções</h1>
-          <p class="pagina-topo-apoio">Cinco soluções e {N_SERVICOS} serviços para automatizar o atendimento, as vendas e a gestão. Escolha por onde começar.</p>
+          <p class="pagina-topo-apoio">Sistemas de gestão, atendimento e vendas, presença online e IA: {N_SERVICOS} serviços que a Kyzent desenvolve sob medida. Escolha por onde começar.</p>
         </div>
         {ecossistema()}
       </div>
@@ -1597,9 +1667,9 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
 
     <section class="secao claro" aria-labelledby="titulo-cinco">
       <div class="container">
-        <h2 id="titulo-cinco" class="visualmente-oculto">As cinco soluções</h2>
-        <ul class="solucoes carrossel" data-carrossel aria-label="Soluções da Kyzent">
-          {"".join(cartao_solucao(mid, i == 0) for i, mid in enumerate(MOD))}
+        <h2 id="titulo-cinco" class="visualmente-oculto">Os três pilares</h2>
+        <ul class="pilares">
+          {"".join(cartao_pilar(*p) for p in PILARES_SOL)}
         </ul>
       </div>
     </section>
@@ -1608,9 +1678,9 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-catalogo" data-revelar-texto>Todos os {N_SERVICOS} serviços.</h2>
-          <p>Organizados por solução. Toque no nome da solução para ver a página completa.</p>
+          <p>Organizados pelos três pilares. Toque no nome da solução para ver a página completa.</p>
         </div>
-        <div class="catalogo">{lista_servicos()}</div>
+        {lista_servicos()}
       </div>
     </section>
 
@@ -1622,12 +1692,12 @@ DESC = "A Kyzent desenvolve sistemas de gestão (ERP), cardápio online, agendam
 
 saidas = [
     ("index.html", "Kyzent | Inteligência artificial e automação para o seu negócio", DESC, INICIO.replace("<!--VIS_GESTAO-->", f'<div class="pilar-vis" aria-hidden="true">{visual_gestao()}</div>'), "", None),
-    ("servicos.html", "Soluções e serviços | Kyzent", "Catálogo de soluções da Kyzent: atendimento com IA no WhatsApp, agendamento e vendas, gestão, site e IA sob medida. Simule o seu orçamento.", SERVICOS_PAG, FILTRO_JANELA, None),
+    ("servicos.html", "Soluções e serviços | Kyzent", "Soluções da Kyzent em três pilares: sistemas de gestão sob medida (ERP), atendimento e vendas com cardápio online, agendamento e a Aurora, e presença online e IA. Simule o seu orçamento.", SERVICOS_PAG.replace("<!--VIS_GESTAO-->", f'<div class="pilar-vis" aria-hidden="true">{visual_gestao()}</div>'), FILTRO_JANELA, None),
     ("quem-somos.html", "Quem somos | Kyzent", "A Kyzent é uma empresa de Tecnologia e Inovação que desenvolve sistemas sob medida. Conheça o nosso propósito, a missão, a visão, os valores e os diferenciais.", QUEM, "", None),
     ("privacidade.html", "Política de Privacidade | Kyzent", "Como a Kyzent trata os seus dados pessoais, de acordo com a LGPD: quais dados recebemos, para que usamos, com quem compartilhamos e como exercer os seus direitos.", PRIVACIDADE, "", None),
     ("demonstracoes.html", "Demonstrações: sistemas para testar | Kyzent", "Teste o cardápio online com pedidos, o agendamento online, a Aurora e as simulações do sistema de gestão que a Kyzent desenvolve. Dados fictícios.", demonstracoes_pagina(), "", None),
     ("aurora.html", "Aurora, a IA de atendimento | Kyzent", "Conheça a Aurora, a IA de atendimento da Kyzent: atende os clientes do seu negócio no WhatsApp e no Instagram, 24 horas, e chama a sua equipe quando precisa.", aurora_pagina(), "", None),
-    ("orcamento.html", "Orçamento | Kyzent", "Simule o seu orçamento em quatro passos e receba uma recomendação de solução da Kyzent pelo WhatsApp.", ORCAMENTO, "", None),
+    ("orcamento.html", "Orçamento | Kyzent", "Simule o seu orçamento em quatro passos: diga o que precisa (sistema de gestão, cardápio online, agendamento, atendimento com IA ou site) e receba uma recomendação da Kyzent.", ORCAMENTO, "", None),
 ] + [(PAGINA_MOD[mid], f"{SOLUCOES[mid][0]} | Kyzent", SOLUCOES[mid][1], pagina_solucao(mid), "", "servicos.html") for mid in MOD]
 
 for arq, titulo, desc, corpo, janelas, ativo in saidas:

@@ -596,37 +596,45 @@
     });
   });
 
-  /* ------------------------------------------------------------ simulador de orçamento */
+  /* ------------------------------------------------------------ simulador de orçamento
+     Passos: o que precisa, tipo de negócio, tamanho, contato. No fim mostra a recomendação e
+     deixa claro que falta enviar: pelo WhatsApp ou por e-mail, como a pessoa preferir. Nada vai para servidor. */
   $$("[data-simulador]").forEach(function (form) {
     var passos = $$("[data-passo]", form), atual = 0, aberto = Date.now();
     var mapa = JSON.parse(form.getAttribute("data-mapa")), servMod = JSON.parse(form.getAttribute("data-servmod"));
+    var emailKyzent = form.getAttribute("data-email");
     var barra = $("[data-sim-barra]", form), num = $("[data-sim-num]", form), erro = $("[data-sim-erro]", form);
+    var etapas = JSON.parse(num.getAttribute("data-etapas") || "[]");
     var voltar = $("[data-sim-voltar]", form), avancar = $("[data-sim-avancar]", form), enviar = $("[data-sim-enviar]", form);
     var resultado = $("[data-sim-resultado]");
     var limpo = function (v, max) { return String(v || "").replace(/[\u0000-\u0009\u000B-\u001F\u007F<>]/g, " ").replace(/\s{3,}/g, "  ").trim().slice(0, max); };
     var marcados = function (nome) { return $$('input[name="' + nome + '"]:checked', form).map(function (i) { return i.value; }); };
     var rotulo = function (input) { return input.closest(".sim-opcao").textContent.trim(); };
 
-    // "Outro tipo de negócio": aparece o campo para a pessoa dizer qual
-    var outroCaixa = $("[data-sim-outro]", form), outroCampo = form.elements.negocio_outro;
-    function mostrarOutro(foco) {
-      var sim = marcados("negocio")[0] === "outro";
-      outroCaixa.hidden = !sim;
-      if (sim && foco) outroCampo.focus();
+    // campos que só aparecem quando a pessoa escolhe "Outra coisa", "Outro tipo de negócio" ou e-mail
+    function alternar(nomeGrupo, valor, caixa, campo, foco) {
+      var sim = marcados(nomeGrupo).indexOf(valor) > -1;
+      caixa.hidden = !sim;
+      if (sim && foco) campo.focus();
     }
-    $$('input[name="negocio"]', form).forEach(function (r) { r.addEventListener("change", function () { mostrarOutro(true); }); });
+    var outraNec = $("[data-sim-outra-necessidade]", form), outraNecCampo = form.elements.necessidade_outra;
+    var outroNeg = $("[data-sim-outro]", form), outroNegCampo = form.elements.negocio_outro;
+    var caixaEmail = $("[data-sim-email]", form), campoEmail = form.elements.email;
+    $$('input[name="necessidade"]', form).forEach(function (r) { r.addEventListener("change", function () { alternar("necessidade", "outro", outraNec, outraNecCampo, r.checked); }); });
+    $$('input[name="negocio"]', form).forEach(function (r) { r.addEventListener("change", function () { alternar("negocio", "outro", outroNeg, outroNegCampo, true); }); });
+    $$('input[name="canal_retorno"]', form).forEach(function (r) { r.addEventListener("change", function () { alternar("canal_retorno", "email", caixaEmail, campoEmail, true); }); });
 
+    // ?ramo=barbearia já marca o tipo de negócio
     var pedido = /[?&]ramo=([a-z]+)/.exec(location.search);
-    if (pedido) { var r = $('input[name="negocio"][value="' + pedido[1] + '"]', form); if (r) r.checked = true; }
+    if (pedido) { var r0 = $('input[name="negocio"][value="' + pedido[1] + '"]', form); if (r0) r0.checked = true; }
 
     function mostrarErro(txt) { erro.textContent = txt; erro.hidden = !txt; }
     function irPara(n, inicial) {
       atual = n;
       passos.forEach(function (p, i) { p.hidden = i !== n; });
       barra.style.width = (n / passos.length * 100) + "%";   // conta só os passos já concluídos: vazia no passo 1
-      num.textContent = "Passo " + (n + 1) + " de " + passos.length;
-      voltar.hidden = false;
-      voltar.textContent = n === 0 ? "Voltar à página anterior" : "Voltar";
+      num.textContent = "Passo " + (n + 1) + " de " + passos.length + (etapas[n] ? " · " + etapas[n] : "");
+      voltar.hidden = n === 0;                                // no passo 1 não há botão que tire a pessoa da página
       avancar.hidden = n === passos.length - 1;
       enviar.hidden = n !== passos.length - 1;
       mostrarErro("");
@@ -635,19 +643,30 @@
       var topo = form.getBoundingClientRect().top;
       if (!inicial && topo < 80) scrollTo({ top: scrollY + topo - 100, behavior: semMovimento ? "auto" : "smooth" });
     }
+    function exigir(campo, min, msg) {
+      var ok = limpo(campo.value, 80).length >= min;
+      campo.setAttribute("aria-invalid", ok ? "false" : "true");
+      if (!ok) { campo.focus(); return msg; }
+      return "";
+    }
     function valido(n) {
-      if (n === 0 && !marcados("negocio").length) return "Escolha o seu tipo de negócio para continuar.";
-      if (n === 0 && marcados("negocio")[0] === "outro") {
-        var okOutro = limpo(outroCampo.value, 60).length >= 2;
-        outroCampo.setAttribute("aria-invalid", okOutro ? "false" : "true");
-        if (!okOutro) { outroCampo.focus(); return "Conte qual é o seu tipo de negócio para continuar."; }
+      if (n === 0) {
+        if (!marcados("necessidade").length) return "Marque pelo menos uma opção para continuar.";
+        if (marcados("necessidade").indexOf("outro") > -1) return exigir(outraNecCampo, 2, "Conte o que você precisa para continuar.");
       }
-      if (n === 1 && !marcados("desafio").length) return "Marque pelo menos uma opção para continuar.";
+      if (n === 1) {
+        if (!marcados("negocio").length) return "Escolha o seu tipo de negócio para continuar.";
+        if (marcados("negocio")[0] === "outro") return exigir(outroNegCampo, 2, "Conte qual é o seu tipo de negócio para continuar.");
+      }
+      if (n === 2 && !marcados("equipe").length) return "Escolha quantas pessoas trabalham no negócio.";
       if (n === 3) {
-        var nome = form.elements.nome;
-        var ok = limpo(nome.value, 60).length >= 2;
-        nome.setAttribute("aria-invalid", ok ? "false" : "true");
-        if (!ok) { nome.focus(); return "Escreva o seu nome para a gente saber com quem fala."; }
+        var e1 = exigir(form.elements.nome, 2, "Escreva o seu nome para a gente saber com quem fala.");
+        if (e1) return e1;
+        if (marcados("canal_retorno")[0] === "email") {
+          var okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(campoEmail.value.trim());
+          campoEmail.setAttribute("aria-invalid", okEmail ? "false" : "true");
+          if (!okEmail) { campoEmail.focus(); return "Escreva um e-mail válido para receber o retorno."; }
+        }
         var aceite = form.elements.privacidade;
         if (aceite && !aceite.checked) { aceite.setAttribute("aria-invalid", "true"); aceite.focus(); return "Para enviar, marque que leu e concorda com a Política de Privacidade."; }
         if (aceite) aceite.setAttribute("aria-invalid", "false");
@@ -655,11 +674,7 @@
       return "";
     }
     avancar.addEventListener("click", function () { var e = valido(atual); if (e) mostrarErro(e); else irPara(atual + 1); });
-    voltar.addEventListener("click", function () {
-      if (atual > 0) { irPara(atual - 1); return; }
-      var veioDoSite = document.referrer && document.referrer.indexOf(location.host) > -1;
-      if (veioDoSite && history.length > 1) history.back(); else location.href = "index.html";
-    });
+    voltar.addEventListener("click", function () { if (atual > 0) irPara(atual - 1); });
     form.addEventListener("keydown", function (e) {
       if (e.key === "Enter" && e.target.tagName === "INPUT" && atual < passos.length - 1) { e.preventDefault(); avancar.click(); }
     });
@@ -670,36 +685,36 @@
       if (problema) { mostrarErro(problema); return; }
       if (form.elements.site.value) return;   // campo-isca preenchido: robô
       if (Date.now() - aberto < 3000) { mostrarErro("Confira as respostas e tente de novo em alguns segundos."); return; }
-      erro.hidden = true;   // deu certo: some o aviso de uma tentativa anterior
+      erro.hidden = true;
+
+      var necessidades = $$('input[name="necessidade"]:checked', form);
+      var servicos = [];
+      necessidades.forEach(function (d) { (mapa[d.value] || []).forEach(function (s) { if (servicos.indexOf(s) === -1) servicos.push(s); }); });
+      var grupos = {};
+      servicos.forEach(function (s) { var m = servMod[s]; if (m) (grupos[m[0]] = grupos[m[0]] || { pagina: m[1], nome: m[2], itens: [] }).itens.push(s); });
 
       var negocioInput = $('input[name="negocio"]:checked', form);
-      var desafios = $$('input[name="desafio"]:checked', form);
-      var servicos = [];
-      desafios.forEach(function (d) { (mapa[d.value] || []).forEach(function (s) { if (servicos.indexOf(s) === -1) servicos.push(s); }); });
-      var grupos = {};
-      servicos.forEach(function (s) { var m = servMod[s]; (grupos[m[0]] = grupos[m[0]] || { pagina: m[1], nome: m[2], itens: [] }).itens.push(s); });
-
+      var canal = marcados("canal_retorno")[0] || "whatsapp";
       var dados = {
-        nome: limpo(form.elements.nome.value, 60), empresa: limpo(form.elements.empresa.value, 80),
-        cidade: limpo(form.elements.cidade.value, 60), obs: limpo(form.elements.obs.value, 400),
-        negocio: negocioInput.value === "outro" ? "Outro: " + limpo(outroCampo.value, 60) : rotulo(negocioInput),
-        canais: marcados("canal").join(", "), volume: marcados("volume")[0] || ""
+        nome: limpo(form.elements.nome.value, 60), empresa: limpo(form.elements.empresa.value, 80), obs: limpo(form.elements.obs.value, 400),
+        negocio: negocioInput.value === "outro" ? "Outro: " + limpo(outroNegCampo.value, 60) : rotulo(negocioInput),
+        equipe: marcados("equipe")[0] || "", quando: marcados("quando")[0] || "", email: limpo(campoEmail.value, 80)
       };
       var linhas = ["Olá, vim pelo site da Kyzent e fiz a simulação de orçamento.", "Nome: " + dados.nome];
       if (dados.empresa) linhas.push("Empresa: " + dados.empresa);
-      if (dados.cidade) linhas.push("Cidade: " + dados.cidade);
       linhas.push("Negócio: " + dados.negocio);
-      if (dados.canais) linhas.push("Canais: " + dados.canais);
-      if (dados.volume) linhas.push("Mensagens por dia: " + dados.volume);
-      linhas.push("", "O que mais toma tempo:");
-      desafios.forEach(function (d) { linhas.push("- " + rotulo(d)); });
+      if (dados.equipe) linhas.push("Pessoas no negócio: " + dados.equipe);
+      if (dados.quando) linhas.push("Quando quer começar: " + dados.quando);
+      if (canal === "email") linhas.push("Prefere retorno por e-mail: " + dados.email);
+      linhas.push("", "O que preciso:");
+      necessidades.forEach(function (d) { linhas.push("- " + (d.value === "outro" ? "Outra coisa: " + limpo(outraNecCampo.value, 80) : rotulo(d))); });
       linhas.push("", "Soluções recomendadas:");
       servicos.forEach(function (s) { linhas.push("- " + s); });
       if (dados.obs) linhas.push("", "Observação: " + dados.obs);
       if (!isNaN(fimPromo) && Date.now() < fimPromo) linhas.push("", "Quero aproveitar a implantação grátis da Black Friday.");
       var mensagem = linhas.join("\n");
 
-      barra.style.width = "100%";   // enviou: os quatro passos concluídos
+      barra.style.width = "100%";
       resultado.innerHTML = "";
       var h = el("h3"); h.textContent = dados.nome.split(" ")[0] + ", estas são as soluções que mais combinam com o seu negócio.";
       resultado.appendChild(h);
@@ -713,21 +728,29 @@
         rec.appendChild(caixa);
       });
       resultado.appendChild(rec);
+
+      // falta um passo: enviar (a recomendação sozinha não chega à Kyzent)
+      var falta = el("div", "sim-falta");
+      falta.appendChild(el("strong", null, "Falta só enviar."));
+      falta.appendChild(el("p", null, "A Kyzent só recebe o seu pedido quando você envia a mensagem pronta. Responderemos com uma proposta para o seu negócio."));
       var acoes = el("div", "sim-rec-acoes");
-      var bWhats = el("button", "botao", "Enviar pelo WhatsApp"); bWhats.type = "button";
-      acoes.appendChild(bWhats);
-      resultado.appendChild(acoes);
-      resultado.appendChild(el("p", "sim-rec-nota", "A recomendação é um ponto de partida. O orçamento final é combinado pelo WhatsApp, conforme o seu negócio."));
-      bWhats.addEventListener("click", function () {
-        if (bWhats.disabled) return;
-        if (NUMEROS.length) window.open(linkSorteado(mensagem), "_blank", "noopener");
-        bWhats.disabled = true; bWhats.textContent = "Mensagem aberta no WhatsApp";
-        setTimeout(function () { bWhats.disabled = false; bWhats.textContent = "Enviar pelo WhatsApp"; }, 4000);
+      var bWhats = el("a", "botao", "Enviar pelo WhatsApp"), bEmail = el("a", "botao", "Enviar por e-mail");
+      bWhats.href = NUMEROS.length ? linkSorteado(mensagem) : "#"; bWhats.target = "_blank"; bWhats.rel = "noopener";
+      bEmail.href = "mailto:" + emailKyzent + "?subject=" + encodeURIComponent("Orçamento pelo site: " + dados.nome) + "&body=" + encodeURIComponent(mensagem);
+      if (canal === "email") { bWhats.className = "botao botao-contorno"; acoes.appendChild(bEmail); acoes.appendChild(bWhats); }
+      else { bEmail.className = "botao botao-contorno"; acoes.appendChild(bWhats); acoes.appendChild(bEmail); }
+      falta.appendChild(acoes);
+      resultado.appendChild(falta);
+      resultado.appendChild(el("p", "sim-rec-nota", "A recomendação é um ponto de partida. O orçamento final é combinado com você, conforme o seu negócio."));
+      [bWhats, bEmail].forEach(function (b) {
+        b.addEventListener("click", function () { falta.classList.add("enviado"); $("strong", falta).textContent = "Mensagem aberta. É só enviar."; });
       });
       if (innerWidth < 1000) resultado.scrollIntoView({ behavior: semMovimento ? "auto" : "smooth", block: "start" });
       h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: innerWidth >= 1000 });
     });
-    mostrarOutro(false);
+    alternar("necessidade", "outro", outraNec, outraNecCampo, false);
+    alternar("negocio", "outro", outroNeg, outroNegCampo, false);
+    alternar("canal_retorno", "email", caixaEmail, campoEmail, false);
     irPara(0, true);
   });
 

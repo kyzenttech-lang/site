@@ -2102,3 +2102,49 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
   .barra-logo img { width: 128px; }
   .barra-acoes .botao-barra { padding: 0 14px; font-size: .88rem; }
 }
+
+/* ---------- (e) Orçamento geral ---------- */
+@media (max-width: 999px) { .orc-topo .k3d { display: none; } .orc-topo { padding-bottom: 8px; } }
+@media (min-width: 640px) { .sim-opcoes-3 { grid-template-columns: repeat(3, 1fr); } }
+.sim-opcional { color: #4A5468; font-weight: 400; font-size: .9em; }
+.sim-canal { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0; padding: 0; border: 0; }
+.sim-canal legend { width: 100%; margin-bottom: 8px; color: #0B1220; font-weight: 600; }
+.sim-canal label { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #0B1220; cursor: pointer; }
+.sim-canal input { width: 20px; height: 20px; accent-color: var(--azul-2); }
+.sim-falta { margin-top: 16px; padding: 18px; border-radius: 16px; background: rgba(26,92,255,.08); box-shadow: 0 0 0 1.5px var(--azul-2) inset; }
+.sim-falta strong { display: block; color: #0B1220; font-size: 1.1rem; }
+.sim-falta p { margin-top: 6px; color: #4A5468; font-size: .95rem; }
+.sim-falta.enviado { background: rgba(74,222,155,.12); box-shadow: 0 0 0 1.5px #1F9D63 inset; }
+.sim-falta .sim-rec-acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.sim-falta .sim-rec-acoes .botao { flex: 1 1 200px; }
+/* rótulos "(obrigatório)" e "(opcional)" na mesma linha do nome do campo */
+.sim-campos label > span { display: inline; margin-left: 4px; }
+
+/* ---------- (e) Páginas de solução ---------- */
+.processo { display: grid; gap: 12px; counter-reset: p; }
+@media (min-width: 760px) { .processo { grid-template-columns: repeat(5, 1fr); } }
+.processo-passo { padding: 22px 20px; border-radius: var(--r-cartao); background: var(--cartao); box-shadow: 0 0 0 1px var(--linha) inset; }
+.processo-n { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: var(--grad-botao); color: #fff; font-weight: 800; }
+.processo-passo h3 { margin-top: 14px; font-size: 1.15rem; }
+.processo-passo p { margin-top: 6px; color: var(--texto-2); font-size: .95rem; }
+.para-quem-texto { margin-top: 16px; color: var(--texto-2); font-size: 1.08rem; max-width: var(--leitura); }
+@media (min-width: 900px) { .mini-cards-4 { grid-template-columns: repeat(4, 1fr); } }
+.cat-pilar + .cat-pilar { margin-top: 44px; }
+.cat-pilar > h3 { margin-bottom: 16px; font-size: clamp(1.3rem, 1.1rem + .8vw, 1.7rem); }
+.cat-grupo h4 { font-size: 1.05rem; }
+.cat-grupo h4 a { color: inherit; text-decoration: none; }
+.cat-grupo h4 a:hover { color: var(--azul-2); }
+/* rótulo e "(obrigatório)/(opcional)" na mesma linha; o campo embaixo, na largura toda */
+.sim-campos > label { grid-template-columns: auto 1fr; column-gap: 6px; align-items: baseline; }
+.sim-campos > label > input, .sim-campos > label > textarea { grid-column: 1 / -1; }
+/* WhatsApp / E-mail: bolinhas normais, sem o estilo das caixas de texto */
+.sim-campos .sim-canal input { width: 20px; height: 20px; min-height: 0; padding: 0; border-radius: 50%; box-shadow: none; background: none; }
+.simulador { color-scheme: light; }   /* o formulário fica num fundo claro: bolinhas e caixas no padrão claro */
+.simulador .sim-canal legend { margin-bottom: 4px; font-size: .9rem; font-weight: 600; line-height: 1.4; letter-spacing: 0; color: var(--texto-2); }
+/* catálogo por pilar: um grupo sozinho ocupa a largura toda, com os serviços em colunas */
+@media (min-width: 760px) {
+  .cat-pilar .catalogo { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .cat-pilar .catalogo > .cat-grupo:only-child ul { columns: 2; column-gap: 32px; }
+  .cat-pilar .catalogo > .cat-grupo:only-child li { break-inside: avoid; }
+}
+@media (min-width: 1180px) { .cat-pilar .catalogo > .cat-grupo:only-child ul { columns: 3; } }
