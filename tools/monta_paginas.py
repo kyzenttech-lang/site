@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "116"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "117"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -466,8 +466,8 @@ def foto(arquivo, w, h, alt="", sizes="(max-width: 760px) 100vw, 50vw", eager=Fa
 
 # ------------------------------------------------------------------ Aurora: o rosto da IA de atendimento (assets/img/aurora)
 def avatar_aurora(cls=""):
-    """Recorte do rosto (o traço fino embola em tamanho pequeno). Parado, sem efeito."""
-    return (f'<span class="aurora-avatar {cls}" aria-hidden="true"><img src="assets/img/aurora/aurora-rosto-96.webp" '
+    """A arte inteira da Aurora, só reduzida (sem cortar). Parada, sem efeito."""
+    return (f'<span class="aurora-avatar {cls}" aria-hidden="true"><img src="assets/img/aurora/aurora-avatar-96.webp" srcset="assets/img/aurora/aurora-avatar-96.webp 1x, assets/img/aurora/aurora-avatar-256.webp 3x" '
             f'alt="" width="96" height="96" decoding="async"></span>')
 
 AURORA_PERGUNTAS = [
