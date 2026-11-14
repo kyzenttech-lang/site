@@ -711,19 +711,13 @@
      O texto e o botão de WhatsApp já funcionam antes. O 3D só é baixado depois que a página
      abriu, e nunca com movimento reduzido ou economia de dados: aí fica a imagem do K. */
   var economia = navigator.connection && navigator.connection.saveData;
-  if ($("[data-hero-palco]")) {
+  if ($("[data-hero-palco]") || $("[data-k3d]")) {
     if (semMovimento || economia) document.documentElement.classList.add("sem-3d");
     else {
       var carregarHero = function () { import("./hero-3d.js?v=" + (document.documentElement.getAttribute("data-v") || "1")).catch(function () { document.documentElement.classList.add("sem-3d"); }); };
       var depoisDeAbrir = function () { if ("requestIdleCallback" in window) requestIdleCallback(carregarHero, { timeout: 2000 }); else setTimeout(carregarHero, 300); };
       if (document.readyState === "complete") depoisDeAbrir(); else addEventListener("load", depoisDeAbrir);
     }
-  }
-
-  /* ------------------------------------------------------------ o K da marca em 3D: carrega o Three.js só onde precisa, depois que a página abriu */
-  if ($("[data-k3d]")) {
-    var carregarK = function () { import("./k3d.js").catch(function () {}); };
-    if ("requestIdleCallback" in window) requestIdleCallback(carregarK, { timeout: 1500 }); else setTimeout(carregarK, 600);
   }
 
   /* ------------------------------------------------------------ ano do rodapé */

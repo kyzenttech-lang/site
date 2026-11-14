@@ -16,7 +16,8 @@ const palcoHero = document.querySelector("[data-hero-palco]");
 const hero = palcoHero && palcoHero.closest("[data-hero]");
 const palcoFluxo = document.querySelector("[data-historia-palco]");
 const palcoSeg = document.querySelector("[data-seg-palco]");   // ícone 3D do segmento escolhido
-if (palcoHero && hero) iniciar();
+const palcoMarca = document.querySelector("[data-k3d]");        // páginas internas: só o K com a órbita
+if ((palcoHero && hero) || palcoMarca) iniciar();
 
 function desistir(canvas, renderer) {
   // volta para a imagem parada (sem WebGL ou aparelho lento)
@@ -24,6 +25,7 @@ function desistir(canvas, renderer) {
   hero?.classList.remove("hero-3d-pronto");
   palcoFluxo?.classList.remove("palco-3d-pronto");
   palcoSeg?.classList.remove("palco-3d-pronto");
+  palcoMarca?.classList.remove("k3d-pronto");
   if (renderer) { renderer.setAnimationLoop(null); renderer.dispose(); renderer.forceContextLoss?.(); }
   canvas?.remove();
 }
@@ -38,7 +40,7 @@ function iniciar() {
   try {
     renderer = new THREE.WebGLRenderer({ canvas, antialias: !fraco, alpha: true, powerPreference: "high-performance" });
   } catch (e) { desistir(canvas); return; }
-  let palco = palcoHero, modo = "hero";
+  let palco = palcoHero || palcoMarca, modo = palcoHero ? "hero" : "marca";
   palco.appendChild(canvas);
 
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -228,10 +230,11 @@ function iniciar() {
 
   // ---------- layout: o K fica onde o CSS reservou (.hero-k) ----------
   // No computador, à direita do texto; no celular, em cima dele.
-  const reservaHero = hero.querySelector(".hero-k") || palcoHero;
+  const reservaHero = hero?.querySelector(".hero-k") || palcoHero;
   let base = { x: 0, y: 0, s: 1 }, espalhar = 1, largoAgora = true;
   function ajustar() {
-    const w = palco.clientWidth, h = palco.clientHeight;
+    // no modo "marca" o canvas é maior que a caixa (160%), para o brilho e o anel não serem cortados
+    const w = canvas.clientWidth || palco.clientWidth, h = canvas.clientHeight || palco.clientHeight;
     if (!w || !h) return;
     const largo = innerWidth >= 1000;
     renderer.setPixelRatio(Math.min(devicePixelRatio || 1, fraco || !largo ? 1.5 : 2));
@@ -247,10 +250,11 @@ function iniciar() {
       return;
     }
     const reserva = modo === "hero" ? reservaHero : palco;
-    const caixa = reserva.getBoundingClientRect(), p = palco.getBoundingClientRect();
+    const caixa = reserva.getBoundingClientRect(), p = canvas.getBoundingClientRect();
     const cx = caixa.left + caixa.width / 2 - p.left, cy = caixa.top + caixa.height / 2 - p.top;
     const larguraK = modo === "hero"                           // o K com a órbita mede ~5,2 unidades
       ? Math.min(caixa.width * (largo ? 0.95 : 0.9), caixa.height * 1.9)
+      : modo === "marca" ? Math.min(caixa.width * 0.92, caixa.height * 1.9)
       : Math.min(caixa.width * 0.8, caixa.height * 1.55);
     base = { x: (cx - w / 2) * porPx, y: (h / 2 - cy) * porPx, s: (larguraK * porPx) / 5.2 };
     espalhar = largo ? 1 : 0.8; largoAgora = largo;
@@ -264,24 +268,27 @@ function iniciar() {
   const medirRolagem = () => { rolagem = scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight); };
   addEventListener("scroll", medirRolagem, { passive: true });
   addEventListener("resize", ajustar);
-  if ("ResizeObserver" in window) { const ro = new ResizeObserver(() => ajustar()); [palcoHero, palcoFluxo, palcoSeg].forEach((p) => p && ro.observe(p)); }
+  if ("ResizeObserver" in window) { const ro = new ResizeObserver(() => ajustar()); [palcoHero, palcoFluxo, palcoSeg, palcoMarca].forEach((p) => p && ro.observe(p)); }
 
   // ---------- quando e onde desenhar: no palco que está na tela, com a aba visível ----------
   let visivel = true, pronto = false;
   const naTela = new Map();
   function marcarPronto(sim) {
     if (palco === palcoHero) hero.classList.toggle("hero-3d-pronto", sim);
+    else if (palco === palcoMarca) palco.classList.toggle("k3d-pronto", sim);
     else palco.classList.toggle("palco-3d-pronto", sim);
   }
   function escolher() {
-    const alvoP = naTela.get(palcoFluxo) ? palcoFluxo : naTela.get(palcoSeg) ? palcoSeg : naTela.get(palcoHero) ? palcoHero : null;
+    const alvoP = naTela.get(palcoFluxo) ? palcoFluxo : naTela.get(palcoSeg) ? palcoSeg : naTela.get(palcoHero) ? palcoHero
+      : naTela.get(palcoMarca) ? palcoMarca : null;
     if (alvoP && alvoP !== palco) {
       marcarPronto(false);
-      palco = alvoP; modo = alvoP === palcoHero ? "hero" : alvoP === palcoSeg ? "icone" : "fluxo";
+      palco = alvoP; modo = alvoP === palcoHero ? "hero" : alvoP === palcoSeg ? "icone" : alvoP === palcoMarca ? "marca" : "fluxo";
       palco.appendChild(canvas);
       estacoes.forEach((m) => { m.visible = modo === "fluxo"; });
       cartoes.forEach((s) => { s.visible = modo === "hero"; });
-      raiz.visible = particulas.visible = modo !== "icone";
+      raiz.visible = modo !== "icone";
+      particulas.visible = modo === "hero" || modo === "fluxo";
       icones.visible = modo === "icone";
       ajustar();
       if (pronto) marcarPronto(true);
@@ -289,7 +296,7 @@ function iniciar() {
     visivel = !!alvoP; ligar();
   }
   const io = new IntersectionObserver((es) => { es.forEach((e) => naTela.set(e.target, e.isIntersecting)); escolher(); });
-  [palcoHero, palcoFluxo, palcoSeg].forEach((p) => p && io.observe(p));
+  [palcoHero, palcoFluxo, palcoSeg, palcoMarca].forEach((p) => p && io.observe(p));
   document.addEventListener("visibilitychange", ligar);
   function ligar() { renderer.setAnimationLoop(visivel && !document.hidden ? quadro : null); anterior = performance.now(); }
 
@@ -332,6 +339,11 @@ function iniciar() {
       raiz.rotation.y = atual.x * 0.45 + Math.sin(t * 0.5) * 0.12 + rolagemSuave * Math.PI * 2;   // uma volta na página inteira
       raiz.rotation.x = atual.y * 0.25 + Math.sin(t * 0.4) * 0.04;
       angulo += dt * 0.7;
+    } else if (modo === "marca") {
+      // páginas internas: o K oscila devagar e vira na direção do cursor; o ponto gira no anel
+      raiz.rotation.y = atual.x * 0.5 + Math.sin(t * 0.5) * 0.15;
+      raiz.rotation.x = atual.y * 0.25 + Math.sin(t * 0.4) * 0.04;
+      angulo += dt * 0.7;
     } else {
       // fluxo: o K fica de frente e o ponto viaja pelo caminho mais curto até a estação do passo atual
       raiz.rotation.y = atual.x * 0.3 + Math.sin(t * 0.5) * 0.1;
@@ -359,6 +371,7 @@ function iniciar() {
   }
 
   medirRolagem();
+  if (modo === "marca") { cartoes.forEach((c2) => { c2.visible = false; }); particulas.visible = false; }
   ajustar();
   ligar();
 }
