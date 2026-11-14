@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark" data-v="124">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demonstrações: sistemas para testar | Kyzent</title>
+  <meta name="description" content="Teste o cardápio online com pedidos, o agendamento online, a Aurora e as simulações do sistema de gestão que a Kyzent desenvolve. Dados fictícios.">
+  <meta name="theme-color" content="#0B0B0F">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://kyzenttech-lang.github.io/site/demonstracoes.html">
+
+  <!-- Open Graph (prévia do link no WhatsApp e no Instagram) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Kyzent">
+  <meta property="og:title" content="Demonstrações: sistemas para testar | Kyzent">
+  <meta property="og:description" content="Teste o cardápio online com pedidos, o agendamento online, a Aurora e as simulações do sistema de gestão que a Kyzent desenvolve. Dados fictícios.">
+  <meta property="og:url" content="https://kyzenttech-lang.github.io/site/demonstracoes.html">
+  <meta property="og:image" content="https://kyzenttech-lang.github.io/site/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Logo da Kyzent com o texto: automação e IA para empresas">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Kyzent Technology Solutions", "alternateName": "Kyzent", "url": "https://kyzenttech-lang.github.io/site/", "logo": "https://kyzenttech-lang.github.io/site/assets/icons/apple-touch-icon.png", "image": "https://kyzenttech-lang.github.io/site/assets/og-image.png", "description": "Empresa de Tecnologia e Inovação que automatiza o atendimento, as vendas e a gestão de pequenas empresas com Inteligência Artificial.", "telephone": "+55-19-98872-8894", "areaServed": {"@type": "Country", "name": "Brasil"}, "sameAs": ["https://www.instagram.com/kyzent.tech/"]}</script>
+
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+
+  <script>document.documentElement.classList.add("js");
+  // transição entre páginas: o conteúdo desliza no sentido do menu (avançar ou voltar)
+  (function () {
+    var ordem = ["index.html", "servicos.html", "solucao-", "demonstracoes.html", "aurora.html", "quem-somos.html", "orcamento.html", "privacidade.html"];
+    function pos(u) { try { var a = new URL(u).pathname.split("/").pop() || "index.html";
+      for (var i = 0; i < ordem.length; i++) if (a.indexOf(ordem[i]) === 0) return i; } catch (e) {} return -1; }
+    addEventListener("pagereveal", function (e) {
+      var n = window.navigation;
+      if (!e.viewTransition || !n || !n.activation || !n.activation.from) return;
+      var de = pos(n.activation.from.url), para = pos(n.activation.entry.url);
+      if (de < 0 || para < 0 || de === para) return;
+      e.viewTransition.types.add(para > de ? "avancar" : "voltar");
+    });
+  })();</script>
+  <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css?v=124">
+  <script src="assets/vendor/gsap/gsap.min.js?v=3130" defer></script>
+  <script src="assets/vendor/gsap/ScrollTrigger.min.js?v=3130" defer></script>
+  <script src="assets/vendor/gsap/CustomEase.min.js?v=3130" defer></script>
+  <script src="js/main.js?v=124" defer></script>
+  <script src="js/animacoes.js?v=124" defer></script>
+</head>
+<body data-promo-fim="2026-12-05T23:59:59-03:00" data-whats="5519988728894 5519971246077">
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  <div class="promo-faixa" data-promo>
+    <div class="container promo-faixa-conteudo">
+      <p class="promo-faixa-texto"><span class="promo-selo">Black Friday</span><span><strong>Implantação grátis</strong><span class="promo-faixa-extra"> em qualquer automação</span> até 05/12</span></p>
+      <div class="relogio relogio-mini" data-relogio role="timer" aria-label="A promoção termina em 05/12"><span class="relogio-parte"><b data-dias>00</b><small>dias</small></span><span class="relogio-parte"><b data-horas>00</b><small>horas</small></span><span class="relogio-parte"><b data-min>00</b><small>min</small></span><span class="relogio-parte"><b data-seg>00</b><small>seg</small></span></div>
+      <a class="promo-faixa-botao" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent%20e%20quero%20aproveitar%20a%20implanta%C3%A7%C3%A3o%20gr%C3%A1tis%20da%20Black%20Friday." target="_blank" rel="noopener" data-contato data-msg="Olá, vim pelo site da Kyzent e quero aproveitar a implantação grátis da Black Friday.">Garantir</a>
+    </div>
+  </div>
+
+  <header class="barra" data-barra>
+    <div class="container barra-conteudo">
+      <a class="barra-logo" href="index.html" aria-label="Kyzent, página inicial"><img src="assets/img/kyzent-horizontal-escuro.svg" alt="Kyzent, automação e IA" width="590" height="140"></a>
+      <nav aria-label="Principal"><ul class="menu"><li><a href="index.html">Início</a></li><li><a href="servicos.html">Soluções</a></li><li><a href="demonstracoes.html" aria-current="page">Demonstrações<span class="menu-marca" aria-hidden="true"></span></a></li><li><a href="aurora.html">Aurora</a></li><li><a href="quem-somos.html">Quem somos</a></li><li><a href="orcamento.html">Orçamento</a></li></ul></nav>
+      <div class="barra-acoes">
+        <button class="icone-botao botao-menu" type="button" data-abrir-menu aria-expanded="false" aria-controls="menu-celular" aria-label="Abrir menu"><span class="hamburguer" aria-hidden="true"><i></i><i></i><i></i></span></button>
+        <a class="botao botao-barra" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato>Conversar no WhatsApp</a>
+      </div>
+    </div>
+    <nav class="menu-celular" id="menu-celular" aria-label="Menu">
+      <ul class="menu-celular-links"><li style="--i:0"><a href="index.html"><span class="menu-celular-nome">Início</span><small>Soluções, demonstrações e segmentos</small></a></li><li style="--i:1"><a href="servicos.html"><span class="menu-celular-nome">Soluções</span><small>Catálogo completo de serviços</small></a></li><li style="--i:2"><a href="demonstracoes.html" aria-current="page"><span class="menu-celular-nome">Demonstrações</span><small>Sistemas para testar agora</small></a></li><li style="--i:3"><a href="aurora.html"><span class="menu-celular-nome">Aurora</span><small>A IA de atendimento da Kyzent</small></a></li><li style="--i:4"><a href="quem-somos.html"><span class="menu-celular-nome">Quem somos</span><small>Propósito, missão e valores</small></a></li><li style="--i:5"><a href="orcamento.html"><span class="menu-celular-nome">Orçamento</span><small>Simule e receba uma recomendação</small></a></li></ul>
+      <div class="menu-celular-base">
+        <p class="menu-celular-promo" data-promo><span class="promo-selo">Black Friday</span>Implantação grátis até 05/12</p>
+        <a class="botao botao-grande" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg>Conversar no WhatsApp</a>
+        <a class="menu-celular-insta" href="https://www.instagram.com/kyzent.tech/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17 7h.01"/></svg>@kyzent.tech</a>
+      </div>
+    </nav>
+  </header>
+  <div class="menu-fundo" data-fechar-menu aria-hidden="true"></div>
+
+  <main id="conteudo">
+    <section class="pagina-topo" aria-labelledby="titulo-pagina">
+      <div class="pagina-topo-fundo" aria-hidden="true"></div>
+      <div class="container">
+        <h1 id="titulo-pagina" data-revelar-texto>Demonstrações.</h1>
+        <p class="pagina-topo-apoio">Teste os sistemas que a Kyzent desenvolve, do jeito que o seu cliente e a sua equipe vão usar.</p>
+        <p class="aviso-demos" role="note">Todas as demonstrações usam dados fictícios. Nenhum pedido ou agendamento é feito de verdade.</p>
+      </div>
+    </section>
+
+    <section class="secao testar" aria-labelledby="titulo-completos">
+      <div class="container">
+        <div class="cabeca">
+          <h2 id="titulo-completos" data-revelar-texto>Sistemas completos.</h2>
+          <p>Feito sob medida, com a cara do seu negócio. Cada demonstração tem a identidade visual do negócio de exemplo, não a da Kyzent.</p>
+        </div>
+        <ul class="demos-completas">
+          <li class="demo-completa">
+            <div class="demo-celular" aria-hidden="false">
+              <picture><source type="image/webp" srcset="assets/img/demos/cardapio-390.webp 390w, assets/img/demos/cardapio.webp 780w" sizes="260px">
+              <img src="assets/img/demos/cardapio-390.webp" alt="Tela do cardápio online da Pizzaria Exemplo no celular, com o combo em promoção, as categorias e o botão do carrinho" width="390" height="844" loading="lazy" decoding="async"></picture>
+            </div>
+            <div class="demo-completa-texto">
+              <p class="pilar-apoio">Pizzaria Exemplo</p>
+              <h3>Cardápio online com pedidos</h3>
+              <ul class="demo-completa-itens"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Combos, tamanhos e adicionais em cada item</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Carrinho com o total e pagamento em Pix, cartão ou dinheiro</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Pedido enviado pelo WhatsApp e uma tela para acompanhar o pedido</span></li></ul>
+              <p class="demo-completa-publico">Para pizzarias, lanchonetes e restaurantes</p>
+              <a class="botao" href="https://kyzenttech-lang.github.io/cardapio/" target="_blank" rel="noopener">Testar a demonstração <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 19V7.5A1.5 1.5 0 0 1 5.5 6H10"/></svg><span class="visualmente-oculto"> (abre em nova aba)</span></a>
+            </div>
+          </li><li class="demo-completa">
+            <div class="demo-celular" aria-hidden="false">
+              <picture><source type="image/webp" srcset="assets/img/demos/agendamento-390.webp 390w, assets/img/demos/agendamento.webp 780w" sizes="260px">
+              <img src="assets/img/demos/agendamento-390.webp" alt="Tela do agendamento online do Pet Shop Exemplo no celular, com o serviço de banho, a foto, a duração e o preço" width="390" height="844" loading="lazy" decoding="async"></picture>
+            </div>
+            <div class="demo-completa-texto">
+              <p class="pilar-apoio">Pet Shop Exemplo</p>
+              <h3>Agendamento online</h3>
+              <ul class="demo-completa-itens"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Serviços com foto, preço e duração</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>Calendário com os horários livres de cada dia</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>A agenda do dono, com todos os horários marcados</span></li></ul>
+              <p class="demo-completa-publico">Para pet shops, salões, barbearias e clínicas</p>
+              <a class="botao" href="https://kyzenttech-lang.github.io/agendamento/" target="_blank" rel="noopener">Testar a demonstração <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 19V7.5A1.5 1.5 0 0 1 5.5 6H10"/></svg><span class="visualmente-oculto"> (abre em nova aba)</span></a>
+            </div>
+          </li>
+<!-- NOVA DEMONSTRAÇÃO: copie um card no mesmo formato (o jeito mais fácil é acrescentar uma linha em DEMOS_COMPLETAS no gerador).
+          <li class="demo-completa">
+            <div class="demo-celular"><img src="assets/img/demos/NOME-390.webp" alt="[descrição da tela]" width="390" height="844" loading="lazy"></div>
+            <div class="demo-completa-texto">
+              <p class="pilar-apoio">[Negócio Exemplo]</p>
+              <h3>[Sistema de gestão e estoque]</h3>
+              <ul class="demo-completa-itens"><li>[o que faz 1]</li><li>[o que faz 2]</li><li>[o que faz 3]</li></ul>
+              <p class="demo-completa-publico">[Para quem é]</p>
+              <a class="botao" href="[URL da demo]" target="_blank" rel="noopener">Testar a demonstração<span class="visualmente-oculto"> (abre em nova aba)</span></a>
+            </div>
+          </li>
+-->
+        </ul>
+      </div>
+    </section>
+
+    <section class="secao secao-faixa" aria-labelledby="titulo-demo-aurora">
+      <div class="container demos-mais">
+        <article class="demo-mais">
+          <span class="aurora-avatar demo-mais-avatar" aria-hidden="true"><img src="assets/img/aurora/aurora-avatar-96.webp" srcset="assets/img/aurora/aurora-avatar-96.webp 1x, assets/img/aurora/aurora-avatar-256.webp 3x" alt="" width="96" height="96" decoding="async"></span>
+          <h2 id="titulo-demo-aurora">Aurora, a IA de atendimento</h2>
+          <p>Converse com a Aurora como se fosse um cliente: ela agenda, informa preços e chama uma pessoa da equipe quando precisa.</p>
+          <div class="demo-mais-links">
+            <a class="botao" href="aurora.html#demonstracoes">Conversar com a Aurora</a>
+            <a class="link-seta" href="aurora.html">Conhecer a Aurora</a>
+          </div>
+        </article>
+        <article class="demo-mais">
+          <h2 id="titulo-demo-sims">Simulações do sistema de gestão</h2>
+          <p>Telas do sistema funcionando, com a mesma base de dados: uma venda baixa o estoque e aparece em Pedidos e no Painel.</p>
+          <ul class="demo-sims"><li><strong>Painel</strong><span>indicadores e pedidos do dia</span></li><li><strong>Estoque</strong><span>venda que baixa o estoque e avisa quando acaba</span></li><li><strong>Pedidos</strong><span>pedido montado no cardápio, com o total</span></li><li><strong>Clientes</strong><span>busca, filtros e lembrete para quem sumiu</span></li><li><strong>Agendamento</strong><span>serviço, dia e horário</span></li><li><strong>Aurora</strong><span>a IA conversando com o cliente</span></li><li><strong>Automação</strong><span>a IA organizando uma tarefa</span></li></ul>
+          <div class="demo-mais-links">
+            <a class="botao" href="index.html#demonstracoes">Ver o sistema funcionando</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="chamada" aria-labelledby="titulo-chamada">
+      <div class="container">
+        <div class="chamada-caixa revelar-bloco">
+          <svg class="chamada-orbita" viewBox="0 0 800 400" aria-hidden="true"><ellipse cx="400" cy="200" rx="380" ry="110" transform="rotate(-24 400 200)"/><ellipse cx="400" cy="200" rx="300" ry="80" transform="rotate(-24 400 200)"/></svg>
+          <div class="chamada-texto">
+            <h2 id="titulo-chamada" data-revelar-texto>Quer um sistema assim com a cara do seu negócio?</h2>
+            <p>Conte como o seu negócio funciona e receba uma recomendação. A Kyzent desenvolve o sistema com a sua marca.</p>
+          </div>
+          <div class="chamada-acoes">
+            <a class="botao botao-grande botao-claro" href="orcamento.html" data-magnetico>Simular meu orçamento</a>
+            <a class="link-seta" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent%20e%20quero%20conversar%20sobre%20automa%C3%A7%C3%A3o%20para%20o%20meu%20neg%C3%B3cio." target="_blank" rel="noopener" data-contato data-msg="Olá, vim pelo site da Kyzent e quero conversar sobre automação para o meu negócio.">Conversar no WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="container">
+      <div class="rodape-grade">
+        <div class="rodape-marca">
+          <a href="index.html" aria-label="Kyzent, página inicial"><img src="assets/img/kyzent-horizontal-escuro.svg" alt="Kyzent, automação e IA" width="590" height="140"></a>
+          <p>Empresa de Tecnologia e Inovação. Sistemas de gestão, atendimento e Inteligência Artificial sob medida para pequenos e médios negócios.</p>
+        </div>
+        <div>
+          <h2>Navegação</h2>
+          <ul><li><a href="index.html">Início</a></li><li><a href="servicos.html">Soluções</a></li><li><a href="demonstracoes.html">Demonstrações</a></li><li><a href="aurora.html">Aurora</a></li><li><a href="quem-somos.html">Quem somos</a></li><li><a href="orcamento.html">Orçamento</a></li></ul>
+        </div>
+        <div>
+          <h2>Serviços</h2>
+          <ul><li><a href="solucao-gestao.html">Sistemas de gestão sob medida</a></li><li><a href="solucao-vendas.html">Pedidos, agendamento e vendas</a></li><li><a href="solucao-atendimento.html">Atendimento e Aurora</a></li><li><a href="solucao-site.html">Site e presença online</a></li><li><a href="solucao-ia.html">IA sob medida</a></li></ul>
+        </div>
+        <div>
+          <h2>Contato</h2>
+          <ul>
+            <li><a href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener">WhatsApp (19) 98872-8894</a></li>
+            <li><a href="https://wa.me/5519971246077?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener">WhatsApp (19) 97124-6077</a></li>
+            <li><a href="https://www.instagram.com/kyzent.tech/" target="_blank" rel="noopener">Instagram @kyzent.tech</a></li>
+            <li><a href="mailto:kyzent.tech@gmail.com">kyzent.tech@gmail.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="rodape-base">
+        <p>© <span data-ano>2026</span> Kyzent Technology Solutions. Todos os direitos reservados.</p>
+        <p><a href="privacidade.html">Política de Privacidade</a></p>
+      </div>
+    </div>
+  </footer>
+  <a class="whats-flutuante" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato aria-label="Fale com a gente no WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg><span>Fale com a gente</span></a>
+  <div class="barra-fixa">
+    <a class="whats-fixo" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/></svg><span class="whats-longo">Conversar no WhatsApp</span><span class="whats-curto">WhatsApp</span></a>
+  </div>
+
+
+
+</body>
+</html>

@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "123"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "124"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -73,7 +73,8 @@ I = {
 TIQUES = ('<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" '
           'fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>')
 
-PAGINAS = [("index.html", "Início"), ("aurora.html", "Aurora"), ("servicos.html", "Soluções"), ("quem-somos.html", "Quem somos"), ("orcamento.html", "Orçamento")]
+PAGINAS = [("index.html", "Início"), ("servicos.html", "Soluções"), ("demonstracoes.html", "Demonstrações"), ("aurora.html", "Aurora"),
+           ("quem-somos.html", "Quem somos"), ("orcamento.html", "Orçamento")]
 
 # ------------------------------------------------------------------ catálogo de serviços (sem preço: o valor é combinado com cada cliente)
 # ramos: para quais tipos de negócio o serviço é indicado (filtro da página Serviços)
@@ -156,7 +157,7 @@ def menu(atual, classe):
     return f'<ul{c}>' + "".join(itens) + "</ul>"
 
 MENU_DESCRICAO = {"index.html": "Soluções, demonstrações e segmentos", "servicos.html": "Catálogo completo de serviços",
-                  "aurora.html": "A IA de atendimento da Kyzent",
+                  "aurora.html": "A IA de atendimento da Kyzent", "demonstracoes.html": "Sistemas para testar agora",
                   "quem-somos.html": "Propósito, missão e valores", "orcamento.html": "Simule e receba uma recomendação"}
 def menu_celular(atual):
     return "".join(
@@ -231,7 +232,7 @@ def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
   <script>document.documentElement.classList.add("js");
   // transição entre páginas: o conteúdo desliza no sentido do menu (avançar ou voltar)
   (function () {{
-    var ordem = ["index.html", "aurora.html", "servicos.html", "solucao-", "quem-somos.html", "orcamento.html", "privacidade.html"];
+    var ordem = ["index.html", "servicos.html", "solucao-", "demonstracoes.html", "aurora.html", "quem-somos.html", "orcamento.html", "privacidade.html"];
     function pos(u) {{ try {{ var a = new URL(u).pathname.split("/").pop() || "index.html";
       for (var i = 0; i < ordem.length; i++) if (a.indexOf(ordem[i]) === 0) return i; }} catch (e) {{}} return -1; }}
     addEventListener("pagereveal", function (e) {{
@@ -857,6 +858,7 @@ def ilustra(mid, cls="ilu"):
 
 # ---------- chamada final: uma frase por página
 CHAMADAS = {
+    "demonstracoes": ("Quer um sistema assim com a cara do seu negócio?", "Conte como o seu negócio funciona e receba uma recomendação. A Kyzent desenvolve o sistema com a sua marca."),
     "aurora": ("Coloque a Aurora para atender o seu negócio.", "Conte como é o seu atendimento hoje e receba uma recomendação de solução."),
     "index.html": ("Vamos transformar a maneira como sua empresa trabalha?", "Conte como é o seu dia a dia e receba uma recomendação de solução para o seu negócio."),
     "servicos.html": ("Não sabe por onde começar?", "Responda quatro perguntas rápidas e receba a recomendação certa para o seu negócio."),
@@ -1427,6 +1429,69 @@ QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
       </div>
     </section>"""
 
+# ---------- Demonstrações: tudo que dá para testar
+SIMULACOES = [("Painel", "indicadores e pedidos do dia"), ("Estoque", "venda que baixa o estoque e avisa quando acaba"),
+              ("Pedidos", "pedido montado no cardápio, com o total"), ("Clientes", "busca, filtros e lembrete para quem sumiu"),
+              ("Agendamento", "serviço, dia e horário"), ("Aurora", "a IA conversando com o cliente"), ("Automação", "a IA organizando uma tarefa")]
+def demonstracoes_pagina():
+    sims = "".join(f"<li><strong>{n}</strong><span>{d}</span></li>" for n, d in SIMULACOES)
+    return f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
+      <div class="pagina-topo-fundo" aria-hidden="true"></div>
+      <div class="container">
+        <h1 id="titulo-pagina" data-revelar-texto>Demonstrações.</h1>
+        <p class="pagina-topo-apoio">Teste os sistemas que a Kyzent desenvolve, do jeito que o seu cliente e a sua equipe vão usar.</p>
+        <p class="aviso-demos" role="note">Todas as demonstrações usam dados fictícios. Nenhum pedido ou agendamento é feito de verdade.</p>
+      </div>
+    </section>
+
+    <section class="secao testar" aria-labelledby="titulo-completos">
+      <div class="container">
+        <div class="cabeca">
+          <h2 id="titulo-completos" data-revelar-texto>Sistemas completos.</h2>
+          <p>Feito sob medida, com a cara do seu negócio. Cada demonstração tem a identidade visual do negócio de exemplo, não a da Kyzent.</p>
+        </div>
+        <ul class="demos-completas">
+          {"".join(cartao_demo(*d) for d in DEMOS_COMPLETAS)}
+<!-- NOVA DEMONSTRAÇÃO: copie um card no mesmo formato (o jeito mais fácil é acrescentar uma linha em DEMOS_COMPLETAS no gerador).
+          <li class="demo-completa">
+            <div class="demo-celular"><img src="assets/img/demos/NOME-390.webp" alt="[descrição da tela]" width="390" height="844" loading="lazy"></div>
+            <div class="demo-completa-texto">
+              <p class="pilar-apoio">[Negócio Exemplo]</p>
+              <h3>[Sistema de gestão e estoque]</h3>
+              <ul class="demo-completa-itens"><li>[o que faz 1]</li><li>[o que faz 2]</li><li>[o que faz 3]</li></ul>
+              <p class="demo-completa-publico">[Para quem é]</p>
+              <a class="botao" href="[URL da demo]" target="_blank" rel="noopener">Testar a demonstração<span class="visualmente-oculto"> (abre em nova aba)</span></a>
+            </div>
+          </li>
+-->
+        </ul>
+      </div>
+    </section>
+
+    <section class="secao secao-faixa" aria-labelledby="titulo-demo-aurora">
+      <div class="container demos-mais">
+        <article class="demo-mais">
+          {avatar_aurora("demo-mais-avatar")}
+          <h2 id="titulo-demo-aurora">Aurora, a IA de atendimento</h2>
+          <p>Converse com a Aurora como se fosse um cliente: ela agenda, informa preços e chama uma pessoa da equipe quando precisa.</p>
+          <div class="demo-mais-links">
+            <a class="botao" href="aurora.html#demonstracoes">Conversar com a Aurora</a>
+            <a class="link-seta" href="aurora.html">Conhecer a Aurora</a>
+          </div>
+        </article>
+        <article class="demo-mais">
+          <h2 id="titulo-demo-sims">Simulações do sistema de gestão</h2>
+          <p>Telas do sistema funcionando, com a mesma base de dados: uma venda baixa o estoque e aparece em Pedidos e no Painel.</p>
+          <ul class="demo-sims">{sims}</ul>
+          <div class="demo-mais-links">
+            <a class="botao" href="index.html#demonstracoes">Ver o sistema funcionando</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+{chamada("demonstracoes")}"""
+
 # ---------- Política de Privacidade (LGPD). Texto escrito pelo Claude a partir de como o site funciona; os sócios precisam confirmar.
 PRIVACIDADE = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
       <div class="pagina-topo-fundo" aria-hidden="true"></div>
@@ -1560,6 +1625,7 @@ saidas = [
     ("servicos.html", "Soluções e serviços | Kyzent", "Catálogo de soluções da Kyzent: atendimento com IA no WhatsApp, agendamento e vendas, gestão, site e IA sob medida. Simule o seu orçamento.", SERVICOS_PAG, FILTRO_JANELA, None),
     ("quem-somos.html", "Quem somos | Kyzent", "A Kyzent é uma empresa de Tecnologia e Inovação que desenvolve sistemas sob medida. Conheça o nosso propósito, a missão, a visão, os valores e os diferenciais.", QUEM, "", None),
     ("privacidade.html", "Política de Privacidade | Kyzent", "Como a Kyzent trata os seus dados pessoais, de acordo com a LGPD: quais dados recebemos, para que usamos, com quem compartilhamos e como exercer os seus direitos.", PRIVACIDADE, "", None),
+    ("demonstracoes.html", "Demonstrações: sistemas para testar | Kyzent", "Teste o cardápio online com pedidos, o agendamento online, a Aurora e as simulações do sistema de gestão que a Kyzent desenvolve. Dados fictícios.", demonstracoes_pagina(), "", None),
     ("aurora.html", "Aurora, a IA de atendimento | Kyzent", "Conheça a Aurora, a IA de atendimento da Kyzent: atende os clientes do seu negócio no WhatsApp e no Instagram, 24 horas, e chama a sua equipe quando precisa.", aurora_pagina(), "", None),
     ("orcamento.html", "Orçamento | Kyzent", "Simule o seu orçamento em quatro passos e receba uma recomendação de solução da Kyzent pelo WhatsApp.", ORCAMENTO, "", None),
 ] + [(PAGINA_MOD[mid], f"{SOLUCOES[mid][0]} | Kyzent", SOLUCOES[mid][1], pagina_solucao(mid), "", "servicos.html") for mid in MOD]
