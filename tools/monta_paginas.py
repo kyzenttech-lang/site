@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "109"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "110"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -276,7 +276,11 @@ def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
   <script>document.documentElement.classList.add("js");</script>
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css?v={VERSAO}">
+  <script src="assets/vendor/gsap/gsap.min.js?v=3130" defer></script>
+  <script src="assets/vendor/gsap/ScrollTrigger.min.js?v=3130" defer></script>
+  <script src="assets/vendor/gsap/CustomEase.min.js?v=3130" defer></script>
   <script src="js/main.js?v={VERSAO}" defer></script>
+  <script src="js/animacoes.js?v={VERSAO}" defer></script>
 </head>
 <body data-promo-fim="{PROMO_FIM}" data-whats="{" ".join(n for n, _ in WHATS)}">
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>

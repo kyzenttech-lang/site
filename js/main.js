@@ -113,63 +113,7 @@
   function naTela(el) { var r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0; }
   function duasVezes(fn) { requestAnimationFrame(function () { requestAnimationFrame(fn); }); }
 
-  // títulos que surgem palavra por palavra
-  $$("[data-revelar-texto]").forEach(function (t) {
-    if (semMovimento || t.children.length) return;
-    var texto = t.textContent.trim();
-    t.setAttribute("aria-label", texto);
-    t.innerHTML = texto.split(/\s+/).map(function (p, i) {
-      return '<span class="palavra" aria-hidden="true"><span style="--i:' + i + '">' + p + "</span></span>";
-    }).join(" ");
-    if (naTela(t)) duasVezes(function () { t.classList.add("texto-visivel"); });
-    else quandoVisivel(t, function () { t.classList.add("texto-visivel"); });
-  });
-
-  // blocos que aparecem ao rolar
-  if (!semMovimento && "IntersectionObserver" in window) {
-    var grupos = ".grade, .ramos, .etapas, .painel-itens";
-    var soltos = ".cabeca > p, .cabeca-linha > .link-seta, .dupla-foto, .dupla-texto, .demo-texto, .demo-visual, .pagina-topo-apoio, .pagina-topo-texto";
-    var alvos = [];
-    $$(grupos).forEach(function (g) {
-      Array.prototype.forEach.call(g.children, function (filho, i) {
-        filho.style.setProperty("--atraso", Math.min(i, 6) * 80 + "ms");
-        alvos.push(filho);
-      });
-    });
-    $$(soltos).forEach(function (el) { if (alvos.indexOf(el) === -1) alvos.push(el); });
-    [[".hero-apoio", 260], [".hero-acoes", 380], [".hero-numeros", 500], [".hero-palco", 180]].forEach(function (p) {
-      var el = $(p[0]); if (el) { el.style.setProperty("--atraso", p[1] + "ms"); alvos.push(el); }
-    });
-    var observador = new IntersectionObserver(function (entradas) {
-      entradas.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add("visivel"); observador.unobserve(en.target); }
-      });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
-    alvos.forEach(function (el) {
-      el.classList.add("revelar");
-      if (naTela(el)) duasVezes(function () { el.classList.add("visivel"); });
-      else observador.observe(el);
-    });
-    $$(".revelar-bloco").forEach(function (el) { quandoVisivel(el, function () { el.classList.add("visivel"); }); });
-  } else {
-    $$(".revelar-bloco").forEach(function (el) { el.classList.add("visivel"); });
-  }
-
-  // contadores (os números do topo são reais; os dos desenhos são do exemplo)
-  $$("[data-contar]").forEach(function (el) {
-    if (semMovimento) return;
-    var alvo = parseInt(el.getAttribute("data-contar"), 10);
-    if (!alvo) return;
-    el.textContent = "0";
-    quandoVisivel(el, function () {
-      var ini = performance.now(), dur = alvo > 50 ? 1600 : 1100;
-      (function passo(agora) {
-        var t = Math.min(1, Math.max(0, (agora - ini) / dur));
-        el.textContent = Math.round(alvo * (1 - Math.pow(1 - t, 4))).toLocaleString("pt-BR");
-        if (t < 1) requestAnimationFrame(passo);
-      })(ini);
-    });
-  });
+  // títulos, blocos que entram ao rolar e contadores: js/animacoes.js (GSAP)
 
   // gráficos que crescem quando aparecem
   $$(".hero-painel, .gd").forEach(function (el) {

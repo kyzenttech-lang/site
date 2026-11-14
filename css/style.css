@@ -465,8 +465,6 @@ html.menu-aberto .menu-fundo { opacity: 1; visibility: visible; transition-delay
   .etapa { grid-template-columns: 1fr; grid-template-rows: auto 1fr; row-gap: 22px; justify-items: center; }
   .etapa-cartao { width: 100%; text-align: left; }
 }
-.js .etapa.revelar { transform: translateY(16px); }
-.js .etapa.revelar.visivel { transform: none; }
 
 /* ---------- Chamada final ---------- */
 .chamada { padding: var(--secao) 0; }
@@ -1283,12 +1281,7 @@ input[type="radio"] + .sim-opcao-caixa .sim-marca { border-radius: 50%; }
 .texto-visivel .palavra > span { transform: none; }
 
 /* blocos que aparecem ao rolar: cada tipo entra de um jeito */
-.js .revelar { opacity: 0; transform: translateY(24px); transition: opacity .7s var(--ease), transform .8s var(--ease); transition-delay: var(--atraso, 0ms); }
-.js .revelar.visivel { opacity: 1; transform: none; }
-.js .ramos > .revelar { transform: translateY(24px) scale(.97); }
-.js .ramos > .revelar.visivel { transform: none; }
-.js .revelar-bloco { opacity: 0; transform: scale(.97); transition: opacity .8s var(--ease), transform .9s var(--ease); }
-.js .revelar-bloco.visivel { opacity: 1; transform: none; } .js .gd-barra i { transform: scaleY(0); transition: transform .9s var(--ease); transition-delay: var(--d, 0ms); }
+.js .gd-barra i { transform: scaleY(0); transition: transform .9s var(--ease); transition-delay: var(--d, 0ms); }
 .js .gd-trilho i { transform: scaleX(0); transition: transform 1.2s var(--ease) .3s; } .js .crescer .gd-barra i, .js .crescer .gd-trilho i { transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1960,3 +1953,19 @@ a.solucao { color: inherit; text-decoration: none; }
   .aurora-quadro { animation: none; transition: none; }
 }
 .solucao-aurora + .solucao-rodape { margin-top: 18px; }
+
+/* ---------- (d) Animações 2D (js/animacoes.js, GSAP) ---------- */
+/* títulos revelados por linha: cada linha sobe de dentro de uma máscara */
+.tl-linha { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+.tl-dentro { display: block; will-change: transform; }
+.cabeca-centro .tl-linha, .cabeca-centro .tl-dentro { text-align: center; }
+/* cartões de soluções: no toque, só um estado "pressionado" */
+@media (hover: none) {
+  .solucao:hover { transform: none; }
+  .solucao:active { transform: scale(.98); transition-duration: .15s; }
+}
+/* demos: moldura luminosa que abraça cada tela no tamanho dela (anel em box-shadow, sem mexer no layout) */
+.demo-tela { padding: 9px; }
+.demo-tela > * {
+  box-shadow: 0 0 0 8px rgba(63, 180, 255, .07), 0 0 0 9px rgba(63, 180, 255, .24), 0 40px 80px -36px rgba(26, 92, 255, .65);
+}
