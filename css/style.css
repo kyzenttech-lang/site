@@ -1965,3 +1965,9 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
 }
 /* cartões inclinados pelo GSAP: o CSS não anima o transform junto (os dois brigavam e dava tranco) */
 .gsap-inclina { transition-property: box-shadow, background-color !important; }
+
+/* orçamento: campo do "Outro tipo de negócio" */
+.sim-outro { display: grid; gap: 8px; margin-top: 14px; font-weight: 600; color: #0B1220; }
+.sim-outro input { min-height: 48px; padding: 0 14px; border: 0; border-radius: 12px; background: #F3F5F9; box-shadow: 0 0 0 1px rgba(11, 18, 32, .14) inset; font: inherit; font-weight: 400; color: #0B1220; }
+.sim-outro input:focus { outline: none; box-shadow: 0 0 0 2px var(--azul-2) inset; background: #fff; }
+.sim-outro input[aria-invalid="true"] { box-shadow: 0 0 0 2px #E5484D inset; }

@@ -539,6 +539,15 @@
     var marcados = function (nome) { return $$('input[name="' + nome + '"]:checked', form).map(function (i) { return i.value; }); };
     var rotulo = function (input) { return input.closest(".sim-opcao").textContent.trim(); };
 
+    // "Outro tipo de negócio": aparece o campo para a pessoa dizer qual
+    var outroCaixa = $("[data-sim-outro]", form), outroCampo = form.elements.negocio_outro;
+    function mostrarOutro(foco) {
+      var sim = marcados("negocio")[0] === "outro";
+      outroCaixa.hidden = !sim;
+      if (sim && foco) outroCampo.focus();
+    }
+    $$('input[name="negocio"]', form).forEach(function (r) { r.addEventListener("change", function () { mostrarOutro(true); }); });
+
     var pedido = /[?&]ramo=([a-z]+)/.exec(location.search);
     if (pedido) { var r = $('input[name="negocio"][value="' + pedido[1] + '"]', form); if (r) r.checked = true; }
 
@@ -560,6 +569,11 @@
     }
     function valido(n) {
       if (n === 0 && !marcados("negocio").length) return "Escolha o seu tipo de negócio para continuar.";
+      if (n === 0 && marcados("negocio")[0] === "outro") {
+        var okOutro = limpo(outroCampo.value, 60).length >= 2;
+        outroCampo.setAttribute("aria-invalid", okOutro ? "false" : "true");
+        if (!okOutro) { outroCampo.focus(); return "Conte qual é o seu tipo de negócio para continuar."; }
+      }
       if (n === 1 && !marcados("desafio").length) return "Marque pelo menos uma opção para continuar.";
       if (n === 3) {
         var nome = form.elements.nome;
@@ -600,7 +614,8 @@
       var dados = {
         nome: limpo(form.elements.nome.value, 60), empresa: limpo(form.elements.empresa.value, 80),
         cidade: limpo(form.elements.cidade.value, 60), obs: limpo(form.elements.obs.value, 400),
-        negocio: rotulo(negocioInput), canais: marcados("canal").join(", "), volume: marcados("volume")[0] || ""
+        negocio: negocioInput.value === "outro" ? "Outro: " + limpo(outroCampo.value, 60) : rotulo(negocioInput),
+        canais: marcados("canal").join(", "), volume: marcados("volume")[0] || ""
       };
       var linhas = ["Olá, vim pelo site da Kyzent e fiz a simulação de orçamento.", "Nome: " + dados.nome];
       if (dados.empresa) linhas.push("Empresa: " + dados.empresa);
@@ -644,6 +659,7 @@
       if (innerWidth < 1000) resultado.scrollIntoView({ behavior: semMovimento ? "auto" : "smooth", block: "start" });
       h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: innerWidth >= 1000 });
     });
+    mostrarOutro(false);
     irPara(0, true);
   });
 

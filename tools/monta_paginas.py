@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "119"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "120"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -778,6 +778,7 @@ ORCAMENTO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina"
             <fieldset class="sim-passo" data-passo="1">
               <legend>Qual é o seu tipo de negócio?</legend>
               <div class="sim-opcoes sim-opcoes-2">{"".join(opcao("radio", "negocio", sid, nome, ic) for sid, nome, ic in SIM_NEGOCIOS)}</div>
+              <label class="sim-outro" data-sim-outro hidden>Qual é o seu negócio?<input name="negocio_outro" maxlength="60" autocomplete="off" placeholder="Ex.: academia, oficina, loja de roupas"></label>
             </fieldset>
             <fieldset class="sim-passo" data-passo="2" hidden>
               <legend>O que mais toma o seu tempo hoje?</legend>
