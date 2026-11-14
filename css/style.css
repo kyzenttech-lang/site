@@ -1178,7 +1178,7 @@ picture { display: contents; }
 .simulador, .sim-resultado { padding: 26px 22px; border-radius: var(--r-grande); background: var(--cartao); }
 @media (min-width: 640px) { .simulador, .sim-resultado { padding: 32px; } }
 .sim-progresso { height: 6px; border-radius: 3px; background: rgba(11,18,32,.08); overflow: hidden; }
-.sim-progresso span { display: block; height: 100%; width: 25%; border-radius: inherit; background: var(--grad); transition: width .5s var(--ease); }
+.sim-progresso span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--grad); transition: width .5s var(--ease); }
 .sim-num { margin-top: 12px; color: var(--texto-3); font-size: .86rem; font-weight: 600; }
 .sim-passo { margin: 10px 0 0; padding: 0; border: 0; min-width: 0; }
 .sim-passo:not([hidden]) { animation: painel-entra .45s var(--ease) both; }

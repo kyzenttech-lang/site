@@ -546,7 +546,7 @@
     function irPara(n, inicial) {
       atual = n;
       passos.forEach(function (p, i) { p.hidden = i !== n; });
-      barra.style.width = ((n + 1) / passos.length * 100) + "%";
+      barra.style.width = (n / passos.length * 100) + "%";   // conta só os passos já concluídos: vazia no passo 1
       num.textContent = "Passo " + (n + 1) + " de " + passos.length;
       voltar.hidden = false;
       voltar.textContent = n === 0 ? "Voltar à página anterior" : "Voltar";
@@ -616,6 +616,7 @@
       if (!isNaN(fimPromo) && Date.now() < fimPromo) linhas.push("", "Quero aproveitar a implantação grátis da Black Friday.");
       var mensagem = linhas.join("\n");
 
+      barra.style.width = "100%";   // enviou: os quatro passos concluídos
       resultado.innerHTML = "";
       var h = el("h3"); h.textContent = dados.nome.split(" ")[0] + ", estas são as soluções que mais combinam com o seu negócio.";
       resultado.appendChild(h);
