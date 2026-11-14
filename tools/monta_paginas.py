@@ -69,7 +69,7 @@ I = {
 TIQUES = ('<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" '
           'fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>')
 
-PAGINAS = [("index.html", "Início"), ("servicos.html", "Soluções"), ("aurora.html", "Aurora"), ("quem-somos.html", "Quem somos"), ("orcamento.html", "Orçamento")]
+PAGINAS = [("index.html", "Início"), ("aurora.html", "Aurora"), ("servicos.html", "Soluções"), ("quem-somos.html", "Quem somos"), ("orcamento.html", "Orçamento")]
 
 # ------------------------------------------------------------------ catálogo de serviços (sem preço: o valor é combinado com cada cliente)
 # ramos: para quais tipos de negócio o serviço é indicado (filtro da página Serviços)
