@@ -1253,10 +1253,6 @@ def pagina_solucao(mid):
     nome, curto, ic, resumo, servs = MOD[mid]
     titulo, chamada_txt, benef, problemas = SOLUCOES[mid]
     itens = "\n".join(f'              <li class="item brilho"><h4>{a}</h4><p>{CATALOGO[a][0]}</p></li>' for a in servs)
-    ramos = sorted({r for a in servs for r in CATALOGO[a][1]}, key=TODOS.index)
-    seg_nomes = {s[0]: s[1] for s in SEGMENTOS}
-    seg_links = "".join(f'<li><a class="seg-link" href="orcamento.html?ramo={r}">{seg_nomes[r]}</a></li>' for r in ramos) + \
-                '<li><a class="seg-link" href="orcamento.html?ramo=empresa">Pequenas e médias empresas</a></li>'
     fn, vt, vd = VISUAL_MOD[mid]
     probs = "".join(f"<li>{p}</li>" for p in problemas)
     bens = "".join(f"<li>{I['check']}{b}</li>" for b in benef)
@@ -1308,10 +1304,6 @@ def pagina_solucao(mid):
         <ul class="painel-itens itens-solucao">
 {itens}
         </ul>
-        <div class="seg-links-caixa">
-          <h3>Para quais negócios</h3>
-          <ul class="seg-links">{seg_links}</ul>
-        </div>
       </div>
     </section>
 
