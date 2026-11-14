@@ -483,7 +483,6 @@ def aurora_pagina():
       <div class="pagina-topo-fundo" aria-hidden="true"></div>
       <div class="container aurora-grade">
         <figure class="aurora" data-aurora>
-          <span class="aurora-halo" aria-hidden="true"></span>
           <div class="aurora-quadro" data-aurora-quadro>
             <picture>
               <source type="image/webp" srcset="assets/img/aurora/aurora-640.webp 640w, assets/img/aurora/aurora.webp 800w" sizes="(max-width: 999px) 86vw, 520px">
