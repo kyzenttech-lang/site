@@ -130,8 +130,8 @@ function iniciar() {
   const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: texturaHalo(), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
   halo.scale.setScalar(260); ponto.add(halo); orbita.add(ponto);
 
-  // ---------- estações dos 4 passos (só no modo "fluxo"): pontos fixos no anel ----------
-  const ANGULOS = [0.4, 2.0, 3.6, 5.2];
+  // ---------- estações das 6 partes do sistema (só no modo "fluxo"): pontos fixos no anel ----------
+  const ANGULOS = [0.3, 1.35, 2.4, 3.45, 4.5, 5.55];   // uma estação por parte do sistema (Tudo do seu negócio num sistema só)
   const corApagada = c("#1A5CFF"), corAcesa = c("#3FB4FF"), corAtual = c("#DDF1FF");
   const estacoes = ANGULOS.map((a) => {
     const m = new THREE.Mesh(new THREE.SphereGeometry(17, 16, 16), new THREE.MeshBasicMaterial({ color: corApagada, toneMapped: false }));

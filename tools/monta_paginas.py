@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "120"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "121"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -17,6 +17,9 @@ PRIVACIDADE_DATA = "13 de novembro de 2026"   # mude ao alterar o texto da polí
 BOTAO = "Conversar no WhatsApp"   # o nome dos botões de contato do topo, menu, janelas e barra fixa
 
 # Black Friday: implantação grátis (decisão do Otavio, 2026-11-12). Depois do fim, o JS esconde o que é da promoção.
+# demonstrações completas (repositórios separados; não editar daqui)
+DEMO_CARDAPIO = "https://kyzenttech-lang.github.io/cardapio/"
+DEMO_AGENDAMENTO = "https://kyzenttech-lang.github.io/agendamento/"
 PROMO_FIM = "2026-12-05T23:59:59-03:00"
 PROMO_DATA = "05/12"
 MSG_BF = "Olá, vim pelo site da Kyzent e quero aproveitar a implantação grátis da Black Friday."
@@ -79,117 +82,67 @@ CATALOGO = {
     "Respostas inteligentes": ("Resolução automática de dúvidas e perguntas frequentes.", TODOS),
     "Triagem de atendimento": ("Identificação das necessidades dos clientes e encaminhamento para atendentes humanos.", ["salao", "consultorio"]),
     "Centrais inteligentes de atendimento": ("Múltiplos agentes de IA trabalhando em diferentes funções.", []),
-    "Agendamentos automáticos": ("Organização de reuniões, consultas e serviços.", ["barbearia", "salao", "consultorio", "petshop"]),
+    "Agendamento online": ("O cliente escolhe o serviço, o dia e o horário, e a agenda se organiza sozinha.", ["barbearia", "salao", "consultorio", "petshop"]),
+    "Cardápio online com pedidos": ("Cardápio com fotos, preços e carrinho; o pedido chega organizado e com o total somado.", ["lanchonete"]),       # [CONFIRMAR]
+    "Sistema de atendimento": ("Um lugar para a sua equipe ver e responder todas as conversas dos clientes.", TODOS),                               # [CONFIRMAR]
     "Captação e qualificação de leads": ("Identificação e classificação de potenciais clientes.", ["salao", "consultorio"]),
     "Follow-up inteligente": ("Acompanhamento automático de clientes e recuperação de oportunidades.", TODOS),
     "Orçamentos automatizados": ("Geração e envio de propostas comerciais.", ["salao"]),
     "Automação de processos comerciais": ("Integração e otimização de etapas do processo de vendas.", []),
     "Gestão de cadastros e pedidos": ("Organização automatizada de informações e solicitações.", ["lanchonete", "petshop"]),
     "Integração com CRM": ("Centralização e gerenciamento do relacionamento com clientes.", ["barbearia", "salao", "consultorio", "petshop"]),
-    "Relatórios automatizados": ("Geração de relatórios para acompanhamento empresarial.", ["lanchonete", "barbearia", "petshop"]),
+    "Relatórios e painel de indicadores": ("Os números do negócio num painel que se atualiza sozinho.", ["lanchonete", "barbearia", "petshop"]),
     "Automação de documentos": ("Organização e envio automático de documentos.", ["consultorio"]),
-    "Integração de sistemas": ("Conexão entre diferentes plataformas e ferramentas empresariais.", []),
-    "Integração com estoque e ERP": ("Automatização e conexão de sistemas de gestão empresarial.", ["lanchonete", "petshop"]),
+    "Sistema de gestão sob medida (ERP)": ("O sistema do seu negócio, feito do jeito que você trabalha, só com o que você precisa.", TODOS),     # [CONFIRMAR]
+    "Controle de estoque": ("O estoque baixa sozinho a cada venda e avisa quando um produto está acabando.", ["lanchonete", "petshop"]),        # [CONFIRMAR]
+    "Financeiro e fluxo de caixa": ("Entradas, saídas e contas a pagar e a receber, com o caixa do dia fechado sem calculadora.", TODOS),     # [CONFIRMAR]
+    "Cadastro de clientes e fornecedores": ("Clientes e fornecedores num lugar só, com o histórico de cada um.", TODOS),                       # [CONFIRMAR]
+    "Integração com os sistemas que você já usa": ("O que a Kyzent desenvolve conversa com o que você já tem, sem digitar a mesma coisa duas vezes.", []),
     "Agentes de IA personalizados": ("Inteligência artificial desenvolvida conforme as necessidades da empresa.", []),
     "Assistentes internos de IA": ("Ferramentas inteligentes para auxiliar funcionários.", []),
-    "Sistemas personalizados": ("Desenvolvimento de soluções de atendimento e automação sob medida.", []),
+    "Sistemas personalizados": ("Sistemas desenvolvidos do zero para um processo que nenhum sistema pronto resolve.", []),
     "Site personalizado": ("Site feito sob medida para o seu negócio, conforme o que você quer mostrar e o que mais interessa aos seus clientes.", TODOS),
 }
 
 # módulos da página Serviços: (id, nome, nome curto (celular), ícone, resumo, [serviços])
 MODULOS = [
-    ("whatsapp", "WhatsApp e atendimento", "WhatsApp", "conversa",
-     "Chatbots, respostas automáticas e triagem para atender bem o cliente a qualquer hora.",
-     ["Chatbots inteligentes", "Respostas inteligentes", "Triagem de atendimento", "Centrais inteligentes de atendimento"]),
-    ("agenda", "Agendamento e vendas", "Agenda", "agenda",
-     "Horários marcados, clientes acompanhados e oportunidades que não se perdem.",
-     ["Agendamentos automáticos", "Captação e qualificação de leads", "Follow-up inteligente", "Orçamentos automatizados", "Automação de processos comerciais"]),
-    ("gestao", "Gestão e sistemas", "Gestão", "gestao",
-     "Cadastros, pedidos, relatórios e documentos organizados, com os seus sistemas conversando entre si.",
-     ["Gestão de cadastros e pedidos", "Integração com CRM", "Relatórios automatizados", "Automação de documentos", "Integração de sistemas", "Integração com estoque e ERP"]),
+    ("gestao", "Sistemas de gestão sob medida", "Gestão", "gestao",
+     "A Kyzent desenvolve o sistema de gestão do seu negócio (ERP): estoque, financeiro, clientes e relatórios num lugar só.",
+     ["Sistema de gestão sob medida (ERP)", "Controle de estoque", "Financeiro e fluxo de caixa", "Cadastro de clientes e fornecedores",
+      "Gestão de cadastros e pedidos", "Integração com CRM", "Relatórios e painel de indicadores", "Automação de documentos",
+      "Integração com os sistemas que você já usa"]),
+    ("agenda", "Pedidos, agendamento e vendas", "Vendas", "agenda",
+     "Cardápio online, agendamento online e ferramentas para vender mais e trazer o cliente de volta.",
+     ["Cardápio online com pedidos", "Agendamento online", "Captação e qualificação de leads", "Follow-up inteligente", "Orçamentos automatizados", "Automação de processos comerciais"]),
+    ("whatsapp", "Atendimento e Aurora", "Atendimento", "conversa",
+     "Um sistema de atendimento para a sua equipe e a Aurora, a IA que atende no WhatsApp e no Instagram.",
+     ["Sistema de atendimento", "Chatbots inteligentes", "Respostas inteligentes", "Triagem de atendimento", "Centrais inteligentes de atendimento"]),
     ("site", "Site e presença online", "Site", "site",
      "Um site feito sob medida para o seu negócio, do jeito que você quer apresentá-lo.",
      ["Site personalizado"]),
     ("ia", "IA sob medida", "IA", "avancado",
-     "Inteligência artificial desenvolvida para o jeito de trabalhar da sua empresa.",
+     "Inteligência artificial e automações desenvolvidas para o jeito de trabalhar da sua empresa.",
      ["Agentes de IA personalizados", "Assistentes internos de IA", "Sistemas personalizados"]),
 ]
 
-# as 4 frentes oficiais da empresa (Início): (título, ícone, resumo, módulo que abre, serviços)
-AREAS = [
-    ("Atendimento e relacionamento", "conversa",
-     "Chatbots no WhatsApp e no Instagram, respostas automáticas e triagem para atendentes.", "whatsapp",
-     ["Chatbots inteligentes", "Respostas inteligentes", "Triagem de atendimento"]),
-    ("Vendas e captação de clientes", "vendas",
-     "Leads qualificados, agendamentos, follow-up e orçamentos no automático.", "agenda",
-     ["Captação e qualificação de leads", "Agendamentos automáticos", "Follow-up inteligente", "Orçamentos automatizados"]),
-    ("Administração e gestão empresarial", "gestao",
-     "Cadastros, pedidos, CRM, relatórios, documentos e sistemas conectados.", "gestao",
-     ["Gestão de cadastros e pedidos", "Integração com CRM", "Relatórios automatizados", "Automação de documentos",
-      "Assistentes internos de IA", "Integração de sistemas"]),
-    ("Soluções avançadas e personalizadas", "avancado",
-     "Agentes de IA, integração com ERP e sistemas sob medida para a sua empresa.", "ia",
-     ["Agentes de IA personalizados", "Integração com estoque e ERP", "Centrais inteligentes de atendimento",
-      "Automação de processos comerciais", "Sistemas personalizados"]),
+# os 3 pilares das soluções: (id, título, apoio, texto, resultados, [módulos])
+PILARES_SOL = [
+    ("sistemas", "Sistemas de gestão sob medida", "ERP feito para o seu negócio",
+     "A Kyzent desenvolve o sistema do seu negócio: estoque, caixa, clientes e relatórios num lugar só, do jeito que você trabalha.",
+     ["O estoque baixa sozinho a cada venda", "O caixa do dia fecha sem calculadora", "Clientes, fornecedores e relatórios num lugar só"],
+     ["gestao"]),
+    ("atendimento", "Atendimento e vendas", "Do primeiro contato ao pedido",
+     "Cardápio online, agendamento online, um sistema de atendimento para a equipe e a Aurora, a IA que responde a qualquer hora.",
+     ["Pedidos e horários marcados pelo próprio cliente", "Toda conversa num lugar só para a equipe", "Clientes chamados de volta no momento certo"],
+     ["agenda", "whatsapp"]),
+    ("presenca", "Presença online e IA sob medida", "Para ser encontrado e trabalhar menos",
+     "Sites feitos para o seu negócio, inteligência artificial para processos internos e automações sob medida.",
+     ["Um site com a cara do seu negócio", "Tarefas repetitivas feitas por uma IA", "Automações para o processo que só você tem"],
+     ["site", "ia"]),
 ]
 
-# ------------------------------------------------------------------ ramos (cartões com janela)
-RAMOS = [
-    ("lanchonete", "Lanchonetes", "lanche", "uma lanchonete", "Pedido anotado sem parar o caixa.",
-     "Pedidos, dúvidas e clientes atendidos sem parar o caixa.", [
-        ("Chatbot no WhatsApp e no Instagram", "Recebe os pedidos e apresenta o cardápio a qualquer hora, inclusive no horário de pico."),
-        ("Respostas inteligentes", "Horário de funcionamento, endereço, entrega e formas de pagamento respondidos na hora."),
-        ("Gestão de pedidos", "Cada pedido chega organizado, sem anotação perdida em papel."),
-        ("Follow-up inteligente", "Chama de volta o cliente que não pede há algum tempo."),
-        ("Relatórios automatizados", "Pedidos e vendas do período reunidos para você acompanhar."),
-        ("Integração com estoque", "Os pedidos conversando com o controle do que tem na cozinha."),
-    ]),
-    ("barbearia", "Barbearias", "tesoura", "uma barbearia", "Agenda cheia sem largar a máquina.",
-     "Agenda cheia e organizada, sem responder mensagem entre um corte e outro.", [
-        ("Agendamentos automáticos", "O cliente escolhe o serviço e o horário direto na conversa."),
-        ("Chatbot no WhatsApp e no Instagram", "Atende quem chama de noite, no domingo ou enquanto você está cortando."),
-        ("Respostas inteligentes", "Preços, serviços e horários livres respondidos na hora."),
-        ("Follow-up inteligente", "Lembra o cliente do horário e chama de volta quem já está na hora do próximo corte."),
-        ("Cadastro de clientes e CRM", "Histórico de cada cliente guardado em um só lugar."),
-        ("Relatórios automatizados", "Atendimentos e faturamento do período para acompanhar o negócio."),
-    ]),
-    ("salao", "Salões de beleza", "pente", "um salão de beleza", "Horário marcado com cada profissional.",
-     "Agenda de cada profissional organizada e cliente bem atendida do primeiro contato ao retorno.", [
-        ("Agendamentos automáticos", "Marcação por serviço e por profissional, sem conflito de horário."),
-        ("Respostas inteligentes", "Serviços, preços e duração de cada procedimento respondidos na hora."),
-        ("Triagem de atendimento", "Pedidos que precisam de avaliação vão direto para a pessoa certa da equipe."),
-        ("Orçamentos automatizados", "Propostas para pacotes, eventos e noivas montadas e enviadas."),
-        ("Follow-up inteligente", "Lembretes de horário e convite de retorno para manutenção."),
-        ("Cadastro de clientes e CRM", "Preferências e histórico de cada cliente sempre à mão."),
-    ]),
-    ("consultorio", "Clínicas", "dente", "uma clínica", "Consulta confirmada sem a recepção ligar.",
-     "Recepção mais leve, agenda confirmada e pacientes acompanhados, de consultórios a clínicas.", [
-        ("Agendamentos automáticos", "Marcação e confirmação de consultas pelo WhatsApp."),
-        ("Triagem de atendimento", "Identifica se é avaliação, retorno ou urgência e encaminha para a recepção."),
-        ("Respostas inteligentes", "Convênios, endereço, horários e tipos de tratamento respondidos na hora."),
-        ("Follow-up inteligente", "Lembrete de consulta e de retorno para exames e revisões."),
-        ("Automação de documentos", "Envio automático de orientações e documentos ao paciente."),
-        ("Cadastro de pacientes e CRM", "Informações de cada paciente organizadas, com cuidado com os dados (LGPD)."),
-    ]),
-    ("petshop", "Pet shops", "pata", "um pet shop", "Banho e tosa marcados, sem perder mensagem.",
-     "Agenda de banho e tosa organizada, tutores lembrados da vacina e pedidos de ração sem se perder no WhatsApp.", [
-        ("Agendamentos automáticos", "Banho, tosa e consulta marcados direto na conversa, sem choque de horário."),
-        ("Chatbot no WhatsApp e no Instagram", "Atende a qualquer hora quem quer saber de serviço, preço e horário."),
-        ("Respostas inteligentes", "Valores de banho e tosa, vacinas, produtos e horários respondidos na hora."),
-        ("Follow-up inteligente", "Lembra o tutor da vacina, do vermífugo e do próximo banho do pet."),
-        ("Gestão de pedidos", "Pedidos de ração e de produtos organizados, para retirar na loja ou receber em casa."),
-        ("Cadastro de pets e tutores", "Histórico de cada pet e dados do tutor guardados em um só lugar."),
-    ]),
-]
 
 # fotos de banco (Unsplash, licença livre; origem em assets/fotos/CREDITOS.md): arquivo, largura, altura
-FOTO_RAMO = {
-    "lanchonete": ("lanchonete.jpg", 1200, 675),
-    "barbearia": ("barbearia.jpg", 880, 1100),
-    "salao": ("salao.jpg", 734, 1100),
-    "consultorio": ("consultorio.jpg", 1200, 800),
-    "petshop": ("petshop.jpg", 1200, 900),
-}
 
 # ------------------------------------------------------------------ partes comuns
 def menu(atual, classe):
@@ -237,8 +190,7 @@ DADOS_ESTRUTURADOS = json.dumps({
     "@context": "https://schema.org", "@type": "ProfessionalService", "name": "Kyzent Technology Solutions",
     "alternateName": "Kyzent", "url": BASE, "logo": BASE + "assets/icons/apple-touch-icon.png", "image": BASE + "assets/og-image.png",
     "description": "Empresa de Tecnologia e Inovação que automatiza o atendimento, as vendas e a gestão de pequenas empresas com Inteligência Artificial.",
-    "telephone": "+55-19-98872-8894", "areaServed": "Paulínia e região, SP",
-    "address": {"@type": "PostalAddress", "addressLocality": "Paulínia", "addressRegion": "SP", "addressCountry": "BR"},
+    "telephone": "+55-19-98872-8894", "areaServed": {"@type": "Country", "name": "Brasil"},
     "sameAs": ["https://www.instagram.com/kyzent.tech/"]}, ensure_ascii=False)
 
 def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
@@ -329,7 +281,7 @@ def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
       <div class="rodape-grade">
         <div class="rodape-marca">
           <a href="index.html" aria-label="Kyzent, página inicial">{logo()}</a>
-          <p>Empresa de Tecnologia e Inovação de Paulínia/SP. Automação e Inteligência Artificial para o atendimento, as vendas e a gestão de pequenas empresas.</p>
+          <p>Empresa de Tecnologia e Inovação. Sistemas de gestão, atendimento e Inteligência Artificial sob medida para pequenos e médios negócios.</p>
         </div>
         <div>
           <h2>Navegação</h2>
@@ -351,7 +303,7 @@ def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
       </div>
       <div class="rodape-base">
         <p>© <span data-ano>2026</span> Kyzent Technology Solutions. Todos os direitos reservados.</p>
-        <p><a href="privacidade.html">Política de Privacidade</a> · Paulínia/SP</p>
+        <p><a href="privacidade.html">Política de Privacidade</a></p>
       </div>
     </div>
   </footer>
@@ -377,7 +329,17 @@ PERGUNTAS = [
     ("Vocês dão suporte depois que a automação está funcionando?",
      "Sim. Cada solução vem com manutenção e suporte da nossa equipe, para a tecnologia seguir funcionando sem você se preocupar com a parte técnica."),
     ("Para quais tipos de negócio a Kyzent trabalha?",
-     "Lanchonetes, barbearias, salões de beleza, clínicas, pet shops e comércios parecidos, em Paulínia e região. Se o seu ramo não está na lista, chame no WhatsApp e conte como é o seu dia a dia."),
+     "Lanchonetes, pizzarias, barbearias, salões de beleza, clínicas, pet shops, lojas e pequenas e médias empresas de qualquer lugar do Brasil. Se o seu ramo não está na lista, fale com a gente e conte como é o seu dia a dia."),
+    ("Vocês fazem sistema de gestão (ERP) do zero?",
+     "Sim. A Kyzent desenvolve o sistema a partir de como o seu negócio funciona, só com as partes que você precisa: estoque, financeiro, clientes, pedidos e relatórios."),   # [CONFIRMAR]
+    ("Vocês conseguem usar o sistema que eu já tenho?",
+     "Em muitos casos, sim: ligamos o que você já usa ao que desenvolvemos. Isso depende de o seu sistema permitir, e a gente confere no diagnóstico."),   # [CONFIRMAR]
+    ("Preciso ter a Aurora para contratar um sistema?",
+     "Não. Cada solução pode ser contratada separada: o sistema de gestão, o cardápio online, o agendamento, o site ou a Aurora."),
+    ("Funciona no computador e no celular?",
+     "Sim. Os sistemas funcionam pelo navegador, no computador e no celular, sem precisar instalar nada."),   # [CONFIRMAR]
+    ("Posso testar antes de contratar?",
+     'Sim. O <a href="#testar">cardápio online e o agendamento online</a> estão no ar para você testar, e as simulações desta página mostram o sistema de gestão funcionando.'),
 ]
 def perguntas():
     itens = "\n".join(
@@ -387,8 +349,8 @@ def perguntas():
       <div class="container perguntas-grade">
         <div class="cabeca">
           <h2 id="titulo-perguntas" data-revelar-texto>Perguntas frequentes.</h2>
-          <p>Ficou alguma dúvida? A gente responde no WhatsApp.</p>
-          <a class="botao botao-contorno" href="{link_whats()}" target="_blank" rel="noopener" data-contato>{I["conversa"]}{BOTAO}</a>
+          <p>Ficou alguma dúvida? Monte uma simulação e a gente responde com uma proposta para o seu negócio.</p>
+          <a class="botao botao-contorno" href="orcamento.html">Simular meu orçamento</a>
         </div>
         <div class="perguntas">
 {itens}
@@ -568,21 +530,21 @@ def k3d(cls=""):
 PAGINA_MOD = {"whatsapp": "solucao-atendimento.html", "agenda": "solucao-vendas.html", "gestao": "solucao-gestao.html",
               "site": "solucao-site.html", "ia": "solucao-ia.html"}
 SOLUCOES = {
-    "whatsapp": ("Atendimento com IA no WhatsApp e no Instagram",
-                 "Seu cliente é respondido a qualquer hora, com as informações do seu negócio, e a sua equipe só entra quando precisa.",
+    "whatsapp": ("Atendimento com sistema e com a Aurora",
+                 "Um sistema para a sua equipe atender todas as conversas, e a Aurora respondendo a qualquer hora no WhatsApp e no Instagram.",
                  ["Respostas na hora, inclusive à noite e no fim de semana", "Menos mensagens repetidas para a equipe responder", "Pedidos de atendimento humano chegam organizados"],
                  ["Mensagens acumulando no horário de pico", "As mesmas perguntas respondidas o dia inteiro", "Cliente que desiste porque ninguém respondeu"]),
-    "agenda": ("Agendamento e vendas no automático",
-               "Horários marcados e confirmados pela conversa, clientes lembrados de voltar e orçamentos enviados sem você parar o que está fazendo.",
+    "agenda": ("Pedidos, agendamento e vendas",
+               "Cardápio online com pedidos, agendamento online, clientes lembrados de voltar e orçamentos enviados sem você parar o que está fazendo.",
                ["Agenda organizada, com confirmação e lembrete", "Clientes antigos chamados de volta no momento certo", "Orçamentos e propostas enviados com rapidez"],
                ["Horário marcado em papel ou de cabeça", "Cliente que falta sem avisar", "Oportunidade perdida por falta de retorno"]),
-    "gestao": ("Gestão e sistemas conectados",
-               "Pedidos, cadastros, documentos e relatórios organizados, com os sistemas que você já usa conversando entre si.",
-               ["Informações de clientes e pedidos num lugar só", "Relatórios prontos para acompanhar o negócio", "Menos digitação repetida entre um sistema e outro"],
+    "gestao": ("Sistemas de gestão sob medida",
+               "A Kyzent desenvolve o sistema de gestão do seu negócio (ERP): estoque, financeiro, clientes e relatórios num lugar só, do jeito que você trabalha.",
+               ["O estoque baixa sozinho a cada venda", "O caixa do dia fecha sem calculadora", "Relatórios prontos para acompanhar o negócio"],
                ["Planilhas soltas e anotações perdidas", "Dados digitados duas vezes em sistemas diferentes", "Dificuldade para saber como o mês está indo"]),
     "site": ("Site sob medida para o seu negócio",
-             "Um site feito para o seu negócio, com o que os seus clientes procuram e o caminho direto para o WhatsApp.",
-             ["Presença profissional na internet", "Serviços, horários e contato num lugar só", "Visitante levado direto para a conversa"],
+             "Um site feito para o seu negócio, com o que os seus clientes procuram e a cara da sua marca.",
+             ["Presença profissional na internet", "Serviços, horários e contato num lugar só", "Clientes que encontram o seu negócio e entram em contato"],
              ["Cliente que não encontra o seu negócio na internet", "Informações espalhadas em várias redes", "Perfil que não passa a imagem que o negócio merece"]),
     "ia": ("IA sob medida para a sua empresa",
            "Agentes e assistentes de inteligência artificial desenvolvidos para o jeito de trabalhar da sua empresa, integrados aos seus sistemas.",
@@ -709,43 +671,43 @@ def central_demos(ids=None, titulo="Veja a Kyzent funcionando.", classe=""):
 SEGMENTOS = [
     ("lanchonete", "Restaurantes e lanchonetes", "lanche", "lanchonete.jpg", (1200, 675), "um restaurante ou lanchonete",
      ["Pedidos chegando por mensagem no horário de pico", "Cardápio, horário e taxa de entrega perguntados o dia todo", "Anotação em papel que se perde"],
-     ["Chatbot que apresenta o cardápio e anota o pedido", "Respostas automáticas para horário, endereço e entrega", "Pedidos organizados e ligados ao estoque"],
+     ["Cardápio online com pedidos", "Estoque de insumos que baixa a cada venda", "Fechamento do caixa do dia", "A Aurora respondendo no WhatsApp"],
      ["Caixa livre para atender quem está no balcão", "Pedidos organizados do recebimento à entrega", "Cliente respondido mesmo fora do horário"]),
     ("barbearia", "Barbearias", "tesoura", "barbearia.jpg", (880, 1100), "uma barbearia",
      ["Responder mensagem no meio de um corte", "Horários vagos por falta de lembrete", "Cliente que demora a voltar"],
-     ["Agendamento direto na conversa", "Lembrete antes do horário", "Mensagem chamando o cliente para o próximo corte"],
+     ["Agendamento online", "Cadastro de clientes com o histórico de cada um", "Financeiro do dia", "Lembrete chamando para o próximo corte"],
      ["Agenda mais organizada", "Menos interrupções durante o atendimento", "Relacionamento contínuo com cada cliente"]),
     ("salao", "Salões de beleza", "pente", "salao.jpg", (734, 1100), "um salão de beleza",
      ["Agenda de várias profissionais ao mesmo tempo", "Dúvidas sobre preço e duração de cada serviço", "Orçamentos de pacotes e eventos"],
-     ["Marcação por serviço e por profissional", "Respostas com preços e duração", "Orçamentos montados e enviados automaticamente"],
+     ["Agenda por serviço e por profissional", "Cadastro de clientes", "Financeiro do salão", "Respostas com preço e duração de cada serviço"],
      ["Menos conflito de horário", "Clientes bem informadas antes de chegar", "Mais tempo da equipe para o atendimento"]),
     ("consultorio", "Clínicas", "cruz", "consultorio.jpg", (1200, 800), "uma clínica",
      ["Recepção sobrecarregada com ligações e mensagens", "Pacientes que esquecem a consulta", "Orientações enviadas uma a uma"],
-     ["Marcação e confirmação de consultas pelo WhatsApp", "Triagem entre avaliação, retorno e urgência", "Envio automático de orientações e documentos"],
+     ["Agenda de consultas", "Cadastro de pacientes", "Financeiro da clínica", "Lembretes e confirmação de consultas"],
      ["Recepção mais leve", "Agenda confirmada com antecedência", "Dados dos pacientes tratados com cuidado (LGPD)"]),
     ("petshop", "Pet shops", "pata", "petshop.jpg", (1200, 900), "um pet shop",
      ["Banho e tosa marcados por mensagem solta", "Tutores que esquecem vacina e vermífugo", "Pedidos de ração perdidos na conversa"],
-     ["Agendamento de banho, tosa e consulta", "Lembretes de vacina, vermífugo e próximo banho", "Pedidos de produtos organizados"],
+     ["Agendamento de banho, tosa e consulta", "Cadastro de tutores e pets", "Estoque e financeiro da loja", "Lembretes de vacina e do próximo banho"],
      ["Agenda sem choque de horário", "Tutores lembrados no momento certo", "Histórico de cada pet num lugar só"]),
     ("empresa", "Pequenas e médias empresas", "gestao", "equipe-computador.jpg", (1600, 900), "uma empresa",
      ["Processos manuais repetidos todos os dias", "Informações espalhadas em planilhas e sistemas", "Atendimento que não acompanha o crescimento"],
-     ["Automação de processos comerciais", "Integração com CRM, estoque e ERP", "Agentes de IA e sistemas sob medida"],
+     ["Sistema de gestão feito para a empresa", "Estoque e financeiro", "Relatórios e painel de indicadores", "Automações e IA sob medida"],
      ["Equipe focada no que exige pessoas", "Informações conectadas para decidir melhor", "Tecnologia que acompanha o crescimento da empresa"]),
 ]
-SEG_FRASE = {'lanchonete': 'Do pedido no WhatsApp à entrega, sem anotação perdida.', 'barbearia': 'Agenda cheia, sem largar a máquina.', 'salao': 'Cada profissional com a sua agenda em ordem.', 'consultorio': 'Recepção mais leve e pacientes lembrados.', 'petshop': 'Banho, tosa e vacina sempre no dia certo.', 'empresa': 'Processos conectados para a empresa crescer.'}
+SEG_FRASE = {'lanchonete': 'Do pedido ao caixa fechado, sem anotação perdida.', 'barbearia': 'Agenda cheia, sem largar a máquina.', 'salao': 'Cada profissional com a sua agenda em ordem.', 'consultorio': 'Recepção mais leve e pacientes lembrados.', 'petshop': 'Banho, tosa e vacina sempre no dia certo.', 'empresa': 'Um sistema feito para a empresa crescer.'}
 # ------------------------------------------------------------------ metodologia, diferenciais e projetos
 # Projetos reais entram aqui, com a autorização de cada cliente: (nome, segmento, o que foi feito, foto ou "")
 PROJETOS = []
 # ------------------------------------------------------------------ Orçamento: simulador e contato
 DESAFIOS = [
     ("perguntas", "Responder as mesmas perguntas no WhatsApp", ["Respostas inteligentes", "Chatbots inteligentes"]),
-    ("horarios", "Marcar e confirmar horários", ["Agendamentos automáticos"]),
+    ("horarios", "Marcar e confirmar horários", ["Agendamento online"]),
     ("pedidos", "Anotar e organizar pedidos", ["Gestão de cadastros e pedidos", "Chatbots inteligentes"]),
     ("retorno", "Clientes que somem e não voltam", ["Follow-up inteligente"]),
     ("orcamentos", "Montar e enviar orçamentos", ["Orçamentos automatizados"]),
     ("dados", "Organizar os dados dos clientes", ["Integração com CRM"]),
-    ("numeros", "Acompanhar os números do negócio", ["Relatórios automatizados"]),
-    ("estoque", "Controlar o estoque", ["Integração com estoque e ERP"]),
+    ("numeros", "Acompanhar os números do negócio", ["Relatórios e painel de indicadores"]),
+    ("estoque", "Controlar o estoque", ["Controle de estoque"]),
     ("site", "Ter um site profissional", ["Site personalizado"]),
     ("medida", "Algo sob medida para a minha empresa", ["Agentes de IA personalizados", "Sistemas personalizados"]),
 ]
@@ -825,7 +787,7 @@ ORCAMENTO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina"
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-contato" data-revelar-texto>Fale com a Kyzent.</h2>
-          <p>Atendemos Paulínia/SP e região. As soluções funcionam pela internet, então tudo começa por uma conversa no WhatsApp.</p>
+          <p>As soluções funcionam pela internet. Tudo começa por uma conversa, pelo WhatsApp ou por e-mail.</p>
         </div>
         <ul class="grade contatos">
           <li class="contato-cartao brilho"><h3>WhatsApp</h3>
@@ -972,34 +934,58 @@ def cartao_solucao(mid, destaque=False):
             f'<span class="solucao-rodape"><span class="solucao-qtd">{len(servs)} {"serviço" if len(servs) == 1 else "serviços"}</span>'
             f'<span class="solucao-ir">Conhecer solução</span></span></a></li>')
 
+def mini_card(titulo, texto, href, externo=False):
+    alvo = ' target="_blank" rel="noopener"' if externo else ""
+    aviso = '<span class="visualmente-oculto"> (abre em nova aba)</span>' if externo else ""
+    return f'<li><a class="mini-card" href="{href}"{alvo}><strong>{titulo}{aviso}</strong><span>{texto}</span></a></li>'
+
+def cartao_pilar(pid, titulo, apoio, texto, resultados, mods):
+    res = "".join(f"<li>{r}</li>" for r in resultados)
+    links = "".join(f'<li><a class="link-seta" href="{PAGINA_MOD[m]}">{MOD[m][0]}</a></li>' for m in mods)
+    qtd = sum(len(MOD[m][4]) for m in mods)
+    extra = ""
+    if pid == "atendimento":
+        extra = ('<ul class="mini-cards">' + mini_card("Aurora", "A IA que atende no WhatsApp e no Instagram", "aurora.html")
+                 + mini_card("Cardápio online", "Teste a demonstração", DEMO_CARDAPIO, True)
+                 + mini_card("Agendamento online", "Teste a demonstração", DEMO_AGENDAMENTO, True) + "</ul>")
+    if pid == "sistemas":   # as partes que o sistema pode ter, preenchendo o card maior
+        nomes = ["Estoque", "Financeiro e caixa", "Clientes e fornecedores", "Pedidos e vendas", "Relatórios e painel", "Documentos", "Integração com o que você já usa"]
+        extra = ('<!--VIS_GESTAO--><ul class="pilar-partes" aria-label="Partes que o sistema pode ter">'
+                 + "".join(f"<li>{n}</li>" for n in nomes) + "</ul>")   # VIS_GESTAO: o painel da página de Gestão (definido mais abaixo)
+    return (f'<li class="pilar-card pilar-{pid}"><p class="pilar-apoio">{apoio}</p><h3>{titulo}</h3><p class="pilar-texto">{texto}</p>'
+            f'<ul class="frente-itens">{res}</ul>{extra}<div class="pilar-rodape"><span class="solucao-qtd">{qtd} serviços</span>'
+            f'<ul class="pilar-links">{links}</ul></div></li>')
+
 SOLUCOES_SECAO = f"""    <section class="secao claro" id="solucoes" aria-labelledby="titulo-solucoes">
       <div class="container">
         <div class="cabeca-linha">
           <div class="cabeca">
             <h2 id="titulo-solucoes" data-revelar-texto>Soluções para cada parte do seu negócio.</h2>
-            <p>Desenvolvemos soluções com Inteligência Artificial para automatizar processos, otimizar operações, melhorar o atendimento e aumentar a produtividade da sua empresa.</p>
+            <p>A Kyzent desenvolve sistemas de gestão, atendimento e inteligência artificial sob medida para pequenos e médios negócios.</p>
           </div>
-          <a class="link-seta" href="servicos.html">Ver os 19 serviços</a>
+          <a class="link-seta" href="servicos.html">Ver os {len(CATALOGO)} serviços</a>
         </div>
-        <ul class="solucoes carrossel" data-carrossel aria-label="Soluções da Kyzent">
-          {"".join(cartao_solucao(mid, i == 0) for i, mid in enumerate(MOD))}
+        <ul class="pilares">
+          {"".join(cartao_pilar(*p) for p in PILARES_SOL)}
         </ul>
       </div>
     </section>"""
 
 # ---------- experiência marcante do Início: do problema à tarefa feita (diagrama vivo, conduzido pela rolagem)
 HISTORIA_PASSOS = [
-    ("Mensagens chegam o dia todo.", "No WhatsApp, no Instagram, de madrugada. A IA da Kyzent responde na hora, com as informações do seu negócio."),
-    ("Cada pedido é entendido.", "Agendamento, pedido, orçamento ou dúvida: a IA identifica o que o cliente quer e o que precisa ser feito."),
-    ("Os sistemas conversam entre si.", "A agenda é atualizada, o estoque é conferido e o pedido entra no lugar certo, sem ninguém digitar duas vezes."),
-    ("A equipe cuida do que importa.", "O que precisa de uma pessoa chega organizado, e os números do dia viram relatório."),
+    ("Atendimento", "A Aurora, o WhatsApp, o Instagram, o cardápio online e o agendamento recebem o cliente e registram tudo no sistema."),
+    ("Pedidos e vendas", "Cada pedido ou venda entra organizado, com o total somado e a situação de cada um."),
+    ("Estoque", "O estoque baixa sozinho a cada venda e avisa quando um produto está acabando."),
+    ("Financeiro", "Entradas e saídas registradas, e o caixa do dia fechado sem calculadora."),
+    ("Clientes", "O cadastro de cada cliente, com o histórico de compras e de visitas."),
+    ("Relatórios", "Os números do negócio num painel, para decidir com base no que aconteceu."),
 ]
 HISTORIA = f"""    <section class="secao historia historia-3d" id="como-funciona" aria-labelledby="titulo-historia">
       <div class="container historia-grade">
         <div class="historia-texto">
           <div class="cabeca">
-            <h2 id="titulo-historia" data-revelar-texto>Uma mensagem entra. O trabalho sai feito.</h2>
-            <p>O que acontece por trás de cada conversa quando o seu negócio tem automação. Toque em cada passo para ver o caminho.</p>
+            <h2 id="titulo-historia" data-revelar-texto>Tudo do seu negócio num sistema só.</h2>
+            <p>A Kyzent desenvolve um sistema com as partes que o seu negócio precisa, todas ligadas. Toque em cada parte para ver o que ela faz.</p>
           </div>
           <ol class="historia-passos" data-historia-lista>
 {chr(10).join(f'            <li class="historia-passo" data-historia="{i + 1}" role="button" tabindex="0" aria-pressed="{"true" if i == 0 else "false"}"><span class="historia-n">{i + 1}</span><h3>{t}</h3><p>{d}</p></li>' for i, (t, d) in enumerate(HISTORIA_PASSOS))}
@@ -1013,6 +999,14 @@ HISTORIA = f"""    <section class="secao historia historia-3d" id="como-funciona
     </section>"""
 
 # ---------- segmentos: o que muda em cada ramo, sem repetir os problemas das páginas de solução
+SEG_DEMO = {"lanchonete": ("cardápio online", DEMO_CARDAPIO), "barbearia": ("agendamento online", DEMO_AGENDAMENTO),
+            "salao": ("agendamento online", DEMO_AGENDAMENTO), "consultorio": ("agendamento online", DEMO_AGENDAMENTO),
+            "petshop": ("agendamento online", DEMO_AGENDAMENTO)}
+def seg_demo(sid):
+    if sid not in SEG_DEMO: return ""
+    nome, url = SEG_DEMO[sid]
+    return (f'<a class="link-seta seg-demo" href="{url}" target="_blank" rel="noopener">Testar a demonstração de {nome}'
+            f'<span class="visualmente-oculto"> (abre em nova aba)</span></a>')
 SEG_ALT = {
     "lanchonete": "Garçom servindo hambúrguer, batata frita e suco numa bandeja de madeira",
     "barbearia": "Barbeiros cortando o cabelo de clientes numa barbearia",
@@ -1035,6 +1029,7 @@ def segmentos_secao(classe="claro"):
                 {col("Como a Kyzent ajuda", solucoes, "seg-solucoes")}
                 {col("O que melhora", beneficios, "seg-beneficios")}
               </div>
+              {seg_demo(sid)}
             </div>
           </article>""")
     return f"""    <section class="secao {classe}" id="segmentos" aria-labelledby="titulo-segmentos">
@@ -1060,9 +1055,9 @@ def segmentos_secao(classe="claro"):
 # ---------- apresentação curta (no Início, no lugar dos diferenciais repetidos)
 SOBRE_CURTO = """    <section class="secao secao-faixa sobre-curto" aria-labelledby="titulo-sobre">
       <div class="container sobre-grade">
-        <h2 id="titulo-sobre" data-revelar-texto>Uma empresa de tecnologia de Paulínia, perto de você.</h2>
+        <h2 id="titulo-sobre" data-revelar-texto>Uma empresa que desenvolve o sistema do seu negócio.</h2>
         <div>
-          <p>A Kyzent desenvolve soluções inteligentes para comércios e empresas, com WhatsApp pela API oficial, configuração feita para cada negócio e suporte da nossa equipe depois de tudo pronto.</p>
+          <p>A Kyzent desenvolve sistemas de gestão, atendimento e inteligência artificial sob medida para pequenos e médios negócios, com suporte da nossa equipe depois de tudo pronto.</p>
           <a class="link-seta" href="quem-somos.html">Conhecer a Kyzent</a>
         </div>
       </div>
@@ -1099,10 +1094,10 @@ HERO = f"""    <section class="hero hero-cinema hero-3d" aria-labelledby="titulo
         <div class="hero-texto">
           <p class="hero-marca"><img class="marca-mini" src="assets/img/kyzent-k-escuro.svg" alt="" width="1080" height="520">Kyzent Technology Solutions</p>
           <h1 id="titulo-inicio" data-revelar-texto>Seu negócio no próximo nível.</h1>
-          <p class="hero-apoio">Inteligência artificial, automação e tecnologia para transformar a maneira como sua empresa trabalha, vende e cresce.</p>
+          <p class="hero-apoio">Sistemas de gestão, atendimento e inteligência artificial feitos para o seu negócio, do primeiro contato ao caixa fechado.</p>
           <div class="hero-acoes">
             <a class="botao botao-grande" href="#solucoes" data-magnetico>Conhecer nossas soluções</a>
-            <a class="botao botao-grande botao-vidro" href="{link_whats(MSG_CONVERSA)}" target="_blank" rel="noopener" data-contato data-msg="{MSG_CONVERSA}" data-magnetico>Conversar no WhatsApp</a>
+            <a class="botao botao-grande botao-vidro" href="#testar" data-magnetico>Testar uma demonstração</a>
           </div>
         </div>
       </div>
@@ -1121,10 +1116,12 @@ NUMEROS = f"""    <section class="numeros-faixa claro" aria-label="A Kyzent em n
     </section>"""
 
 
-TAREFAS = [("Responder \"qual o horário de sábado?\" pela 15ª vez", "A IA responde na hora, com o horário certo"),
+TAREFAS = [("Contar o estoque no caderno toda sexta", "O estoque baixa sozinho a cada venda"),
+           ("Fechar o caixa somando na calculadora", "O relatório do dia fica pronto sozinho"),
+           ("Imprimir cardápio novo a cada aumento", "Cardápio online atualizado em 1 minuto"),
            ("Anotar o pedido no papel no meio do movimento", "O pedido chega organizado e soma o total"),
-           ("Ligar para confirmar o horário de amanhã", "A confirmação sai sozinha pelo WhatsApp"),
-           ("Procurar o cliente que não volta há um mês", "O lembrete de retorno é enviado no dia certo")]
+           ("Responder \"qual o horário de sábado?\" pela 15ª vez", "A Aurora responde na hora"),
+           ("Procurar o cliente que não volta há um mês", "O lembrete de retorno sai no dia certo")]
 def comparar():
     manual = "".join(f'<li class="cmp-item cmp-manual-item" style="--i:{k}"><span class="cmp-estado">Pendente</span><span>{a}</span></li>' for k, (a, _) in enumerate(TAREFAS))
     auto = "".join(f'<li class="cmp-item cmp-auto-item"><span class="cmp-estado cmp-feito">Feito</span><span>{b}</span></li>' for _, b in TAREFAS)
@@ -1161,7 +1158,7 @@ DEPOIMENTOS_COMENTADO = """
         <ul class="grade grade-3 depoimentos">
           <li class="depoimento">
             <blockquote><p>[TEXTO DO DEPOIMENTO, como o cliente escreveu]</p></blockquote>
-            <p class="depoimento-autor"><strong>[NOME]</strong><span>[NEGÓCIO], [CIDADE]</span></p>
+            <p class="depoimento-autor"><strong>[NOME]</strong><span>[NEGÓCIO]</span></p>
           </li>
         </ul>
       </div>
@@ -1171,11 +1168,11 @@ DEPOIMENTOS_COMENTADO = """
 
 INICIO = f"""{HERO}
 
+{SOLUCOES_SECAO}
+
 {comparar()}
 
 {HISTORIA}
-
-{SOLUCOES_SECAO}
 
 {central_demos()}
 
@@ -1329,7 +1326,7 @@ QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
       <div class="container pagina-topo-grade">
         <div>
           <h1 id="titulo-pagina" data-revelar-texto>Quem somos</h1>
-          <p class="pagina-topo-apoio">Somos a Kyzent, uma empresa de Tecnologia e Inovação de Paulínia, dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</p>
+          <p class="pagina-topo-apoio">Somos a Kyzent, uma empresa de Tecnologia e Inovação dedicada a desenvolver soluções inteligentes para atender às necessidades do seu comércio.</p>
           <p class="topo-alternativa">Trabalhamos com Inteligência Artificial para melhorar o atendimento, apoiar as vendas e organizar a gestão do dia a dia, e também criamos soluções sob medida quando o seu negócio pede algo diferente.</p>
         </div>
         {k3d("k3d-topo")}
@@ -1375,7 +1372,7 @@ PRIVACIDADE = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagin
     <section class="secao legal">
       <div class="container legal-texto">
         <h2>1. Quem cuida dos seus dados</h2>
-        <p>A Kyzent Technology Solutions, de Paulínia/SP, é a responsável (controladora) pelos dados pessoais tratados por este site e pelos nossos canais de atendimento. Para qualquer assunto sobre privacidade, fale com a gente pelo e-mail <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
+        <p>A Kyzent Technology Solutions é a responsável (controladora) pelos dados pessoais tratados por este site e pelos nossos canais de atendimento. Para qualquer assunto sobre privacidade, fale com a gente pelo e-mail <a href="mailto:{EMAIL}">{EMAIL}</a>.</p>
 
         <h2>2. Quais dados recebemos</h2>
         <ul>
@@ -1488,12 +1485,12 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
 """
 FILTRO_JANELA = ""
 
-DESC = "A Kyzent é uma empresa de Tecnologia e Inovação de Paulínia/SP que automatiza processos, conecta sistemas e leva Inteligência Artificial ao atendimento, às vendas e à gestão de pequenas empresas."
+DESC = "A Kyzent desenvolve sistemas de gestão (ERP), cardápio online, agendamento online e atendimento com IA para pequenos e médios negócios de todo o Brasil."
 
 saidas = [
-    ("index.html", "Kyzent | Inteligência artificial e automação para o seu negócio", DESC, INICIO, "", None),
+    ("index.html", "Kyzent | Inteligência artificial e automação para o seu negócio", DESC, INICIO.replace("<!--VIS_GESTAO-->", f'<div class="pilar-vis" aria-hidden="true">{visual_gestao()}</div>'), "", None),
     ("servicos.html", "Soluções e serviços | Kyzent", "Catálogo de soluções da Kyzent: atendimento com IA no WhatsApp, agendamento e vendas, gestão, site e IA sob medida. Simule o seu orçamento.", SERVICOS_PAG, FILTRO_JANELA, None),
-    ("quem-somos.html", "Quem somos | Kyzent", "A Kyzent é uma empresa de Tecnologia e Inovação de Paulínia/SP. Conheça o nosso propósito, a missão, a visão, os valores e os diferenciais.", QUEM, "", None),
+    ("quem-somos.html", "Quem somos | Kyzent", "A Kyzent é uma empresa de Tecnologia e Inovação que desenvolve sistemas sob medida. Conheça o nosso propósito, a missão, a visão, os valores e os diferenciais.", QUEM, "", None),
     ("privacidade.html", "Política de Privacidade | Kyzent", "Como a Kyzent trata os seus dados pessoais, de acordo com a LGPD: quais dados recebemos, para que usamos, com quem compartilhamos e como exercer os seus direitos.", PRIVACIDADE, "", None),
     ("aurora.html", "Aurora, a IA de atendimento | Kyzent", "Conheça a Aurora, a IA de atendimento da Kyzent: atende os clientes do seu negócio no WhatsApp e no Instagram, 24 horas, e chama a sua equipe quando precisa.", aurora_pagina(), "", None),
     ("orcamento.html", "Orçamento | Kyzent", "Simule o seu orçamento em quatro passos e receba uma recomendação de solução da Kyzent pelo WhatsApp.", ORCAMENTO, "", None),

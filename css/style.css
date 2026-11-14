@@ -1971,3 +1971,69 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
 .sim-outro input { min-height: 48px; padding: 0 14px; border: 0; border-radius: 12px; background: #F3F5F9; box-shadow: 0 0 0 1px rgba(11, 18, 32, .14) inset; font: inherit; font-weight: 400; color: #0B1220; }
 .sim-outro input:focus { outline: none; box-shadow: 0 0 0 2px var(--azul-2) inset; background: #fff; }
 .sim-outro input[aria-invalid="true"] { box-shadow: 0 0 0 2px #E5484D inset; }
+
+/* ---------- Soluções em 3 pilares (bento): Sistemas maior e primeiro ---------- */
+.pilares { display: grid; gap: 16px; }
+@media (min-width: 1000px) {
+  .pilares { grid-template-columns: repeat(12, 1fr); }
+  .pilar-sistemas { grid-column: span 7; grid-row: span 2; }
+  .pilar-atendimento, .pilar-presenca { grid-column: span 5; }
+}
+.pilar-card { display: flex; flex-direction: column; padding: 26px 24px 22px; border-radius: var(--r-grande); background: var(--cartao); box-shadow: 0 0 0 1px var(--linha) inset; }
+.pilar-sistemas { background: linear-gradient(160deg, #0B1220, #10204A 70%, #0A3DFF); color: #E9EEF8; box-shadow: none; }
+.pilar-sistemas h3 { color: #fff; }
+.pilar-sistemas > p:not(.pilar-apoio), .pilar-sistemas .frente-itens li, .pilar-sistemas .solucao-qtd { color: #C9D3E6; }
+.pilar-sistemas .pilar-apoio, .pilar-sistemas .link-seta { color: #8FD3FF; }
+.pilar-apoio { color: var(--azul-2); font-size: .82rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.pilar-card h3 { margin-top: 8px; font-size: clamp(1.35rem, 1.1rem + .9vw, 1.9rem); }
+.pilar-sistemas h3 { font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.5rem); }
+.pilar-card > p:not(.pilar-apoio) { margin-top: 10px; color: var(--texto-2); max-width: 46ch; }
+.pilar-card .frente-itens { margin: 16px 0 0; display: grid; gap: 6px; }
+.pilar-card .frente-itens li { position: relative; padding-left: 16px; }
+.pilar-card .frente-itens li::before { content: ""; position: absolute; left: 0; top: .65em; width: 8px; height: 2px; border-radius: 1px; background: var(--azul); }
+.pilar-rodape { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-top: auto; padding-top: 18px; }
+.pilar-sistemas .pilar-rodape { border-top: 1px solid rgba(255,255,255,.14); margin-top: 24px; }
+.pilar-links { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.mini-cards { display: grid; gap: 8px; margin-top: 16px; }
+@media (min-width: 640px) { .mini-cards { grid-template-columns: repeat(3, 1fr); } }
+.mini-card { display: grid; gap: 2px; height: 100%; padding: 12px 14px; border-radius: 12px; background: var(--fundo-2); box-shadow: 0 0 0 1px var(--linha) inset; text-decoration: none; color: inherit; transition: box-shadow .25s, transform .25s var(--ease); }
+.mini-card strong { color: var(--branco); font-size: .95rem; }
+.mini-card span { color: var(--texto-2); font-size: .82rem; }
+.mini-card:hover { box-shadow: 0 0 0 1.5px var(--azul-2) inset; transform: translateY(-2px); }
+.claro .mini-card { background: #F3F5F9; }
+.claro .mini-card strong { color: #0B1220; }
+/* celular: os 3 pilares cabem nas primeiras rolagens */
+@media (max-width: 639px) {
+  .pilar-card { padding: 20px 18px 18px; }
+  .pilar-card .frente-itens { display: none; }
+  .pilar-sistemas .frente-itens { display: grid; }
+}
+/* segmentos: link para a demo certa */
+.seg-demo { display: inline-block; margin-top: 18px; }
+.pilar-card .pilar-texto { margin-top: 10px; color: var(--texto-2); max-width: 46ch; }
+.pilares .pilar-sistemas .pilar-texto { color: #C9D3E6; }
+.pilar-partes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.pilar-partes li { padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.08); box-shadow: 0 0 0 1px rgba(255,255,255,.14) inset; color: #E9EEF8; font-size: .9rem; font-weight: 600; }
+@media (min-width: 1000px) { .pilar-partes { margin-top: auto; padding-top: 28px; } .pilar-sistemas .pilar-rodape { margin-top: 24px; } }
+/* celular: cards compactos para os 3 pilares caberem nas primeiras rolagens */
+@media (max-width: 639px) {
+  #solucoes { padding-top: 56px; }
+  #solucoes .cabeca-linha { margin-bottom: 24px; }
+  .pilar-card .pilar-texto { display: none; }
+  .pilar-sistemas .pilar-texto { display: block; }
+  .pilar-sistemas .frente-itens { display: none; }
+  .pilar-partes { margin-top: 14px; gap: 6px; }
+  .pilar-partes li { padding: 6px 10px; font-size: .8rem; }
+  .mini-cards { grid-auto-flow: column; grid-auto-columns: 70%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 4px; }
+  .mini-cards li { scroll-snap-align: start; }
+  .pilar-rodape { padding-top: 12px; }
+}
+.pilares > li { min-width: 0; }
+.pilar-vis { display: none; }
+@media (min-width: 1000px) {
+  .pilar-vis { display: block; margin-top: 24px; }
+  .pilar-vis .vis { box-shadow: 0 30px 60px -30px rgba(0,0,0,.7); }
+  .pilar-partes { margin-top: 22px; padding-top: 0; }
+}
+.pilar-vis .vis { color: #0B1220; }
+.pilar-vis .ges-kpis strong { color: #0B1220; }
