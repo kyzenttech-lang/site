@@ -1,4 +1,4 @@
-// KYZENT — hero 3D do Início (a partir do protótipo kyzent-hero-3d.html).
+// KYZENT — cena 3D do Início (a partir do protótipo kyzent-hero-3d.html): topo e fluxo em 4 passos.
 // O K da logo extrudado dos paths do SVG oficial, a órbita como anel 3D com o ponto azul,
 // três cartões de notificação e partículas. Um único renderer WebGL: ele fica no topo e,
 // nas etapas seguintes, outras cenas (fluxo, segmentos) podem pedir o mesmo canvas.
@@ -9,14 +9,19 @@ import * as THREE from "../assets/vendor/three/three.module.min.js";
 import { SVGLoader } from "../assets/vendor/three/SVGLoader.js";
 import { RoomEnvironment } from "../assets/vendor/three/RoomEnvironment.js";
 
-const palco = document.querySelector("[data-hero-palco]");
-const hero = palco && palco.closest("[data-hero]");
-if (palco && hero) iniciar();
+// Dois palcos, um canvas: o topo (K, cartões e partículas) e a seção "Uma mensagem entra"
+// (o ponto da órbita viaja pelas 4 estações, uma por passo). O canvas se muda para o palco
+// que está na tela; com nenhum na tela, nada é desenhado.
+const palcoHero = document.querySelector("[data-hero-palco]");
+const hero = palcoHero && palcoHero.closest("[data-hero]");
+const palcoFluxo = document.querySelector("[data-historia-palco]");
+if (palcoHero && hero) iniciar();
 
 function desistir(canvas, renderer) {
   // volta para a imagem parada (sem WebGL ou aparelho lento)
   document.documentElement.classList.add("sem-3d");
   hero?.classList.remove("hero-3d-pronto");
+  palcoFluxo?.classList.remove("palco-3d-pronto");
   if (renderer) { renderer.setAnimationLoop(null); renderer.dispose(); renderer.forceContextLoss?.(); }
   canvas?.remove();
 }
@@ -31,6 +36,7 @@ function iniciar() {
   try {
     renderer = new THREE.WebGLRenderer({ canvas, antialias: !fraco, alpha: true, powerPreference: "high-performance" });
   } catch (e) { desistir(canvas); return; }
+  let palco = palcoHero, modo = "hero";
   palco.appendChild(canvas);
 
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -120,6 +126,16 @@ function iniciar() {
   const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: texturaHalo(), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
   halo.scale.setScalar(260); ponto.add(halo); orbita.add(ponto);
 
+  // ---------- estações dos 4 passos (só no modo "fluxo"): pontos fixos no anel ----------
+  const ANGULOS = [0.4, 2.0, 3.6, 5.2];
+  const corApagada = c("#1A5CFF"), corAcesa = c("#3FB4FF"), corAtual = c("#DDF1FF");
+  const estacoes = ANGULOS.map((a) => {
+    const m = new THREE.Mesh(new THREE.SphereGeometry(17, 16, 16), new THREE.MeshBasicMaterial({ color: corApagada, toneMapped: false }));
+    m.position.set(Math.cos(a) * R, Math.sin(a) * R, 0); m.visible = false; orbita.add(m); return m;
+  });
+  let etapa = +(palcoFluxo?.getAttribute("data-etapa") || 1), impulso = 0;
+  document.addEventListener("historia-etapa", (e) => { etapa = e.detail; impulso = 1; });
+
   // ---------- cartões flutuantes (o que a automação faz) ----------
   const cartoes = [
     { texto: "Agendamento confirmado", cor: "#4ADE9B", p: [-1.75, 1.5, 0.7], cel: [-1.15, 2.05, 0.7] },
@@ -145,7 +161,7 @@ function iniciar() {
 
   // ---------- layout: o K fica onde o CSS reservou (.hero-k) ----------
   // No computador, à direita do texto; no celular, em cima dele.
-  const reserva = hero.querySelector(".hero-k") || palco;
+  const reservaHero = hero.querySelector(".hero-k") || palcoHero;
   let base = { x: 0, y: 0, s: 1 }, espalhar = 1, largoAgora = true;
   function ajustar() {
     const w = palco.clientWidth, h = palco.clientHeight;
@@ -156,9 +172,12 @@ function iniciar() {
     camera.aspect = w / h; camera.updateProjectionMatrix();
     const visH = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     const porPx = visH / h;                                    // unidades do mundo por pixel (no plano z = 0)
+    const reserva = modo === "hero" ? reservaHero : palco;
     const caixa = reserva.getBoundingClientRect(), p = palco.getBoundingClientRect();
     const cx = caixa.left + caixa.width / 2 - p.left, cy = caixa.top + caixa.height / 2 - p.top;
-    const larguraK = Math.min(caixa.width * (largo ? 0.95 : 0.9), caixa.height * 1.9);   // o K com a órbita mede ~5,2 unidades
+    const larguraK = modo === "hero"                           // o K com a órbita mede ~5,2 unidades
+      ? Math.min(caixa.width * (largo ? 0.95 : 0.9), caixa.height * 1.9)
+      : Math.min(caixa.width * 0.8, caixa.height * 1.55);
     base = { x: (cx - w / 2) * porPx, y: (h / 2 - cy) * porPx, s: (larguraK * porPx) / 5.2 };
     espalhar = largo ? 1 : 0.8; largoAgora = largo;
     cartoes.forEach((s) => { const k = largo ? 1 : 1.35; s.scale.set(1.9 * k, 0.475 * k, 1); });   // no celular o K é menor: os cartões compensam para dar para ler
@@ -171,11 +190,30 @@ function iniciar() {
   const medirRolagem = () => { rolagem = scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight); };
   addEventListener("scroll", medirRolagem, { passive: true });
   addEventListener("resize", ajustar);
-  if ("ResizeObserver" in window) new ResizeObserver(ajustar).observe(palco);
+  if ("ResizeObserver" in window) { const ro = new ResizeObserver(() => ajustar()); ro.observe(palcoHero); if (palcoFluxo) ro.observe(palcoFluxo); }
 
-  // ---------- quando desenhar: só com o topo na tela e a aba visível ----------
-  let visivel = true;
-  new IntersectionObserver((es) => { visivel = es[0].isIntersecting; ligar(); }).observe(palco);
+  // ---------- quando e onde desenhar: no palco que está na tela, com a aba visível ----------
+  let visivel = true, pronto = false;
+  const naTela = new Map();
+  function marcarPronto(sim) {
+    if (palco === palcoHero) hero.classList.toggle("hero-3d-pronto", sim);
+    else palco.classList.toggle("palco-3d-pronto", sim);
+  }
+  function escolher() {
+    const alvoP = naTela.get(palcoFluxo) ? palcoFluxo : naTela.get(palcoHero) ? palcoHero : null;
+    if (alvoP && alvoP !== palco) {
+      marcarPronto(false);
+      palco = alvoP; modo = alvoP === palcoHero ? "hero" : "fluxo";
+      palco.appendChild(canvas);
+      estacoes.forEach((m) => { m.visible = modo === "fluxo"; });
+      cartoes.forEach((s) => { s.visible = modo === "hero"; });
+      ajustar();
+      if (pronto) marcarPronto(true);
+    }
+    visivel = !!alvoP; ligar();
+  }
+  const io = new IntersectionObserver((es) => { es.forEach((e) => naTela.set(e.target, e.isIntersecting)); escolher(); });
+  io.observe(palcoHero); if (palcoFluxo) io.observe(palcoFluxo);
   document.addEventListener("visibilitychange", ligar);
   function ligar() { renderer.setAnimationLoop(visivel && !document.hidden ? quadro : null); anterior = performance.now(); }
 
@@ -188,7 +226,7 @@ function iniciar() {
     const dt = Math.min(0.05, (agora - anterior) / 1000); anterior = agora;
     t += dt;
 
-    if (!primeiro) { primeiro = agora; hero.classList.add("hero-3d-pronto"); }
+    if (!primeiro) { primeiro = agora; pronto = true; marcarPronto(true); }
     if (medindo && agora - primeiro > 600) {
       if (!inicioMedida) inicioMedida = agora;
       quadros++;
@@ -205,10 +243,23 @@ function iniciar() {
 
     raiz.position.set(base.x, base.y + Math.sin(t * 0.8) * 0.06, 0);
     raiz.scale.setScalar(base.s);
-    raiz.rotation.y = atual.x * 0.45 + Math.sin(t * 0.5) * 0.12 + rolagemSuave * Math.PI * 2;   // uma volta na página inteira
-    raiz.rotation.x = atual.y * 0.25 + Math.sin(t * 0.4) * 0.04;
-
-    angulo += dt * 0.7;
+    if (modo === "hero") {
+      raiz.rotation.y = atual.x * 0.45 + Math.sin(t * 0.5) * 0.12 + rolagemSuave * Math.PI * 2;   // uma volta na página inteira
+      raiz.rotation.x = atual.y * 0.25 + Math.sin(t * 0.4) * 0.04;
+      angulo += dt * 0.7;
+    } else {
+      // fluxo: o K fica de frente e o ponto viaja pelo caminho mais curto até a estação do passo atual
+      raiz.rotation.y = atual.x * 0.3 + Math.sin(t * 0.5) * 0.1;
+      raiz.rotation.x = atual.y * 0.2 + 0.08;
+      const destino = ANGULOS[etapa - 1], d = Math.atan2(Math.sin(destino - angulo), Math.cos(destino - angulo));
+      angulo += d * (1 - Math.pow(0.03, dt));
+      estacoes.forEach((m, i) => {
+        m.material.color.copy(i < etapa - 1 ? corAcesa : i === etapa - 1 ? corAtual : corApagada);
+        m.scale.setScalar(i === etapa - 1 ? 1.35 : 1);
+      });
+    }
+    impulso *= Math.pow(0.15, dt);
+    halo.scale.setScalar(260 + impulso * 220);                // o brilho do ponto cresce quando um passo começa
     ponto.position.set(Math.cos(angulo) * R, Math.sin(angulo) * R, 0);
 
     const somem = THREE.MathUtils.clamp(1 - rolagemSuave * 8, 0, 1);   // os cartões somem ao rolar

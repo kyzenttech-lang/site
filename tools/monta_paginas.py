@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "110"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "111"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -927,12 +927,12 @@ SOLUCOES_SECAO = f"""    <section class="secao claro" id="solucoes" aria-labelle
 
 # ---------- experiência marcante do Início: do problema à tarefa feita (diagrama vivo, conduzido pela rolagem)
 HISTORIA_PASSOS = [
-    ("Mensagens chegam o dia todo.", "No WhatsApp, no Instagram, de madrugada. A IA da Kyzent responde na hora, com as informações do seu negócio."),
+    ("Mensagens chegam o dia todo.", "No WhatsApp, no Instagram, de madrugada. A Aurora responde na hora, com as informações do seu negócio."),
     ("Cada pedido é entendido.", "Agendamento, pedido, orçamento ou dúvida: a IA identifica o que o cliente quer e o que precisa ser feito."),
     ("Os sistemas conversam entre si.", "A agenda é atualizada, o estoque é conferido e o pedido entra no lugar certo, sem ninguém digitar duas vezes."),
     ("A equipe cuida do que importa.", "O que precisa de uma pessoa chega organizado, e os números do dia viram relatório."),
 ]
-HISTORIA = f"""    <section class="secao historia" id="como-funciona" aria-labelledby="titulo-historia">
+HISTORIA = f"""    <section class="secao historia historia-3d" id="como-funciona" aria-labelledby="titulo-historia">
       <div class="container historia-grade">
         <div class="historia-texto">
           <div class="cabeca">
@@ -944,44 +944,8 @@ HISTORIA = f"""    <section class="secao historia" id="como-funciona" aria-label
           </ol>
         </div>
         <div class="historia-palco" data-historia-palco data-etapa="1" aria-hidden="true">
-          <svg class="rede" viewBox="0 0 560 460">
-            <defs>
-              <linearGradient id="rede-linha" gradientUnits="userSpaceOnUse" x1="96" y1="0" x2="464" y2="0"><stop offset="0" stop-color="#3FB4FF"/><stop offset="1" stop-color="#1A5CFF"/></linearGradient>
-              <radialGradient id="rede-nucleo"><stop offset="0" stop-color="#3FB4FF"/><stop offset=".6" stop-color="#1A5CFF"/><stop offset="1" stop-color="#0A3DFF" stop-opacity="0"/></radialGradient>
-            </defs>
-            <g class="camada" data-prof="0.4">
-              <path class="via v1" id="via-1" d="M96 110 C170 110 190 230 280 230"/>
-              <path class="via v1" id="via-2" d="M96 230 C170 230 200 230 280 230"/>
-              <path class="via v1" id="via-3" d="M96 350 C170 350 190 230 280 230"/>
-              <path class="via v3" id="via-4" d="M280 230 C360 230 380 90 464 90"/>
-              <path class="via v3" id="via-5" d="M280 230 C360 230 390 190 464 190"/>
-              <path class="via v3" id="via-6" d="M280 230 C360 230 390 280 464 280"/>
-              <path class="via v4" id="via-7" d="M280 230 C360 230 380 380 464 380"/>
-            </g>
-            <g class="pulsos">
-              {"".join(f'<circle class="pulso pulso-{"e" if i < 4 else "s"}" r="4"><animateMotion dur="{2.4 + (i % 3) * .5}s" begin="{i * .37}s" repeatCount="indefinite"><mpath href="#via-{i}"/></animateMotion></circle>' for i in range(1, 8))}
-            </g>
-            <g class="camada no-entrada" data-prof="1">
-              <g class="no n1" transform="translate(56 110)"><rect x="-44" y="-20" width="88" height="40" rx="12"/><text y="5">WhatsApp</text></g>
-              <g class="no n1" transform="translate(56 230)"><rect x="-44" y="-20" width="88" height="40" rx="12"/><text y="5">Instagram</text></g>
-              <g class="no n1" transform="translate(56 350)"><rect x="-44" y="-20" width="88" height="40" rx="12"/><text y="5">Site</text></g>
-            </g>
-            <g class="camada" data-prof="1.6">
-              <circle class="nucleo-luz" cx="280" cy="230" r="78" fill="url(#rede-nucleo)"/>
-              <circle class="nucleo-anel a1" cx="280" cy="230" r="54"/>
-              <circle class="nucleo-anel a2" cx="280" cy="230" r="40"/>
-              <circle class="nucleo" cx="280" cy="230" r="28"/>
-              <text class="nucleo-texto" x="280" y="235">IA</text>
-              <g class="balao-ia n2" transform="translate(280 150)"><rect x="-108" y="-18" width="216" height="36" rx="18"/><text y="5">Quer agendar para amanhã</text></g>
-            </g>
-            <g class="camada no-saida" data-prof="1.2">
-              <g class="no n3" transform="translate(504 90)"><rect x="-44" y="-20" width="88" height="40" rx="12"/><text y="5">Agenda</text></g>
-              <g class="no n3" transform="translate(504 190)"><rect x="-44" y="-20" width="88" height="40" rx="12"/><text y="5">Estoque</text></g>
-              <g class="no n3" transform="translate(504 280)"><rect x="-44" y="-20" width="88" height="40" rx="12"/><text y="5">Pedidos</text></g>
-              <g class="no n4" transform="translate(504 380)"><rect x="-44" y="-20" width="88" height="40" rx="12"/><text y="5">Equipe</text></g>
-            </g>
-          </svg>
-          <p class="historia-legenda selo-exemplo">Ilustração do fluxo</p>
+          <img class="historia-poster" src="assets/img/kyzent-k-escuro.svg" alt="" width="1080" height="520" loading="lazy" decoding="async">
+          <p class="historia-rotulo"><span data-historia-rotulo>1 de {len(HISTORIA_PASSOS)} · {HISTORIA_PASSOS[0][0]}</span></p>
         </div>
       </div>
     </section>"""

@@ -1969,3 +1969,32 @@ a.solucao { color: inherit; text-decoration: none; }
 .demo-tela > * {
   box-shadow: 0 0 0 8px rgba(63, 180, 255, .07), 0 0 0 9px rgba(63, 180, 255, .24), 0 40px 80px -36px rgba(26, 92, 255, .65);
 }
+
+/* ---------- (e) Fluxo em 4 passos conduzido pela rolagem (o K 3D no palco) ---------- */
+.historia-3d .historia-palco {
+  display: grid; place-items: center; overflow: hidden; padding: 0;
+  height: clamp(220px, 34dvh, 320px);
+  background: radial-gradient(60% 60% at 50% 45%, rgba(26, 92, 255, .16), transparent 70%), var(--fundo);
+}
+@media (min-width: 1000px) { .historia-3d .historia-palco { height: min(72dvh, 600px); background: radial-gradient(60% 60% at 50% 45%, rgba(26, 92, 255, .14), transparent 70%), rgba(255, 255, 255, .02); } }
+.historia-3d .historia-palco .hero-canvas { position: absolute; inset: 0; }
+.palco-3d-pronto .hero-canvas { opacity: 1; }
+.historia-poster { width: min(78%, 460px); height: auto; filter: drop-shadow(0 20px 50px rgba(26, 92, 255, .4)); transition: opacity .6s var(--ease); }
+.palco-3d-pronto .historia-poster { opacity: 0; }
+.sem-3d .historia-poster { opacity: 1; }
+.historia-rotulo {
+  position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 1; text-align: center;
+  color: var(--texto); font-size: .9rem; font-weight: 600;
+}
+.historia-rotulo span { display: inline-block; padding: 6px 12px; border-radius: 999px; background: rgba(20, 24, 34, .85); box-shadow: 0 0 0 1px rgba(63, 180, 255, .3) inset; }
+/* o passo ativo muda com a rolagem: os outros ficam em cor apagada (sem transparência, para manter o contraste) */
+@media (max-width: 999px) {
+  /* celular: o palco fica fixo embaixo do topo e os passos rolam por baixo dele (a página rola normal) */
+  .historia-3d .historia-palco { position: sticky; top: var(--barra-h); z-index: 5; margin-inline: calc(var(--gutter) * -1); border-radius: 0 0 var(--r-grande) var(--r-grande); }
+  .historia-3d .historia-passos { gap: 16px; padding: 12px 0 34dvh; }
+}
+@media (min-width: 1000px) { .historia-3d .historia-passo { opacity: 1; } }
+.js .historia-3d .historia-passo:not(.ativo) { background: transparent; }
+.js .historia-3d .historia-passo:not(.ativo) h3 { color: var(--texto-3); }
+.js .historia-3d .historia-passo:not(.ativo) p { color: var(--texto-3); }
+.historia-3d .historia-passo h3, .historia-3d .historia-passo p { transition: color .4s; }

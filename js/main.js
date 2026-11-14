@@ -227,51 +227,30 @@
   function el(tag, cls, texto) { var e = document.createElement(tag); if (cls) e.className = cls; if (texto != null) e.textContent = texto; return e; }
   function espera(ms) { return new Promise(function (ok) { setTimeout(ok, semMovimento ? 0 : ms); }); }
 
-  /* ------------------------------------------------------------ história do Início: o diagrama acompanha a leitura dos passos */
+  /* ------------------------------------------------------------ história do Início: o passo ativo acompanha a rolagem
+     Sem prender a página: o palco (o K em 3D, ou a imagem dele) fica fixo ao lado (embaixo do topo no
+     celular) e o passo cujo topo passou da linha de leitura vira o ativo. O 3D ouve "historia-etapa". */
   var palcoH = $("[data-historia-palco]");
   if (palcoH) {
-    var passosH = $$("[data-historia]");
+    var passosH = $$("[data-historia]"), rotuloH = $("[data-historia-rotulo]"), atualH = 0, pedidoH = 0;
     var marcarH = function (n) {
+      if (n === atualH) return;
+      atualH = n;
       palcoH.setAttribute("data-etapa", n);
       passosH.forEach(function (p) { p.classList.toggle("ativo", +p.getAttribute("data-historia") === n); });
+      if (rotuloH) rotuloH.textContent = n + " de " + passosH.length + " · " + $("h3", passosH[n - 1]).textContent;
+      document.dispatchEvent(new CustomEvent("historia-etapa", { detail: n }));
     };
-    marcarH(1);
-    // o diagrama avança sozinho de passo em passo enquanto está na tela; passar o mouse ou tocar escolhe o passo
-    var autoH = null, visivelH = false, pausaH = false;
-    var proximoH = function () { if (!pausaH) marcarH(+palcoH.getAttribute("data-etapa") % passosH.length + 1); };
-    if ("IntersectionObserver" in window && !semMovimento) {
-      new IntersectionObserver(function (es) {
-        visivelH = es[0].isIntersecting;
-        clearInterval(autoH);
-        if (visivelH) autoH = setInterval(proximoH, 3200);
-      }, { threshold: .35 }).observe(palcoH);
-    }
-    var lista = $("[data-historia-lista]");
-    if (lista) {
-      lista.addEventListener("pointerenter", function () { pausaH = true; });
-      lista.addEventListener("pointerleave", function () { pausaH = false; });
-      passosH.forEach(function (p) { p.addEventListener("pointerenter", function () { marcarH(+p.getAttribute("data-historia")); }); });
-    }
-    passosH.forEach(function (p) { p.addEventListener("click", function () { marcarH(+p.getAttribute("data-historia")); }); });
-    // as camadas do diagrama se movem com o cursor, cada uma numa profundidade
-    if (ponteiroFino && !semMovimento) {
-      var camadasH = $$(".camada", palcoH), alvoH = { x: 0, y: 0 }, atualH = { x: 0, y: 0 }, rodandoH = false;
-      var passoH = function () {
-        atualH.x += (alvoH.x - atualH.x) * .08; atualH.y += (alvoH.y - atualH.y) * .08;
-        camadasH.forEach(function (c) {
-          var f = parseFloat(c.getAttribute("data-prof"));
-          c.setAttribute("transform", "translate(" + (atualH.x * 10 * f).toFixed(1) + " " + (atualH.y * 8 * f).toFixed(1) + ")");
-        });
-        if (Math.abs(alvoH.x - atualH.x) > .002 || Math.abs(alvoH.y - atualH.y) > .002) requestAnimationFrame(passoH); else rodandoH = false;
-      };
-      palcoH.addEventListener("pointermove", function (e) {
-        var r = palcoH.getBoundingClientRect();
-        alvoH.x = (e.clientX - r.left) / r.width - .5; alvoH.y = (e.clientY - r.top) / r.height - .5;
-        if (!rodandoH) { rodandoH = true; requestAnimationFrame(passoH); }
-      });
-      palcoH.addEventListener("pointerleave", function () { alvoH.x = alvoH.y = 0; if (!rodandoH) { rodandoH = true; requestAnimationFrame(passoH); } });
-    }
-    if (semMovimento && palcoH.querySelector("svg").pauseAnimations) palcoH.querySelector("svg").pauseAnimations();
+    var medirH = function () {
+      pedidoH = 0;
+      var linha = innerHeight * .62, n = 1;
+      passosH.forEach(function (p, i) { if (p.getBoundingClientRect().top < linha) n = i + 1; });
+      marcarH(n);
+    };
+    addEventListener("scroll", function () { if (!pedidoH) pedidoH = requestAnimationFrame(medirH); }, { passive: true });
+    addEventListener("resize", medirH);
+    passosH.forEach(function (p) { p.style.cursor = "default"; });
+    medirH();
   }
 
   /* ------------------------------------------------------------ WhatsApp: no computador, um botão de cada vez
