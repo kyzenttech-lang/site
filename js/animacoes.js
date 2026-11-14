@@ -60,11 +60,11 @@
   $$(SOLTOS).forEach(function (el) { if (alvos.indexOf(el) === -1) alvos.push(el); });
   alvos = alvos.filter(function (el) { return visivelNaPagina(el) && abaixoDaDobra(el) && !el.closest(".hero"); });
   if (alvos.length) {
-    g.set(alvos, { autoAlpha: 0, y: 24 });
+    g.set(alvos, { autoAlpha: 0, y: 24, transition: "none" });
     ScrollTrigger.batch(alvos, {
       start: "top 90%", once: true,
       onEnter: function (lote) {
-        g.to(lote, { autoAlpha: 1, y: 0, duration: 0.7, ease: EASE, stagger: 0.08, overwrite: true, clearProps: "transform,opacity,visibility" });
+        g.to(lote, { autoAlpha: 1, y: 0, duration: 0.7, ease: EASE, stagger: 0.08, overwrite: true, clearProps: "transform,opacity,visibility,transition" });
       },
     });
   }
@@ -72,7 +72,16 @@
   /* ------------------------------------------------------------ números: contagem ao entrar na tela */
   $$("[data-contar]").forEach(function (el) {
     var alvo = parseInt(el.getAttribute("data-contar"), 10);
-    if (!alvo || !abaixoDaDobra(el)) return;
+    if (!alvo) return;
+    var aba = el.closest("[role=tabpanel]");
+    if (aba && aba.hidden) {
+      aba.addEventListener("demo-visivel", function () {
+        var m = { v: 0 };
+        g.to(m, { v: alvo, duration: 0.8, ease: EASE, onUpdate: function () { el.textContent = Math.round(m.v).toLocaleString("pt-BR"); } });
+      });
+      return;
+    }
+    if (!abaixoDaDobra(el)) return;
     var n = { v: 0 };
     el.textContent = "0";
     g.to(n, {
@@ -85,6 +94,7 @@
   /* ------------------------------------------------------------ cartões de soluções: inclinação 3D que segue o cursor (só com mouse) */
   if (ponteiroFino) {
     $$(".solucao").forEach(function (c) {
+      c.classList.add("gsap-inclina");
       g.set(c, { transformPerspective: 900 });
       var rx = g.quickTo(c, "rotationX", { duration: 0.4, ease: EASE });
       var ry = g.quickTo(c, "rotationY", { duration: 0.4, ease: EASE });

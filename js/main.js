@@ -101,7 +101,7 @@
   });
 
   /* ------------------------------------------------------------ animações
-     Tudo leve: sem biblioteca, pausa fora da tela e desliga com prefers-reduced-motion. */
+     Entradas, títulos e contadores ficam em js/animacoes.js (GSAP). Aqui: o que é interação. Desliga com prefers-reduced-motion. */
   var ponteiroFino = window.matchMedia && matchMedia("(pointer: fine)").matches;
   function quandoVisivel(el, fn, opcoes) {
     if (!("IntersectionObserver" in window)) { fn(el); return; }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR" data-theme="dark" data-v="117">
+<html lang="pt-BR" data-theme="dark" data-v="118">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,14 +28,27 @@
   <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 
-  <script>document.documentElement.classList.add("js");</script>
+  <script>document.documentElement.classList.add("js");
+  // transição entre páginas: o conteúdo desliza no sentido do menu (avançar ou voltar)
+  (function () {
+    var ordem = ["index.html", "aurora.html", "servicos.html", "solucao-", "quem-somos.html", "orcamento.html", "privacidade.html"];
+    function pos(u) { try { var a = new URL(u).pathname.split("/").pop() || "index.html";
+      for (var i = 0; i < ordem.length; i++) if (a.indexOf(ordem[i]) === 0) return i; } catch (e) {} return -1; }
+    addEventListener("pagereveal", function (e) {
+      var n = window.navigation;
+      if (!e.viewTransition || !n || !n.activation || !n.activation.from) return;
+      var de = pos(n.activation.from.url), para = pos(n.activation.entry.url);
+      if (de < 0 || para < 0 || de === para) return;
+      e.viewTransition.types.add(para > de ? "avancar" : "voltar");
+    });
+  })();</script>
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=117">
+  <link rel="stylesheet" href="css/style.css?v=118">
   <script src="assets/vendor/gsap/gsap.min.js?v=3130" defer></script>
   <script src="assets/vendor/gsap/ScrollTrigger.min.js?v=3130" defer></script>
   <script src="assets/vendor/gsap/CustomEase.min.js?v=3130" defer></script>
-  <script src="js/main.js?v=117" defer></script>
-  <script src="js/animacoes.js?v=117" defer></script>
+  <script src="js/main.js?v=118" defer></script>
+  <script src="js/animacoes.js?v=118" defer></script>
 </head>
 <body data-promo-fim="2026-12-05T23:59:59-03:00" data-whats="5519988728894 5519971246077">
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -50,7 +63,7 @@
   <header class="barra" data-barra>
     <div class="container barra-conteudo">
       <a class="barra-logo" href="index.html" aria-label="Kyzent, página inicial"><img src="assets/img/kyzent-horizontal-escuro.svg" alt="Kyzent, automação e IA" width="590" height="140"></a>
-      <nav aria-label="Principal"><ul class="menu"><li><a href="index.html">Início</a></li><li><a href="aurora.html">Aurora</a></li><li><a href="servicos.html">Soluções</a></li><li><a href="quem-somos.html" aria-current="page">Quem somos</a></li><li><a href="orcamento.html">Orçamento</a></li></ul></nav>
+      <nav aria-label="Principal"><ul class="menu"><li><a href="index.html">Início</a></li><li><a href="aurora.html">Aurora</a></li><li><a href="servicos.html">Soluções</a></li><li><a href="quem-somos.html" aria-current="page">Quem somos<span class="menu-marca" aria-hidden="true"></span></a></li><li><a href="orcamento.html">Orçamento</a></li></ul></nav>
       <div class="barra-acoes">
         <button class="icone-botao botao-menu" type="button" data-abrir-menu aria-expanded="false" aria-controls="menu-celular" aria-label="Abrir menu"><span class="hamburguer" aria-hidden="true"><i></i><i></i><i></i></span></button>
         <a class="botao botao-barra" href="https://wa.me/5519988728894?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Kyzent" target="_blank" rel="noopener" data-contato>Conversar no WhatsApp</a>

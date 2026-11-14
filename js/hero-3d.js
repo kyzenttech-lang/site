@@ -327,7 +327,7 @@ function iniciar() {
     if (modo === "icone") {                                   // só o ícone do segmento: balança devagar e gira ao trocar
       giro *= Math.pow(0.02, dt);
       icones.scale.setScalar(base.s);
-      icones.rotation.set(0.22 + atual.y * 0.12, Math.sin(t * 0.6) * 0.35 + atual.x * 0.2 + giro, 0);
+      icones.rotation.set(0.22 + atual.y * 0.08, Math.sin(t * 0.5) * 0.14 + atual.x * 0.12 + giro, 0);
       icones.position.y = Math.sin(t * 0.9) * 0.03;
       renderer.render(scene, camera);
       return;

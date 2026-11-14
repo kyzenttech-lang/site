@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "117"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "118"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -196,7 +196,8 @@ def menu(atual, classe):
     itens = []
     for arq, nome in PAGINAS:
         cur = ' aria-current="page"' if arq == atual else ""
-        itens.append(f'<li><a href="{arq}"{cur}>{nome}</a></li>')
+        marca = '<span class="menu-marca" aria-hidden="true"></span>' if arq == atual and classe == "menu" else ""
+        itens.append(f'<li><a href="{arq}"{cur}>{nome}{marca}</a></li>')
     c = f' class="{classe}"' if classe else ""
     return f'<ul{c}>' + "".join(itens) + "</ul>"
 
@@ -274,7 +275,20 @@ def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
   <link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 
-  <script>document.documentElement.classList.add("js");</script>
+  <script>document.documentElement.classList.add("js");
+  // transição entre páginas: o conteúdo desliza no sentido do menu (avançar ou voltar)
+  (function () {{
+    var ordem = ["index.html", "aurora.html", "servicos.html", "solucao-", "quem-somos.html", "orcamento.html", "privacidade.html"];
+    function pos(u) {{ try {{ var a = new URL(u).pathname.split("/").pop() || "index.html";
+      for (var i = 0; i < ordem.length; i++) if (a.indexOf(ordem[i]) === 0) return i; }} catch (e) {{}} return -1; }}
+    addEventListener("pagereveal", function (e) {{
+      var n = window.navigation;
+      if (!e.viewTransition || !n || !n.activation || !n.activation.from) return;
+      var de = pos(n.activation.from.url), para = pos(n.activation.entry.url);
+      if (de < 0 || para < 0 || de === para) return;
+      e.viewTransition.types.add(para > de ? "avancar" : "voltar");
+    }});
+  }})();</script>
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css?v={VERSAO}">
   <script src="assets/vendor/gsap/gsap.min.js?v=3130" defer></script>
