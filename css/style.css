@@ -2061,3 +2061,23 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
 .demo-celular { padding: 24px 8px 8px; }
 .demo-celular::before { top: 9px; width: 48px; height: 9px; margin-left: -24px; background: #1A2030; }
 .demo-celular img { border-radius: 4px 4px 26px 26px; }
+
+/* ---------- Demo de estoque (mesma base de Pedidos e Painel) ---------- */
+.est { padding: 18px; border-radius: var(--r-grande); background: var(--cartao); box-shadow: 0 0 0 1px var(--linha) inset; }
+.est-lista { display: grid; gap: 8px; margin-top: 10px; }
+.est-item { display: grid; grid-template-columns: 1fr auto; gap: 10px 14px; align-items: center; padding: 12px 14px; border-radius: 12px; background: var(--fundo-2); box-shadow: 0 0 0 1px var(--linha) inset; transition: box-shadow .3s; }
+.est-item.acabando { box-shadow: 0 0 0 1.5px rgba(245,196,81,.6) inset; }
+.est-nome { display: grid; } .est-nome strong { color: var(--branco); } .est-nome small, .est-qtd small { color: var(--texto-3); font-size: .78rem; }
+.est-qtd { display: grid; justify-items: end; }
+.est-qtd output { color: var(--branco); font-size: 1.5rem; font-weight: 800; font-stretch: var(--largo); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.est-qtd output.baixou { animation: est-baixa .5s var(--mola); }
+@keyframes est-baixa { 0% { transform: translateY(-8px); opacity: .3; color: var(--azul); } 100% { transform: none; opacity: 1; } }
+.est-acoes { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.est-aviso { padding: 3px 9px; border-radius: 6px; background: rgba(245,196,81,.16); color: var(--amarelo); font-size: .76rem; font-weight: 700; }
+.est-vender, .est-repor { min-height: 40px; padding: 0 14px; border: 0; border-radius: 10px; font: inherit; font-size: .88rem; font-weight: 600; cursor: pointer; }
+.est-vender { background: var(--grad-botao); color: #fff; }
+.est-repor { background: transparent; color: var(--amarelo); box-shadow: 0 0 0 1px rgba(245,196,81,.5) inset; }
+.est-vender:disabled, .est-repor:disabled { opacity: .6; cursor: default; }
+.est-status { margin-top: 12px; color: var(--texto-2); font-size: .88rem; min-height: 2.6em; }
+.demo-completa-link { display: block; margin-top: 8px; }
+@media (prefers-reduced-motion: reduce) { .est-qtd output.baixou { animation: none; } }

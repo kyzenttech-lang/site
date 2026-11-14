@@ -449,10 +449,18 @@
     });
   });
 
+  /* ------------------------------------------------------------ base das demos da Lanchonete Exemplo
+     Um sistema só: uma venda registrada em Estoque ou em Pedidos vira o evento "demo-venda".
+     Pedidos mostra o pedido, Estoque baixa a quantidade e o Painel conta mais um. */
+  var demo = { numero: +(($("[data-pedidos]") || document.body).getAttribute("data-proximo")) || 1044 };
+  function anunciarVenda(itens, quem, texto, origem) {
+    // itens: [{ produto, qtd }]
+    document.dispatchEvent(new CustomEvent("demo-venda", { detail: { numero: demo.numero++, itens: itens, quem: quem, texto: texto, origem: origem } }));
+  }
+
   /* ------------------------------------------------------------ registro de pedidos */
   $$("[data-pedidos]").forEach(function (pd) {
     var total = $("[data-pd-total]", pd), registrar = $("[data-pd-registrar]", pd), lista = $("[data-pd-lista]", pd);
-    var numero = +pd.getAttribute("data-proximo") || 1044;
     var linhas = $$("[data-produto]", pd);
     function brl(v) { return "R$ " + v.toFixed(2).replace(".", ","); }
     function somar() {
@@ -465,17 +473,77 @@
       $("[data-mais]", l).addEventListener("click", function () { q.textContent = Math.min(9, +q.textContent + 1); somar(); });
       $("[data-menos]", l).addEventListener("click", function () { q.textContent = Math.max(0, +q.textContent - 1); somar(); });
     });
-    registrar.addEventListener("click", function () {
-      var itensP = linhas.filter(function (l) { return +$("[data-qtd]", l).textContent > 0; })
-        .map(function (l) { return $("[data-qtd]", l).textContent + " " + l.getAttribute("data-produto"); });
-      var li = el("li", "novo");
-      li.innerHTML = '<span class="pd-num"></span><span><strong>Você</strong><small></small></span><em class="estado estado-novo">Novo</em>';
-      $(".pd-num", li).textContent = "#" + numero++;
-      $("small", li).textContent = itensP.join(", ") + " · " + total.textContent;
+    // todo pedido novo (daqui ou do Estoque) entra na fila de Pedidos
+    document.addEventListener("demo-venda", function (e) {
+      var d = e.detail, li = el("li", "novo");
+      li.innerHTML = '<span class="pd-num"></span><span><strong></strong><small></small></span><em class="estado estado-novo">Novo</em>';
+      $(".pd-num", li).textContent = "#" + d.numero;
+      $("strong", li).textContent = d.quem;
+      $("small", li).textContent = d.texto;
       lista.insertBefore(li, lista.firstChild);
+      setTimeout(function () { var em = $("em", li); em.className = "estado estado-preparo"; em.textContent = "Em preparo"; }, semMovimento ? 0 : 1800);
+    });
+    registrar.addEventListener("click", function () {
+      var escolhidos = linhas.filter(function (l) { return +$("[data-qtd]", l).textContent > 0; });
+      var itens = escolhidos.map(function (l) { return { produto: l.getAttribute("data-produto"), qtd: +$("[data-qtd]", l).textContent }; });
+      var texto = itens.map(function (i) { return i.qtd + " " + i.produto; }).join(", ") + " · " + total.textContent;
+      anunciarVenda(itens, "Você", texto, "pedidos");
       linhas.forEach(function (l) { $("[data-qtd]", l).textContent = "0"; });
       somar();
-      setTimeout(function () { var e = $("em", li); e.className = "estado estado-preparo"; e.textContent = "Em preparo"; }, semMovimento ? 0 : 1800);
+    });
+  });
+
+  /* ------------------------------------------------------------ estoque: baixa a cada venda e avisa quando passa do mínimo */
+  $$("[data-estoque]").forEach(function (est) {
+    var status = $("[data-est-status]", est);
+    var itens = $$("[data-est-item]", est);
+    function porNome(n) { return itens.filter(function (i) { return i.getAttribute("data-est-item") === n; })[0]; }
+    function atualizar(item, qtd) {
+      var saida = $("[data-est-qtd]", item), min = +item.getAttribute("data-min");
+      saida.textContent = Math.max(0, qtd);
+      saida.classList.remove("baixou"); void saida.offsetWidth; saida.classList.add("baixou");
+      var acabando = qtd <= min;
+      $("[data-est-aviso]", item).hidden = !acabando;
+      $("[data-est-repor]", item).hidden = !acabando;
+      item.classList.toggle("acabando", acabando);
+      return acabando;
+    }
+    document.addEventListener("demo-venda", function (e) {
+      var avisos = [];
+      e.detail.itens.forEach(function (v) {
+        var item = porNome(v.produto); if (!item) return;
+        if (atualizar(item, +$("[data-est-qtd]", item).textContent - v.qtd)) avisos.push(v.produto);
+      });
+      status.textContent = "Venda #" + e.detail.numero + " registrada: o estoque baixou" +
+        (avisos.length ? ". Acabando: " + avisos.join(", ") + "." : " e a venda entrou em Pedidos e no Painel.");
+    });
+    itens.forEach(function (item) {
+      var nome = item.getAttribute("data-est-item");
+      $("[data-est-vender]", item).addEventListener("click", function () {
+        if (+$("[data-est-qtd]", item).textContent <= 0) { status.textContent = nome + " acabou. Faça o pedido ao fornecedor."; return; }
+        anunciarVenda([{ produto: nome, qtd: 1 }], "Balcão", "1 " + nome, "estoque");
+      });
+      $("[data-est-repor]", item).addEventListener("click", function () {
+        var b = this; b.disabled = true; b.textContent = "Pedido enviado ao fornecedor";
+        status.textContent = "Pedido de " + nome + " enviado ao fornecedor (simulação).";
+        setTimeout(function () { b.disabled = false; b.textContent = "Fazer pedido ao fornecedor"; }, 3000);
+      });
+    });
+  });
+
+  /* ------------------------------------------------------------ painel: conta cada venda e mostra o pedido no topo */
+  $$("[data-gestao]").forEach(function (gd) {
+    var kpi = $(".gd-kpis [data-contar]", gd), lista = $(".gd-pedidos", gd);
+    document.addEventListener("demo-venda", function (e) {
+      var d = e.detail;
+      if (kpi) { var v = (+kpi.getAttribute("data-contar") || 0) + 1; kpi.setAttribute("data-contar", v); kpi.textContent = v.toLocaleString("pt-BR"); }
+      if (lista) {
+        var li = el("li", "novo");
+        li.innerHTML = '<span class="pd-num"></span><span class="pd-quem"><strong></strong><small></small></span><span class="estado estado-novo">Novo</span>';
+        $(".pd-num", li).textContent = "#" + d.numero; $("strong", li).textContent = d.quem; $("small", li).textContent = d.texto;
+        lista.insertBefore(li, lista.firstChild);
+        while (lista.children.length > 3) lista.removeChild(lista.lastElementChild);
+      }
     });
   });
 

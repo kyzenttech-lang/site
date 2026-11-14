@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "122"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "123"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -372,6 +372,9 @@ CLIENTES = [("Marina Lopes", "recorrente", "Pediu hoje, cliente há 8 meses"), (
 PEDIDOS_DEMO = [("#1043", "Marina", "2 X-bacon e 2 refrigerantes lata", "preparo", "Em preparo"),
                 ("#1042", "Carlos", "1 X-salada e 1 refrigerante lata", "rota", "Saiu para entrega"),
                 ("#1041", "Ana", "2 porções de batata", "ok", "Entregue")]
+# estoque dos mesmos produtos do CARDAPIO: (produto, quantidade, mínimo). X-bacon começa perto do mínimo.
+ESTOQUE_DEMO = [("X-salada", 14, 5), ("X-bacon", 7, 5), ("Porção de batata", 9, 4), ("Refrigerante lata", 24, 10)]
+assert [p for p, _, _ in ESTOQUE_DEMO] == [n for n, _ in CARDAPIO], "o estoque precisa ter os mesmos produtos do cardápio"
 PROXIMO_PEDIDO = 1044   # o primeiro pedido registrado na demo recebe este número
 # pedidos por dia na semana; a soma é o KPI "Pedidos" do painel
 SEMANA = [("Seg", 28), ("Ter", 36), ("Qua", 33), ("Qui", 43), ("Sex", 59), ("Sáb", 68), ("Dom", 45)]
@@ -600,6 +603,20 @@ def tela_agendamento():
               </ul></div>
             </div>"""
 
+def tela_estoque():
+    lis = "".join(
+        f'<li class="est-item" data-est-item="{n}" data-min="{mn}"><span class="est-nome"><strong>{n}</strong><small>Mínimo: {mn}</small></span>'
+        f'<span class="est-qtd"><output data-est-qtd>{q}</output><small>em estoque</small></span>'
+        f'<span class="est-acoes"><span class="est-aviso" data-est-aviso{"" if q <= mn else " hidden"}>Acabando</span>'
+        f'<button type="button" class="est-vender" data-est-vender>Registrar venda</button>'
+        f'<button type="button" class="est-repor" data-est-repor{"" if q <= mn else " hidden"}>Fazer pedido ao fornecedor</button></span></li>'
+        for n, q, mn in ESTOQUE_DEMO)
+    return f"""<div class="est" data-estoque>
+              <p class="pd-titulo">Estoque da Lanchonete Exemplo</p>
+              <ul class="est-lista">{lis}</ul>
+              <p class="est-status" data-est-status role="status">Registre uma venda: o estoque baixa, e a venda entra em Pedidos e no Painel.</p>
+            </div>"""
+
 def tela_pedidos():
     itens = "".join(
         f'<li data-produto="{n}" data-preco="{p}"><span><strong>{n}</strong><small>R$ {p},00</small></span>'
@@ -631,13 +648,19 @@ def tela_clientes():
             </div>"""
 
 ABAS_DEMO = [
-    ("chatbot", "Chatbot", "conversa", "Atendimento com IA", "Escolha as respostas e veja a Aurora conduzir a conversa: agendar, informar preços ou passar para uma pessoa da equipe.", "whatsapp", tela_chatbot),
-    ("agendamento", "Agendamento", "agenda", "Agendamento automático", "Escolha o serviço, o dia e o horário. O agendamento entra na agenda e o lembrete fica programado.", "agenda", tela_agendamento),
+    ("painel", "Painel", "grafico", "Painel administrativo", "Pedidos, processos e indicadores reunidos num painel que se atualiza sozinho. Registre uma venda em Estoque ou em Pedidos e veja o número mudar aqui.", "gestao", demo_gestao),
+    ("estoque", "Estoque", "estoque", "Controle de estoque", "Registre uma venda e veja o estoque baixar. Quando um produto passa do mínimo, o sistema avisa e sugere o pedido ao fornecedor.", "gestao", tela_estoque),
     ("pedidos", "Pedidos", "lanche", "Registro de pedidos", "Monte um pedido no cardápio e registre. Ele entra na fila da cozinha com o total calculado.", "gestao", tela_pedidos),
     ("clientes", "Clientes", "olho", "Organização de clientes", "Busque, filtre e envie um lembrete para quem não aparece há algum tempo.", "agenda", tela_clientes),
-    ("painel", "Painel", "grafico", "Painel administrativo", "Pedidos, clientes, processos e indicadores reunidos num painel atualizado sozinho.", "gestao", demo_gestao),
+    ("agendamento", "Agendamento", "agenda", "Agendamento online", "Escolha o serviço, o dia e o horário. O agendamento entra na agenda e o lembrete fica programado.", "agenda", tela_agendamento),
+    ("chatbot", "Aurora", "conversa", "Atendimento com a Aurora", "Escolha as respostas e veja a Aurora conduzir a conversa: agendar, informar preços ou passar para uma pessoa da equipe.", "whatsapp", tela_chatbot),
     ("automacao", "Automação", "avancado", "Automação de processos", "A IA entende o pedido, consulta os sistemas, organiza a tarefa e avisa quem precisa saber.", "ia", demo_ia),
 ]
+VERSAO_COMPLETA = {"pedidos": DEMO_CARDAPIO, "agendamento": DEMO_AGENDAMENTO}
+def versao_completa(did):
+    if did not in VERSAO_COMPLETA: return ""
+    return (f'<a class="link-seta demo-completa-link" href="{VERSAO_COMPLETA[did]}" target="_blank" rel="noopener">Ver a versão completa'
+            f'<span class="visualmente-oculto"> (abre em nova aba)</span></a>')
 def central_demos(ids=None, titulo="Veja a Kyzent funcionando.", classe=""):
     abas_ = [a for a in ABAS_DEMO if ids is None or a[0] in ids]
     botoes, paineis_ = [], []
@@ -650,6 +673,7 @@ def central_demos(ids=None, titulo="Veja a Kyzent funcionando.", classe=""):
               <h3>{titulo_aba}</h3>
               <p>{texto}</p>
               <a class="link-seta" href="{PAGINA_MOD[mod]}">Conhecer solução</a>
+              {versao_completa(did)}
             </div>
             <div class="demo-tela">{tela()}</div>
           </div>""")
