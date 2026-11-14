@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "125"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "126"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -127,6 +127,8 @@ MODULOS = [
      ["Agentes de IA personalizados", "Assistentes internos de IA", "Sistemas personalizados"]),
 ]
 
+MOD_SERVICOS = {mid: servs for mid, _n, _c, _i, _r, servs in MODULOS}
+
 # os 3 pilares das soluções: (id, título, apoio, texto, resultados, [módulos])
 PILARES_SOL = [
     ("sistemas", "Sistemas de gestão sob medida", "ERP feito para o seu negócio",
@@ -189,11 +191,16 @@ def faixa_promo():
 """
 
 DADOS_ESTRUTURADOS = json.dumps({
-    "@context": "https://schema.org", "@type": "ProfessionalService", "name": "Kyzent Technology Solutions",
+    "@context": "https://schema.org", "@type": "Organization", "name": "Kyzent Technology Solutions",
     "alternateName": "Kyzent", "url": BASE, "logo": BASE + "assets/icons/apple-touch-icon.png", "image": BASE + "assets/og-image.png",
-    "description": "Empresa de Tecnologia e Inovação que automatiza o atendimento, as vendas e a gestão de pequenas empresas com Inteligência Artificial.",
-    "telephone": "+55-19-98872-8894", "areaServed": {"@type": "Country", "name": "Brasil"},
-    "sameAs": ["https://www.instagram.com/kyzent.tech/"]}, ensure_ascii=False)
+    "description": "A Kyzent desenvolve sistemas de gestão sob medida (ERP), cardápio online, agendamento online, atendimento com IA e sites para pequenos e médios negócios.",
+    "email": EMAIL, "telephone": "+55-19-98872-8894", "areaServed": {"@type": "Country", "name": "Brasil"},
+    "sameAs": ["https://www.instagram.com/kyzent.tech/"],
+    "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Soluções da Kyzent", "itemListElement": [
+        {"@type": "OfferCatalog", "name": titulo, "itemListElement": [
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": servico, "description": CATALOGO[servico][0]}}
+            for m in mods for servico in MOD_SERVICOS[m]]}
+        for _pid, titulo, _a, _t, _r, mods in PILARES_SOL]}}, ensure_ascii=False)
 
 def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
     url = BASE + ("" if arq == "index.html" else arq)
@@ -1691,7 +1698,7 @@ FILTRO_JANELA = ""
 DESC = "A Kyzent desenvolve sistemas de gestão (ERP), cardápio online, agendamento online e atendimento com IA para pequenos e médios negócios de todo o Brasil."
 
 saidas = [
-    ("index.html", "Kyzent | Inteligência artificial e automação para o seu negócio", DESC, INICIO.replace("<!--VIS_GESTAO-->", f'<div class="pilar-vis" aria-hidden="true">{visual_gestao()}</div>'), "", None),
+    ("index.html", "Kyzent | Sistemas de gestão, automação e IA para o seu negócio", DESC, INICIO.replace("<!--VIS_GESTAO-->", f'<div class="pilar-vis" aria-hidden="true">{visual_gestao()}</div>'), "", None),
     ("servicos.html", "Soluções e serviços | Kyzent", "Soluções da Kyzent em três pilares: sistemas de gestão sob medida (ERP), atendimento e vendas com cardápio online, agendamento e a Aurora, e presença online e IA. Simule o seu orçamento.", SERVICOS_PAG.replace("<!--VIS_GESTAO-->", f'<div class="pilar-vis" aria-hidden="true">{visual_gestao()}</div>'), FILTRO_JANELA, None),
     ("quem-somos.html", "Quem somos | Kyzent", "A Kyzent é uma empresa de Tecnologia e Inovação que desenvolve sistemas sob medida. Conheça o nosso propósito, a missão, a visão, os valores e os diferenciais.", QUEM, "", None),
     ("privacidade.html", "Política de Privacidade | Kyzent", "Como a Kyzent trata os seus dados pessoais, de acordo com a LGPD: quais dados recebemos, para que usamos, com quem compartilhamos e como exercer os seus direitos.", PRIVACIDADE, "", None),
