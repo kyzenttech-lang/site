@@ -513,6 +513,10 @@
       c.addEventListener("click", function () {
         chips.forEach(function (x) { x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
         $$(".seg-painel").forEach(function (p) { p.classList.toggle("ativo", p.id === "seg-" + c.getAttribute("data-seg")); });
+        // o ícone do segmento (3D em js/hero-3d.js, ou o desenho em SVG sem 3D)
+        var palcoS = $("[data-seg-palco]");
+        if (palcoS) palcoS.setAttribute("data-seg-ativo", c.getAttribute("data-seg"));
+        document.dispatchEvent(new CustomEvent("segmento-troca", { detail: c.getAttribute("data-seg") }));
         c.scrollIntoView({ block: "nearest", inline: "center", behavior: semMovimento ? "auto" : "smooth" });
       });
     });

@@ -15,6 +15,7 @@ import { RoomEnvironment } from "../assets/vendor/three/RoomEnvironment.js";
 const palcoHero = document.querySelector("[data-hero-palco]");
 const hero = palcoHero && palcoHero.closest("[data-hero]");
 const palcoFluxo = document.querySelector("[data-historia-palco]");
+const palcoSeg = document.querySelector("[data-seg-palco]");   // ícone 3D do segmento escolhido
 if (palcoHero && hero) iniciar();
 
 function desistir(canvas, renderer) {
@@ -22,6 +23,7 @@ function desistir(canvas, renderer) {
   document.documentElement.classList.add("sem-3d");
   hero?.classList.remove("hero-3d-pronto");
   palcoFluxo?.classList.remove("palco-3d-pronto");
+  palcoSeg?.classList.remove("palco-3d-pronto");
   if (renderer) { renderer.setAnimationLoop(null); renderer.dispose(); renderer.forceContextLoss?.(); }
   canvas?.remove();
 }
@@ -159,6 +161,71 @@ function iniciar() {
   const particulas = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0x3FB4FF, size: 0.035, transparent: true, opacity: 0.55, depthWrite: false }));
   scene.add(particulas);
 
+  // ---------- ícones dos segmentos: formas simples, nas cores da marca ----------
+  // Cada ícone cabe numa caixa de ~1,3 unidade. Só o do segmento escolhido aparece.
+  const prata = new THREE.MeshStandardMaterial({ color: c("#C9D2DF"), metalness: 0.6, roughness: 0.28 });
+  const azul = new THREE.MeshStandardMaterial({ color: c("#1A5CFF"), metalness: 0.3, roughness: 0.3 });
+  const azulClaro = new THREE.MeshStandardMaterial({ color: c("#3FB4FF"), metalness: 0.2, roughness: 0.3 });
+  const malha = (geo, mat, x = 0, y = 0, z = 0) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); return m; };
+  const FORMAS = {
+    lanchonete() {   // hambúrguer
+      const g = new THREE.Group();
+      const topo = malha(new THREE.SphereGeometry(0.58, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), prata, 0, 0.16); topo.scale.y = 0.75;
+      g.add(topo, malha(new THREE.CylinderGeometry(0.64, 0.64, 0.06, 40), azulClaro, 0, 0.12),
+        malha(new THREE.CylinderGeometry(0.6, 0.6, 0.2, 40), azul, 0, -0.02), malha(new THREE.CylinderGeometry(0.56, 0.5, 0.2, 40), prata, 0, -0.24));
+      return g;
+    },
+    barbearia() {    // tesoura
+      const g = new THREE.Group();
+      [0.42, -0.42].forEach((a, i) => {
+        const lado = new THREE.Group(); lado.rotation.z = a;
+        lado.add(malha(new THREE.BoxGeometry(0.95, 0.09, 0.06), prata, 0.32, 0), malha(new THREE.TorusGeometry(0.17, 0.05, 12, 32), azul, -0.32, 0));
+        lado.position.z = i * 0.07; g.add(lado);
+      });
+      g.add(malha(new THREE.SphereGeometry(0.06, 16, 16), azulClaro, 0, 0, 0.1));
+      return g;
+    },
+    salao() {        // secador
+      const g = new THREE.Group();
+      const corpo = malha(new THREE.CylinderGeometry(0.3, 0.3, 0.8, 32), azul, 0, 0.18); corpo.rotation.z = Math.PI / 2;
+      const bico = malha(new THREE.CylinderGeometry(0.2, 0.28, 0.26, 32), prata, 0.52, 0.18); bico.rotation.z = Math.PI / 2;
+      const tampa = malha(new THREE.CylinderGeometry(0.32, 0.32, 0.06, 32), prata, -0.42, 0.18); tampa.rotation.z = Math.PI / 2;
+      const cabo = malha(new THREE.BoxGeometry(0.2, 0.62, 0.2), azul, -0.12, -0.36); cabo.rotation.z = 0.18;
+      g.add(corpo, bico, tampa, cabo);
+      return g;
+    },
+    consultorio() {  // cruz
+      const g = new THREE.Group();
+      g.add(malha(new THREE.BoxGeometry(0.36, 1.1, 0.28), azul), malha(new THREE.BoxGeometry(1.1, 0.36, 0.28), azul),
+        malha(new THREE.BoxGeometry(0.2, 0.2, 0.3), azulClaro, 0, 0, 0.01));
+      return g;
+    },
+    petshop() {      // pata
+      const g = new THREE.Group();
+      const almofada = malha(new THREE.SphereGeometry(0.34, 32, 16), prata, 0, -0.2); almofada.scale.set(1.25, 1, 0.55); g.add(almofada);
+      [[-0.46, 0.18], [-0.17, 0.42], [0.17, 0.42], [0.46, 0.18]].forEach(([x, y]) => {
+        const dedo = malha(new THREE.SphereGeometry(0.15, 24, 12), azul, x, y); dedo.scale.z = 0.6; g.add(dedo);
+      });
+      return g;
+    },
+    empresa() {      // prédio
+      const g = new THREE.Group();
+      g.add(malha(new THREE.BoxGeometry(0.66, 1.15, 0.5), prata), malha(new THREE.BoxGeometry(0.72, 0.07, 0.56), azul, 0, 0.6));
+      for (let l = 0; l < 4; l++) for (let k = 0; k < 2; k++) g.add(malha(new THREE.BoxGeometry(0.16, 0.14, 0.04), azulClaro, -0.14 + k * 0.28, 0.36 - l * 0.26, 0.26));
+      return g;
+    },
+  };
+  const icones = new THREE.Group(); icones.visible = false; scene.add(icones);
+  const icone = {};
+  for (const id in FORMAS) { icone[id] = FORMAS[id](); icone[id].visible = false; icones.add(icone[id]); }
+  let segAtivo = palcoSeg?.getAttribute("data-seg-ativo") || "lanchonete", giro = 0;
+  if (icone[segAtivo]) icone[segAtivo].visible = true;
+  document.addEventListener("segmento-troca", (e) => {
+    if (!icone[e.detail]) return;
+    icone[segAtivo].visible = false; segAtivo = e.detail; icone[segAtivo].visible = true;
+    giro = Math.PI * 2;                                       // gira uma volta ao trocar de segmento
+  });
+
   // ---------- layout: o K fica onde o CSS reservou (.hero-k) ----------
   // No computador, à direita do texto; no celular, em cima dele.
   const reservaHero = hero.querySelector(".hero-k") || palcoHero;
@@ -172,6 +239,13 @@ function iniciar() {
     camera.aspect = w / h; camera.updateProjectionMatrix();
     const visH = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     const porPx = visH / h;                                    // unidades do mundo por pixel (no plano z = 0)
+    if (modo === "icone") {                                  // o ícone ocupa ~62% do palco pequeno
+      renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+      renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+      const visH2 = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+      base = { x: 0, y: 0, s: (Math.min(w, h) * 0.62 * (visH2 / h)) / 1.3 };
+      return;
+    }
     const reserva = modo === "hero" ? reservaHero : palco;
     const caixa = reserva.getBoundingClientRect(), p = palco.getBoundingClientRect();
     const cx = caixa.left + caixa.width / 2 - p.left, cy = caixa.top + caixa.height / 2 - p.top;
@@ -190,7 +264,7 @@ function iniciar() {
   const medirRolagem = () => { rolagem = scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight); };
   addEventListener("scroll", medirRolagem, { passive: true });
   addEventListener("resize", ajustar);
-  if ("ResizeObserver" in window) { const ro = new ResizeObserver(() => ajustar()); ro.observe(palcoHero); if (palcoFluxo) ro.observe(palcoFluxo); }
+  if ("ResizeObserver" in window) { const ro = new ResizeObserver(() => ajustar()); [palcoHero, palcoFluxo, palcoSeg].forEach((p) => p && ro.observe(p)); }
 
   // ---------- quando e onde desenhar: no palco que está na tela, com a aba visível ----------
   let visivel = true, pronto = false;
@@ -200,20 +274,22 @@ function iniciar() {
     else palco.classList.toggle("palco-3d-pronto", sim);
   }
   function escolher() {
-    const alvoP = naTela.get(palcoFluxo) ? palcoFluxo : naTela.get(palcoHero) ? palcoHero : null;
+    const alvoP = naTela.get(palcoFluxo) ? palcoFluxo : naTela.get(palcoSeg) ? palcoSeg : naTela.get(palcoHero) ? palcoHero : null;
     if (alvoP && alvoP !== palco) {
       marcarPronto(false);
-      palco = alvoP; modo = alvoP === palcoHero ? "hero" : "fluxo";
+      palco = alvoP; modo = alvoP === palcoHero ? "hero" : alvoP === palcoSeg ? "icone" : "fluxo";
       palco.appendChild(canvas);
       estacoes.forEach((m) => { m.visible = modo === "fluxo"; });
       cartoes.forEach((s) => { s.visible = modo === "hero"; });
+      raiz.visible = particulas.visible = modo !== "icone";
+      icones.visible = modo === "icone";
       ajustar();
       if (pronto) marcarPronto(true);
     }
     visivel = !!alvoP; ligar();
   }
   const io = new IntersectionObserver((es) => { es.forEach((e) => naTela.set(e.target, e.isIntersecting)); escolher(); });
-  io.observe(palcoHero); if (palcoFluxo) io.observe(palcoFluxo);
+  [palcoHero, palcoFluxo, palcoSeg].forEach((p) => p && io.observe(p));
   document.addEventListener("visibilitychange", ligar);
   function ligar() { renderer.setAnimationLoop(visivel && !document.hidden ? quadro : null); anterior = performance.now(); }
 
@@ -240,6 +316,15 @@ function iniciar() {
     const k = 1 - Math.pow(0.001, dt);                       // suavização independente do FPS
     atual.x += (alvo.x - atual.x) * k; atual.y += (alvo.y - atual.y) * k;
     rolagemSuave += (rolagem - rolagemSuave) * k;
+
+    if (modo === "icone") {                                   // só o ícone do segmento: balança devagar e gira ao trocar
+      giro *= Math.pow(0.02, dt);
+      icones.scale.setScalar(base.s);
+      icones.rotation.set(0.22 + atual.y * 0.12, Math.sin(t * 0.6) * 0.35 + atual.x * 0.2 + giro, 0);
+      icones.position.y = Math.sin(t * 0.9) * 0.03;
+      renderer.render(scene, camera);
+      return;
+    }
 
     raiz.position.set(base.x, base.y + Math.sin(t * 0.8) * 0.06, 0);
     raiz.scale.setScalar(base.s);

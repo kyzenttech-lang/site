@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "111"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "112"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -975,6 +975,9 @@ def segmentos_secao(classe="claro"):
         </div>
         <div class="seg-chips" role="group" aria-label="Segmentos" data-segmentos>{"".join(chips)}</div>
         <div class="seg-paineis">
+          <div class="seg-palco" data-seg-palco data-seg-ativo="{SEGMENTOS[0][0]}" aria-hidden="true">
+            {"".join(f'<span class="seg-palco-ic" data-ic="{sid}">{I[ic]}</span>' for sid, _n, ic, *_ in SEGMENTOS)}
+          </div>
 {chr(10).join(paineis_)}
         </div>
         <div class="seg-rodape">
