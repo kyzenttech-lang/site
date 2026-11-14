@@ -1163,8 +1163,6 @@ INICIO = f"""{HERO}
 
 {SOLUCOES_SECAO}
 
-{NUMEROS}
-
 {central_demos()}
 
 {segmentos_secao()}
