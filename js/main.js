@@ -227,30 +227,28 @@
   function el(tag, cls, texto) { var e = document.createElement(tag); if (cls) e.className = cls; if (texto != null) e.textContent = texto; return e; }
   function espera(ms) { return new Promise(function (ok) { setTimeout(ok, semMovimento ? 0 : ms); }); }
 
-  /* ------------------------------------------------------------ história do Início: o passo ativo acompanha a rolagem
-     Sem prender a página: o palco (o K em 3D, ou a imagem dele) fica fixo ao lado (embaixo do topo no
-     celular) e o passo cujo topo passou da linha de leitura vira o ativo. O 3D ouve "historia-etapa". */
+  /* ------------------------------------------------------------ história do Início: o passo muda ao clicar (ou Enter/Espaço)
+     O 3D (js/hero-3d.js) ouve "historia-etapa" e leva o ponto da órbita até a estação do passo. */
   var palcoH = $("[data-historia-palco]");
   if (palcoH) {
-    var passosH = $$("[data-historia]"), rotuloH = $("[data-historia-rotulo]"), atualH = 0, pedidoH = 0;
+    var passosH = $$("[data-historia]"), rotuloH = $("[data-historia-rotulo]"), atualH = 0;
     var marcarH = function (n) {
       if (n === atualH) return;
       atualH = n;
       palcoH.setAttribute("data-etapa", n);
-      passosH.forEach(function (p) { p.classList.toggle("ativo", +p.getAttribute("data-historia") === n); });
+      passosH.forEach(function (p) {
+        var ativo = +p.getAttribute("data-historia") === n;
+        p.classList.toggle("ativo", ativo); p.setAttribute("aria-pressed", ativo ? "true" : "false");
+      });
       if (rotuloH) rotuloH.textContent = n + " de " + passosH.length + " · " + $("h3", passosH[n - 1]).textContent;
       document.dispatchEvent(new CustomEvent("historia-etapa", { detail: n }));
     };
-    var medirH = function () {
-      pedidoH = 0;
-      var linha = innerHeight * .62, n = 1;
-      passosH.forEach(function (p, i) { if (p.getBoundingClientRect().top < linha) n = i + 1; });
-      marcarH(n);
-    };
-    addEventListener("scroll", function () { if (!pedidoH) pedidoH = requestAnimationFrame(medirH); }, { passive: true });
-    addEventListener("resize", medirH);
-    passosH.forEach(function (p) { p.style.cursor = "default"; });
-    medirH();
+    passosH.forEach(function (p) {
+      var n = +p.getAttribute("data-historia");
+      p.addEventListener("click", function () { marcarH(n); });
+      p.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); marcarH(n); } });
+    });
+    marcarH(1);
   }
 
   /* ------------------------------------------------------------ WhatsApp: no computador, um botão de cada vez
@@ -371,11 +369,11 @@
       no.msg.forEach(function (m) {
         fila = fila.then(function () {
           if (minha !== vez) return;
-          digitando.classList.add("mostra"); estado.textContent = "digitando"; bot.classList.add("digitando"); rolarFim();   // os olhos da Aurora aceleram
+          digitando.classList.add("mostra"); estado.textContent = "digitando"; rolarFim();
           return espera(750);
         }).then(function () {
           if (minha !== vez) return;
-          digitando.classList.remove("mostra"); estado.textContent = "online"; bot.classList.remove("digitando");
+          digitando.classList.remove("mostra"); estado.textContent = "online";
           bolha("ia", m);
         });
       });
@@ -689,7 +687,8 @@
   /* ------------------------------------------------------------ Aurora: entrada uma vez e inclinação que segue o cursor (só com mouse) */
   $$("[data-aurora]").forEach(function (fig) {
     if (semMovimento || !("IntersectionObserver" in window)) return;
-    fig.classList.add("vai-aparecer");
+    if (fig.getBoundingClientRect().top < innerHeight) { fig.classList.add("aparece", "pronta"); }
+    else fig.classList.add("vai-aparecer");
     var obs = new IntersectionObserver(function (es) {
       if (!es[0].isIntersecting) return;
       fig.classList.add("aparece"); obs.disconnect();
