@@ -2148,3 +2148,5 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
   .cat-pilar .catalogo > .cat-grupo:only-child li { break-inside: avoid; }
 }
 @media (min-width: 1180px) { .cat-pilar .catalogo > .cat-grupo:only-child ul { columns: 3; } }
+.rodape-whats { color: var(--texto-2); }
+.rodape-whats a { display: inline-block; min-height: 44px; line-height: 44px; }

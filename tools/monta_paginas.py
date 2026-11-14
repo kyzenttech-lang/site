@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "126"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "127"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -303,8 +303,7 @@ def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
         <div>
           <h2>Contato</h2>
           <ul>
-            <li><a href="{link_whats(None, 0)}" target="_blank" rel="noopener">WhatsApp {WHATS[0][1]}</a></li>
-            <li><a href="{link_whats(None, 1)}" target="_blank" rel="noopener">WhatsApp {WHATS[1][1]}</a></li>
+            <li class="rodape-whats">WhatsApp <a href="{link_whats(None, 0)}" target="_blank" rel="noopener" aria-label="WhatsApp {WHATS[0][1]}">{WHATS[0][1]}</a> · <a href="{link_whats(None, 1)}" target="_blank" rel="noopener" aria-label="WhatsApp {WHATS[1][1]}">{WHATS[1][1]}</a></li>
             <li><a href="https://www.instagram.com/kyzent.tech/" target="_blank" rel="noopener">Instagram @kyzent.tech</a></li>
             <li><a href="mailto:{EMAIL}">{EMAIL}</a></li>
           </ul>
@@ -704,7 +703,7 @@ def central_demos(ids=None, titulo="Veja a Kyzent funcionando.", classe=""):
 SEGMENTOS = [
     ("lanchonete", "Restaurantes e lanchonetes", "lanche", "lanchonete.jpg", (1200, 675), "um restaurante ou lanchonete",
      ["Pedidos chegando por mensagem no horário de pico", "Cardápio, horário e taxa de entrega perguntados o dia todo", "Anotação em papel que se perde"],
-     ["Cardápio online com pedidos", "Estoque de insumos que baixa a cada venda", "Fechamento do caixa do dia", "A Aurora respondendo no WhatsApp"],
+     ["Cardápio online com pedidos", "Estoque de insumos que baixa a cada venda", "Fechamento do caixa do dia", "A Aurora respondendo os clientes a qualquer hora"],
      ["Caixa livre para atender quem está no balcão", "Pedidos organizados do recebimento à entrega", "Cliente respondido mesmo fora do horário"]),
     ("barbearia", "Barbearias", "tesoura", "barbearia.jpg", (880, 1100), "uma barbearia",
      ["Responder mensagem no meio de um corte", "Horários vagos por falta de lembrete", "Cliente que demora a voltar"],
@@ -976,7 +975,7 @@ DEMOS_COMPLETAS = [
     ("cardapio", "Cardápio online com pedidos", DEMO_CARDAPIO, "Pizzaria Exemplo",
      "Tela do cardápio online da Pizzaria Exemplo no celular, com o combo em promoção, as categorias e o botão do carrinho",
      ["Combos, tamanhos e adicionais em cada item", "Carrinho com o total e pagamento em Pix, cartão ou dinheiro",
-      "Pedido enviado pelo WhatsApp e uma tela para acompanhar o pedido"],
+      "Pedido enviado direto para o restaurante e uma tela para acompanhar"],
      "Para pizzarias, lanchonetes e restaurantes"),
     ("agendamento", "Agendamento online", DEMO_AGENDAMENTO, "Pet Shop Exemplo",
      "Tela do agendamento online do Pet Shop Exemplo no celular, com o serviço de banho, a foto, a duração e o preço",
@@ -1011,7 +1010,7 @@ def cartao_pilar(pid, titulo, apoio, texto, resultados, mods):
     qtd = sum(len(MOD[m][4]) for m in mods)
     extra = ""
     if pid == "atendimento":
-        extra = ('<ul class="mini-cards">' + mini_card("Aurora", "A IA que atende no WhatsApp e no Instagram", "aurora.html")
+        extra = ('<ul class="mini-cards">' + mini_card("Aurora", "A IA que atende os seus clientes a qualquer hora", "aurora.html")
                  + mini_card("Cardápio online", "Teste a demonstração", DEMO_CARDAPIO, True)
                  + mini_card("Agendamento online", "Teste a demonstração", DEMO_AGENDAMENTO, True) + "</ul>")
     if pid == "sistemas":   # as partes que o sistema pode ter, preenchendo o card maior
