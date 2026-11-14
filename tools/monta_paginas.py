@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "112"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "113"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -739,7 +739,8 @@ ORCAMENTO = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina"
                 <label class="sim-campo-largo">Observação <span>(opcional)</span><textarea name="obs" rows="3" maxlength="400" placeholder="Ex.: atendo 40 clientes por dia no WhatsApp"></textarea></label>
                 <div class="sim-mel" aria-hidden="true"><label>Não preencha este campo<input name="site" tabindex="-1" autocomplete="off"></label></div>
               </div>
-              <p class="sim-dica">Seus dados vão só na mensagem do WhatsApp que você mesmo envia. O site não guarda nada em servidor. Veja a <a href="privacidade.html">Política de Privacidade</a>.</p>
+              <p class="sim-dica">Seus dados vão só na mensagem do WhatsApp que você mesmo envia. O site não guarda nada em servidor.</p>
+              <label class="sim-consentimento"><input type="checkbox" name="privacidade" required> <span>Li e concordo com a <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
             </fieldset>
             <p class="sim-erro" role="alert" data-sim-erro hidden></p>
             <div class="sim-nav">
@@ -951,13 +952,21 @@ HISTORIA = f"""    <section class="secao historia historia-3d" id="como-funciona
     </section>"""
 
 # ---------- segmentos: o que muda em cada ramo, sem repetir os problemas das páginas de solução
+SEG_ALT = {
+    "lanchonete": "Garçom servindo hambúrguer, batata frita e suco numa bandeja de madeira",
+    "barbearia": "Barbeiros cortando o cabelo de clientes numa barbearia",
+    "salao": "Cabeleireira atendendo uma cliente num salão de beleza",
+    "consultorio": "Dentista examinando um paciente no consultório",
+    "petshop": "Cachorro corgi sentado dentro de um pet shop",
+    "empresa": "Equipe de uma empresa conversando em volta de um computador",
+}
 def segmentos_secao(classe="claro"):
     chips, paineis_ = [], []
     for i, (sid, nome, ic, arq, (w, h), artigo, desafios, solucoes, beneficios) in enumerate(SEGMENTOS):
-        chips.append(f'<button type="button" class="seg-chip" data-seg="{sid}" aria-pressed="{"true" if i == 0 else "false"}" aria-controls="seg-{sid}">{nome}</button>')
+        chips.append(f'<button type="button" class="seg-chip" role="tab" id="aba-seg-{sid}" data-seg="{sid}" aria-selected="{"true" if i == 0 else "false"}" tabindex="{0 if i == 0 else -1}" aria-controls="seg-{sid}">{nome}</button>')
         col = lambda titulo, itens, cls: f'<div class="seg-col {cls}"><h4>{titulo}</h4><ul>' + "".join(f"<li>{x}</li>" for x in itens) + "</ul></div>"
-        paineis_.append(f"""          <article class="seg-painel{" ativo" if i == 0 else ""}" id="seg-{sid}" aria-labelledby="seg-{sid}-titulo">
-            <div class="seg-foto">{foto(arq, w, h, sizes="(max-width: 760px) 100vw, 40vw")}
+        paineis_.append(f"""          <article class="seg-painel{" ativo" if i == 0 else ""}" id="seg-{sid}" role="tabpanel" tabindex="0" aria-labelledby="aba-seg-{sid}">
+            <div class="seg-foto">{foto(arq, w, h, alt=SEG_ALT[sid], sizes="(max-width: 760px) 100vw, 40vw")}
               <div class="seg-foto-texto"><h3 id="seg-{sid}-titulo">{nome}</h3><p>{SEG_FRASE[sid]}</p></div>
             </div>
             <div class="seg-texto">
@@ -973,7 +982,7 @@ def segmentos_secao(classe="claro"):
           <h2 id="titulo-segmentos" data-revelar-texto>Tecnologia para o seu tipo de negócio.</h2>
           <p>Escolha o seu segmento e veja como a automação entra no seu dia a dia.</p>
         </div>
-        <div class="seg-chips" role="group" aria-label="Segmentos" data-segmentos>{"".join(chips)}</div>
+        <div class="seg-chips" role="tablist" aria-label="Segmentos" data-segmentos>{"".join(chips)}</div>
         <div class="seg-paineis">
           <div class="seg-palco" data-seg-palco data-seg-ativo="{SEGMENTOS[0][0]}" aria-hidden="true">
             {"".join(f'<span class="seg-palco-ic" data-ic="{sid}">{I[ic]}</span>' for sid, _n, ic, *_ in SEGMENTOS)}
@@ -1080,6 +1089,25 @@ def comparar():
       </div>
     </section>"""
 
+# ---------- depoimentos: para ativar, troque os exemplos por depoimentos reais (com autorização) e tire o comentário
+DEPOIMENTOS_COMENTADO = """
+<!-- DEPOIMENTOS (desativado até haver clientes reais que autorizem o uso do nome)
+    <section class="secao" id="depoimentos" aria-labelledby="titulo-depoimentos">
+      <div class="container">
+        <div class="cabeca">
+          <h2 id="titulo-depoimentos" data-revelar-texto>Quem já usa a Kyzent.</h2>
+        </div>
+        <ul class="grade grade-3 depoimentos">
+          <li class="depoimento">
+            <blockquote><p>[TEXTO DO DEPOIMENTO, como o cliente escreveu]</p></blockquote>
+            <p class="depoimento-autor"><strong>[NOME]</strong><span>[NEGÓCIO], [CIDADE]</span></p>
+          </li>
+        </ul>
+      </div>
+    </section>
+-->
+"""
+
 INICIO = f"""{HERO}
 
 {AURORA_SECAO}
@@ -1100,7 +1128,7 @@ INICIO = f"""{HERO}
 
 {SOBRE_CURTO}
 
-{projetos_secao()}{perguntas().replace('class="secao"', 'class="secao claro"', 1)}
+{projetos_secao()}{DEPOIMENTOS_COMENTADO}{perguntas().replace('class="secao"', 'class="secao claro"', 1)}
 
 {chamada("index.html")}"""
 

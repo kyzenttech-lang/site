@@ -509,9 +509,17 @@
   /* ------------------------------------------------------------ segmentos */
   $$("[data-segmentos]").forEach(function (grupo) {
     var chips = $$("[data-seg]", grupo);
+    // abas: setas esquerda/direita, Home e End trocam de segmento
+    grupo.addEventListener("keydown", function (e) {
+      var i = chips.indexOf(document.activeElement); if (i < 0) return;
+      var n = e.key === "ArrowRight" ? (i + 1) % chips.length : e.key === "ArrowLeft" ? (i - 1 + chips.length) % chips.length
+            : e.key === "Home" ? 0 : e.key === "End" ? chips.length - 1 : -1;
+      if (n < 0) return;
+      e.preventDefault(); chips[n].focus(); chips[n].click();
+    });
     chips.forEach(function (c) {
       c.addEventListener("click", function () {
-        chips.forEach(function (x) { x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
+        chips.forEach(function (x) { x.setAttribute("aria-selected", x === c ? "true" : "false"); x.tabIndex = x === c ? 0 : -1; });
         $$(".seg-painel").forEach(function (p) { p.classList.toggle("ativo", p.id === "seg-" + c.getAttribute("data-seg")); });
         // o ícone do segmento (3D em js/hero-3d.js, ou o desenho em SVG sem 3D)
         var palcoS = $("[data-seg-palco]");
@@ -560,6 +568,9 @@
         var ok = limpo(nome.value, 60).length >= 2;
         nome.setAttribute("aria-invalid", ok ? "false" : "true");
         if (!ok) { nome.focus(); return "Escreva o seu nome para a gente saber com quem fala."; }
+        var aceite = form.elements.privacidade;
+        if (aceite && !aceite.checked) { aceite.setAttribute("aria-invalid", "true"); aceite.focus(); return "Para enviar, marque que leu e concorda com a Política de Privacidade."; }
+        if (aceite) aceite.setAttribute("aria-invalid", "false");
       }
       return "";
     }
@@ -579,6 +590,7 @@
       if (problema) { mostrarErro(problema); return; }
       if (form.elements.site.value) return;   // campo-isca preenchido: robô
       if (Date.now() - aberto < 3000) { mostrarErro("Confira as respostas e tente de novo em alguns segundos."); return; }
+      erro.hidden = true;   // deu certo: some o aviso de uma tentativa anterior
 
       var negocioInput = $('input[name="negocio"]:checked', form);
       var desafios = $$('input[name="desafio"]:checked', form);

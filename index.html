@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR" data-theme="dark" data-v="112">
+<html lang="pt-BR" data-theme="dark" data-v="113">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,12 +30,12 @@
 
   <script>document.documentElement.classList.add("js");</script>
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=112">
+  <link rel="stylesheet" href="css/style.css?v=113">
   <script src="assets/vendor/gsap/gsap.min.js?v=3130" defer></script>
   <script src="assets/vendor/gsap/ScrollTrigger.min.js?v=3130" defer></script>
   <script src="assets/vendor/gsap/CustomEase.min.js?v=3130" defer></script>
-  <script src="js/main.js?v=112" defer></script>
-  <script src="js/animacoes.js?v=112" defer></script>
+  <script src="js/main.js?v=113" defer></script>
+  <script src="js/animacoes.js?v=113" defer></script>
 </head>
 <body data-promo-fim="2026-12-05T23:59:59-03:00" data-whats="5519988728894 5519971246077">
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -325,13 +325,13 @@
           <h2 id="titulo-segmentos" data-revelar-texto>Tecnologia para o seu tipo de negócio.</h2>
           <p>Escolha o seu segmento e veja como a automação entra no seu dia a dia.</p>
         </div>
-        <div class="seg-chips" role="group" aria-label="Segmentos" data-segmentos><button type="button" class="seg-chip" data-seg="lanchonete" aria-pressed="true" aria-controls="seg-lanchonete">Restaurantes e lanchonetes</button><button type="button" class="seg-chip" data-seg="barbearia" aria-pressed="false" aria-controls="seg-barbearia">Barbearias</button><button type="button" class="seg-chip" data-seg="salao" aria-pressed="false" aria-controls="seg-salao">Salões de beleza</button><button type="button" class="seg-chip" data-seg="consultorio" aria-pressed="false" aria-controls="seg-consultorio">Clínicas</button><button type="button" class="seg-chip" data-seg="petshop" aria-pressed="false" aria-controls="seg-petshop">Pet shops</button><button type="button" class="seg-chip" data-seg="empresa" aria-pressed="false" aria-controls="seg-empresa">Pequenas e médias empresas</button></div>
+        <div class="seg-chips" role="tablist" aria-label="Segmentos" data-segmentos><button type="button" class="seg-chip" role="tab" id="aba-seg-lanchonete" data-seg="lanchonete" aria-selected="true" tabindex="0" aria-controls="seg-lanchonete">Restaurantes e lanchonetes</button><button type="button" class="seg-chip" role="tab" id="aba-seg-barbearia" data-seg="barbearia" aria-selected="false" tabindex="-1" aria-controls="seg-barbearia">Barbearias</button><button type="button" class="seg-chip" role="tab" id="aba-seg-salao" data-seg="salao" aria-selected="false" tabindex="-1" aria-controls="seg-salao">Salões de beleza</button><button type="button" class="seg-chip" role="tab" id="aba-seg-consultorio" data-seg="consultorio" aria-selected="false" tabindex="-1" aria-controls="seg-consultorio">Clínicas</button><button type="button" class="seg-chip" role="tab" id="aba-seg-petshop" data-seg="petshop" aria-selected="false" tabindex="-1" aria-controls="seg-petshop">Pet shops</button><button type="button" class="seg-chip" role="tab" id="aba-seg-empresa" data-seg="empresa" aria-selected="false" tabindex="-1" aria-controls="seg-empresa">Pequenas e médias empresas</button></div>
         <div class="seg-paineis">
           <div class="seg-palco" data-seg-palco data-seg-ativo="lanchonete" aria-hidden="true">
             <span class="seg-palco-ic" data-ic="lanchonete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11a8 6 0 0 1 16 0z"/><path d="M3 14.5h18"/><path d="M4.5 18h15a1.5 1.5 0 0 1-1.5 2h-12a1.5 1.5 0 0 1-1.5-2z"/></svg></span><span class="seg-palco-ic" data-ic="barbearia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.8 20 19M8.5 15.2 20 5"/></svg></span><span class="seg-palco-ic" data-ic="salao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5h17v3.5h-17z"/><path d="M6 11v7M9 11v7M12 11v7M15 11v7M18 11v7"/></svg></span><span class="seg-palco-ic" data-ic="consultorio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6v5h5v6h-5v5H9v-5H4V9h5z"/></svg></span><span class="seg-palco-ic" data-ic="petshop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6.5" cy="11" r="1.8"/><circle cx="10" cy="6.5" r="1.8"/><circle cx="14" cy="6.5" r="1.8"/><circle cx="17.5" cy="11" r="1.8"/><path d="M8 17.2c0-2.3 1.8-4 4-4s4 1.7 4 4c0 1.6-1.2 2.3-2.6 2.3-.9 0-1.1-.4-1.4-.4s-.5.4-1.4.4C9.2 19.5 8 18.8 8 17.2z"/></svg></span><span class="seg-palco-ic" data-ic="empresa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 13h3M8 16h6"/></svg></span>
           </div>
-          <article class="seg-painel ativo" id="seg-lanchonete" aria-labelledby="seg-lanchonete-titulo">
-            <div class="seg-foto"><picture><source type="image/avif" srcset="assets/fotos/lanchonete-640.avif 640w, assets/fotos/lanchonete-1200.avif 1200w" sizes="(max-width: 760px) 100vw, 40vw"><source type="image/webp" srcset="assets/fotos/lanchonete-640.webp 640w, assets/fotos/lanchonete-1200.webp 1200w" sizes="(max-width: 760px) 100vw, 40vw"><img src="assets/fotos/lanchonete.jpg" alt="" width="1200" height="675" loading="lazy" decoding="async"></picture>
+          <article class="seg-painel ativo" id="seg-lanchonete" role="tabpanel" tabindex="0" aria-labelledby="aba-seg-lanchonete">
+            <div class="seg-foto"><picture><source type="image/avif" srcset="assets/fotos/lanchonete-640.avif 640w, assets/fotos/lanchonete-1200.avif 1200w" sizes="(max-width: 760px) 100vw, 40vw"><source type="image/webp" srcset="assets/fotos/lanchonete-640.webp 640w, assets/fotos/lanchonete-1200.webp 1200w" sizes="(max-width: 760px) 100vw, 40vw"><img src="assets/fotos/lanchonete.jpg" alt="Garçom servindo hambúrguer, batata frita e suco numa bandeja de madeira" width="1200" height="675" loading="lazy" decoding="async"></picture>
               <div class="seg-foto-texto"><h3 id="seg-lanchonete-titulo">Restaurantes e lanchonetes</h3><p>Do pedido no WhatsApp à entrega, sem anotação perdida.</p></div>
             </div>
             <div class="seg-texto">
@@ -341,8 +341,8 @@
               </div>
             </div>
           </article>
-          <article class="seg-painel" id="seg-barbearia" aria-labelledby="seg-barbearia-titulo">
-            <div class="seg-foto"><picture><source type="image/avif" srcset="assets/fotos/barbearia-640.avif 640w, assets/fotos/barbearia-880.avif 880w" sizes="(max-width: 760px) 100vw, 40vw"><source type="image/webp" srcset="assets/fotos/barbearia-640.webp 640w, assets/fotos/barbearia-880.webp 880w" sizes="(max-width: 760px) 100vw, 40vw"><img src="assets/fotos/barbearia.jpg" alt="" width="880" height="1100" loading="lazy" decoding="async"></picture>
+          <article class="seg-painel" id="seg-barbearia" role="tabpanel" tabindex="0" aria-labelledby="aba-seg-barbearia">
+            <div class="seg-foto"><picture><source type="image/avif" srcset="assets/fotos/barbearia-640.avif 640w, assets/fotos/barbearia-880.avif 880w" sizes="(max-width: 760px) 100vw, 40vw"><source type="image/webp" srcset="assets/fotos/barbearia-640.webp 640w, assets/fotos/barbearia-880.webp 880w" sizes="(max-width: 760px) 100vw, 40vw"><img src="assets/fotos/barbearia.jpg" alt="Barbeiros cortando o cabelo de clientes numa barbearia" width="880" height="1100" loading="lazy" decoding="async"></picture>
               <div class="seg-foto-texto"><h3 id="seg-barbearia-titulo">Barbearias</h3><p>Agenda cheia, sem largar a máquina.</p></div>
             </div>
             <div class="seg-texto">
@@ -352,8 +352,8 @@
               </div>
             </div>
           </article>
-          <article class="seg-painel" id="seg-salao" aria-labelledby="seg-salao-titulo">
-            <div class="seg-foto"><picture><source type="image/avif" srcset="assets/fotos/salao-640.avif 640w, assets/fotos/salao-734.avif 734w" sizes="(max-width: 760px) 100vw, 40vw"><source type="image/webp" srcset="assets/fotos/salao-640.webp 640w, assets/fotos/salao-734.webp 734w" sizes="(max-width: 760px) 100vw, 40vw"><img src="assets/fotos/salao.jpg" alt="" width="734" height="1100" loading="lazy" decoding="async"></picture>
+          <article class="seg-painel" id="seg-salao" role="tabpanel" tabindex="0" aria-labelledby="aba-seg-salao">
+            <div class="seg-foto"><picture><source type="image/avif" srcset="assets/fotos/salao-640.avif 640w, assets/fotos/salao-734.avif 734w" sizes="(max-width: 760px) 100vw, 40vw"><source type="image/webp" srcset="assets/fotos/salao-640.webp 640w, assets/fotos/salao-734.webp 734w" sizes="(max-width: 760px) 100vw, 40vw"><img src="assets/fotos/salao.jpg" alt="Cabeleireira atendendo uma cliente num salão de beleza" width="734" height="1100" loading="lazy" decoding="async"></picture>
               <div class="seg-foto-texto"><h3 id="seg-salao-titulo">Salões de beleza</h3><p>Cada profissional com a sua agenda em ordem.</p></div>
             </div>
             <div class="seg-texto">
@@ -363,8 +363,8 @@
               </div>
             </div>
           </article>
-          <article class="seg-painel" id="seg-consultorio" aria-labelledby="seg-consultorio-titulo">
-            <div class="seg-foto"><picture><source type="image/avif" srcset="assets/fotos/consultorio-640.avif 640w, assets/fotos/consultorio-1200.avif 1200w" sizes="(max-width: 760px) 100vw, 40vw"><source type="image/webp" srcset="assets/fotos/consultorio-640.webp 640w, assets/fotos/consultorio-1200.webp 1200w" sizes="(max-width: 760px) 100vw, 40vw"><img src="assets/fotos/consultorio.jpg" alt="" width="1200" height="800" loading="lazy" decoding="async"></picture>
+          <article class="seg-painel" id="seg-consultorio" role="tabpanel" tabindex="0" aria-labelledby="aba-seg-consultorio">
+            <div class="seg-foto"><picture><source type="image/avif" srcset="assets/fotos/consultorio-640.avif 640w, assets/fotos/consultorio-1200.avif 1200w" sizes="(max-width: 760px) 100vw, 40vw"><source type="image/webp" srcset="assets/fotos/consultorio-640.webp 640w, assets/fotos/consultorio-1200.webp 1200w" sizes="(max-width: 760px) 100vw, 40vw"><img src="assets/fotos/consultorio.jpg" alt="Dentista examinando um paciente no consultório" width="1200" height="800" loading="lazy" decoding="async"></picture>
               <div class="seg-foto-texto"><h3 id="seg-consultorio-titulo">Clínicas</h3><p>Recepção mais leve e pacientes lembrados.</p></div>
             </div>
             <div class="seg-texto">
@@ -374,8 +374,8 @@
               </div>
             </div>
           </article>
-          <article class="seg-painel" id="seg-petshop" aria-labelledby="seg-petshop-titulo">
-            <div class="seg-foto"><picture><source type="image/avif" srcset="assets/fotos/petshop-640.avif 640w, assets/fotos/petshop-1200.avif 1200w" sizes="(max-width: 760px) 100vw, 40vw"><source type="image/webp" srcset="assets/fotos/petshop-640.webp 640w, assets/fotos/petshop-1200.webp 1200w" sizes="(max-width: 760px) 100vw, 40vw"><img src="assets/fotos/petshop.jpg" alt="" width="1200" height="900" loading="lazy" decoding="async"></picture>
+          <article class="seg-painel" id="seg-petshop" role="tabpanel" tabindex="0" aria-labelledby="aba-seg-petshop">
+            <div class="seg-foto"><picture><source type="image/avif" srcset="assets/fotos/petshop-640.avif 640w, assets/fotos/petshop-1200.avif 1200w" sizes="(max-width: 760px) 100vw, 40vw"><source type="image/webp" srcset="assets/fotos/petshop-640.webp 640w, assets/fotos/petshop-1200.webp 1200w" sizes="(max-width: 760px) 100vw, 40vw"><img src="assets/fotos/petshop.jpg" alt="Cachorro corgi sentado dentro de um pet shop" width="1200" height="900" loading="lazy" decoding="async"></picture>
               <div class="seg-foto-texto"><h3 id="seg-petshop-titulo">Pet shops</h3><p>Banho, tosa e vacina sempre no dia certo.</p></div>
             </div>
             <div class="seg-texto">
@@ -385,8 +385,8 @@
               </div>
             </div>
           </article>
-          <article class="seg-painel" id="seg-empresa" aria-labelledby="seg-empresa-titulo">
-            <div class="seg-foto"><picture><source type="image/avif" srcset="assets/fotos/equipe-computador-640.avif 640w, assets/fotos/equipe-computador-1200.avif 1200w" sizes="(max-width: 760px) 100vw, 40vw"><source type="image/webp" srcset="assets/fotos/equipe-computador-640.webp 640w, assets/fotos/equipe-computador-1200.webp 1200w" sizes="(max-width: 760px) 100vw, 40vw"><img src="assets/fotos/equipe-computador.jpg" alt="" width="1600" height="900" loading="lazy" decoding="async"></picture>
+          <article class="seg-painel" id="seg-empresa" role="tabpanel" tabindex="0" aria-labelledby="aba-seg-empresa">
+            <div class="seg-foto"><picture><source type="image/avif" srcset="assets/fotos/equipe-computador-640.avif 640w, assets/fotos/equipe-computador-1200.avif 1200w" sizes="(max-width: 760px) 100vw, 40vw"><source type="image/webp" srcset="assets/fotos/equipe-computador-640.webp 640w, assets/fotos/equipe-computador-1200.webp 1200w" sizes="(max-width: 760px) 100vw, 40vw"><img src="assets/fotos/equipe-computador.jpg" alt="Equipe de uma empresa conversando em volta de um computador" width="1600" height="900" loading="lazy" decoding="async"></picture>
               <div class="seg-foto-texto"><h3 id="seg-empresa-titulo">Pequenas e médias empresas</h3><p>Processos conectados para a empresa crescer.</p></div>
             </div>
             <div class="seg-texto">
@@ -430,6 +430,22 @@
       </div>
     </section>
 
+
+<!-- DEPOIMENTOS (desativado até haver clientes reais que autorizem o uso do nome)
+    <section class="secao" id="depoimentos" aria-labelledby="titulo-depoimentos">
+      <div class="container">
+        <div class="cabeca">
+          <h2 id="titulo-depoimentos" data-revelar-texto>Quem já usa a Kyzent.</h2>
+        </div>
+        <ul class="grade grade-3 depoimentos">
+          <li class="depoimento">
+            <blockquote><p>[TEXTO DO DEPOIMENTO, como o cliente escreveu]</p></blockquote>
+            <p class="depoimento-autor"><strong>[NOME]</strong><span>[NEGÓCIO], [CIDADE]</span></p>
+          </li>
+        </ul>
+      </div>
+    </section>
+-->
     <section class="secao claro" id="perguntas" aria-labelledby="titulo-perguntas">
       <div class="container perguntas-grade">
         <div class="cabeca">
