@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "121"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "122"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -67,6 +67,7 @@ I = {
     "estoque": svg('<path d="M3.5 8 12 3.5 20.5 8v8.5L12 21l-8.5-4.5z"/><path d="M3.5 8 12 12.5 20.5 8M12 12.5V21"/>'),
     "repetir": svg('<path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.5M20 4v4.5h-4.5"/><path d="M20 12a8 8 0 0 1-13.7 5.6L4 15.5M4 20v-4.5h4.5"/>'),
     "valores": svg('<path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/>'),
+    "externo": svg('<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 19V7.5A1.5 1.5 0 0 1 5.5 6H10"/>'),
     "instagram": svg('<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17 7h.01"/>'),
 }
 TIQUES = ('<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" '
@@ -934,6 +935,34 @@ def cartao_solucao(mid, destaque=False):
             f'<span class="solucao-rodape"><span class="solucao-qtd">{len(servs)} {"serviço" if len(servs) == 1 else "serviços"}</span>'
             f'<span class="solucao-ir">Conhecer solução</span></span></a></li>')
 
+DEMOS_COMPLETAS = [
+    ("cardapio", "Cardápio online com pedidos", DEMO_CARDAPIO, "Pizzaria Exemplo",
+     "Tela do cardápio online da Pizzaria Exemplo no celular, com o combo em promoção, as categorias e o botão do carrinho",
+     ["Combos, tamanhos e adicionais em cada item", "Carrinho com o total e pagamento em Pix, cartão ou dinheiro",
+      "Pedido enviado pelo WhatsApp e uma tela para acompanhar o pedido"],
+     "Para pizzarias, lanchonetes e restaurantes"),
+    ("agendamento", "Agendamento online", DEMO_AGENDAMENTO, "Pet Shop Exemplo",
+     "Tela do agendamento online do Pet Shop Exemplo no celular, com o serviço de banho, a foto, a duração e o preço",
+     ["Serviços com foto, preço e duração", "Calendário com os horários livres de cada dia",
+      "A agenda do dono, com todos os horários marcados"],
+     "Para pet shops, salões, barbearias e clínicas"),
+]
+def cartao_demo(did, titulo, url, negocio, alt, itens, publico):
+    lis = "".join(f"<li>{I['check']}<span>{x}</span></li>" for x in itens)
+    return f"""<li class="demo-completa">
+            <div class="demo-celular" aria-hidden="false">
+              <picture><source type="image/webp" srcset="assets/img/demos/{did}-390.webp 390w, assets/img/demos/{did}.webp 780w" sizes="260px">
+              <img src="assets/img/demos/{did}-390.webp" alt="{alt}" width="390" height="844" loading="lazy" decoding="async"></picture>
+            </div>
+            <div class="demo-completa-texto">
+              <p class="pilar-apoio">{negocio}</p>
+              <h3>{titulo}</h3>
+              <ul class="demo-completa-itens">{lis}</ul>
+              <p class="demo-completa-publico">{publico}</p>
+              <a class="botao" href="{url}" target="_blank" rel="noopener">Testar a demonstração {I["externo"]}<span class="visualmente-oculto"> (abre em nova aba)</span></a>
+            </div>
+          </li>"""
+
 def mini_card(titulo, texto, href, externo=False):
     alvo = ' target="_blank" rel="noopener"' if externo else ""
     aviso = '<span class="visualmente-oculto"> (abre em nova aba)</span>' if externo else ""
@@ -955,6 +984,19 @@ def cartao_pilar(pid, titulo, apoio, texto, resultados, mods):
     return (f'<li class="pilar-card pilar-{pid}"><p class="pilar-apoio">{apoio}</p><h3>{titulo}</h3><p class="pilar-texto">{texto}</p>'
             f'<ul class="frente-itens">{res}</ul>{extra}<div class="pilar-rodape"><span class="solucao-qtd">{qtd} serviços</span>'
             f'<ul class="pilar-links">{links}</ul></div></li>')
+
+TESTAR = f"""    <section class="secao testar" id="testar" aria-labelledby="titulo-testar">
+      <div class="container">
+        <div class="cabeca">
+          <h2 id="titulo-testar" data-revelar-texto>Sistemas prontos para testar.</h2>
+          <p>Feito sob medida, com a cara do seu negócio. Cada demonstração tem a identidade visual do negócio de exemplo, não a da Kyzent: é assim que o seu sistema fica, com a sua marca.</p>
+        </div>
+        <ul class="demos-completas">
+          {"".join(cartao_demo(*d) for d in DEMOS_COMPLETAS)}
+        </ul>
+        <p class="nota">Demonstrações com dados fictícios. Nenhum pedido ou agendamento é feito de verdade.</p>
+      </div>
+    </section>"""
 
 SOLUCOES_SECAO = f"""    <section class="secao claro" id="solucoes" aria-labelledby="titulo-solucoes">
       <div class="container">
@@ -1173,6 +1215,8 @@ INICIO = f"""{HERO}
 {comparar()}
 
 {HISTORIA}
+
+{TESTAR}
 
 {central_demos()}
 
