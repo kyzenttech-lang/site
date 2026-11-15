@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "129"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "130"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -668,7 +668,7 @@ def versao_completa(did):
     if did not in VERSAO_COMPLETA: return ""
     return (f'<a class="link-seta demo-completa-link" href="{VERSAO_COMPLETA[did]}" target="_blank" rel="noopener">Ver a versão completa'
             f'<span class="visualmente-oculto"> (abre em nova aba)</span></a>')
-def central_demos(ids=None, titulo="Veja a Kyzent funcionando.", classe=""):
+def central_demos(ids=None, titulo="Veja a Kyzent funcionando.", classe="", sec_id="demonstracoes", intro=None, rodape=""):
     abas_ = [a for a in ABAS_DEMO if ids is None or a[0] in ids]
     botoes, paineis_ = [], []
     for i, (did, curto, ic, titulo_aba, texto, mod, tela) in enumerate(abas_):
@@ -685,17 +685,19 @@ def central_demos(ids=None, titulo="Veja a Kyzent funcionando.", classe=""):
             <div class="demo-tela">{tela()}</div>
           </div>""")
     abas_html = "" if len(abas_) == 1 else f'<div class="demo-abas" role="tablist" aria-label="Demonstrações">{"".join(botoes)}</div>'
-    return f"""    <section class="secao secao-demos {classe}" id="demonstracoes" aria-labelledby="titulo-demos">
+    intro = intro or "Simulações demonstrativas, com dados fictícios. Toque, escolha e veja o que acontece."
+    return f"""    <section class="secao secao-demos {classe}" id="{sec_id}" aria-labelledby="titulo-{sec_id}">
       <div class="container">
         <div class="cabeca cabeca-centro">
-          <h2 id="titulo-demos" data-revelar-texto>{titulo}</h2>
-          <p>Simulações demonstrativas, com dados fictícios. Toque, escolha e veja o que acontece.</p>
+          <h2 id="titulo-{sec_id}" data-revelar-texto>{titulo}</h2>
+          <p>{intro}</p>
         </div>
         <div class="demo-centro" data-demo-centro>
           {abas_html}
           {'<p class="demo-dica">Deslize para o lado para ver a próxima demonstração.</p>' if len(abas_) > 1 else ''}
 {chr(10).join(paineis_)}
         </div>
+        {rodape}
       </div>
     </section>"""
 
@@ -940,11 +942,22 @@ PILARES = """    <section class="secao claro" aria-labelledby="titulo-pilares">
 
 # ---------- diferenciais (só em Quem somos), cartões tipográficos
 DIFERENCIAIS = [
-    ("API oficial", "WhatsApp pela API oficial da Meta", "Conexão aprovada pela Meta, sem atalhos que coloquem o número da sua empresa em risco."),
-    ("Sob medida", "Feito para o seu negócio", "Cada automação é configurada com os seus produtos, preços, horários e jeito de atender."),
+    ("Sob medida", "Feito para o seu negócio", "Cada sistema é desenvolvido com os seus produtos, preços, processos e jeito de trabalhar."),
+    ("Teste antes", "Demonstrações abertas", "O cardápio online e o agendamento online estão no ar para você testar antes de conversar com a gente."),
     ("Suporte", "Manutenção e suporte", "A nossa equipe acompanha cada solução depois de pronta, para a tecnologia seguir funcionando."),
     ("Mensalidade", "Sem contratar mais gente", "Você assina um serviço que trabalha junto com a sua equipe, em vez de aumentar a folha."),
 ]
+def por_que_kyzent():
+    """Início: só os títulos dos diferenciais (a explicação completa fica em Quem somos)."""
+    itens = "".join(f'<li><span class="dif-palavra">{k}</span><strong>{t}</strong></li>' for k, t, _ in DIFERENCIAIS)
+    return f"""    <section class="secao secao-faixa porque" aria-labelledby="titulo-porque">
+      <div class="container porque-grade">
+        <h2 id="titulo-porque" data-revelar-texto>Por que a Kyzent.</h2>
+        <ul class="porque-lista">{itens}</ul>
+        <a class="link-seta" href="quem-somos.html">Conhecer a Kyzent</a>
+      </div>
+    </section>"""
+
 def diferenciais(classe=""):
     cards = "\n".join(f'          <li class="diferencial brilho"><p class="dif-palavra">{k}</p><h3>{t}</h3><p>{d}</p></li>' for k, t, d in DIFERENCIAIS)
     return f"""    <section class="secao {classe}" id="diferenciais" aria-labelledby="titulo-diferenciais">
@@ -983,8 +996,8 @@ DEMOS_COMPLETAS = [
       "A agenda do dono, com todos os horários marcados"],
      "Para pet shops, salões, barbearias e clínicas"),
 ]
-def cartao_demo(did, titulo, url, negocio, alt, itens, publico):
-    lis = "".join(f"<li>{I['check']}<span>{x}</span></li>" for x in itens)
+def cartao_demo(did, titulo, url, negocio, alt, itens, publico, compacto=False):
+    lis = "" if compacto else "".join(f"<li>{I['check']}<span>{x}</span></li>" for x in itens)
     return f"""<li class="demo-completa">
             <div class="demo-celular" aria-hidden="false">
               <picture><source type="image/webp" srcset="assets/img/demos/{did}-390.webp 390w, assets/img/demos/{did}.webp 780w" sizes="260px">
@@ -993,7 +1006,7 @@ def cartao_demo(did, titulo, url, negocio, alt, itens, publico):
             <div class="demo-completa-texto">
               <p class="pilar-apoio">{negocio}</p>
               <h3>{titulo}</h3>
-              <ul class="demo-completa-itens">{lis}</ul>
+              {f'<ul class="demo-completa-itens">{lis}</ul>' if lis else ""}
               <p class="demo-completa-publico">{publico}</p>
               <a class="botao" href="{url}" target="_blank" rel="noopener">Testar a demonstração {I["externo"]}<span class="visualmente-oculto"> (abre em nova aba)</span></a>
             </div>
@@ -1033,7 +1046,7 @@ TESTAR = f"""    <section class="secao testar" id="testar" aria-labelledby="titu
           <p>Feito sob medida, com a cara do seu negócio. Cada demonstração tem a identidade visual do negócio de exemplo, não a da Kyzent: é assim que o seu sistema fica, com a sua marca.</p>
         </div>
         <ul class="demos-completas">
-          {"".join(cartao_demo(*d) for d in DEMOS_COMPLETAS)}
+          {"".join(cartao_demo(*d, compacto=True) for d in DEMOS_COMPLETAS)}
         </ul>
         <p class="nota">Demonstrações com dados fictícios. Nenhum pedido ou agendamento é feito de verdade.</p>
       </div>
@@ -1123,8 +1136,6 @@ def segmentos_secao(classe="claro"):
               <h3>{SEG_FRASE[sid]}</h3>
               <p class="sg-rotulo">O sistema que a Kyzent monta</p>
               <ul class="sg-blocos">{blocos}</ul>
-              <p class="sg-rotulo">O que melhora</p>
-              <ul class="sg-melhora">{melhora}</ul>
               <div class="sg-acoes">{acao}</div>
             </div>
             <div class="sg-visual">
@@ -1276,13 +1287,15 @@ INICIO = f"""{HERO}
 
 {TESTAR}
 
-{central_demos()}
+{central_demos(ids=["painel", "estoque", "pedidos"], titulo="Veja o sistema de gestão funcionando.",
+               intro="Três telas do mesmo sistema, com dados fictícios: registre uma venda em Estoque ou em Pedidos e veja o Painel mudar.",
+               rodape='<div class="demo-todas"><a class="botao botao-contorno" href="demonstracoes.html">Ver todas as demonstrações</a></div>')}
 
 {segmentos_secao()}
 
 {como_trabalhamos(faixa=False)}
 
-{SOBRE_CURTO}
+{por_que_kyzent()}
 
 {projetos_secao()}{DEPOIMENTOS_COMENTADO}{perguntas().replace('class="secao"', 'class="secao claro"', 1)}
 

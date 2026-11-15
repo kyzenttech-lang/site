@@ -2217,3 +2217,16 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
 .pilares .frente-itens-catalogo { display: grid; margin-top: 14px; }
 .pilares-catalogo .pilar-sistemas .pilar-rodape { margin-top: auto; }
 .pilares-catalogo .frente-itens-catalogo { margin-bottom: 22px; }
+
+/* ---------- Refinamento: Início mais enxuto ---------- */
+.demo-todas { display: flex; justify-content: center; margin-top: 28px; }
+.porque-grade { display: grid; gap: 22px; align-items: center; }
+@media (min-width: 1000px) { .porque-grade { grid-template-columns: .7fr 2fr auto; gap: 40px; } }
+.porque-grade h2 { font-size: clamp(1.8rem, 1.3rem + 1.8vw, 2.6rem); }
+.porque-lista { display: grid; gap: 10px; }
+@media (min-width: 640px) { .porque-lista { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .porque-lista { grid-template-columns: repeat(4, 1fr); } }
+.porque-lista li { display: grid; gap: 4px; padding: 16px; border-radius: var(--r-cartao); background: var(--cartao); box-shadow: 0 0 0 1px var(--linha) inset; }
+.porque-lista strong { color: var(--branco); font-size: 1rem; }
+.porque-lista .dif-palavra { color: var(--azul); font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+@media (min-width: 1000px) { .segmentos-v2 .sg-visual { min-height: 440px; } }
