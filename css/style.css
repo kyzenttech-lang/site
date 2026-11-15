@@ -2150,3 +2150,61 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
 @media (min-width: 1180px) { .cat-pilar .catalogo > .cat-grupo:only-child ul { columns: 3; } }
 .rodape-whats { color: var(--texto-2); }
 .rodape-whats a { display: inline-block; min-height: 44px; line-height: 44px; }
+
+/* ---------- Segmentos (v2): abas em pílula, painel com texto e foto com cartão de interface ---------- */
+.segmentos-v2 .seg-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 18px; border-radius: 999px; white-space: nowrap; }
+.segmentos-v2 .seg-chip svg { width: 18px; flex: none; }
+.segmentos-v2 .seg-paineis { margin-top: 8px; }
+.sg-painel { display: grid; gap: 0; overflow: hidden; border-radius: var(--r-grande); background: #fff; box-shadow: 0 0 0 1px rgba(11,18,32,.08), 0 30px 60px -40px rgba(11,18,32,.35); }
+@media (min-width: 1000px) { .segmentos-v2 .sg-painel { grid-template-columns: 1.05fr .95fr; } }
+.sg-texto { display: flex; flex-direction: column; padding: 28px 24px 26px; }
+@media (min-width: 1000px) { .sg-texto { padding: 44px 44px 40px 140px; min-height: 520px; } }
+.sg-texto h3 { margin-top: 6px; color: #0B1220; font-size: clamp(1.5rem, 1.15rem + 1.4vw, 2.3rem); line-height: 1.12; text-wrap: balance; }
+.sg-rotulo { margin-top: 24px; color: #4A5468; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.sg-blocos { display: grid; gap: 8px; margin-top: 10px; }
+@media (min-width: 640px) { .sg-blocos { grid-template-columns: 1fr 1fr; } }
+.sg-blocos li { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-radius: 12px; background: #F3F5F9; color: #0B1220; font-weight: 600; font-size: .95rem; line-height: 1.35; }
+.sg-blocos svg { width: 18px; flex: none; margin-top: 1px; color: #1A5CFF; }
+.sg-melhora { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.sg-melhora li { padding: 7px 12px; border-radius: 999px; background: rgba(16,163,100,.1); color: #0B6B43; font-size: .88rem; font-weight: 600; }
+.sg-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: auto; padding-top: 28px; }
+.sg-acoes .botao { gap: 8px; } .sg-acoes .botao svg { width: 18px; }
+/* foto com o cartão de interface do segmento */
+.sg-visual { position: relative; min-height: 240px; order: -1; }
+@media (min-width: 1000px) { .sg-visual { order: 0; min-height: 100%; } }
+.sg-visual picture, .sg-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.sg-visual::after { content: ""; position: absolute; inset: 0; background: linear-gradient(200deg, rgba(10,61,255,.18), transparent 45%, rgba(11,18,32,.35)); pointer-events: none; }
+.sg-ui { position: absolute; left: 16px; right: 16px; bottom: 16px; z-index: 1; display: grid; gap: 2px; padding: 14px 16px; border-radius: 16px;
+  background: rgba(255,255,255,.88); -webkit-backdrop-filter: blur(14px) saturate(140%); backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 20px 40px -18px rgba(11,18,32,.6), 0 0 0 1px rgba(255,255,255,.6) inset; color: #0B1220; }
+@media (min-width: 1000px) { .sg-ui { left: auto; right: 28px; bottom: 28px; width: 300px; } }
+.sg-ui-topo { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.sg-ui-topo small { color: #4A5468; font-size: .78rem; font-weight: 600; }
+.sg-ui-topo em { padding: 3px 9px; border-radius: 999px; background: rgba(26,92,255,.12); color: #1A5CFF; font-size: .74rem; font-style: normal; font-weight: 700; }
+.sg-ui strong { margin-top: 4px; font-size: 1.05rem; }
+.sg-ui-apoio { color: #4A5468; font-size: .88rem; }
+.sg-painel.ativo .sg-ui { animation: sg-ui-entra .6s var(--ease) .15s both; }
+@keyframes sg-ui-entra { from { opacity: 0; transform: translateY(14px); } }
+/* ícone 3D: no computador ao lado do texto; no celular no canto da foto */
+.segmentos-v2 .seg-palco { top: 12px; left: 12px; width: 72px; height: 72px; }
+@media (min-width: 1000px) { .segmentos-v2 .seg-palco { top: 40px; left: 40px; width: 80px; height: 80px; } }
+.sg-nota { margin-top: 16px; color: #4A5468; font-size: .88rem; }
+@media (prefers-reduced-motion: reduce) { .sg-painel.ativo .sg-ui { animation: none; } }
+/* abas numa linha só (desliza se não couber) */
+.segmentos-v2 .seg-chips { flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x proximity; }
+@media (min-width: 1000px) { .segmentos-v2 .seg-chips { margin-inline: 0; padding-inline: 0; } .segmentos-v2 .seg-chip { padding: 0 15px; font-size: .95rem; } }
+.segmentos-v2 .seg-chip { scroll-snap-align: start; flex: none; }
+/* o ícone 3D fica só ao lado do nome do segmento; o resto do texto usa a largura toda */
+@media (min-width: 1000px) {
+  .sg-texto { padding: 40px 44px 40px; min-height: 0; }
+  .sg-texto > .pilar-apoio { display: flex; align-items: center; min-height: 80px; padding-left: 100px; }
+  .segmentos-v2 .seg-palco { top: 40px; left: 44px; }
+  .sg-visual { min-height: 560px; }
+}
+/* celular: botão quebra linha, foto mais alta e cartão menor */
+@media (max-width: 999px) {
+  .sg-acoes .botao { width: 100%; white-space: normal; text-align: center; justify-content: center; }
+  .sg-visual { min-height: 280px; }
+  .sg-ui { padding: 10px 12px; left: 12px; right: 12px; bottom: 12px; }
+  .sg-ui strong { font-size: .95rem; }
+}

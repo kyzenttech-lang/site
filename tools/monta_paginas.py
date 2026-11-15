@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "127"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "128"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1080,11 +1080,6 @@ HISTORIA = f"""    <section class="secao historia historia-3d" id="como-funciona
 SEG_DEMO = {"lanchonete": ("cardápio online", DEMO_CARDAPIO), "barbearia": ("agendamento online", DEMO_AGENDAMENTO),
             "salao": ("agendamento online", DEMO_AGENDAMENTO), "consultorio": ("agendamento online", DEMO_AGENDAMENTO),
             "petshop": ("agendamento online", DEMO_AGENDAMENTO)}
-def seg_demo(sid):
-    if sid not in SEG_DEMO: return ""
-    nome, url = SEG_DEMO[sid]
-    return (f'<a class="link-seta seg-demo" href="{url}" target="_blank" rel="noopener">Testar a demonstração de {nome}'
-            f'<span class="visualmente-oculto"> (abre em nova aba)</span></a>')
 SEG_ALT = {
     "lanchonete": "Garçom servindo hambúrguer, batata frita e suco numa bandeja de madeira",
     "barbearia": "Barbeiros cortando o cabelo de clientes numa barbearia",
@@ -1093,28 +1088,53 @@ SEG_ALT = {
     "petshop": "Cachorro corgi sentado dentro de um pet shop",
     "empresa": "Equipe de uma empresa conversando em volta de um computador",
 }
+# cartão flutuante de cada segmento (interface de exemplo sobre a foto): (rótulo, linha principal, linha de apoio, estado)
+SEG_UI = {
+    "lanchonete": ("Pedido #1044", "2 X-bacon e 1 refrigerante", "R$ 58,00 · entrega", "Em preparo"),
+    "barbearia": ("Agenda de hoje", "Corte e barba", "15h30 · com o Rafa", "Confirmado"),
+    "salao": ("Agenda da equipe", "Escova e hidratação", "10h · cadeira 2", "Confirmado"),
+    "consultorio": ("Consulta de amanhã", "Retorno · 9h", "Lembrete enviado ao paciente", "Confirmada"),
+    "petshop": ("Banho e tosa", "Thor · porte médio", "Hoje, 14h", "Agendado"),
+    "empresa": ("Estoque", "Papel A4 abaixo do mínimo", "Pedido ao fornecedor sugerido", "Atenção"),
+}
 def segmentos_secao(classe="claro"):
     chips, paineis_ = [], []
     for i, (sid, nome, ic, arq, (w, h), artigo, desafios, solucoes, beneficios) in enumerate(SEGMENTOS):
-        chips.append(f'<button type="button" class="seg-chip" role="tab" id="aba-seg-{sid}" data-seg="{sid}" aria-selected="{"true" if i == 0 else "false"}" tabindex="{0 if i == 0 else -1}" aria-controls="seg-{sid}">{nome}</button>')
-        col = lambda titulo, itens, cls: f'<div class="seg-col {cls}"><h4>{titulo}</h4><ul>' + "".join(f"<li>{x}</li>" for x in itens) + "</ul></div>"
-        paineis_.append(f"""          <article class="seg-painel{" ativo" if i == 0 else ""}" id="seg-{sid}" role="tabpanel" tabindex="0" aria-labelledby="aba-seg-{sid}">
-            <div class="seg-foto">{foto(arq, w, h, alt=SEG_ALT[sid], sizes="(max-width: 760px) 100vw, 40vw")}
-              <div class="seg-foto-texto"><h3 id="seg-{sid}-titulo">{nome}</h3><p>{SEG_FRASE[sid]}</p></div>
+        chips.append(f'<button type="button" class="seg-chip" role="tab" id="aba-seg-{sid}" data-seg="{sid}" aria-selected="{"true" if i == 0 else "false"}" tabindex="{0 if i == 0 else -1}" aria-controls="seg-{sid}">{I[ic]}<span>{nome}</span></button>')
+        blocos = "".join(f'<li>{I["check"]}<span>{x}</span></li>' for x in solucoes)
+        melhora = "".join(f"<li>{x}</li>" for x in beneficios)
+        rot, linha, apoio, estado = SEG_UI[sid]
+        if sid in SEG_DEMO:
+            nome_demo, url = SEG_DEMO[sid]
+            acao = (f'<a class="botao" href="{url}" target="_blank" rel="noopener">Testar a demonstração de {nome_demo} {I["externo"]}'
+                    f'<span class="visualmente-oculto"> (abre em nova aba)</span></a>'
+                    f'<a class="link-seta" href="orcamento.html?ramo={sid}">Simular meu orçamento</a>')
+        else:
+            acao = (f'<a class="botao" href="orcamento.html?ramo={sid}">Simular meu orçamento</a>'
+                    f'<a class="link-seta" href="solucao-gestao.html">Conhecer os sistemas de gestão</a>')
+        paineis_.append(f"""          <article class="seg-painel sg-painel{" ativo" if i == 0 else ""}" id="seg-{sid}" role="tabpanel" tabindex="0" aria-labelledby="aba-seg-{sid}">
+            <div class="sg-texto">
+              <p class="pilar-apoio">{nome}</p>
+              <h3>{SEG_FRASE[sid]}</h3>
+              <p class="sg-rotulo">O sistema que a Kyzent monta</p>
+              <ul class="sg-blocos">{blocos}</ul>
+              <p class="sg-rotulo">O que melhora</p>
+              <ul class="sg-melhora">{melhora}</ul>
+              <div class="sg-acoes">{acao}</div>
             </div>
-            <div class="seg-texto">
-              <div class="seg-colunas seg-colunas-2">
-                {col("Como a Kyzent ajuda", solucoes, "seg-solucoes")}
-                {col("O que melhora", beneficios, "seg-beneficios")}
+            <div class="sg-visual">
+              {foto(arq, w, h, alt=SEG_ALT[sid], sizes="(max-width: 999px) 100vw, 45vw")}
+              <div class="sg-ui" aria-hidden="true">
+                <span class="sg-ui-topo"><small>{rot}</small><em>{estado}</em></span>
+                <strong>{linha}</strong><span class="sg-ui-apoio">{apoio}</span>
               </div>
-              {seg_demo(sid)}
             </div>
           </article>""")
-    return f"""    <section class="secao {classe}" id="segmentos" aria-labelledby="titulo-segmentos">
+    return f"""    <section class="secao {classe} segmentos-v2" id="segmentos" aria-labelledby="titulo-segmentos">
       <div class="container">
         <div class="cabeca">
-          <h2 id="titulo-segmentos" data-revelar-texto>Tecnologia para o seu tipo de negócio.</h2>
-          <p>Escolha o seu segmento e veja como a automação entra no seu dia a dia.</p>
+          <h2 id="titulo-segmentos" data-revelar-texto>Feito para o seu tipo de negócio.</h2>
+          <p>Escolha o seu segmento e veja o sistema que a Kyzent monta para ele.</p>
         </div>
         <div class="seg-chips" role="tablist" aria-label="Segmentos" data-segmentos>{"".join(chips)}</div>
         <div class="seg-paineis">
@@ -1123,10 +1143,7 @@ def segmentos_secao(classe="claro"):
           </div>
 {chr(10).join(paineis_)}
         </div>
-        <div class="seg-rodape">
-          <p class="nota">{AVISO_RESULTADOS}</p>
-          <a class="botao" href="orcamento.html">Simular meu orçamento</a>
-        </div>
+        <p class="nota sg-nota">{AVISO_RESULTADOS} Telas de exemplo, com dados fictícios.</p>
       </div>
     </section>"""
 
