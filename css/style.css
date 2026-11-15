@@ -2240,3 +2240,11 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
 .selo-completo { background: rgba(63,180,255,.14); color: var(--azul); }
 .cabeca-centro .selo-tipo { display: table; margin: 0 auto 12px; }
 .demos-cat + .demos-cat { padding-top: 0; }
+
+/* ---------- Refinamento: página da Aurora ---------- */
+@media (min-width: 760px) { .processo-4 { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 640px) and (max-width: 999px) { .grade-4 { grid-template-columns: repeat(2, 1fr); } }
+.aurora-teste-grade { display: grid; gap: 20px; align-items: center; }
+@media (min-width: 900px) { .aurora-teste-grade { grid-template-columns: 1fr auto; gap: 40px; } }
+.aurora-teste-grade h2 { font-size: clamp(1.8rem, 1.3rem + 1.8vw, 2.6rem); }
+.aurora-teste-grade p { margin-top: 10px; color: var(--texto-2); max-width: var(--leitura); }

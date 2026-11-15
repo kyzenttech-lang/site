@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "131"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "132"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -482,41 +482,64 @@ def aurora_pagina():
           <h1 id="titulo-pagina">Conheça a Aurora, a IA de atendimento da Kyzent.</h1>
           <p>A Aurora trabalha para o seu negócio, com o nome e as informações dele. Ela atende os seus clientes no WhatsApp e no Instagram, 24 horas por dia, e sempre se apresenta como assistente virtual.</p>
           <div class="hero-acoes">
-            <a class="botao botao-grande" href="#demonstracoes">Conversar com a Aurora</a>
+            <a class="botao botao-grande" href="demonstracoes.html#atendimento">Conversar com a Aurora</a>
             <a class="botao botao-grande botao-vidro" href="orcamento.html">Simular meu orçamento</a>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="secao" aria-labelledby="titulo-aurora-faz">
+    <section class="secao" aria-labelledby="titulo-aurora-como">
       <div class="container">
         <div class="cabeca">
-          <h2 id="titulo-aurora-faz" data-revelar-texto>O que a Aurora faz pelo seu negócio.</h2>
+          <h2 id="titulo-aurora-como" data-revelar-texto>Como funciona.</h2>
+        </div>
+        <ol class="processo processo-4">
+          <li class="processo-passo"><span class="processo-n">1</span><h3>O cliente escreve</h3><p>No WhatsApp ou no Instagram do seu negócio, a qualquer hora do dia.</p></li>
+          <li class="processo-passo"><span class="processo-n">2</span><h3>A Aurora responde</h3><p>Com as informações que você passou: horários, preços, serviços e endereço.</p></li>
+          <li class="processo-passo"><span class="processo-n">3</span><h3>Resolve o que é rotina</h3><p>Marca o horário, registra o pedido ou tira a dúvida, sem a equipe parar o que está fazendo.</p></li>
+          <li class="processo-passo"><span class="processo-n">4</span><h3>Chama uma pessoa</h3><p>Quando o cliente pede ou o assunto foge da rotina, ela chama a sua equipe, que assume a conversa com tudo o que o cliente já disse.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="secao secao-faixa" aria-labelledby="titulo-aurora-faz">
+      <div class="container">
+        <div class="cabeca">
+          <h2 id="titulo-aurora-faz" data-revelar-texto>O que ela resolve.</h2>
         </div>
         <ul class="aurora-faz">
-          <li><strong>Agenda</strong><span>horários, com confirmação e lembrete</span></li>
-          <li><strong>Tira dúvidas</strong><span>sobre preço, horário, endereço e serviços</span></li>
-          <li><strong>Registra pedidos</strong><span>e manda para a sua equipe organizados</span></li>
-          <li><strong>Chama uma pessoa</strong><span>da equipe quando o cliente precisa</span></li>
+          <li><strong>Agenda</strong><span>sem você largar o atendimento para marcar horário</span></li>
+          <li><strong>Tira dúvidas</strong><span>preço, horário e endereço respondidos na hora, até de madrugada</span></li>
+          <li><strong>Registra pedidos</strong><span>que chegam organizados para a equipe</span></li>
+          <li><strong>Chama uma pessoa</strong><span>quando o assunto precisa de alguém da equipe</span></li>
         </ul>
       </div>
     </section>
 
-    <section class="secao secao-faixa" aria-labelledby="titulo-aurora-jeito">
+    <section class="secao" aria-labelledby="titulo-aurora-jeito">
       <div class="container">
         <div class="cabeca">
-          <h2 id="titulo-aurora-jeito" data-revelar-texto>Como ela trabalha.</h2>
+          <h2 id="titulo-aurora-jeito" data-revelar-texto>Diferenciais da Aurora.</h2>
         </div>
-        <ul class="grade grade-3">
-          <li class="pilar"><p class="pilar-rotulo">Com o seu nome</p><h3>O cliente conversa com o seu negócio.</h3><p>A Aurora atende com o nome, os horários, os preços e as informações que você passar.</p></li>
+        <ul class="grade grade-4">
+          <li class="pilar"><p class="pilar-rotulo">Com o seu nome</p><h3>O cliente conversa com o seu negócio.</h3><p>A Aurora atende com o nome e as informações do seu negócio.</p></li>
           <li class="pilar"><p class="pilar-rotulo">Sem fingir</p><h3>Sempre como assistente virtual.</h3><p>Ela se apresenta como assistente virtual e nunca finge ser uma pessoa.</p></li>
-          <li class="pilar"><p class="pilar-rotulo">Com a sua equipe</p><h3>Uma pessoa entra quando precisa.</h3><p>Quando o cliente pede uma pessoa ou o assunto foge da rotina, ela chama a sua equipe com a conversa organizada.</p></li>
+          <li class="pilar"><p class="pilar-rotulo">Com a sua equipe</p><h3>Uma pessoa entra quando precisa.</h3><p>A conversa passa para a equipe sem o cliente repetir tudo.</p></li>
+          <li class="pilar"><p class="pilar-rotulo">API oficial</p><h3>WhatsApp pela API oficial da Meta.</h3><p>Conexão aprovada pela Meta, sem atalhos que coloquem o número da sua empresa em risco.</p></li>
         </ul>
       </div>
     </section>
 
-{central_demos(ids=["chatbot"], titulo="Converse com a Aurora.")}
+    <section class="secao secao-faixa aurora-teste" aria-labelledby="titulo-aurora-teste">
+      <div class="container aurora-teste-grade">
+        <div>
+          <h2 id="titulo-aurora-teste" data-revelar-texto>Converse com a Aurora.</h2>
+          <p>Faça o papel do cliente de uma barbearia de exemplo: marque um horário, pergunte o preço ou peça para falar com uma pessoa.</p>
+        </div>
+        <a class="botao botao-grande" href="demonstracoes.html#atendimento">Abrir a demonstração</a>
+      </div>
+    </section>
 
     <section class="secao claro" aria-labelledby="titulo-aurora-perguntas">
       <div class="container">
