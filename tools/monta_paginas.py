@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "133"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "134"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1429,7 +1429,7 @@ VISUAL_MOD = {"whatsapp": (visual_atendimento, "Cada mensagem no lugar certo.", 
 def pagina_solucao(mid):
     nome, curto, ic, resumo, servs = MOD[mid]
     titulo, chamada_txt, benef, problemas = SOLUCOES[mid]
-    itens = "\n".join(f'              <li class="item brilho"><h4>{a}</h4><p>{CATALOGO[a][0]}</p></li>' for a in servs)
+    itens = "\n".join(f'              <li class="item brilho"><h3>{a}</h3><p>{CATALOGO[a][0]}</p></li>' for a in servs)
     fn, vt, vd = VISUAL_MOD[mid]
     probs = "".join(f"<li>{p}</li>" for p in problemas)
     bens = "".join(f"<li>{I['check']}{b}</li>" for b in benef)
