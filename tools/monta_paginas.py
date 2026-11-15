@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "132"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "133"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -106,6 +106,33 @@ CATALOGO = {
     "Site personalizado": ("Site feito sob medida para o seu negócio, conforme o que você quer mostrar e o que mais interessa aos seus clientes.", TODOS),
 }
 
+FICHAS = {
+    "Sistema de gestão sob medida (ERP)": ("Controles espalhados em caderno, planilha e vários programas.", "Tudo do negócio num lugar só, sem pagar por funções que você não usa."),
+    "Controle de estoque": ("Produto que acaba sem ninguém perceber.", "Você repõe antes de faltar."),
+    "Financeiro e fluxo de caixa": ("Não saber quanto entrou e quanto saiu no mês.", "O caixa fecha certo e as contas do mês ficam à vista."),
+    "Cadastro de clientes e fornecedores": ("Contatos perdidos em agendas, papéis e conversas.", "Qualquer pessoa da equipe acha o contato e o histórico."),
+    "Gestão de cadastros e pedidos": ("Pedidos anotados em vários lugares.", "Cada pedido com a sua situação, do começo ao fim."),
+    "Integração com CRM": ("Relacionamento com o cliente sem nenhum registro.", "O histórico de cada cliente à mão na hora de atender."),
+    "Relatórios e painel de indicadores": ("Decidir sem saber os números do negócio.", "Os números do mês sem montar planilha."),
+    "Automação de documentos": ("Documentos montados e enviados um a um.", "Os documentos saem prontos e no prazo."),
+    "Integração com os sistemas que você já usa": ("Digitar a mesma informação em dois sistemas.", "Os dados passam de um sistema para o outro sozinhos."),
+    "Cardápio online com pedidos": ("Pedido anotado por mensagem, com erro no item ou no total.", "O pedido chega completo e com o total certo."),
+    "Agendamento online": ("Horário marcado por mensagem, com conflito na agenda.", "O cliente marca sozinho, sem choque de horário."),
+    "Captação e qualificação de leads": ("Contatos que chegam e ninguém acompanha.", "A equipe atende primeiro quem tem mais chance de fechar."),
+    "Follow-up inteligente": ("Cliente que some depois do primeiro contato.", "O retorno sai no momento certo, sem depender da memória de ninguém."),
+    "Orçamentos automatizados": ("Orçamento demorado, que esfria a venda.", "A proposta chega enquanto o cliente ainda está interessado."),
+    "Automação de processos comerciais": ("Cada etapa da venda feita à mão, uma por uma.", "A venda anda sem alguém empurrar cada etapa."),
+    "Sistema de atendimento": ("Conversas espalhadas em vários celulares.", "A equipe divide o atendimento e nada fica sem resposta."),
+    "Chatbots inteligentes": ("Cliente sem resposta à noite e no fim de semana.", "Atendimento a qualquer hora, com as informações do negócio."),
+    "Respostas inteligentes": ("As mesmas perguntas respondidas o dia inteiro.", "A equipe fica livre para o que precisa de uma pessoa."),
+    "Triagem de atendimento": ("Mensagem importante perdida no meio das outras.", "Cada pedido chega para a pessoa certa."),
+    "Centrais inteligentes de atendimento": ("Um só atendimento para assuntos muito diferentes.", "Cada assunto atendido por um agente preparado para ele."),
+    "Site personalizado": ("Cliente que não encontra o seu negócio na internet.", "Serviços, horários e contato num lugar só, com a sua marca."),
+    "Agentes de IA personalizados": ("Tarefa repetitiva que nenhum sistema pronto faz.", "A IA faz a tarefa do jeito do seu processo."),
+    "Assistentes internos de IA": ("A equipe perde tempo procurando informação.", "A resposta vem na hora, com base nos dados da empresa."),
+    "Sistemas personalizados": ("Um processo que nenhum sistema pronto resolve.", "Um sistema feito do zero para esse processo."),
+}
+
 # módulos da página Serviços: (id, nome, nome curto (celular), ícone, resumo, [serviços])
 MODULOS = [
     ("gestao", "Sistemas de gestão sob medida", "Gestão", "gestao",
@@ -128,6 +155,7 @@ MODULOS = [
 ]
 
 MOD_SERVICOS = {mid: servs for mid, _n, _c, _i, _r, servs in MODULOS}
+assert set(FICHAS) == set(CATALOGO), ("serviço sem ficha ou ficha sem serviço", set(FICHAS) ^ set(CATALOGO))
 
 # os 3 pilares das soluções: (id, título, apoio, texto, resultados, [módulos])
 PILARES_SOL = [
@@ -1659,7 +1687,8 @@ def lista_servicos():
         grupos = []
         for mid in mods:
             nome, curto, ic, resumo, servs = MOD[mid]
-            lis = "".join(f'<li><strong>{a}</strong><span>{CATALOGO[a][0]}</span></li>' for a in servs)
+            lis = "".join(f'<li class="ficha"><strong>{a}</strong><span>{CATALOGO[a][0]}</span>'
+                          f'<dl><dt>Resolve</dt><dd>{FICHAS[a][0]}</dd><dt>Na prática</dt><dd>{FICHAS[a][1]}</dd></dl></li>' for a in servs)
             grupos.append(f'<div class="cat-grupo"><h4><a href="{PAGINA_MOD[mid]}">{nome}</a></h4><ul>{lis}</ul></div>')
         blocos.append(f'<div class="cat-pilar"><h3>{titulo}</h3><div class="catalogo">{"".join(grupos)}</div></div>')
     return "".join(blocos)
@@ -1711,7 +1740,7 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-catalogo" data-revelar-texto>Todos os {N_SERVICOS} serviços.</h2>
-          <p>Organizados pelos três pilares. Toque no nome da solução para ver a página completa.</p>
+          <p>Organizados pelos três pilares: o que cada serviço faz, o problema que resolve e o que muda na prática.</p>
         </div>
         {lista_servicos()}
       </div>
