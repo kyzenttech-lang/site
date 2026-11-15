@@ -2208,3 +2208,12 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
   .sg-ui { padding: 10px 12px; left: 12px; right: 12px; bottom: 12px; }
   .sg-ui strong { font-size: .95rem; }
 }
+
+/* Soluções (catálogo): os 3 pilares lado a lado, com os resultados em lista (o Início tem a apresentação) */
+@media (min-width: 1000px) {
+  .pilares-catalogo { grid-template-columns: repeat(3, 1fr); }
+  .pilares-catalogo .pilar-card { grid-column: auto; grid-row: auto; }
+}
+.pilares .frente-itens-catalogo { display: grid; margin-top: 14px; }
+.pilares-catalogo .pilar-sistemas .pilar-rodape { margin-top: auto; }
+.pilares-catalogo .frente-itens-catalogo { margin-bottom: 22px; }

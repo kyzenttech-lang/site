@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "128"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "129"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -101,7 +101,7 @@ CATALOGO = {
     "Cadastro de clientes e fornecedores": ("Clientes e fornecedores num lugar só, com o histórico de cada um.", TODOS),                       # [CONFIRMAR]
     "Integração com os sistemas que você já usa": ("O que a Kyzent desenvolve conversa com o que você já tem, sem digitar a mesma coisa duas vezes.", []),
     "Agentes de IA personalizados": ("Inteligência artificial desenvolvida conforme as necessidades da empresa.", []),
-    "Assistentes internos de IA": ("Ferramentas inteligentes para auxiliar funcionários.", []),
+    "Assistentes internos de IA": ("Uma IA que ajuda a equipe a consultar e organizar as informações da empresa.", []),
     "Sistemas personalizados": ("Sistemas desenvolvidos do zero para um processo que nenhum sistema pronto resolve.", []),
     "Site personalizado": ("Site feito sob medida para o seu negócio, conforme o que você quer mostrar e o que mais interessa aos seus clientes.", TODOS),
 }
@@ -132,16 +132,16 @@ MOD_SERVICOS = {mid: servs for mid, _n, _c, _i, _r, servs in MODULOS}
 # os 3 pilares das soluções: (id, título, apoio, texto, resultados, [módulos])
 PILARES_SOL = [
     ("sistemas", "Sistemas de gestão sob medida", "ERP feito para o seu negócio",
-     "A Kyzent desenvolve o sistema do seu negócio: estoque, caixa, clientes e relatórios num lugar só, do jeito que você trabalha.",
-     ["O estoque baixa sozinho a cada venda", "O caixa do dia fecha sem calculadora", "Clientes, fornecedores e relatórios num lugar só"],
+     "Chega de caderno e planilha: o seu negócio inteiro num sistema feito para ele.",
+     ["Estoque, caixa, clientes e fornecedores num lugar só", "Só as partes que o seu negócio usa", "Começa com um módulo e cresce depois"],
      ["gestao"]),
     ("atendimento", "Atendimento e vendas", "Do primeiro contato ao pedido",
      "Cardápio online, agendamento online, um sistema de atendimento para a equipe e a Aurora, a IA que responde a qualquer hora.",
-     ["Pedidos e horários marcados pelo próprio cliente", "Toda conversa num lugar só para a equipe", "Clientes chamados de volta no momento certo"],
+     ["O cliente faz o pedido ou marca o horário sozinho", "A equipe vê todas as conversas num lugar só", "Quem sumiu recebe um lembrete para voltar"],
      ["agenda", "whatsapp"]),
     ("presenca", "Presença online e IA sob medida", "Para ser encontrado e trabalhar menos",
      "Sites feitos para o seu negócio, inteligência artificial para processos internos e automações sob medida.",
-     ["Um site com a cara do seu negócio", "Tarefas repetitivas feitas por uma IA", "Automações para o processo que só você tem"],
+     ["Site com a marca e as informações do negócio", "IA para as tarefas internas da equipe", "Automação para o processo que só você tem"],
      ["site", "ia"]),
 ]
 
@@ -176,7 +176,7 @@ JANELAS_GERAIS = ""   # o carrinho de orçamento saiu em 2026-11-12: o orçament
 
 def relogio(cls=""):
     """Contador regressivo até o fim da Black Friday (o JS atualiza a cada segundo)."""
-    partes = "".join(f'<span class="relogio-parte"><b data-{k}>00</b><small>{n}</small></span>' for k, n in
+    partes = "".join(f'<span class="relogio-parte"><b data-{k}>--</b><small>{n}</small></span>' for k, n in
                      (("dias", "dias"), ("horas", "horas"), ("min", "min"), ("seg", "seg")))
     return f'<div class="relogio {cls}" data-relogio role="timer" aria-label="A promoção termina em {PROMO_DATA}">{partes}</div>'
 
@@ -551,7 +551,7 @@ SOLUCOES = {
                ["Horário marcado em papel ou de cabeça", "Cliente que falta sem avisar", "Oportunidade perdida por falta de retorno"]),
     "gestao": ("Sistemas de gestão sob medida",
                "A Kyzent desenvolve o sistema de gestão do seu negócio (ERP): estoque, financeiro, clientes e relatórios num lugar só, do jeito que você trabalha.",
-               ["O estoque baixa sozinho a cada venda", "O caixa do dia fecha sem calculadora", "Relatórios prontos para acompanhar o negócio"],
+               ["Você sabe o que tem em estoque sem contar", "O fechamento do dia sai pronto", "Os números do mês num painel"],
                ["Planilhas soltas e anotações perdidas", "Dados digitados duas vezes em sistemas diferentes", "Dificuldade para saber como o mês está indo"]),
     "site": ("Site sob medida para o seu negócio",
              "Um site feito para o seu negócio, com o que os seus clientes procuram e a cara da sua marca.",
@@ -703,27 +703,27 @@ def central_demos(ids=None, titulo="Veja a Kyzent funcionando.", classe=""):
 SEGMENTOS = [
     ("lanchonete", "Restaurantes e lanchonetes", "lanche", "lanchonete.jpg", (1200, 675), "um restaurante ou lanchonete",
      ["Pedidos chegando por mensagem no horário de pico", "Cardápio, horário e taxa de entrega perguntados o dia todo", "Anotação em papel que se perde"],
-     ["Cardápio online com pedidos", "Estoque de insumos que baixa a cada venda", "Fechamento do caixa do dia", "A Aurora respondendo os clientes a qualquer hora"],
+     ["Cardápio online com combos e adicionais", "Baixa de insumos: pão, carne e bebida", "Caixa do delivery e do balcão juntos", "A Aurora informando horário e taxa de entrega"],
      ["Caixa livre para atender quem está no balcão", "Pedidos organizados do recebimento à entrega", "Cliente respondido mesmo fora do horário"]),
     ("barbearia", "Barbearias", "tesoura", "barbearia.jpg", (880, 1100), "uma barbearia",
      ["Responder mensagem no meio de um corte", "Horários vagos por falta de lembrete", "Cliente que demora a voltar"],
-     ["Agendamento online", "Cadastro de clientes com o histórico de cada um", "Financeiro do dia", "Lembrete chamando para o próximo corte"],
+     ["Agenda por barbeiro", "Ficha de cada cliente com o corte de sempre", "Caixa do dia com os serviços feitos", "Lembrete quando passa da hora de voltar"],
      ["Agenda mais organizada", "Menos interrupções durante o atendimento", "Relacionamento contínuo com cada cliente"]),
     ("salao", "Salões de beleza", "pente", "salao.jpg", (734, 1100), "um salão de beleza",
      ["Agenda de várias profissionais ao mesmo tempo", "Dúvidas sobre preço e duração de cada serviço", "Orçamentos de pacotes e eventos"],
-     ["Agenda por serviço e por profissional", "Cadastro de clientes", "Financeiro do salão", "Respostas com preço e duração de cada serviço"],
+     ["Agenda por profissional e por serviço", "Ficha da cliente com o histórico de serviços", "Caixa do dia do salão", "Preço e duração de cada serviço respondidos na hora"],
      ["Menos conflito de horário", "Clientes bem informadas antes de chegar", "Mais tempo da equipe para o atendimento"]),
     ("consultorio", "Clínicas", "cruz", "consultorio.jpg", (1200, 800), "uma clínica",
      ["Recepção sobrecarregada com ligações e mensagens", "Pacientes que esquecem a consulta", "Orientações enviadas uma a uma"],
-     ["Agenda de consultas", "Cadastro de pacientes", "Financeiro da clínica", "Lembretes e confirmação de consultas"],
+     ["Agenda de consultas e retornos", "Cadastro de pacientes com contato e consultas anteriores", "Recebimentos do dia", "Lembrete na véspera da consulta"],
      ["Recepção mais leve", "Agenda confirmada com antecedência", "Dados dos pacientes tratados com cuidado (LGPD)"]),
     ("petshop", "Pet shops", "pata", "petshop.jpg", (1200, 900), "um pet shop",
      ["Banho e tosa marcados por mensagem solta", "Tutores que esquecem vacina e vermífugo", "Pedidos de ração perdidos na conversa"],
-     ["Agendamento de banho, tosa e consulta", "Cadastro de tutores e pets", "Estoque e financeiro da loja", "Lembretes de vacina e do próximo banho"],
+     ["Agenda de banho, tosa e consulta", "Ficha de cada pet com o tutor", "Estoque de ração e acessórios", "Lembrete de vacina e do próximo banho"],
      ["Agenda sem choque de horário", "Tutores lembrados no momento certo", "Histórico de cada pet num lugar só"]),
     ("empresa", "Pequenas e médias empresas", "gestao", "equipe-computador.jpg", (1600, 900), "uma empresa",
      ["Processos manuais repetidos todos os dias", "Informações espalhadas em planilhas e sistemas", "Atendimento que não acompanha o crescimento"],
-     ["Sistema de gestão feito para a empresa", "Estoque e financeiro", "Relatórios e painel de indicadores", "Automações e IA sob medida"],
+     ["Os módulos que a empresa usa, num sistema só", "Estoque e compras", "Contas a pagar e a receber", "Painel com os números do mês"],
      ["Equipe focada no que exige pessoas", "Informações conectadas para decidir melhor", "Tecnologia que acompanha o crescimento da empresa"]),
 ]
 SEG_FRASE = {'lanchonete': 'Do pedido ao caixa fechado, sem anotação perdida.', 'barbearia': 'Agenda cheia, sem largar a máquina.', 'salao': 'Cada profissional com a sua agenda em ordem.', 'consultorio': 'Recepção mais leve e pacientes lembrados.', 'petshop': 'Banho, tosa e vacina sempre no dia certo.', 'empresa': 'Um sistema feito para a empresa crescer.'}
@@ -1004,11 +1004,16 @@ def mini_card(titulo, texto, href, externo=False):
     aviso = '<span class="visualmente-oculto"> (abre em nova aba)</span>' if externo else ""
     return f'<li><a class="mini-card" href="{href}"{alvo}><strong>{titulo}{aviso}</strong><span>{texto}</span></a></li>'
 
-def cartao_pilar(pid, titulo, apoio, texto, resultados, mods):
+def cartao_pilar(pid, titulo, apoio, texto, resultados, mods, modo="inicio"):
+    """modo "inicio": apresentação (texto curto, mini cards e painel). modo "catalogo" (Soluções): os resultados em lista."""
     res = "".join(f"<li>{r}</li>" for r in resultados)
     links = "".join(f'<li><a class="link-seta" href="{PAGINA_MOD[m]}">{MOD[m][0]}</a></li>' for m in mods)
     qtd = sum(len(MOD[m][4]) for m in mods)
     extra = ""
+    if modo == "catalogo":
+        return (f'<li class="pilar-card pilar-{pid}"><p class="pilar-apoio">{apoio}</p><h3>{titulo}</h3>'
+                f'<ul class="frente-itens frente-itens-catalogo">{res}</ul><div class="pilar-rodape"><span class="solucao-qtd">{qtd} serviços</span>'
+                f'<ul class="pilar-links">{links}</ul></div></li>')
     if pid == "atendimento":
         extra = ('<ul class="mini-cards">' + mini_card("Aurora", "A IA que atende os seus clientes a qualquer hora", "aurora.html")
                  + mini_card("Cardápio online", "Teste a demonstração", DEMO_CARDAPIO, True)
@@ -1018,7 +1023,7 @@ def cartao_pilar(pid, titulo, apoio, texto, resultados, mods):
         extra = ('<!--VIS_GESTAO--><ul class="pilar-partes" aria-label="Partes que o sistema pode ter">'
                  + "".join(f"<li>{n}</li>" for n in nomes) + "</ul>")   # VIS_GESTAO: o painel da página de Gestão (definido mais abaixo)
     return (f'<li class="pilar-card pilar-{pid}"><p class="pilar-apoio">{apoio}</p><h3>{titulo}</h3><p class="pilar-texto">{texto}</p>'
-            f'<ul class="frente-itens">{res}</ul>{extra}<div class="pilar-rodape"><span class="solucao-qtd">{qtd} serviços</span>'
+            f'{extra}<div class="pilar-rodape"><span class="solucao-qtd">{qtd} serviços</span>'
             f'<ul class="pilar-links">{links}</ul></div></li>')
 
 TESTAR = f"""    <section class="secao testar" id="testar" aria-labelledby="titulo-testar">
@@ -1053,8 +1058,8 @@ SOLUCOES_SECAO = f"""    <section class="secao claro" id="solucoes" aria-labelle
 HISTORIA_PASSOS = [
     ("Atendimento", "A Aurora, o WhatsApp, o Instagram, o cardápio online e o agendamento recebem o cliente e registram tudo no sistema."),
     ("Pedidos e vendas", "Cada pedido ou venda entra organizado, com o total somado e a situação de cada um."),
-    ("Estoque", "O estoque baixa sozinho a cada venda e avisa quando um produto está acabando."),
-    ("Financeiro", "Entradas e saídas registradas, e o caixa do dia fechado sem calculadora."),
+    ("Estoque", "Cada venda já sai do estoque, e o sistema avisa antes de faltar."),
+    ("Financeiro", "O que entrou e o que saiu, dia a dia, sem planilha."),
     ("Clientes", "O cadastro de cada cliente, com o histórico de compras e de visitas."),
     ("Relatórios", "Os números do negócio num painel, para decidir com base no que aconteceu."),
 ]
@@ -1507,17 +1512,7 @@ QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
 
 {PILARES}
 
-{diferenciais("")}
-
-    <section class="secao claro" aria-labelledby="titulo-proposta">
-      <div class="container">
-        <div class="proposta revelar-bloco">
-          <p class="pilar-rotulo">Nossa proposta</p>
-          <h2 id="titulo-proposta" data-revelar-texto>Mais eficiência, menos tarefas manuais e processos mais inteligentes.</h2>
-          <p>Transformamos tecnologia em resultados para o seu negócio.</p>
-        </div>
-      </div>
-    </section>"""
+{diferenciais("")}"""
 
 # ---------- Demonstrações: tudo que dá para testar
 SIMULACOES = [("Painel", "indicadores e pedidos do dia"), ("Estoque", "venda que baixa o estoque e avisa quando acaba"),
@@ -1691,8 +1686,8 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
     <section class="secao claro" aria-labelledby="titulo-cinco">
       <div class="container">
         <h2 id="titulo-cinco" class="visualmente-oculto">Os três pilares</h2>
-        <ul class="pilares">
-          {"".join(cartao_pilar(*p) for p in PILARES_SOL)}
+        <ul class="pilares pilares-catalogo">
+          {"".join(cartao_pilar(*p, modo="catalogo") for p in PILARES_SOL)}
         </ul>
       </div>
     </section>
