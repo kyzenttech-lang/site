@@ -2230,3 +2230,13 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
 .porque-lista strong { color: var(--branco); font-size: 1rem; }
 .porque-lista .dif-palavra { color: var(--azul); font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 @media (min-width: 1000px) { .segmentos-v2 .sg-visual { min-height: 440px; } }
+
+/* ---------- Refinamento: Demonstrações por categoria ---------- */
+.demos-nav ul { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.demos-nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; background: rgba(255,255,255,.06); box-shadow: 0 0 0 1px var(--linha-forte) inset; color: var(--texto); text-decoration: none; font-weight: 600; font-size: .92rem; }
+.demos-nav a:hover { box-shadow: 0 0 0 1.5px var(--azul) inset; }
+.selo-tipo { display: inline-block; margin-bottom: 12px; padding: 5px 11px; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+.selo-interativa { background: rgba(74,222,155,.14); color: var(--verde); }
+.selo-completo { background: rgba(63,180,255,.14); color: var(--azul); }
+.cabeca-centro .selo-tipo { display: table; margin: 0 auto 12px; }
+.demos-cat + .demos-cat { padding-top: 0; }

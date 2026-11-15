@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "130"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "131"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1464,8 +1464,8 @@ def extra_gestao():
         </div>
         <div class="solucao-beneficios">
           <h3>Quer ver funcionando?</h3>
-          <p>As simulações de Painel, Estoque e Pedidos mostram um sistema de gestão com a mesma base de dados.</p>
-          <a class="link-seta" href="index.html#demonstracoes">Ver o sistema funcionando</a>
+          <p>As simulações de Painel, Estoque, Pedidos e Clientes mostram um sistema de gestão com a mesma base de dados.</p>
+          <a class="link-seta" href="demonstracoes.html#gestao">Ver o sistema funcionando</a>
         </div>
       </div>
     </section>"""
@@ -1528,65 +1528,44 @@ QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
 {diferenciais("")}"""
 
 # ---------- Demonstrações: tudo que dá para testar
-SIMULACOES = [("Painel", "indicadores e pedidos do dia"), ("Estoque", "venda que baixa o estoque e avisa quando acaba"),
-              ("Pedidos", "pedido montado no cardápio, com o total"), ("Clientes", "busca, filtros e lembrete para quem sumiu"),
-              ("Agendamento", "serviço, dia e horário"), ("Aurora", "a IA conversando com o cliente"), ("Automação", "a IA organizando uma tarefa")]
+SELO_INTERATIVA = '<span class="selo-tipo selo-interativa">Interativa · funciona aqui na página</span>'
+SELO_COMPLETO = '<span class="selo-tipo selo-completo">Sistema completo · abre em nova aba</span>'
 def demonstracoes_pagina():
-    sims = "".join(f"<li><strong>{n}</strong><span>{d}</span></li>" for n, d in SIMULACOES)
+    nav = "".join(f'<li><a href="#{a}">{t}</a></li>' for a, t in (("completos", "Sistemas completos"), ("gestao", "Sistema de gestão"),
+                                                              ("atendimento", "Atendimento e vendas"), ("automacao", "Automação")))
     return f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
       <div class="pagina-topo-fundo" aria-hidden="true"></div>
       <div class="container">
         <h1 id="titulo-pagina" data-revelar-texto>Demonstrações.</h1>
-        <p class="pagina-topo-apoio">Teste os sistemas que a Kyzent desenvolve, do jeito que o seu cliente e a sua equipe vão usar.</p>
+        <p class="pagina-topo-apoio">Experimente os sistemas que a Kyzent desenvolve, do jeito que o seu cliente e a sua equipe vão usar.</p>
         <p class="aviso-demos" role="note">Todas as demonstrações usam dados fictícios. Nenhum pedido ou agendamento é feito de verdade.</p>
+        <nav class="demos-nav" aria-label="Categorias de demonstração"><ul>{nav}</ul></nav>
       </div>
     </section>
 
-    <section class="secao testar" aria-labelledby="titulo-completos">
+    <section class="secao testar" id="completos" aria-labelledby="titulo-completos">
       <div class="container">
         <div class="cabeca">
+          {SELO_COMPLETO}
           <h2 id="titulo-completos" data-revelar-texto>Sistemas completos.</h2>
-          <p>Feito sob medida, com a cara do seu negócio. Cada demonstração tem a identidade visual do negócio de exemplo, não a da Kyzent.</p>
+          <p>Dois sistemas inteiros no ar, cada um com a identidade visual do negócio de exemplo. Faça um pedido ou marque um horário do começo ao fim.</p>
         </div>
         <ul class="demos-completas">
           {"".join(cartao_demo(*d) for d in DEMOS_COMPLETAS)}
-<!-- NOVA DEMONSTRAÇÃO: copie um card no mesmo formato (o jeito mais fácil é acrescentar uma linha em DEMOS_COMPLETAS no gerador).
-          <li class="demo-completa">
-            <div class="demo-celular"><img src="assets/img/demos/NOME-390.webp" alt="[descrição da tela]" width="390" height="844" loading="lazy"></div>
-            <div class="demo-completa-texto">
-              <p class="pilar-apoio">[Negócio Exemplo]</p>
-              <h3>[Sistema de gestão e estoque]</h3>
-              <ul class="demo-completa-itens"><li>[o que faz 1]</li><li>[o que faz 2]</li><li>[o que faz 3]</li></ul>
-              <p class="demo-completa-publico">[Para quem é]</p>
-              <a class="botao" href="[URL da demo]" target="_blank" rel="noopener">Testar a demonstração<span class="visualmente-oculto"> (abre em nova aba)</span></a>
-            </div>
-          </li>
--->
+<!-- NOVA DEMONSTRAÇÃO: o jeito mais fácil é acrescentar uma linha em DEMOS_COMPLETAS no gerador (tools/monta_paginas.py),
+     com o print em assets/img/demos/NOME-390.webp e NOME.webp (390 e 780 px de largura). O card sai no mesmo formato. -->
         </ul>
       </div>
     </section>
 
-    <section class="secao secao-faixa" aria-labelledby="titulo-demo-aurora">
-      <div class="container demos-mais">
-        <article class="demo-mais">
-          {avatar_aurora("demo-mais-avatar")}
-          <h2 id="titulo-demo-aurora">Aurora, a IA de atendimento</h2>
-          <p>Converse com a Aurora como se fosse um cliente: ela agenda, informa preços e chama uma pessoa da equipe quando precisa.</p>
-          <div class="demo-mais-links">
-            <a class="botao" href="aurora.html#demonstracoes">Conversar com a Aurora</a>
-            <a class="link-seta" href="aurora.html">Conhecer a Aurora</a>
-          </div>
-        </article>
-        <article class="demo-mais">
-          <h2 id="titulo-demo-sims">Simulações do sistema de gestão</h2>
-          <p>Telas do sistema funcionando, com a mesma base de dados: uma venda baixa o estoque e aparece em Pedidos e no Painel.</p>
-          <ul class="demo-sims">{sims}</ul>
-          <div class="demo-mais-links">
-            <a class="botao" href="index.html#demonstracoes">Ver o sistema funcionando</a>
-          </div>
-        </article>
-      </div>
-    </section>
+{central_demos(ids=["painel", "estoque", "pedidos", "clientes"], titulo="Sistema de gestão.", sec_id="gestao", classe="demos-cat",
+               intro=SELO_INTERATIVA + "Quatro telas do mesmo sistema, ligadas pela mesma base de dados: uma venda no Estoque aparece em Pedidos e no Painel.")}
+
+{central_demos(ids=["agendamento", "chatbot"], titulo="Atendimento e vendas.", sec_id="atendimento", classe="demos-cat",
+               intro=SELO_INTERATIVA + 'O cliente marca um horário e conversa com a Aurora. <a href="aurora.html">Conheça a Aurora</a>.')}
+
+{central_demos(ids=["automacao"], titulo="Automação com IA.", sec_id="automacao", classe="demos-cat",
+               intro=SELO_INTERATIVA + "Uma mensagem do cliente vira uma tarefa feita: a IA entende o pedido, consulta os sistemas e avisa a equipe.")}
 
 {chamada("demonstracoes")}"""
 
