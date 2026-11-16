@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "140"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "141"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -160,7 +160,7 @@ assert set(FICHAS) == set(CATALOGO), ("serviço sem ficha ou ficha sem serviço"
 # os 3 pilares das soluções: (id, título, apoio, texto, resultados, [módulos])
 PILARES_SOL = [
     ("sistemas", "Sistemas de gestão sob medida", "ERP feito para o seu negócio",
-     "Chega de caderno e planilha: o seu negócio inteiro num sistema feito para ele.",
+     "Chega de caderno e planilha: estoque, vendas, caixa e clientes num sistema só, tudo ligado. Uma venda já baixa o estoque e entra no caixa.",
      ["Estoque, caixa, clientes e fornecedores num lugar só", "Só as partes que o seu negócio usa", "Começa com um módulo e cresce depois"],
      ["gestao"]),
     ("atendimento", "Atendimento e vendas", "Do primeiro contato ao pedido",
@@ -1327,8 +1327,6 @@ INICIO = f"""{HERO}
 {SOLUCOES_SECAO}
 
 {comparar()}
-
-{HISTORIA}
 
 {TESTAR}
 
