@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "141"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "142"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1140,7 +1140,7 @@ HISTORIA = f"""    <section class="secao historia historia-3d" id="como-funciona
     </section>"""
 
 # ---------- segmentos: o que muda em cada ramo, sem repetir os problemas das páginas de solução
-SEG_DEMO = {"lanchonete": ("cardápio online", DEMO_CARDAPIO), "barbearia": ("agendamento online", DEMO_AGENDAMENTO),
+SEG_DEMO = {"lanchonete": ("cardápio online", DEMO_CARDAPIO),   # barbearia sem botão: a demo de agendamento é de pet shop
             "salao": ("agendamento online", DEMO_AGENDAMENTO), "consultorio": ("agendamento online", DEMO_AGENDAMENTO),
             "petshop": ("agendamento online", DEMO_AGENDAMENTO)}
 SEG_ALT = {
