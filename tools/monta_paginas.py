@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "137"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "138"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -233,7 +233,7 @@ DADOS_ESTRUTURADOS = json.dumps({
 def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
     url = BASE + ("" if arq == "index.html" else arq)
     ativo = ativo or arq
-    servicos_rodape = "".join(f'<li><a href="{PAGINA_MOD[mid]}">{nome}</a></li>' for mid, nome, *_ in MODULOS)
+    servicos_rodape = "".join(f'<li><a href="{PAGINA_MOD[mid]}">{nome}</a></li>' for mid, nome, *_ in MODULOS if mid in MOD_PAGINA)
     return f"""<!doctype html>
 <html lang="pt-BR" data-theme="dark" data-v="{VERSAO}">
 <head>
@@ -510,7 +510,7 @@ def aurora_pagina():
           <h1 id="titulo-pagina">Conheça a Aurora, a IA de atendimento da Kyzent.</h1>
           <p>A Aurora trabalha para o seu negócio, com o nome e as informações dele. Ela atende os seus clientes no WhatsApp e no Instagram, 24 horas por dia, e sempre se apresenta como assistente virtual.</p>
           <div class="hero-acoes">
-            <a class="botao botao-grande" href="solucao-atendimento.html#funcionando">Conversar com a Aurora</a>
+            <a class="botao botao-grande" href="#conversar">Conversar com a Aurora</a>
             <a class="botao botao-grande botao-vidro" href="orcamento.html">Simular meu orçamento</a>
           </div>
         </div>
@@ -559,15 +559,8 @@ def aurora_pagina():
       </div>
     </section>
 
-    <section class="secao secao-faixa aurora-teste" aria-labelledby="titulo-aurora-teste">
-      <div class="container aurora-teste-grade">
-        <div>
-          <h2 id="titulo-aurora-teste" data-revelar-texto>Converse com a Aurora.</h2>
-          <p>Faça o papel do cliente de uma barbearia de exemplo: marque um horário, pergunte o preço ou peça para falar com uma pessoa.</p>
-        </div>
-        <a class="botao botao-grande" href="solucao-atendimento.html#funcionando">Abrir a demonstração</a>
-      </div>
-    </section>
+{central_demos(ids=["chatbot"], titulo="Converse com a Aurora.", sec_id="conversar", com_link=False,
+               intro="Simulação com dados fictícios. Faça o papel do cliente de uma barbearia de exemplo: marque um horário, pergunte o preço ou peça para falar com uma pessoa.")}
 
     <section class="secao claro" aria-labelledby="titulo-aurora-perguntas">
       <div class="container">
@@ -589,7 +582,7 @@ def k3d(cls=""):
 
 # ------------------------------------------------------------------ soluções (uma página para cada módulo)
 # textos comerciais escritos pelo Claude a partir do catálogo oficial; os sócios precisam confirmar
-PAGINA_MOD = {"whatsapp": "solucao-atendimento.html", "agenda": "solucao-vendas.html", "gestao": "solucao-gestao.html",
+PAGINA_MOD = {"whatsapp": "aurora.html", "agenda": "solucao-vendas.html", "gestao": "solucao-gestao.html",
               "site": "solucao-site.html", "ia": "solucao-ia.html"}
 SOLUCOES = {
     "whatsapp": ("Atendimento com sistema e com a Aurora",
@@ -614,6 +607,8 @@ SOLUCOES = {
            ["Processos que nenhum sistema pronto resolve", "Equipe sobrecarregada com tarefas manuais", "Informação difícil de encontrar na hora certa"]),
 }
 MOD = {mid: (nome, curto, ic, resumo, servs) for mid, nome, curto, ic, resumo, servs in MODULOS}
+# soluções com página própria (o atendimento é a página da Aurora, no menu)
+MOD_PAGINA = [mid for mid in MOD if mid != "whatsapp"]
 
 def msg_modulo(mid):
     return f"Olá, vim pelo site da Kyzent e quero um orçamento de {MOD[mid][0].lower()}."
@@ -1070,12 +1065,11 @@ def mini_card(titulo, texto, href, externo=False):
 def cartao_pilar(pid, titulo, apoio, texto, resultados, mods, modo="inicio"):
     """modo "inicio": apresentação (texto curto, mini cards e painel). modo "catalogo" (Soluções): os resultados em lista."""
     res = "".join(f"<li>{r}</li>" for r in resultados)
-    links = "".join(f'<li><a class="link-seta" href="{PAGINA_MOD[m]}">{MOD[m][0]}</a></li>' for m in mods)
-    qtd = sum(len(MOD[m][4]) for m in mods)
+    links = "".join(f'<li><a class="link-seta" href="{PAGINA_MOD[m]}">{MOD[m][0]}</a></li>' for m in mods if m in MOD_PAGINA)
     extra = ""
     if modo == "catalogo":
         return (f'<li class="pilar-card pilar-{pid}"><p class="pilar-apoio">{apoio}</p><h3>{titulo}</h3>'
-                f'<ul class="frente-itens frente-itens-catalogo">{res}</ul><div class="pilar-rodape"><span class="solucao-qtd">{qtd} serviços</span>'
+                f'<ul class="frente-itens frente-itens-catalogo">{res}</ul><div class="pilar-rodape">'
                 f'<ul class="pilar-links">{links}</ul></div></li>')
     if pid == "atendimento":
         extra = ('<ul class="mini-cards">' + mini_card("Aurora", "A IA que atende os seus clientes a qualquer hora", "aurora.html")
@@ -1086,7 +1080,7 @@ def cartao_pilar(pid, titulo, apoio, texto, resultados, mods, modo="inicio"):
         extra = ('<!--VIS_GESTAO--><ul class="pilar-partes" aria-label="Partes que o sistema pode ter">'
                  + "".join(f"<li>{n}</li>" for n in nomes) + "</ul>")   # VIS_GESTAO: o painel da página de Gestão (definido mais abaixo)
     return (f'<li class="pilar-card pilar-{pid}"><p class="pilar-apoio">{apoio}</p><h3>{titulo}</h3><p class="pilar-texto">{texto}</p>'
-            f'{extra}<div class="pilar-rodape"><span class="solucao-qtd">{qtd} serviços</span>'
+            f'{extra}<div class="pilar-rodape">'
             f'<ul class="pilar-links">{links}</ul></div></li>')
 
 TESTAR = f"""    <section class="secao testar" id="testar" aria-labelledby="titulo-testar">
@@ -1110,7 +1104,7 @@ SOLUCOES_SECAO = f"""    <section class="secao claro" id="solucoes" aria-labelle
             <h2 id="titulo-solucoes" data-revelar-texto>Soluções para cada parte do seu negócio.</h2>
             <p>A Kyzent desenvolve sistemas de gestão, atendimento e inteligência artificial sob medida para pequenos e médios negócios.</p>
           </div>
-          <a class="link-seta" href="servicos.html">Ver os {len(CATALOGO)} serviços</a>
+          <a class="link-seta" href="servicos.html#catalogo">Ver todos os serviços</a>
         </div>
         <ul class="pilares">
           {"".join(cartao_pilar(*p) for p in PILARES_SOL)}
@@ -1570,23 +1564,7 @@ def extra_vendas():
         <ul class="demos-completas">{"".join(cartao_demo(*d) for d in DEMOS_COMPLETAS)}</ul>
       </div>
     </section>"""
-def extra_atendimento():
-    return f"""
-    <section class="secao" aria-labelledby="titulo-partes-atendimento">
-      <div class="container">
-        <div class="cabeca">
-          <h2 id="titulo-partes-atendimento" data-revelar-texto>As partes do atendimento.</h2>
-          <p>A Aurora é uma das partes. O atendimento também passa pelo cardápio online, pelo agendamento e pelo sistema onde a sua equipe responde.</p>
-        </div>
-        <ul class="mini-cards mini-cards-4">
-          {mini_card("Aurora", "A IA que responde no WhatsApp e no Instagram", "aurora.html")}
-          {mini_card("Sistema de atendimento", "Toda conversa num lugar só para a equipe", "#titulo-incluido")}
-          {mini_card("Cardápio online", "Teste a demonstração", DEMO_CARDAPIO, True)}
-          {mini_card("Agendamento online", "Teste a demonstração", DEMO_AGENDAMENTO, True)}
-        </ul>
-      </div>
-    </section>"""
-SOLUCAO_EXTRA = {"gestao": extra_gestao, "agenda": extra_vendas, "whatsapp": extra_atendimento}
+SOLUCAO_EXTRA = {"gestao": extra_gestao, "agenda": extra_vendas}
 
 # ---------- Quem somos: a empresa apresentada uma vez; propósito, missão e proposta com papéis diferentes
 QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
@@ -1694,8 +1672,9 @@ def ecossistema():
     import math
     rx, ry = 250, 120
     nos = []
-    for k, mid in enumerate(MOD):
-        a = math.radians(-90 + k * 72)
+    n = len(MOD_PAGINA); passo = 360 / n
+    for k, mid in enumerate(MOD_PAGINA):
+        a = math.radians(-90 + k * passo)
         x, y = 320 + rx * math.cos(a), 190 + ry * math.sin(a)
         nome = MOD[mid][1]
         nos.append(f'<a class="eco-no" href="{PAGINA_MOD[mid]}" style="--x:{x / 640 * 100:.2f}%;--y:{y / 380 * 100:.2f}%;--i:{k}">'
@@ -1706,7 +1685,7 @@ def ecossistema():
             <ellipse class="eco-orbita eco-orbita-2" cx="320" cy="190" rx="{rx * .62:.0f}" ry="{ry * .62:.0f}"/>
             <path id="eco-trilho" d="M{320 - rx} 190a{rx} {ry} 0 1 0 {2 * rx} 0a{rx} {ry} 0 1 0 {-2 * rx} 0" fill="none"/>
             <circle class="eco-luz" r="5"><animateMotion dur="14s" repeatCount="indefinite"><mpath href="#eco-trilho"/></animateMotion></circle>
-            {"".join(f'<line class="eco-raio" x1="320" y1="190" x2="{320 + rx * math.cos(math.radians(-90 + k * 72)):.1f}" y2="{190 + ry * math.sin(math.radians(-90 + k * 72)):.1f}"/>' for k in range(5))}
+            {"".join(f'<line class="eco-raio" x1="320" y1="190" x2="{320 + rx * math.cos(math.radians(-90 + k * passo)):.1f}" y2="{190 + ry * math.sin(math.radians(-90 + k * passo)):.1f}"/>' for k in range(n))}
           </svg>
           {k3d("eco-k3d")}
           <nav class="eco-nos" aria-label="Soluções">{"".join(nos)}</nav>
@@ -1755,7 +1734,7 @@ saidas = [
     ("privacidade.html", "Política de Privacidade | Kyzent", "Como a Kyzent trata os seus dados pessoais, de acordo com a LGPD: quais dados recebemos, para que usamos, com quem compartilhamos e como exercer os seus direitos.", PRIVACIDADE, "", None),
     ("aurora.html", "Aurora, a IA de atendimento | Kyzent", "Conheça a Aurora, a IA de atendimento da Kyzent: atende os clientes do seu negócio no WhatsApp e no Instagram, 24 horas, e chama a sua equipe quando precisa.", aurora_pagina(), "", None),
     ("orcamento.html", "Orçamento | Kyzent", "Simule o seu orçamento em quatro passos: diga o que precisa (sistema de gestão, cardápio online, agendamento, atendimento com IA ou site) e receba uma recomendação da Kyzent.", ORCAMENTO, "", None),
-] + [(PAGINA_MOD[mid], f"{SOLUCOES[mid][0]} | Kyzent", SOLUCOES[mid][1], pagina_solucao(mid), "", "servicos.html") for mid in MOD]
+] + [(PAGINA_MOD[mid], f"{SOLUCOES[mid][0]} | Kyzent", SOLUCOES[mid][1], pagina_solucao(mid), "", "servicos.html") for mid in MOD_PAGINA]
 
 for arq, titulo, desc, corpo, janelas, ativo in saidas:
     with open(os.path.join(SITE, arq), "w", encoding="utf-8", newline="\n") as f:
@@ -1767,12 +1746,22 @@ with open(os.path.join(SITE, "demonstracoes.html"), "w", encoding="utf-8", newli
     f.write(f"""<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><title>Kyzent</title><meta name="robots" content="noindex">
 <link rel="canonical" href="{BASE}servicos.html">
-<script>var d = {{"#completos": "solucao-vendas.html#funcionando", "#gestao": "solucao-gestao.html#funcionando", "#atendimento": "solucao-atendimento.html#funcionando", "#automacao": "solucao-ia.html#funcionando"}};
+<script>var d = {{"#completos": "solucao-vendas.html#funcionando", "#gestao": "solucao-gestao.html#funcionando", "#atendimento": "aurora.html#conversar", "#automacao": "solucao-ia.html#funcionando"}};
 location.replace(d[location.hash] || "servicos.html");</script>
 <noscript><meta http-equiv="refresh" content="0; url=servicos.html"></noscript></head>
 <body><p><a href="servicos.html">Ir para as soluções</a></p></body></html>
 """)
 print("ok demonstracoes.html (redirecionamento)")
+# solucao-atendimento.html saiu (o atendimento é a página da Aurora): o endereço antigo leva para lá
+with open(os.path.join(SITE, "solucao-atendimento.html"), "w", encoding="utf-8", newline="\n") as f:
+    f.write(f"""<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Kyzent</title><meta name="robots" content="noindex">
+<link rel="canonical" href="{BASE}aurora.html">
+<script>location.replace("aurora.html" + (location.hash === "#funcionando" ? "#conversar" : ""));</script>
+<noscript><meta http-equiv="refresh" content="0; url=aurora.html"></noscript></head>
+<body><p><a href="aurora.html">Ir para a página da Aurora</a></p></body></html>
+""")
+print("ok solucao-atendimento.html (redirecionamento)")
 
 with open(os.path.join(SITE, "sitemap.xml"), "w", encoding="utf-8", newline="\n") as f:
     f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')

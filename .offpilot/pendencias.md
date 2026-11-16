@@ -27,6 +27,20 @@ Só anotado. Nada disto foi feito ainda.
 - O que cada botão principal faz em cada página (orçamento, testar, WhatsApp), sem caminhos repetidos ou sem saída.
 - Navegação no celular: menu lateral, barra fixa de WhatsApp e botões que ficam por cima do conteúdo.
 
+### Análise da seção "Soluções para cada parte do seu negócio" (Início), 2026-11-16 (só análise, nada feito)
+- São 11 cliques, e vários levam a lugares rasos ou repetidos:
+  - as 7 etiquetas do card Gestão (Estoque, Financeiro...) parecem botões e não fazem nada; o card inteiro não é clicável, só o link do rodapé;
+  - "Ver os 24 serviços" cai no topo de Soluções (os mesmos pilares de novo), não na lista;
+  - os mini-cards Cardápio e Agendamento abrem outro site em nova aba, sem explicação;
+  - os links do rodapé dos cards repetem o título do card.
+- Páginas de destino desiguais: Gestão tem ~1100 palavras; Site ~300 (sem simulação), IA ~400, Atendimento ~500, Vendas ~600.
+- Otavio: o topo diz "24 serviços" e o card diz "11 serviços": parece contradição. Sugestão: tirar a contagem dos cards; o topo vira "Ver todos os serviços", indo direto para a lista.
+- Otavio: Aurora repetida (menu, página dela, mini-card "Aurora", link "Atendimento e Aurora" e uma página de solução com o mesmo chat). Já existe uma página só para ela.
+  - Opção A (sugestão do Claude): a Aurora vira a página da solução Atendimento (com o sistema de atendimento da equipe dentro), solucao-atendimento sai e o endereço antigo leva para aurora.html.
+  - Opção B: Atendimento fica só com o sistema da equipe e cita a Aurora uma vez.
+  - Com A, o card "Atendimento e vendas" leva para Vendas e para a Aurora, sem caminhos pela metade.
+- Também: Cardápio e Agendamento aparecem em 3 lugares (Início, Vendas, Atendimento); Atendimento e Aurora apontam uma para a outra (caminho circular).
+
 ## 4. Textos que dependem dos sócios
 - [CONFIRMAR] 6 serviços novos, 3 respostas do FAQ e a frase de estoque e almoxarifado em Quem somos.
 - [REVISAR] fichas dos 24 serviços (página Soluções).
