@@ -2253,3 +2253,11 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
 .ficha dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; margin: 10px 0 0; font-size: .88rem; }
 .ficha dt { color: var(--azul-2); font-weight: 700; }
 .ficha dd { margin: 0; color: #4A5468; }
+
+/* simulações no celular: dias da agenda e filtros de clientes numa linha só */
+@media (max-width: 480px) {
+  .ag-dias { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+  .ag-dia { min-width: 0; padding: 6px 1px; font-size: .78rem; }
+  .cl-filtros { flex-wrap: nowrap; gap: 4px; }
+  .cl-filtros button { flex: 1 1 auto; min-width: 0; padding: 0 6px; font-size: .78rem; }
+}
