@@ -13,7 +13,10 @@ Só anotado. Nada disto foi feito ainda.
   - como as simulações ficam no celular;
   - para onde devem levar os links "KYZENT" dentro das demos completas (repositórios cardapio e agendamento).
 
-## 2. Ideia: juntar Soluções e Demonstrações
+## 2. Juntar Soluções e Demonstrações: FEITO em 2026-11-16 (commit 9b4febe), com o OK do Otavio
+- Textos novos [REVISAR]: "Como funciona no dia a dia" de cada solução (COMO_FUNCIONA no gerador).
+
+(anotação original abaixo)
 - O Otavio vê sentido em ligar as duas, ou até fundir tudo em Soluções, porque a demonstração mostra a solução.
 - Uma forma possível (só ideia, não decidida): cada simulação na página da solução que ela demonstra (Gestão: Painel, Estoque, Pedidos, Clientes; Vendas: Agendamento; Atendimento: Aurora; IA: Automação), a página Demonstrações sai do menu e o endereço antigo leva ao Início.
 - Ligado a isso: o "Conhecer solução" das simulações leva a páginas de solução que hoje estão simples e resumidas; elas precisam explicar melhor cada solução, o que mexe também na página Soluções.
