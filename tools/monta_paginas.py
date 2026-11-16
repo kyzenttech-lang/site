@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "149"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "151"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -377,19 +377,36 @@ PERGUNTAS = [
     ("Posso testar antes de contratar?",
      'Sim. O <a href="#testar">cardápio online e o agendamento online</a> estão no ar para você testar, e a <a href="solucao-gestao.html#funcionando">página do sistema de gestão</a> tem uma simulação dele funcionando.'),
 ]
+# as perguntas do Início em 3 assuntos (todas continuam; só ficam agrupadas)
+GRUPOS_PERGUNTAS = [
+    ("contratacao", "Contratação e preço", ["Como funciona a implantação grátis da Black Friday?", "Quanto custa a mensalidade?",
+                                             "Posso testar antes de contratar?", "Vocês dão suporte depois que a automação está funcionando?"]),
+    ("sistemas", "Sistemas", ["Vocês fazem sistema de gestão (ERP) do zero?", "Vocês conseguem usar o sistema que eu já tenho?",
+                              "Funciona no computador e no celular?", "Para quais tipos de negócio a Kyzent trabalha?"]),
+    ("aurora", "Aurora e WhatsApp", ["O WhatsApp da minha empresa corre risco de bloqueio?", "Preciso ter a Aurora para contratar um sistema?"]),
+]
+assert sorted(q for _g, _n, qs in GRUPOS_PERGUNTAS for q in qs) == sorted(q for q, _r in PERGUNTAS), "pergunta fora dos grupos"
+
 def perguntas():
-    itens = "\n".join(
-        f'          <details class="pergunta"{" open" if i == 0 else ""}><summary><span>{q}</span><span class="pergunta-icone">{I["mais"]}</span></summary><div class="pergunta-resposta"><p>{r}</p></div></details>'
-        for i, (q, r) in enumerate(PERGUNTAS))
+    resp = dict(PERGUNTAS)
+    abas, paineis = [], []
+    for k, (gid, nome, qs) in enumerate(GRUPOS_PERGUNTAS):
+        sel = k == 0
+        abas.append(f'<button type="button" class="perg-aba" role="tab" id="perg-aba-{gid}" aria-controls="perg-{gid}" aria-selected="{"true" if sel else "false"}"'
+                    f' tabindex="{0 if sel else -1}">{nome}<span class="perg-qtd">{len(qs)}</span></button>')
+        itens = "".join(f'<details class="pergunta"><summary><span>{q}</span><span class="pergunta-icone">{I["mais"]}</span></summary>'
+                        f'<div class="pergunta-resposta"><p>{resp[q]}</p></div></details>' for q in qs)
+        paineis.append(f'          <div class="perg-painel" id="perg-{gid}" role="tabpanel" aria-labelledby="perg-aba-{gid}">{itens}</div>')
     return f"""    <section class="secao" id="perguntas" aria-labelledby="titulo-perguntas">
       <div class="container perguntas-grade">
-        <div class="cabeca">
+        <div class="cabeca perguntas-cabeca">
           <h2 id="titulo-perguntas" data-revelar-texto>Perguntas frequentes.</h2>
           <p>Ficou alguma dúvida? Monte uma simulação e a gente responde com uma proposta para o seu negócio.</p>
           <a class="botao botao-contorno" href="orcamento.html">Simular meu orçamento</a>
         </div>
-        <div class="perguntas">
-{itens}
+        <div class="perguntas perguntas-grupos" data-perguntas>
+          <div class="perg-abas" role="tablist" aria-label="Assuntos das perguntas">{"".join(abas)}</div>
+{chr(10).join(paineis)}
         </div>
       </div>
     </section>"""

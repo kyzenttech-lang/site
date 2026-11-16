@@ -827,6 +827,31 @@
     }
   }
 
+  /* ------------------------------------------------------------ perguntas: abas por assunto (sem JS, aparecem todas) */
+  var perg = $("[data-perguntas]");
+  if (perg) {
+    var abasP = $$('[role="tab"]', perg), paineisP = $$('[role="tabpanel"]', perg);
+    var mostrarP = function (aba, foco) {
+      abasP.forEach(function (a) {
+        var on = a === aba;
+        a.setAttribute("aria-selected", on ? "true" : "false");
+        a.tabIndex = on ? 0 : -1;
+        document.getElementById(a.getAttribute("aria-controls")).hidden = !on;
+      });
+      if (foco) aba.focus();
+    };
+    mostrarP(abasP[0], false);
+    abasP.forEach(function (aba, n) {
+      aba.addEventListener("click", function () { mostrarP(aba, false); });
+      aba.addEventListener("keydown", function (e) {
+        var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        mostrarP(abasP[(n + d + abasP.length) % abasP.length], true);
+      });
+    });
+  }
+
   /* ------------------------------------------------------------ ano do rodapé */
   var ano = $("[data-ano]");
   if (ano) ano.textContent = new Date().getFullYear();
