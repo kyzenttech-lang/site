@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "136"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "137"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -73,7 +73,7 @@ I = {
 TIQUES = ('<svg class="zap-tiques" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6.2l3 3L11 1.5M7 9.2l.8.8L15 1.5" '
           'fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>')
 
-PAGINAS = [("index.html", "Início"), ("servicos.html", "Soluções"), ("demonstracoes.html", "Demonstrações"), ("aurora.html", "Aurora"),
+PAGINAS = [("index.html", "Início"), ("servicos.html", "Soluções"), ("aurora.html", "Aurora"),
            ("quem-somos.html", "Quem somos"), ("orcamento.html", "Orçamento")]
 
 # ------------------------------------------------------------------ catálogo de serviços (sem preço: o valor é combinado com cada cliente)
@@ -186,8 +186,8 @@ def menu(atual, classe):
     c = f' class="{classe}"' if classe else ""
     return f'<ul{c}>' + "".join(itens) + "</ul>"
 
-MENU_DESCRICAO = {"index.html": "Soluções, demonstrações e segmentos", "servicos.html": "Catálogo completo de serviços",
-                  "aurora.html": "A IA de atendimento da Kyzent", "demonstracoes.html": "Sistemas para testar agora",
+MENU_DESCRICAO = {"index.html": "Soluções, sistemas para testar e segmentos", "servicos.html": "Catálogo completo de serviços",
+                  "aurora.html": "A IA de atendimento da Kyzent",
                   "quem-somos.html": "Propósito, missão e valores", "orcamento.html": "Simule e receba uma recomendação"}
 def menu_celular(atual):
     return "".join(
@@ -267,7 +267,7 @@ def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
   <script>document.documentElement.classList.add("js");
   // transição entre páginas: o conteúdo desliza no sentido do menu (avançar ou voltar)
   (function () {{
-    var ordem = ["index.html", "servicos.html", "solucao-", "demonstracoes.html", "aurora.html", "quem-somos.html", "orcamento.html", "privacidade.html"];
+    var ordem = ["index.html", "servicos.html", "solucao-", "aurora.html", "quem-somos.html", "orcamento.html", "privacidade.html"];
     function pos(u) {{ try {{ var a = new URL(u).pathname.split("/").pop() || "index.html";
       for (var i = 0; i < ordem.length; i++) if (a.indexOf(ordem[i]) === 0) return i; }} catch (e) {{}} return -1; }}
     addEventListener("pagereveal", function (e) {{
@@ -375,7 +375,7 @@ PERGUNTAS = [
     ("Funciona no computador e no celular?",
      "Sim. Os sistemas funcionam pelo navegador, no computador e no celular, sem precisar instalar nada."),   # [CONFIRMAR]
     ("Posso testar antes de contratar?",
-     'Sim. O <a href="#testar">cardápio online e o agendamento online</a> estão no ar para você testar, e as <a href="demonstracoes.html#gestao">simulações do sistema de gestão</a> mostram ele funcionando.'),
+     'Sim. O <a href="#testar">cardápio online e o agendamento online</a> estão no ar para você testar, e a <a href="solucao-gestao.html#funcionando">página do sistema de gestão</a> tem uma simulação dele funcionando.'),
 ]
 def perguntas():
     itens = "\n".join(
@@ -510,7 +510,7 @@ def aurora_pagina():
           <h1 id="titulo-pagina">Conheça a Aurora, a IA de atendimento da Kyzent.</h1>
           <p>A Aurora trabalha para o seu negócio, com o nome e as informações dele. Ela atende os seus clientes no WhatsApp e no Instagram, 24 horas por dia, e sempre se apresenta como assistente virtual.</p>
           <div class="hero-acoes">
-            <a class="botao botao-grande" href="demonstracoes.html#atendimento">Conversar com a Aurora</a>
+            <a class="botao botao-grande" href="solucao-atendimento.html#funcionando">Conversar com a Aurora</a>
             <a class="botao botao-grande botao-vidro" href="orcamento.html">Simular meu orçamento</a>
           </div>
         </div>
@@ -565,7 +565,7 @@ def aurora_pagina():
           <h2 id="titulo-aurora-teste" data-revelar-texto>Converse com a Aurora.</h2>
           <p>Faça o papel do cliente de uma barbearia de exemplo: marque um horário, pergunte o preço ou peça para falar com uma pessoa.</p>
         </div>
-        <a class="botao botao-grande" href="demonstracoes.html#atendimento">Abrir a demonstração</a>
+        <a class="botao botao-grande" href="solucao-atendimento.html#funcionando">Abrir a demonstração</a>
       </div>
     </section>
 
@@ -719,7 +719,7 @@ def versao_completa(did):
     if did not in VERSAO_COMPLETA: return ""
     return (f'<a class="link-seta demo-completa-link" href="{VERSAO_COMPLETA[did]}" target="_blank" rel="noopener">Ver a versão completa'
             f'<span class="visualmente-oculto"> (abre em nova aba)</span></a>')
-def central_demos(ids=None, titulo="Veja a Kyzent funcionando.", classe="", sec_id="demonstracoes", intro=None, rodape=""):
+def central_demos(ids=None, titulo="Veja a Kyzent funcionando.", classe="", sec_id="demonstracoes", intro=None, rodape="", com_link=True):
     abas_ = [a for a in ABAS_DEMO if ids is None or a[0] in ids]
     botoes, paineis_ = [], []
     for i, (did, curto, ic, titulo_aba, texto, mod, tela) in enumerate(abas_):
@@ -730,7 +730,7 @@ def central_demos(ids=None, titulo="Veja a Kyzent funcionando.", classe="", sec_
               <span class="selo-exemplo">Simulação demonstrativa</span>
               <h3>{titulo_aba}</h3>
               <p>{texto}</p>
-              <a class="link-seta" href="{PAGINA_MOD[mod]}">Conhecer solução</a>
+              {f'<a class="link-seta" href="{PAGINA_MOD[mod]}">Conhecer solução</a>' if com_link else ""}
               {versao_completa(did)}
             </div>
             <div class="demo-tela">{tela()}</div>
@@ -921,7 +921,6 @@ def ilustra(mid, cls="ilu"):
 
 # ---------- chamada final: uma frase por página
 CHAMADAS = {
-    "demonstracoes": ("Quer um sistema assim com a cara do seu negócio?", "Conte como o seu negócio funciona e receba uma recomendação. A Kyzent desenvolve o sistema com a sua marca."),
     "aurora": ("Coloque a Aurora para atender o seu negócio.", "Conte como é o seu atendimento hoje e receba uma recomendação de solução."),
     "index.html": ("Vamos transformar a maneira como sua empresa trabalha?", "Conte como é o seu dia a dia e receba uma recomendação de solução para o seu negócio."),
     "servicos.html": ("Não sabe por onde começar?", "Responda quatro perguntas rápidas e receba a recomendação certa para o seu negócio."),
@@ -1100,6 +1099,7 @@ TESTAR = f"""    <section class="secao testar" id="testar" aria-labelledby="titu
           {"".join(cartao_demo(*d, compacto=True) for d in DEMOS_COMPLETAS)}
         </ul>
         <p class="nota">Demonstrações com dados fictícios. Nenhum pedido ou agendamento é feito de verdade.</p>
+        <div class="demo-todas"><a class="link-seta" href="servicos.html">Ver as outras soluções funcionando</a></div>
       </div>
     </section>"""
 
@@ -1422,13 +1422,60 @@ VISUAL_MOD = {"whatsapp": (visual_atendimento, "Cada mensagem no lugar certo.", 
               "site": (visual_site, "Um site que trabalha por você.", "Feito para o seu negócio, rápido no celular e com a cara da sua marca."),
               "ia": (visual_ia, "Uma IA que conhece a sua empresa.", "Pergunte em português e receba a resposta com base nos seus próprios sistemas.")}
 
+# o dia a dia de cada solução, em passos  [REVISAR] rascunho do Claude
+COMO_FUNCIONA = {
+    "gestao": [("A venda acontece", "No balcão, no cardápio online ou pela conversa, cada venda entra no sistema."),
+               ("O estoque baixa", "Os produtos vendidos saem do estoque, e o sistema avisa quando algum está acabando."),
+               ("O caixa fecha", "Entradas e saídas do dia somadas, sem calculadora."),
+               ("Os números aparecem", "O painel mostra pedidos, faturamento e clientes da semana e do mês.")],
+    "agenda": [("O cliente escolhe", "No cardápio online ou na página de agendamento, ele escolhe o produto ou o horário."),
+               ("Entra organizado", "O pedido chega com o total somado, ou o horário entra na agenda sem conflito."),
+               ("Confirmação e lembrete", "O cliente recebe a confirmação e um lembrete antes do horário."),
+               ("Ele volta", "Quem sumiu recebe uma mensagem chamando de volta no momento certo.")],
+    "whatsapp": [("A mensagem chega", "No WhatsApp ou no Instagram do seu negócio, a qualquer hora."),
+                 ("A Aurora responde a rotina", "Horário, preço, endereço e serviços respondidos na hora."),
+                 ("A equipe recebe o resto", "O que precisa de uma pessoa vai para o sistema de atendimento, já separado."),
+                 ("Nada fica sem resposta", "A equipe vê todas as conversas num lugar só e divide o atendimento.")],
+    "site": [("Conversamos sobre o negócio", "O que você vende, para quem e o que o cliente mais procura."),
+             ("Você vê antes", "As páginas são mostradas antes de irem para o ar, e você ajusta o que quiser."),
+             ("O site vai para o ar", "Rápido no celular, com a sua marca e o caminho para o contato."),
+             ("Atualizações depois", "Mudou um horário ou um serviço? A gente atualiza.")],
+    "ia": [("Escolhemos a tarefa", "Um processo repetitivo que toma tempo da equipe."),
+           ("A IA é configurada", "Com as informações e as regras da sua empresa."),
+           ("Ela faz a tarefa", "Consulta os sistemas, organiza e avisa quem precisa saber."),
+           ("A equipe acompanha", "As pessoas conferem o resultado e ficam com o que precisa de decisão.")],
+}
+# as simulações de cada solução (o Site não tem simulação: mostra a ilustração)
+DEMOS_MOD = {"gestao": ["painel", "estoque", "pedidos", "clientes"], "agenda": ["agendamento"], "whatsapp": ["chatbot"], "ia": ["automacao"]}
+INTRO_DEMOS = {"gestao": "Quatro telas do mesmo sistema, ligadas pela mesma base de dados: registre uma venda no Estoque ou em Pedidos e veja o Painel mudar.",
+               "agenda": "Escolha o serviço, o dia e o horário, do jeito que o seu cliente vai fazer.",
+               "whatsapp": "Faça o papel do cliente de uma barbearia de exemplo: marque um horário, pergunte o preço ou peça para falar com uma pessoa.",
+               "ia": "Uma mensagem do cliente vira uma tarefa feita: a IA entende o pedido, consulta os sistemas e avisa a equipe."}
+
 def pagina_solucao(mid):
     nome, curto, ic, resumo, servs = MOD[mid]
     titulo, chamada_txt, benef, problemas = SOLUCOES[mid]
-    itens = "\n".join(f'              <li class="item brilho"><h3>{a}</h3><p>{CATALOGO[a][0]}</p></li>' for a in servs)
+    fichas = "\n".join(f'              <li class="item ficha brilho"><h3>{a}</h3><p>{CATALOGO[a][0]}</p>'
+                       f'<dl><dt>Resolve</dt><dd>{FICHAS[a][0]}</dd><dt>Na prática</dt><dd>{FICHAS[a][1]}</dd></dl></li>' for a in servs)
     fn, vt, vd = VISUAL_MOD[mid]
     probs = "".join(f"<li>{p}</li>" for p in problemas)
     bens = "".join(f"<li>{I['check']}{b}</li>" for b in benef)
+    passos = "".join(f'<li class="processo-passo"><span class="processo-n">{k + 1}</span><h3>{t}</h3><p>{d}</p></li>' for k, (t, d) in enumerate(COMO_FUNCIONA[mid]))
+    if mid in DEMOS_MOD:
+        funcionando = central_demos(ids=DEMOS_MOD[mid], titulo="Teste aqui.", sec_id="funcionando", com_link=False,
+                                    intro=f'Simulação com dados fictícios. {INTRO_DEMOS[mid]}')
+        link_topo = "Testar agora"
+    else:
+        funcionando = f"""    <section class="secao" id="funcionando" aria-labelledby="titulo-funcionando">
+      <div class="container vis-grade">
+        <div class="vis-texto">
+          <h2 id="titulo-funcionando" data-revelar-texto>{vt}</h2>
+          <p>{vd}</p>
+        </div>
+        {fn()}
+      </div>
+    </section>"""
+        link_topo = "Ver um exemplo"
     return f"""    <section class="pagina-topo solucao-topo" aria-labelledby="titulo-pagina">
       <div class="pagina-topo-fundo" aria-hidden="true"></div>
       <div class="container pagina-topo-grade">
@@ -1440,18 +1487,8 @@ def pagina_solucao(mid):
         </div>
         <div class="pagina-topo-texto">
           <a class="botao botao-grande" href="orcamento.html" data-magnetico>Pedir orçamento</a>
-          <a class="link-seta" href="demonstracoes.html">Testar uma demonstração</a>
+          <a class="link-seta" href="#funcionando">{link_topo}</a>
         </div>
-      </div>
-    </section>
-
-    <section class="secao" aria-labelledby="titulo-visual">
-      <div class="container vis-grade">
-        <div class="vis-texto">
-          <h2 id="titulo-visual" data-revelar-texto>{vt}</h2>
-          <p>{vd}</p>
-        </div>
-        {fn()}
       </div>
     </section>
 
@@ -1462,25 +1499,36 @@ def pagina_solucao(mid):
           <ul class="lista-problemas">{probs}</ul>
         </div>
         <div class="solucao-beneficios">
-          <h3>O que melhora</h3>
+          <h3>O que muda</h3>
           <ul class="lista-simples">{bens}</ul>
           <p class="nota">{AVISO_RESULTADOS}</p>
         </div>
       </div>
     </section>
 
-    <section class="secao claro secao-faixa" aria-labelledby="titulo-incluido">
+    <section class="secao" aria-labelledby="titulo-dia">
+      <div class="container">
+        <div class="cabeca">
+          <h2 id="titulo-dia" data-revelar-texto>Como funciona no dia a dia.</h2>
+        </div>
+        <ol class="processo processo-4">{passos}</ol>
+      </div>
+    </section>
+
+{funcionando}
+{SOLUCAO_EXTRA.get(mid, lambda: "")()}
+    <section class="secao claro secao-faixa" id="incluido" aria-labelledby="titulo-incluido">
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-incluido" data-revelar-texto>{"Módulos possíveis." if mid == "gestao" else "O que está incluído."}</h2>
-          {"<p>O seu sistema tem só os módulos que o seu negócio precisa. Dá para começar com um e acrescentar os outros depois.</p>" if mid == "gestao" else ""}
+          <p>{"O seu sistema tem só os módulos que o seu negócio precisa. Dá para começar com um e acrescentar os outros depois." if mid == "gestao" else "O que cada serviço faz, o problema que resolve e o que muda na prática."}</p>
         </div>
         <ul class="painel-itens itens-solucao">
-{itens}
+{fichas}
         </ul>
       </div>
     </section>
-{SOLUCAO_EXTRA.get(mid, lambda: "")()}
+
 {chamada(mid)}"""
 
 # ---------- o que cada página de solução tem a mais
@@ -1504,15 +1552,10 @@ def extra_gestao():
     </section>
 
     <section class="secao secao-faixa" aria-labelledby="titulo-para-quem">
-      <div class="container solucao-duas">
+      <div class="container">
         <div>
           <h2 id="titulo-para-quem" data-revelar-texto>Para quem é.</h2>
           <p class="para-quem-texto">Para pequenos e médios negócios que controlam estoque, caixa e clientes em caderno, planilha ou em sistemas que não conversam entre si: lanchonetes e restaurantes, lojas, pet shops, salões, barbearias, clínicas e empresas de serviço.</p>
-        </div>
-        <div class="solucao-beneficios">
-          <h3>Quer ver funcionando?</h3>
-          <p>As simulações de Painel, Estoque, Pedidos e Clientes mostram um sistema de gestão com a mesma base de dados.</p>
-          <a class="link-seta" href="demonstracoes.html#gestao">Ver o sistema funcionando</a>
         </div>
       </div>
     </section>"""
@@ -1521,8 +1564,8 @@ def extra_vendas():
     <section class="secao testar" aria-labelledby="titulo-vendas-demos">
       <div class="container">
         <div class="cabeca">
-          <h2 id="titulo-vendas-demos" data-revelar-texto>Teste o cardápio e o agendamento.</h2>
-          <p>Dois sistemas que a Kyzent desenvolveu, cada um com a cara do negócio de exemplo.</p>
+          <h2 id="titulo-vendas-demos" data-revelar-texto>Os sistemas completos.</h2>
+          <p>O cardápio e o agendamento inteiros no ar, cada um com a cara do negócio de exemplo. Faça um pedido ou marque um horário do começo ao fim.</p>
         </div>
         <ul class="demos-completas">{"".join(cartao_demo(*d) for d in DEMOS_COMPLETAS)}</ul>
       </div>
@@ -1573,48 +1616,6 @@ QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
 {PILARES}
 
 {diferenciais("")}"""
-
-# ---------- Demonstrações: tudo que dá para testar
-SELO_INTERATIVA = '<span class="selo-tipo selo-interativa">Interativa · funciona aqui na página</span>'
-SELO_COMPLETO = '<span class="selo-tipo selo-completo">Sistema completo · abre em nova aba</span>'
-def demonstracoes_pagina():
-    nav = "".join(f'<li><a href="#{a}">{t}</a></li>' for a, t in (("completos", "Sistemas completos"), ("gestao", "Sistema de gestão"),
-                                                              ("atendimento", "Atendimento e vendas"), ("automacao", "Automação")))
-    return f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
-      <div class="pagina-topo-fundo" aria-hidden="true"></div>
-      <div class="container">
-        <h1 id="titulo-pagina" data-revelar-texto>Demonstrações.</h1>
-        <p class="pagina-topo-apoio">Experimente os sistemas que a Kyzent desenvolve, do jeito que o seu cliente e a sua equipe vão usar.</p>
-        <p class="aviso-demos" role="note">Todas as demonstrações usam dados fictícios. Nenhum pedido ou agendamento é feito de verdade.</p>
-        <nav class="demos-nav" aria-label="Categorias de demonstração"><ul>{nav}</ul></nav>
-      </div>
-    </section>
-
-    <section class="secao testar" id="completos" aria-labelledby="titulo-completos">
-      <div class="container">
-        <div class="cabeca">
-          {SELO_COMPLETO}
-          <h2 id="titulo-completos" data-revelar-texto>Sistemas completos.</h2>
-          <p>Dois sistemas inteiros no ar, cada um com a identidade visual do negócio de exemplo. Faça um pedido ou marque um horário do começo ao fim.</p>
-        </div>
-        <ul class="demos-completas">
-          {"".join(cartao_demo(*d) for d in DEMOS_COMPLETAS)}
-<!-- NOVA DEMONSTRAÇÃO: o jeito mais fácil é acrescentar uma linha em DEMOS_COMPLETAS no gerador (tools/monta_paginas.py),
-     com o print em assets/img/demos/NOME-390.webp e NOME.webp (390 e 780 px de largura). O card sai no mesmo formato. -->
-        </ul>
-      </div>
-    </section>
-
-{central_demos(ids=["painel", "estoque", "pedidos", "clientes"], titulo="Sistema de gestão.", sec_id="gestao", classe="demos-cat",
-               intro=SELO_INTERATIVA + "Quatro telas do mesmo sistema, ligadas pela mesma base de dados: uma venda no Estoque aparece em Pedidos e no Painel.")}
-
-{central_demos(ids=["agendamento", "chatbot"], titulo="Atendimento e vendas.", sec_id="atendimento", classe="demos-cat",
-               intro=SELO_INTERATIVA + 'O cliente marca um horário e conversa com a Aurora. <a href="aurora.html">Conheça a Aurora</a>.')}
-
-{central_demos(ids=["automacao"], titulo="Automação com IA.", sec_id="automacao", classe="demos-cat",
-               intro=SELO_INTERATIVA + "Uma mensagem do cliente vira uma tarefa feita: a IA entende o pedido, consulta os sistemas e avisa a equipe.")}
-
-{chamada("demonstracoes")}"""
 
 # ---------- Política de Privacidade (LGPD). Texto escrito pelo Claude a partir de como o site funciona; os sócios precisam confirmar.
 PRIVACIDADE = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
@@ -1683,8 +1684,7 @@ def lista_servicos():
         grupos = []
         for mid in mods:
             nome, curto, ic, resumo, servs = MOD[mid]
-            lis = "".join(f'<li class="ficha"><strong>{a}</strong><span>{CATALOGO[a][0]}</span>'
-                          f'<dl><dt>Resolve</dt><dd>{FICHAS[a][0]}</dd><dt>Na prática</dt><dd>{FICHAS[a][1]}</dd></dl></li>' for a in servs)
+            lis = "".join(f'<li><strong>{a}</strong><span>{CATALOGO[a][0]}</span></li>' for a in servs)
             grupos.append(f'<div class="cat-grupo"><h4><a href="{PAGINA_MOD[mid]}">{nome}</a></h4><ul>{lis}</ul></div>')
         blocos.append(f'<div class="cat-pilar"><h3>{titulo}</h3><div class="catalogo">{"".join(grupos)}</div></div>')
     return "".join(blocos)
@@ -1736,7 +1736,7 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-catalogo" data-revelar-texto>Todos os {N_SERVICOS} serviços.</h2>
-          <p>Organizados pelos três pilares: o que cada serviço faz, o problema que resolve e o que muda na prática.</p>
+          <p>Organizados pelos três pilares. Toque no nome da solução para ver como funciona, testar a simulação e saber o que cada serviço resolve.</p>
         </div>
         {lista_servicos()}
       </div>
@@ -1753,7 +1753,6 @@ saidas = [
     ("servicos.html", "Soluções e serviços | Kyzent", "Soluções da Kyzent em três pilares: sistemas de gestão sob medida (ERP), atendimento e vendas com cardápio online, agendamento e a Aurora, e presença online e IA. Simule o seu orçamento.", SERVICOS_PAG.replace("<!--VIS_GESTAO-->", f'<div class="pilar-vis" aria-hidden="true">{visual_gestao()}</div>'), FILTRO_JANELA, None),
     ("quem-somos.html", "Quem somos | Kyzent", "A Kyzent é uma empresa de Tecnologia e Inovação que desenvolve sistemas sob medida. Conheça o nosso propósito, a missão, a visão, os valores e os diferenciais.", QUEM, "", None),
     ("privacidade.html", "Política de Privacidade | Kyzent", "Como a Kyzent trata os seus dados pessoais, de acordo com a LGPD: quais dados recebemos, para que usamos, com quem compartilhamos e como exercer os seus direitos.", PRIVACIDADE, "", None),
-    ("demonstracoes.html", "Demonstrações: sistemas para testar | Kyzent", "Teste o cardápio online com pedidos, o agendamento online, a Aurora e as simulações do sistema de gestão que a Kyzent desenvolve. Dados fictícios.", demonstracoes_pagina(), "", None),
     ("aurora.html", "Aurora, a IA de atendimento | Kyzent", "Conheça a Aurora, a IA de atendimento da Kyzent: atende os clientes do seu negócio no WhatsApp e no Instagram, 24 horas, e chama a sua equipe quando precisa.", aurora_pagina(), "", None),
     ("orcamento.html", "Orçamento | Kyzent", "Simule o seu orçamento em quatro passos: diga o que precisa (sistema de gestão, cardápio online, agendamento, atendimento com IA ou site) e receba uma recomendação da Kyzent.", ORCAMENTO, "", None),
 ] + [(PAGINA_MOD[mid], f"{SOLUCOES[mid][0]} | Kyzent", SOLUCOES[mid][1], pagina_solucao(mid), "", "servicos.html") for mid in MOD]
@@ -1762,6 +1761,18 @@ for arq, titulo, desc, corpo, janelas, ativo in saidas:
     with open(os.path.join(SITE, arq), "w", encoding="utf-8", newline="\n") as f:
         f.write(pagina(arq, titulo, desc, corpo, janelas, ativo))
     print("ok", arq)
+
+# demonstracoes.html saiu do menu (as simulações moram nas páginas de solução): o endereço antigo leva para a solução certa
+with open(os.path.join(SITE, "demonstracoes.html"), "w", encoding="utf-8", newline="\n") as f:
+    f.write(f"""<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Kyzent</title><meta name="robots" content="noindex">
+<link rel="canonical" href="{BASE}servicos.html">
+<script>var d = {{"#completos": "solucao-vendas.html#funcionando", "#gestao": "solucao-gestao.html#funcionando", "#atendimento": "solucao-atendimento.html#funcionando", "#automacao": "solucao-ia.html#funcionando"}};
+location.replace(d[location.hash] || "servicos.html");</script>
+<noscript><meta http-equiv="refresh" content="0; url=servicos.html"></noscript></head>
+<body><p><a href="servicos.html">Ir para as soluções</a></p></body></html>
+""")
+print("ok demonstracoes.html (redirecionamento)")
 
 with open(os.path.join(SITE, "sitemap.xml"), "w", encoding="utf-8", newline="\n") as f:
     f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
