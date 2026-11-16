@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "138"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "140"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1106,8 +1106,8 @@ SOLUCOES_SECAO = f"""    <section class="secao claro" id="solucoes" aria-labelle
           </div>
           <a class="link-seta" href="servicos.html#catalogo">Ver todos os serviços</a>
         </div>
-        <ul class="pilares">
-          {"".join(cartao_pilar(*p) for p in PILARES_SOL)}
+        <ul class="pilares pilares-inicio">
+          {"".join(cartao_pilar(*p) for p in PILARES_SOL if p[0] != "presenca")}
         </ul>
       </div>
     </section>"""

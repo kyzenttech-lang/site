@@ -2261,3 +2261,14 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
   .cl-filtros { flex-wrap: nowrap; gap: 4px; }
   .cl-filtros button { flex: 1 1 auto; min-width: 0; padding: 0 6px; font-size: .78rem; }
 }
+
+/* Início: só Gestão e Atendimento e vendas (Site e IA ficam em Soluções), lado a lado */
+@media (min-width: 1000px) {
+  .pilares-inicio .pilar-sistemas { grid-row: auto; }
+}
+@media (min-width: 1000px) {
+  .pilares-inicio .pilar-atendimento .mini-cards { grid-template-columns: 1fr; gap: 10px; margin-top: 22px; }
+  .pilares-inicio .pilar-atendimento .mini-card { padding: 18px 20px; }
+  .pilares-inicio .pilar-atendimento .mini-card strong { font-size: 1.05rem; }
+  .pilares-inicio .pilar-atendimento .mini-card span { font-size: .9rem; }
+}
