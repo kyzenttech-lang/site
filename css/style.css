@@ -2272,3 +2272,6 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
   .pilares-inicio .pilar-atendimento .mini-card strong { font-size: 1.05rem; }
   .pilares-inicio .pilar-atendimento .mini-card span { font-size: .9rem; }
 }
+
+/* segmentos no celular: botão inteiro e o link centralizado embaixo dele */
+@media (max-width: 999px) { .sg-acoes { justify-content: center; } }

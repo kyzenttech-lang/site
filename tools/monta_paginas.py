@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "143"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "144"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1169,7 +1169,7 @@ def segmentos_secao(classe="claro"):
         rot, linha, apoio, estado = SEG_UI[sid]
         if sid in SEG_DEMO:
             nome_demo, url = SEG_DEMO[sid]
-            acao = (f'<a class="botao" href="{url}" target="_blank" rel="noopener">Testar a demonstração de {nome_demo} {I["externo"]}'
+            acao = (f'<a class="botao" href="{url}" target="_blank" rel="noopener">Testar o {nome_demo} {I["externo"]}'
                     f'<span class="visualmente-oculto"> (abre em nova aba)</span></a>'
                     f'<a class="link-seta" href="orcamento.html?ramo={sid}">Simular meu orçamento</a>')
         else:
