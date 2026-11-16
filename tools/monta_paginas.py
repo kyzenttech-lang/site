@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "134"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "135"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -375,7 +375,7 @@ PERGUNTAS = [
     ("Funciona no computador e no celular?",
      "Sim. Os sistemas funcionam pelo navegador, no computador e no celular, sem precisar instalar nada."),   # [CONFIRMAR]
     ("Posso testar antes de contratar?",
-     'Sim. O <a href="#testar">cardápio online e o agendamento online</a> estão no ar para você testar, e as simulações desta página mostram o sistema de gestão funcionando.'),
+     'Sim. O <a href="#testar">cardápio online e o agendamento online</a> estão no ar para você testar, e as <a href="demonstracoes.html#gestao">simulações do sistema de gestão</a> mostram ele funcionando.'),
 ]
 def perguntas():
     itens = "\n".join(
@@ -1337,10 +1337,6 @@ INICIO = f"""{HERO}
 {HISTORIA}
 
 {TESTAR}
-
-{central_demos(ids=["painel", "estoque", "pedidos"], titulo="Veja o sistema de gestão funcionando.",
-               intro="Três telas do mesmo sistema, com dados fictícios: registre uma venda em Estoque ou em Pedidos e veja o Painel mudar.",
-               rodape='<div class="demo-todas"><a class="botao botao-contorno" href="demonstracoes.html">Ver todas as demonstrações</a></div>')}
 
 {segmentos_secao()}
 
