@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "144"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "147"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -993,13 +993,19 @@ DIFERENCIAIS = [
     ("Mensalidade", "Sem contratar mais gente", "Você assina um serviço que trabalha junto com a sua equipe, em vez de aumentar a folha."),
 ]
 def por_que_kyzent():
-    """Início: só os títulos dos diferenciais (a explicação completa fica em Quem somos)."""
-    itens = "".join(f'<li><span class="dif-palavra">{k}</span><strong>{t}</strong></li>' for k, t, _ in DIFERENCIAIS)
+    """Início: os 4 diferenciais com ícone, título e uma frase (a versão completa fica em Quem somos)."""
+    icones = {"Sob medida": "medida", "Teste antes": "olho", "Suporte": "suporte", "Mensalidade": "repetir"}
+    itens = "".join(f'<li class="pq-item"><span class="pq-icone">{I[icones[k]]}</span><h3>{t}</h3><p>{d}</p></li>' for k, t, d in DIFERENCIAIS)
     return f"""    <section class="secao secao-faixa porque" aria-labelledby="titulo-porque">
-      <div class="container porque-grade">
-        <h2 id="titulo-porque" data-revelar-texto>Por que a Kyzent.</h2>
-        <ul class="porque-lista">{itens}</ul>
-        <a class="link-seta" href="quem-somos.html">Conhecer a Kyzent</a>
+      <div class="container">
+        <div class="cabeca-linha">
+          <div class="cabeca">
+            <h2 id="titulo-porque" data-revelar-texto>Por que a Kyzent.</h2>
+            <p>Tecnologia feita para o seu negócio, que você testa antes e que a gente acompanha depois.</p>
+          </div>
+          <a class="link-seta" href="quem-somos.html">Conhecer a Kyzent</a>
+        </div>
+        <ul class="pq-lista">{itens}</ul>
       </div>
     </section>"""
 
