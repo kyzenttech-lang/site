@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "157"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "158"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1194,17 +1194,21 @@ TESTAR = f"""    <section class="secao testar" id="testar" aria-labelledby="titu
       </div>
     </section>"""
 
-SOLUCOES_SECAO = f"""    <section class="secao claro" id="solucoes" aria-labelledby="titulo-solucoes">
+# Início: atalho curto para as soluções (o detalhe fica na página Soluções)
+ATALHOS_INICIO = [("erp", "ERP sob medida", "O sistema do seu negócio", "solucao-gestao.html"),
+                  ("bi", "BI e análise de dados", "Os números na mão", "solucao-bi.html"),
+                  ("ia", "IA de atendimento", "A Aurora, 24 horas", "aurora.html"),
+                  ("vendas", "Vendas e presença online", "Cardápio, agenda e site", "solucao-vendas.html")]
+SOLUCOES_SECAO = f"""    <section class="secao claro atalhos" id="solucoes" aria-labelledby="titulo-solucoes">
       <div class="container">
         <div class="cabeca-linha">
           <div class="cabeca">
-            <h2 id="titulo-solucoes" data-revelar-texto>Soluções para cada parte do seu negócio.</h2>
-            <p>A Kyzent desenvolve sistemas de gestão, atendimento e inteligência artificial sob medida para pequenos e médios negócios.</p>
+            <h2 id="titulo-solucoes" data-revelar-texto>Do que o seu negócio precisa?</h2>
           </div>
-          <a class="link-seta" href="servicos.html#catalogo">Ver todos os serviços</a>
+          <a class="link-seta" href="servicos.html">Ver todas as soluções</a>
         </div>
-        <ul class="pilares pilares-inicio">
-          {"".join(cartao_pilar_inicio(*p) for p in PILARES_INICIO if p[0] != "presenca")}
+        <ul class="atalhos-lista">
+          {"".join(f'<li><a class="atalho" href="{h}"><span class="atalho-icone">{I[ICONE_PILAR[pid]]}</span><span class="atalho-txt"><strong>{t}</strong><span>{d}</span></span><span class="atalho-seta" aria-hidden="true">→</span></a></li>' for pid, t, d, h in ATALHOS_INICIO)}
         </ul>
       </div>
     </section>"""
