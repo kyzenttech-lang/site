@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "163"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "164"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1784,15 +1784,20 @@ PRIVACIDADE = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagin
 
 # ---------- Soluções: central de navegação (cartões e a lista de serviços, sem número, um único acesso ao simulador)
 def lista_servicos():
+    """Soluções: um abre e fecha por pilar; dentro, os serviços com uma linha cada"""
     blocos = []
     for pid, titulo, apoio, *_resto, mods in PILARES_SOL:
         grupos = []
         for mid in mods:
             nome, curto, ic, resumo, servs = MOD[mid]
             lis = "".join(f'<li><strong>{a}</strong><span>{CATALOGO[a][0]}</span></li>' for a in servs)
-            grupos.append(f'<div class="cat-grupo"><h4><a href="{PAGINA_MOD[mid]}">{nome}</a></h4><ul>{lis}</ul></div>')
-        blocos.append(f'<div class="cat-pilar"><h3>{titulo}</h3><div class="catalogo">{"".join(grupos)}</div></div>')
-    return "".join(blocos)
+            sub = f'<p class="ac-sub"><a href="{PAGINA_MOD[mid]}">{nome}</a></p>' if len(mods) > 1 else ""
+            grupos.append(f'<div class="ac-grupo">{sub}<ul class="ac-servicos">{lis}</ul></div>')
+        (t0, h0), *_r = CAMINHOS_PILAR[pid]
+        blocos.append(f'<details class="ac ac-{pid}"><summary><span class="ac-icone">{I[ICONE_PILAR[pid]]}</span>'
+                      f'<span class="ac-nome"><strong>{titulo}</strong><small>{apoio}</small></span><span class="ac-mais" aria-hidden="true">{I["mais"]}</span></summary>'
+                      f'<div class="ac-corpo">{"".join(grupos)}<a class="ac-ir" href="{h0}">{t0} →</a></div></details>')
+    return '<div class="ac-lista">' + "".join(blocos) + "</div>"
 
 
 def ecossistema():
@@ -1835,7 +1840,7 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-catalogo" data-revelar-texto>O que a Kyzent faz.</h2>
-          <p>Organizados pelos quatro pilares. Toque no nome da solução para ver como funciona e o que cada serviço resolve.</p>
+          <p>Toque em um pilar para ver os serviços que ele reúne.</p>
         </div>
         {lista_servicos()}
       </div>

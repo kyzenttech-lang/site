@@ -2486,3 +2486,31 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
 /* Soluções: "O que a Kyzent faz" no tema escuro */
 #catalogo .cat-grupo { background: var(--cartao); }
 #catalogo .cat-grupo h4 a:hover { color: var(--azul); }
+
+/* ---------- Soluções: "O que a Kyzent faz" em abre e fecha por pilar ---------- */
+.ac-lista { display: grid; gap: 12px; margin-top: 8px; }
+.ac { border-radius: 22px; background: var(--cartao); box-shadow: 0 0 0 1px var(--linha) inset; transition: box-shadow .3s, background-color .3s; }
+.ac[open] { background: var(--cartao-2); box-shadow: 0 0 0 1px rgba(63,180,255,.4) inset, 0 30px 60px -40px rgba(26,92,255,.6); }
+.ac summary { display: flex; align-items: center; gap: 16px; padding: 22px 24px; cursor: pointer; list-style: none; }
+.ac summary::-webkit-details-marker { display: none; }
+.ac summary:hover .ac-nome strong { color: var(--azul); }
+.ac-icone { display: grid; place-items: center; width: 50px; height: 50px; flex: none; border-radius: 15px; background: linear-gradient(145deg, #1A5CFF, #3FB4FF); color: #fff; box-shadow: 0 12px 26px -12px rgba(26,92,255,.9); }
+.ac-icone svg { width: 23px; height: 23px; }
+.ac-nome { display: grid; gap: 2px; flex: 1; min-width: 0; }
+.ac-nome strong { color: var(--branco); font-size: clamp(1.15rem, 1rem + .6vw, 1.45rem); letter-spacing: -.02em; transition: color .25s; }
+.ac-nome small { color: var(--texto-2); font-size: .92rem; }
+.ac-mais { display: grid; place-items: center; width: 38px; height: 38px; flex: none; border-radius: 50%; background: rgba(63,180,255,.14); color: var(--azul); transition: transform .35s var(--mola), background-color .3s, color .3s; }
+.ac-mais svg { width: 18px; }
+.ac[open] .ac-mais { transform: rotate(45deg); background: #1A5CFF; color: #fff; }
+.ac-corpo { display: grid; gap: 22px; padding: 4px 24px 24px 90px; }
+.ac[open] .ac-corpo { animation: resposta-abre .4s var(--ease); }
+.ac-sub { margin-bottom: 10px; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.ac-sub a { color: #8DB8FF; text-decoration: none; } .ac-sub a:hover { color: #fff; }
+.ac-servicos { display: grid; gap: 10px; }
+@media (min-width: 760px) { .ac-servicos { grid-template-columns: repeat(2, 1fr); } }
+.ac-servicos li { display: grid; gap: 3px; padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,.04); box-shadow: 0 0 0 1px var(--linha) inset; }
+.ac-servicos strong { color: var(--branco); font-size: .98rem; }
+.ac-servicos span { color: var(--texto-2); font-size: .9rem; line-height: 1.45; }
+.ac-ir { justify-self: start; color: var(--azul); font-weight: 700; text-decoration: none; }
+.ac-ir:hover { text-decoration: underline; }
+@media (max-width: 639px) { .ac summary { padding: 18px; gap: 12px; } .ac-icone { width: 44px; height: 44px; } .ac-corpo { padding: 0 18px 20px; } }
