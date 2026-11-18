@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "178"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "179"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1672,32 +1672,53 @@ ERP_CENA = ('<div class="erp-3d" data-erp-3d aria-hidden="true"><div class="erp-
             + "".join(f'<div class="erp-area" style="--i:{k}"><span class="erp-fio"><i></i></span><div class="erp-bloco"><span class="erp-bloco-lado"></span>'
                       f'<span class="erp-bloco-topo">{I[ic]}<b>{n}</b></span></div></div>' for n, ic, k in ERP_AREAS)
             + "</div></div>")
-ERP_EXPLICA = f"""    <section class="secao erp-o-que" aria-labelledby="titulo-erp-o-que">
+ERP_ETAPAS = ["Registrar a venda", "Baixar o estoque", "Lançar no caixa", "Saber o resultado"]
+ERP_QUANDO_SEM = ["Na hora", "No fim do dia", "Depois, de novo", "No fim do mês"]
+ERP_QUANDO_COM = ["Na hora", "No mesmo instante", "No mesmo instante", "A qualquer hora"]
+def _faixa(cls, rotulo, textos, quando):
+    itens = "".join(f'<li style="--i:{k}"><span class="ec-quando">{q}</span><p>{t}</p></li>' for k, (t, q) in enumerate(zip(textos, quando)))
+    return f'<div class="ec-faixa {cls}"><p class="ec-rot">{rotulo}</p><ol>{itens}</ol>{"<span class=ec-luz aria-hidden=true></span>" if cls == "ec-com" else ""}</div>'
+ERP_PREVIAS = [
+    '<div class="gv gv-um"><span class="gv-x">Caderno</span><span class="gv-x">Planilha</span><span class="gv-x">Caixa</span><span class="gv-seta">→</span><span class="gv-ok">Um registro</span></div>',
+    '<div class="gv gv-cupom"><p>Caixa do dia</p><i></i><i></i><i></i><span class="gv-fechado">Fechado</span></div>',
+    '<div class="gv gv-estoque"><div class="gv-barra"><span></span><em>mínimo</em></div><span class="gv-alerta">Repor</span></div>',
+    '<div class="gv gv-busca"><span class="gv-campo">Saldo da cliente Marina</span><span class="gv-res">Encontrado em 2 segundos</span></div>',
+]
+ERP_EXPLICA = f"""    <section class="secao erp-hero" aria-labelledby="titulo-erp-o-que">
       <div class="container">
-        <div class="erp-intro">
-          <div class="erp-intro-texto">
-          <div class="cabeca">
-            <p class="px-rotulo">O que é um ERP</p>
-            <h2 id="titulo-erp-o-que" data-revelar-texto>Um sistema onde todas as áreas usam a mesma informação.</h2>
-          </div>
-          <div class="erp-def">
-            <p>ERP é a sigla em inglês para <em>Enterprise Resource Planning</em>, ou planejamento dos recursos da empresa. Na prática, é um sistema só onde vendas, estoque, compras, financeiro e cadastros trabalham sobre a mesma base de dados.</p>
-            <p>A diferença para usar um programa para cada coisa é que nada precisa ser passado de um lugar para o outro: o que acontece numa área já aparece nas outras.</p>
-          </div>
-          </div>
-          {ERP_CENA}
+        <div class="erp-hero-cabeca">
+          <p class="px-rotulo">O que é um ERP</p>
+          <h2 id="titulo-erp-o-que" data-revelar-texto>Um sistema onde todas as áreas usam a mesma informação.</h2>
         </div>
-
-        <div class="erp-venda">
-          <p class="erp-venda-titulo">O caminho de uma venda</p>
-          <div class="erp-colunas" data-erp-caminho>
-            <div class="erp-col erp-col-sem"><h3>Sem ERP</h3><ol>{"".join(f"<li>{t}</li>" for t in ERP_SEM)}</ol></div>
-            <div class="erp-col erp-col-com"><h3>Com ERP</h3><ol>{"".join(f"<li>{t}</li>" for t in ERP_COM)}</ol></div>
-          </div>
+        {ERP_CENA}
+        <div class="erp-hero-def">
+          <p>ERP é a sigla em inglês para <em>Enterprise Resource Planning</em>, ou planejamento dos recursos da empresa. Na prática, é um sistema só onde vendas, estoque, compras, financeiro e cadastros trabalham sobre a mesma base de dados.</p>
+          <p>A diferença para usar um programa para cada coisa é que nada precisa ser passado de um lugar para o outro: o que acontece numa área já aparece nas outras.</p>
         </div>
+      </div>
+    </section>
 
-        <h3 class="erp-ganhos-titulo">Onde a equipe ganha tempo</h3>
-        <ul class="erp-ganhos">{"".join(f'<li><span class="erp-g-n">0{k + 1}</span><h4>{t}</h4><p>{d}</p></li>' for k, (t, d) in enumerate(ERP_GANHOS))}</ul>
+    <section class="secao claro erp-caminho-sec" aria-labelledby="titulo-caminho">
+      <div class="container">
+        <div class="cabeca">
+          <p class="px-rotulo">Na prática</p>
+          <h2 id="titulo-caminho" data-revelar-texto>O caminho de uma venda.</h2>
+        </div>
+        <div class="ec" data-erp-caminho>
+          <div class="ec-etapas" aria-hidden="true"><span></span>{"".join(f'<span><b>{k + 1}</b>{e}</span>' for k, e in enumerate(ERP_ETAPAS))}</div>
+          {_faixa("ec-sem", "Sem ERP", ERP_SEM, ERP_QUANDO_SEM)}
+          {_faixa("ec-com", "Com ERP", ERP_COM, ERP_QUANDO_COM)}
+        </div>
+      </div>
+    </section>
+
+    <section class="secao erp-ganhos-sec" aria-labelledby="titulo-ganhos">
+      <div class="container">
+        <div class="cabeca">
+          <p class="px-rotulo">O resultado</p>
+          <h2 id="titulo-ganhos" data-revelar-texto>Onde a equipe ganha tempo.</h2>
+        </div>
+        <ul class="eg">{"".join(f'<li class="eg-item eg-{k + 1}" data-erp-ganho><div class="eg-txt"><span class="eg-n">0{k + 1}</span><h3>{t}</h3><p>{d}</p></div><div class="eg-vis" aria-hidden="true">{ERP_PREVIAS[k]}</div></li>' for k, (t, d) in enumerate(ERP_GANHOS))}</ul>
       </div>
     </section>
 """

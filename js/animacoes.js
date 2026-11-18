@@ -52,7 +52,7 @@
   });
 
   /* ------------------------------------------------------------ blocos que entram ao rolar (fade + 24 px), cartões em sequência */
-  var GRUPOS = ".grade, .ramos, .etapas, .painel-itens, .solucoes, .hero-numeros, .aurora-faz, .perguntas, .diferenciais, .seg-cols, .erp-ganhos";
+  var GRUPOS = ".grade, .ramos, .etapas, .painel-itens, .solucoes, .hero-numeros, .aurora-faz, .perguntas, .diferenciais, .seg-cols, .eg";
   var SOLTOS = ".cabeca > p, .cabeca-linha > .link-seta, .dupla-foto, .dupla-texto, .demo-texto, .demo-tela, .pagina-topo-apoio, " +
                ".pagina-topo-texto, .revelar-bloco, .aurora-texto > p, .aurora-texto > .botao, .aurora-texto > .pilar-rotulo, .comparar, .chamada-caixa";
   var alvos = [];
@@ -145,20 +145,22 @@
     cena.addEventListener("pointerleave", function () { rx(base.rx); rz(base.rz); });
   });
   $$("[data-erp-caminho]").forEach(function (cam) {
-    var sem = $$(".erp-col-sem li", cam), com = $$(".erp-col-com li", cam);
-    g.set(sem.concat(com), { autoAlpha: 0, x: -14 });
+    var sem = $$(".ec-sem li", cam), com = $$(".ec-com li", cam);
+    g.set(sem.concat(com), { autoAlpha: 0, y: 16 });
     ScrollTrigger.create({
-      trigger: cam, start: "top 75%", once: true,
+      trigger: cam, start: "top 72%", once: true,
       onEnter: function () {
-        // sem ERP: uma etapa depois da outra, devagar; com ERP: tudo junto, e a linha acende de cima a baixo
-        g.to(sem, { autoAlpha: 1, x: 0, duration: 0.5, ease: EASE, stagger: 0.45 });
-        g.to(com, { autoAlpha: 1, x: 0, duration: 0.5, ease: EASE, stagger: 0.06, delay: 0.15,
-                    onStart: function () { cam.classList.add("rodou"); } });
+        // sem ERP: uma etapa depois da outra, devagar; com ERP: tudo de uma vez, e a luz atravessa a faixa
+        g.to(sem, { autoAlpha: 1, y: 0, duration: 0.5, ease: EASE, stagger: 0.5 });
+        g.to(com, { autoAlpha: 1, y: 0, duration: 0.45, ease: EASE, stagger: 0.05, delay: 0.1, onStart: function () { cam.classList.add("rodou"); } });
       },
     });
   });
+  $$("[data-erp-ganho]").forEach(function (c) {
+    ScrollTrigger.create({ trigger: c, start: "top 78%", once: true, onEnter: function () { c.classList.add("visto"); } });
+  });
   if (ponteiroFino) {
-    $$(".erp-ganhos li").forEach(function (c) {
+    $$(".eg-item").forEach(function (c) {
       g.set(c, { transformPerspective: 900 });
       var rx = g.quickTo(c, "rotationX", { duration: 0.4, ease: EASE });
       var ry = g.quickTo(c, "rotationY", { duration: 0.4, ease: EASE });
