@@ -52,7 +52,7 @@
   });
 
   /* ------------------------------------------------------------ blocos que entram ao rolar (fade + 24 px), cartões em sequência */
-  var GRUPOS = ".grade, .ramos, .etapas, .painel-itens, .solucoes, .hero-numeros, .aurora-faz, .perguntas, .diferenciais, .seg-cols";
+  var GRUPOS = ".grade, .ramos, .etapas, .painel-itens, .solucoes, .hero-numeros, .aurora-faz, .perguntas, .diferenciais, .seg-cols, .erp-ganhos";
   var SOLTOS = ".cabeca > p, .cabeca-linha > .link-seta, .dupla-foto, .dupla-texto, .demo-texto, .demo-tela, .pagina-topo-apoio, " +
                ".pagina-topo-texto, .revelar-bloco, .aurora-texto > p, .aurora-texto > .botao, .aurora-texto > .pilar-rotulo, .comparar, .chamada-caixa";
   var alvos = [];
@@ -126,6 +126,52 @@
       },
     });
   });
+
+  /* ------------------------------------------------------------ ERP: cena 3D (os blocos descem sobre a base) e caminho da venda */
+  $$("[data-erp-3d]").forEach(function (cena) {
+    cena.classList.add("pronto");
+    ScrollTrigger.create({ trigger: cena, start: "top 75%", once: true, onEnter: function () { cena.classList.add("entrou"); } });
+    if (!ponteiroFino) return;
+    var plano = cena.querySelector("[data-erp-cena]");
+    var base = { rx: 56, rz: -38 };
+    var rx = g.quickTo(plano, "rotationX", { duration: 0.6, ease: EASE });
+    var rz = g.quickTo(plano, "rotationZ", { duration: 0.6, ease: EASE });
+    g.set(plano, { rotationX: base.rx, rotationZ: base.rz, transformPerspective: 1400 });
+    cena.addEventListener("pointermove", function (e) {
+      var r = cena.getBoundingClientRect();
+      rz(base.rz + ((e.clientX - r.left) / r.width - 0.5) * 16);   // gira até 8 graus para cada lado
+      rx(base.rx - ((e.clientY - r.top) / r.height - 0.5) * 10);
+    });
+    cena.addEventListener("pointerleave", function () { rx(base.rx); rz(base.rz); });
+  });
+  $$("[data-erp-caminho]").forEach(function (cam) {
+    var sem = $$(".erp-col-sem li", cam), com = $$(".erp-col-com li", cam);
+    g.set(sem.concat(com), { autoAlpha: 0, x: -14 });
+    ScrollTrigger.create({
+      trigger: cam, start: "top 75%", once: true,
+      onEnter: function () {
+        // sem ERP: uma etapa depois da outra, devagar; com ERP: tudo junto, e a linha acende de cima a baixo
+        g.to(sem, { autoAlpha: 1, x: 0, duration: 0.5, ease: EASE, stagger: 0.45 });
+        g.to(com, { autoAlpha: 1, x: 0, duration: 0.5, ease: EASE, stagger: 0.06, delay: 0.15,
+                    onStart: function () { cam.classList.add("rodou"); } });
+      },
+    });
+  });
+  if (ponteiroFino) {
+    $$(".erp-ganhos li").forEach(function (c) {
+      g.set(c, { transformPerspective: 900 });
+      var rx = g.quickTo(c, "rotationX", { duration: 0.4, ease: EASE });
+      var ry = g.quickTo(c, "rotationY", { duration: 0.4, ease: EASE });
+      var y = g.quickTo(c, "y", { duration: 0.4, ease: EASE });
+      c.addEventListener("pointerenter", function () { y(-6); });
+      c.addEventListener("pointermove", function (e) {
+        var r = c.getBoundingClientRect();
+        ry(((e.clientX - r.left) / r.width - 0.5) * 10);
+        rx(-((e.clientY - r.top) / r.height - 0.5) * 8);
+      });
+      c.addEventListener("pointerleave", function () { rx(0); ry(0); y(0); });
+    });
+  }
 
   // as abas das demos e o FAQ mudam a altura da página: recalcula os gatilhos
   document.addEventListener("click", function (e) {

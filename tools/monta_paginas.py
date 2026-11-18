@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "173"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "178"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1666,9 +1666,16 @@ ERP_GANHOS = [
     ("A compra é feita antes de faltar", "Cada produto tem um estoque mínimo. Quando passa dele, o sistema avisa, e a reposição é feita com base no que realmente saiu, sem comprar a mais nem deixar faltar."),
     ("A resposta está na tela, não na cabeça do dono", "Preço, saldo de um cliente, o que um fornecedor entregou ou quanto entrou ontem: qualquer pessoa da equipe consulta em segundos, sem interromper ninguém."),
 ]
+ERP_AREAS = [("Vendas", "vendas", 0), ("Estoque", "estoque", 1), ("Caixa", "valores", 2), ("Relatórios", "grafico", 3)]
+ERP_CENA = ('<div class="erp-3d" data-erp-3d aria-hidden="true"><div class="erp-cena" data-erp-cena>'
+            '<div class="erp-base"><span class="erp-base-anel"></span><span class="erp-base-anel a2"></span><span class="erp-base-txt">Uma base de dados</span></div>'
+            + "".join(f'<div class="erp-area" style="--i:{k}"><span class="erp-fio"><i></i></span><div class="erp-bloco"><span class="erp-bloco-lado"></span>'
+                      f'<span class="erp-bloco-topo">{I[ic]}<b>{n}</b></span></div></div>' for n, ic, k in ERP_AREAS)
+            + "</div></div>")
 ERP_EXPLICA = f"""    <section class="secao erp-o-que" aria-labelledby="titulo-erp-o-que">
       <div class="container">
         <div class="erp-intro">
+          <div class="erp-intro-texto">
           <div class="cabeca">
             <p class="px-rotulo">O que é um ERP</p>
             <h2 id="titulo-erp-o-que" data-revelar-texto>Um sistema onde todas as áreas usam a mesma informação.</h2>
@@ -1677,11 +1684,13 @@ ERP_EXPLICA = f"""    <section class="secao erp-o-que" aria-labelledby="titulo-e
             <p>ERP é a sigla em inglês para <em>Enterprise Resource Planning</em>, ou planejamento dos recursos da empresa. Na prática, é um sistema só onde vendas, estoque, compras, financeiro e cadastros trabalham sobre a mesma base de dados.</p>
             <p>A diferença para usar um programa para cada coisa é que nada precisa ser passado de um lugar para o outro: o que acontece numa área já aparece nas outras.</p>
           </div>
+          </div>
+          {ERP_CENA}
         </div>
 
         <div class="erp-venda">
           <p class="erp-venda-titulo">O caminho de uma venda</p>
-          <div class="erp-colunas">
+          <div class="erp-colunas" data-erp-caminho>
             <div class="erp-col erp-col-sem"><h3>Sem ERP</h3><ol>{"".join(f"<li>{t}</li>" for t in ERP_SEM)}</ol></div>
             <div class="erp-col erp-col-com"><h3>Com ERP</h3><ol>{"".join(f"<li>{t}</li>" for t in ERP_COM)}</ol></div>
           </div>
