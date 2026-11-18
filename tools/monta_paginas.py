@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "161"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "162"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1172,7 +1172,9 @@ def previa_pilar(pid):
 
 def pilares_destaque():
     """Soluções: cada pilar numa faixa própria (largura toda), com título da seção e um menu para pular entre eles."""
-    menu = "".join(f'<li><a href="{CAMINHOS_PILAR[pid][0][1]}"><span>0{k + 1}</span>{t}</a></li>' for k, (pid, t, *_r) in enumerate(PILARES_SOL))
+    menu = "".join(f'<li><a class="pe pe-{pid}" href="{CAMINHOS_PILAR[pid][0][1]}"><span class="pe-n" aria-hidden="true">0{k + 1}</span>'
+                   f'<span class="pe-icone">{I[ICONE_PILAR[pid]]}</span><strong>{t}</strong><span class="pe-apoio">{ap}</span>'
+                   f'<span class="pe-ir">Conhecer<span aria-hidden="true"> →</span></span></a></li>' for k, (pid, t, ap, *_r) in enumerate(PILARES_SOL))
     faixas = []
     for k, (pid, titulo, apoio, texto, resultados, mods) in enumerate(PILARES_SOL):
         res = "".join(f"<li>{I['check']}{r}</li>" for r in resultados)
@@ -1197,7 +1199,7 @@ def pilares_destaque():
           <h2 id="titulo-pilares-sol" data-revelar-texto>Tudo o que a Kyzent desenvolve, em quatro frentes.</h2>
           <p>Escolha a frente que mais pesa no seu negócio hoje. Elas funcionam sozinhas ou juntas.</p>
         </div>
-        <nav class="px-menu" aria-label="Pilares"><ul>{menu}</ul></nav>
+        <nav class="pe-nav" aria-label="Os 4 pilares"><ul class="pe-lista">{menu}</ul></nav>
       </div>
     </section>
 """   # só a escolha: cada pilar leva à página que explica (as faixas saíram)
