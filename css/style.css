@@ -2482,3 +2482,7 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
   .pe-ir { grid-column: 3; grid-row: 1 / span 2; margin: 0; padding: 0; font-size: 0; } .pe-ir span { font-size: 1.2rem; }
 }
 @media (prefers-reduced-motion: reduce) { .pe, .pe:hover, .pe::after { transition: none; transform: none; } }
+
+/* Soluções: "O que a Kyzent faz" no tema escuro */
+#catalogo .cat-grupo { background: var(--cartao); }
+#catalogo .cat-grupo h4 a:hover { color: var(--azul); }
