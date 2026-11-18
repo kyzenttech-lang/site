@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "154"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "156"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -104,6 +104,9 @@ CATALOGO = {
     "Assistentes internos de IA": ("Uma IA que ajuda a equipe a consultar e organizar as informações da empresa.", []),
     "Sistemas personalizados": ("Sistemas desenvolvidos do zero para um processo que nenhum sistema pronto resolve.", []),
     "Site personalizado": ("Site feito sob medida para o seu negócio, conforme o que você quer mostrar e o que mais interessa aos seus clientes.", TODOS),
+    "Dados de várias fontes num lugar só": ("Sistema de gestão, vendas e planilhas reunidos numa base só, prontos para analisar.", []),          # [CONFIRMAR]
+    "Análise de vendas, clientes e estoque": ("O que mais vende, quem mais compra e o que está parado no estoque, mês a mês.", TODOS),          # [CONFIRMAR]
+    "Alertas de indicadores": ("Um aviso quando um número sai do normal: venda que caiu, custo que subiu, meta que ficou para trás.", []),   # [CONFIRMAR]
 }
 
 FICHAS = {
@@ -131,6 +134,9 @@ FICHAS = {
     "Agentes de IA personalizados": ("Tarefa repetitiva que nenhum sistema pronto faz.", "A IA faz a tarefa do jeito do seu processo."),
     "Assistentes internos de IA": ("A equipe perde tempo procurando informação.", "A resposta vem na hora, com base nos dados da empresa."),
     "Sistemas personalizados": ("Um processo que nenhum sistema pronto resolve.", "Um sistema feito do zero para esse processo."),
+    "Dados de várias fontes num lugar só": ("Cada número num sistema diferente, sem conversar entre si.", "Uma visão só do negócio, sem juntar planilha à mão."),
+    "Análise de vendas, clientes e estoque": ("Decidir compra e promoção no achismo.", "Você vê o que vende, para quem e quando."),
+    "Alertas de indicadores": ("Descobrir o problema só no fim do mês.", "O aviso chega enquanto ainda dá tempo de agir."),
 }
 
 # módulos da página Serviços: (id, nome, nome curto (celular), ícone, resumo, [serviços])
@@ -138,8 +144,11 @@ MODULOS = [
     ("gestao", "Sistemas de gestão sob medida", "Gestão", "gestao",
      "A Kyzent desenvolve o sistema de gestão do seu negócio (ERP): estoque, financeiro, clientes e relatórios num lugar só.",
      ["Sistema de gestão sob medida (ERP)", "Controle de estoque", "Financeiro e fluxo de caixa", "Cadastro de clientes e fornecedores",
-      "Gestão de cadastros e pedidos", "Integração com CRM", "Relatórios e painel de indicadores", "Automação de documentos",
+      "Gestão de cadastros e pedidos", "Integração com CRM", "Automação de documentos",
       "Integração com os sistemas que você já usa"]),
+    ("bi", "BI e análise de dados", "BI", "grafico",
+     "Painéis e relatórios com os números do seu negócio, atualizados sozinhos, para decidir com base no que aconteceu.",
+     ["Relatórios e painel de indicadores", "Dados de várias fontes num lugar só", "Análise de vendas, clientes e estoque", "Alertas de indicadores"]),
     ("agenda", "Pedidos, agendamento e vendas", "Vendas", "agenda",
      "Cardápio online, agendamento online e ferramentas para vender mais e trazer o cliente de volta.",
      ["Cardápio online com pedidos", "Agendamento online", "Captação e qualificação de leads", "Follow-up inteligente", "Orçamentos automatizados", "Automação de processos comerciais"]),
@@ -157,22 +166,33 @@ MODULOS = [
 MOD_SERVICOS = {mid: servs for mid, _n, _c, _i, _r, servs in MODULOS}
 assert set(FICHAS) == set(CATALOGO), ("serviço sem ficha ou ficha sem serviço", set(FICHAS) ^ set(CATALOGO))
 
-# os 3 pilares das soluções: (id, título, apoio, texto, resultados, [módulos])
+# os 4 pilares das soluções: (id, título, apoio, texto, resultados, [módulos])
 PILARES_SOL = [
-    ("sistemas", "Sistemas de gestão sob medida", "ERP feito para o seu negócio",
-     "Chega de caderno e planilha: estoque, vendas, caixa e clientes num sistema só, tudo ligado. Uma venda já baixa o estoque e entra no caixa.",
+    ("erp", "ERP sob medida", "O sistema do seu negócio",
+     "Estoque, vendas, caixa e clientes num sistema só, tudo ligado. Uma venda já baixa o estoque e entra no caixa.",
      ["Estoque, caixa, clientes e fornecedores num lugar só", "Só as partes que o seu negócio usa", "Começa com um módulo e cresce depois"],
      ["gestao"]),
-    ("atendimento", "Atendimento e vendas", "Do primeiro contato ao pedido",
-     "Cardápio online, agendamento online, um sistema de atendimento para a equipe e a Aurora, a IA que responde a qualquer hora.",
-     ["O cliente faz o pedido ou marca o horário sozinho", "A equipe vê todas as conversas num lugar só", "Quem sumiu recebe um lembrete para voltar"],
-     ["agenda", "whatsapp"]),
-    ("presenca", "Presença online e IA sob medida", "Para ser encontrado e trabalhar menos",
-     "Sites feitos para o seu negócio, inteligência artificial para processos internos e automações sob medida.",
-     ["Site com a marca e as informações do negócio", "IA para as tarefas internas da equipe", "Automação para o processo que só você tem"],
-     ["site", "ia"]),
+    ("bi", "BI e análise de dados", "Os números que guiam a decisão",
+     "Painéis e relatórios que se atualizam sozinhos, com os dados de todos os seus sistemas num lugar só.",
+     ["O que mais vende e o que está parado", "Os números do mês sem montar planilha", "Um aviso quando algo sai do normal"],
+     ["bi"]),
+    ("ia", "IA de atendimento", "A Aurora e agentes sob medida",
+     "A Aurora atende os seus clientes no WhatsApp e no Instagram a qualquer hora, e agentes de IA fazem as tarefas repetitivas da equipe.",
+     ["Resposta na hora, até de madrugada", "Uma pessoa entra quando precisa", "Tarefas internas feitas por agentes de IA"],
+     ["whatsapp", "ia"]),
+    ("vendas", "Vendas e presença online", "Cardápio, agendamento e site",
+     "Cardápio online com pedidos, agendamento online e um site com a sua marca, para o cliente comprar e marcar sozinho.",
+     ["O cliente pede ou marca o horário sozinho", "Site com a marca e as informações do negócio", "Quem sumiu recebe um lembrete para voltar"],
+     ["agenda", "site"]),
 ]
-
+# caminhos de cada pilar: (texto, endereço); o primeiro é o principal
+CAMINHOS_PILAR = {
+    "erp": [("Ver o ERP funcionando", "solucao-gestao.html#funcionando"), ("Conhecer o ERP", "solucao-gestao.html")],
+    "bi": [("Ver o painel funcionando", "solucao-bi.html#funcionando"), ("Conhecer o BI", "solucao-bi.html")],
+    "ia": [("Conversar com a Aurora", "aurora.html#conversar"), ("Agentes sob medida", "solucao-ia.html")],
+    "vendas": [("Testar o agendamento", "solucao-vendas.html#funcionando"), ("Cardápio e agendamento", "solucao-vendas.html"), ("Site", "solucao-site.html")],
+}
+ICONE_PILAR = {"erp": "gestao", "bi": "grafico", "ia": "conversa", "vendas": "vendas"}
 
 # fotos de banco (Unsplash, licença livre; origem em assets/fotos/CREDITOS.md): arquivo, largura, altura
 
@@ -599,7 +619,7 @@ def k3d(cls=""):
 
 # ------------------------------------------------------------------ soluções (uma página para cada módulo)
 # textos comerciais escritos pelo Claude a partir do catálogo oficial; os sócios precisam confirmar
-PAGINA_MOD = {"whatsapp": "aurora.html", "agenda": "solucao-vendas.html", "gestao": "solucao-gestao.html",
+PAGINA_MOD = {"bi": "solucao-bi.html", "whatsapp": "aurora.html", "agenda": "solucao-vendas.html", "gestao": "solucao-gestao.html",
               "site": "solucao-site.html", "ia": "solucao-ia.html"}
 SOLUCOES = {
     "whatsapp": ("Atendimento com sistema e com a Aurora",
@@ -618,6 +638,10 @@ SOLUCOES = {
              "Um site feito para o seu negócio, com o que os seus clientes procuram e a cara da sua marca.",
              ["Presença profissional na internet", "Serviços, horários e contato num lugar só", "Clientes que encontram o seu negócio e entram em contato"],
              ["Cliente que não encontra o seu negócio na internet", "Informações espalhadas em várias redes", "Perfil que não passa a imagem que o negócio merece"]),
+    "bi": ("BI e análise de dados",
+           "Painéis e relatórios com os números do seu negócio, atualizados sozinhos, com os dados do sistema de gestão, das vendas e das planilhas num lugar só.",
+           ["Você sabe o que mais vende e o que está parado", "Os números do mês sem montar planilha", "Um aviso quando um número sai do normal"],
+           ["Cada número num sistema diferente", "Relatório montado à mão no fim do mês", "Decisão de compra e promoção no achismo"]),
     "ia": ("IA sob medida para a sua empresa",
            "Agentes e assistentes de inteligência artificial desenvolvidos para o jeito de trabalhar da sua empresa, integrados aos seus sistemas.",
            ["Tarefas repetitivas feitas por um assistente", "Equipe com apoio para consultar e organizar informações", "Solução desenhada para o seu processo, não um pacote pronto"],
@@ -798,7 +822,8 @@ PROJETOS = []
 # ------------------------------------------------------------------ Orçamento: simulador e contato
 # o que a pessoa precisa -> serviços recomendados
 NECESSIDADES = [
-    ("sistema", "Sistema de gestão (estoque, caixa, clientes)", ["Sistema de gestão sob medida (ERP)", "Controle de estoque", "Financeiro e fluxo de caixa", "Relatórios e painel de indicadores"]),
+    ("sistema", "Sistema de gestão (estoque, caixa, clientes)", ["Sistema de gestão sob medida (ERP)", "Controle de estoque", "Financeiro e fluxo de caixa"]),
+    ("bi", "Painéis e relatórios (BI)", ["Relatórios e painel de indicadores", "Análise de vendas, clientes e estoque"]),
     ("cardapio", "Cardápio online e pedidos", ["Cardápio online com pedidos", "Gestão de cadastros e pedidos"]),
     ("agendamento", "Agendamento online", ["Agendamento online", "Follow-up inteligente"]),
     ("aurora", "Atendimento com IA (Aurora)", ["Chatbots inteligentes", "Respostas inteligentes", "Sistema de atendimento"]),
@@ -912,6 +937,9 @@ MSG_CONVERSA = "Olá, vim pelo site da Kyzent e quero conversar sobre automaçã
 # ---------- ilustrações próprias de cada solução (SVG, sem biblioteca de ícones)
 def ilustra(mid, cls="ilu"):
     d = {
+        "bi": '''<circle class="ilu-c" cx="30" cy="40" r="22"/><path class="ilu-b" d="M30 40 L30 18 A22 22 0 0 1 50.9 46.8 Z"/>
+          <rect class="ilu-a" x="60" y="44" width="8" height="20" rx="2"/><rect class="ilu-a" x="72" y="34" width="8" height="30" rx="2"/>
+          <rect class="ilu-b ilu-pisca" x="84" y="22" width="8" height="42" rx="2"/>''',
         "whatsapp": '''<rect class="ilu-a" x="8" y="14" width="58" height="34" rx="12"/><path class="ilu-a" d="M18 48l-6 10 16-10z"/>
           <rect class="ilu-b" x="40" y="34" width="52" height="30" rx="11"/><path class="ilu-b" d="M84 64l6 8-14-8z"/>
           <circle class="ilu-p p1" cx="26" cy="31" r="3.4"/><circle class="ilu-p p2" cx="37" cy="31" r="3.4"/><circle class="ilu-p p3" cx="48" cy="31" r="3.4"/>
@@ -940,6 +968,7 @@ CHAMADAS = {
     "agenda": ("Organize seus horários e aproveite melhor cada oportunidade.", "Agenda, lembretes, retorno de clientes e orçamentos no automático."),
     "gestao": ("Tenha mais controle sobre o que acontece no seu negócio.", "A Kyzent desenvolve o sistema do seu negócio, com só as partes que você precisa."),
     "site": ("Sua empresa merece uma presença digital à altura do seu negócio.", "Um site feito para o seu negócio, com o caminho direto para a conversa."),
+    "bi": ("Decida com os números do seu negócio na mão.", "Conte quais números você acompanha hoje e veja como eles podem chegar prontos."),
     "ia": ("Descubra o que a inteligência artificial pode fazer pela sua empresa.", "Conte o processo que mais toma tempo e veja como uma IA sob medida pode ajudar."),
 }
 def chamada(chave="index.html"):
@@ -1086,26 +1115,34 @@ def mini_card(titulo, texto, href, externo=False):
     aviso = '<span class="visualmente-oculto"> (abre em nova aba)</span>' if externo else ""
     return f'<li><a class="mini-card" href="{href}"{alvo}><strong>{titulo}{aviso}</strong><span>{texto}</span></a></li>'
 
+def previa_pilar(pid):
+    """prévia ilustrativa de cada pilar (decorativa, sem números reais)"""
+    if pid == "erp":
+        linhas = "".join(f'<li><span>{n}</span><i style="--v:{v}%"></i><b class="{c}">{t}</b></li>' for n, v, c, t in
+                         (("X-salada", 70, "ok", "Em estoque"), ("Pão de hambúrguer", 22, "alerta", "Repor"), ("Refrigerante lata", 55, "ok", "Em estoque")))
+        return (f'<div class="pv pv-erp"><div class="pv-barra"><span>Estoque</span><span>Caixa</span><span>Pedidos</span><span>Clientes</span></div>'
+                f'<ul class="pv-estoque">{linhas}</ul></div>')
+    if pid == "bi":
+        barras = "".join(f'<i style="--h:{h}%;--d:{k * .08:.2f}s"></i>' for k, h in enumerate((38, 52, 46, 64, 58, 80, 92)))
+        return (f'<div class="pv pv-bi"><div class="pv-bi-topo"><span>Vendas da semana</span><span class="pv-sobe">em alta</span></div>'
+                f'<div class="pv-graf">{barras}<svg viewBox="0 0 100 40" preserveAspectRatio="none"><polyline points="0,30 16,24 33,27 50,16 66,19 83,8 100,4"/></svg></div></div>')
+    if pid == "ia":
+        return ('<div class="pv pv-ia"><p class="pv-msg pv-cli">Tem horário amanhã de manhã?</p>'
+                '<p class="pv-msg pv-aur"><img src="assets/img/aurora/aurora-avatar-96.webp" alt="" width="24" height="24" loading="lazy">Tenho às 9h e às 10h30. Qual fica melhor?</p>'
+                '<p class="pv-msg pv-cli">9h, por favor!</p></div>')
+    return ('<div class="pv pv-vendas"><div class="pv-site"><span class="pv-url">seunegocio.com.br</span>'
+            '<div class="pv-itens"><span><b>Combo da casa</b><em>Adicionar</em></span><span><b>Corte + barba</b><em>Agendar</em></span></div></div>'
+            '<div class="pv-horas"><span>9:00</span><span class="on">10:30</span><span>14:00</span></div></div>')
+
 def cartao_pilar(pid, titulo, apoio, texto, resultados, mods, modo="inicio"):
-    """modo "inicio": apresentação (texto curto, mini cards e painel). modo "catalogo" (Soluções): os resultados em lista."""
-    res = "".join(f"<li>{r}</li>" for r in resultados)
-    links = "".join(f'<li><a class="link-seta" href="{PAGINA_MOD[m]}">{MOD[m][0]}</a></li>' for m in mods if m in MOD_PAGINA)
-    extra = ""
-    if modo == "catalogo":
-        return (f'<li class="pilar-card pilar-{pid}"><p class="pilar-apoio">{apoio}</p><h3>{titulo}</h3>'
-                f'<ul class="frente-itens frente-itens-catalogo">{res}</ul><div class="pilar-rodape">'
-                f'<ul class="pilar-links">{links}</ul></div></li>')
-    if pid == "atendimento":
-        extra = ('<ul class="mini-cards">' + mini_card("Aurora", "A IA que atende os seus clientes a qualquer hora", "aurora.html")
-                 + mini_card("Cardápio online", "Teste a demonstração", DEMO_CARDAPIO, True)
-                 + mini_card("Agendamento online", "Teste a demonstração", DEMO_AGENDAMENTO, True) + "</ul>")
-    if pid == "sistemas":   # as partes que o sistema pode ter, preenchendo o card maior
-        nomes = ["Estoque", "Financeiro e caixa", "Clientes e fornecedores", "Pedidos e vendas", "Relatórios e painel", "Documentos", "Integração com o que você já usa"]
-        extra = ('<!--VIS_GESTAO--><ul class="pilar-partes" aria-label="Partes que o sistema pode ter">'
-                 + "".join(f"<li>{n}</li>" for n in nomes) + "</ul>")   # VIS_GESTAO: o painel da página de Gestão (definido mais abaixo)
-    return (f'<li class="pilar-card pilar-{pid}"><p class="pilar-apoio">{apoio}</p><h3>{titulo}</h3><p class="pilar-texto">{texto}</p>'
-            f'{extra}<div class="pilar-rodape">'
-            f'<ul class="pilar-links">{links}</ul></div></li>')
+    """modo "inicio": texto de apresentação. modo "catalogo" (Soluções): os resultados em lista."""
+    corpo = (f'<p class="pl-texto">{texto}</p>' if modo == "inicio"
+             else '<ul class="pl-lista">' + "".join(f"<li>{I['check']}{r}</li>" for r in resultados) + "</ul>")
+    (t0, h0), *resto = CAMINHOS_PILAR[pid]
+    outros = "".join(f'<a href="{h}">{t}</a>' for t, h in resto)
+    return (f'<li class="pl pl-{pid}"><div class="pl-cabeca"><span class="pl-icone">{I[ICONE_PILAR[pid]]}</span><p class="pl-apoio">{apoio}</p></div>'
+            f'<h3>{titulo}</h3>{corpo}<div class="pl-previa" aria-hidden="true">{previa_pilar(pid)}</div>'
+            f'<div class="pl-rodape"><a class="pl-principal" href="{h0}">{t0}</a><span class="pl-outros">{outros}</span></div></li>')
 
 TESTAR = f"""    <section class="secao testar" id="testar" aria-labelledby="titulo-testar">
       <div class="container">
@@ -1126,12 +1163,12 @@ SOLUCOES_SECAO = f"""    <section class="secao claro" id="solucoes" aria-labelle
         <div class="cabeca-linha">
           <div class="cabeca">
             <h2 id="titulo-solucoes" data-revelar-texto>Soluções para cada parte do seu negócio.</h2>
-            <p>A Kyzent desenvolve sistemas de gestão, atendimento e inteligência artificial sob medida para pequenos e médios negócios.</p>
+            <p>Quatro pilares, desenvolvidos sob medida para pequenos e médios negócios: ERP, BI e análise de dados, IA de atendimento, e vendas e presença online.</p>
           </div>
           <a class="link-seta" href="servicos.html#catalogo">Ver todos os serviços</a>
         </div>
-        <ul class="pilares pilares-inicio">
-          {"".join(cartao_pilar(*p) for p in PILARES_SOL if p[0] != "presenca")}
+        <ul class="pls">
+          {"".join(cartao_pilar(*p) for p in PILARES_SOL)}
         </ul>
       </div>
     </section>"""
@@ -1422,6 +1459,7 @@ def visual_site():
 
 VISUAL_MOD = {"whatsapp": (visual_atendimento, "Cada mensagem no lugar certo.", "A Aurora responde o que é rotina e o sistema de atendimento passa para a equipe só o que precisa de uma pessoa."),
               "agenda": (visual_funil, "Nenhuma oportunidade parada.", "Contatos qualificados, horários marcados e clientes chamados de volta no momento certo."),
+              "bi": (visual_gestao, "Os números do negócio, sem planilha.", "Vendas, clientes e estoque num painel que se atualiza sozinho."),
               "gestao": (visual_gestao, "Os números do negócio, sem planilha.", "Estoque, financeiro, pedidos e clientes num sistema só, com os números atualizados sozinhos."),
               "site": (visual_site, "Um site que trabalha por você.", "Feito para o seu negócio, rápido no celular e com a cara da sua marca."),
               "ia": (visual_ia, "Uma IA que conhece a sua empresa.", "Pergunte em português e receba a resposta com base nos seus próprios sistemas.")}
@@ -1444,14 +1482,19 @@ COMO_FUNCIONA = {
              ("Você vê antes", "As páginas são mostradas antes de irem para o ar, e você ajusta o que quiser."),
              ("O site vai para o ar", "Rápido no celular, com a sua marca e o caminho para o contato."),
              ("Atualizações depois", "Mudou um horário ou um serviço? A gente atualiza.")],
+    "bi": [("Juntamos os dados", "Sistema de gestão, vendas e planilhas ligados numa base só."),
+           ("Montamos o painel", "Com os números que importam para o seu negócio, do jeito que você entende."),
+           ("Ele se atualiza sozinho", "Cada venda, compra e pagamento já aparece no painel e nos relatórios."),
+           ("Você decide com dados", "E recebe um aviso quando algum número sai do normal.")],
     "ia": [("Escolhemos a tarefa", "Um processo repetitivo que toma tempo da equipe."),
            ("A IA é configurada", "Com as informações e as regras da sua empresa."),
            ("Ela faz a tarefa", "Consulta os sistemas, organiza e avisa quem precisa saber."),
            ("A equipe acompanha", "As pessoas conferem o resultado e ficam com o que precisa de decisão.")],
 }
 # as simulações de cada solução (o Site não tem simulação: mostra a ilustração)
-DEMOS_MOD = {"gestao": ["painel", "estoque", "pedidos", "clientes"], "agenda": ["agendamento"], "whatsapp": ["chatbot"], "ia": ["automacao"]}
-INTRO_DEMOS = {"gestao": "Quatro telas do mesmo sistema, ligadas pela mesma base de dados: registre uma venda no Estoque ou em Pedidos e veja o Painel mudar.",
+DEMOS_MOD = {"bi": ["painel", "pedidos"], "gestao": ["painel", "estoque", "pedidos", "clientes"], "agenda": ["agendamento"], "whatsapp": ["chatbot"], "ia": ["automacao"]}
+INTRO_DEMOS = {"bi": "Registre um pedido em Pedidos e veja o painel se atualizar sozinho, sem ninguém montar relatório.",
+               "gestao": "Quatro telas do mesmo sistema, ligadas pela mesma base de dados: registre uma venda no Estoque ou em Pedidos e veja o Painel mudar.",
                "agenda": "Escolha o serviço, o dia e o horário, do jeito que o seu cliente vai fazer.",
                "whatsapp": "Faça o papel do cliente de uma barbearia de exemplo: marque um horário, pergunte o preço ou peça para falar com uma pessoa.",
                "ia": "Uma mensagem do cliente vira uma tarefa feita: a IA entende o pedido, consulta os sistemas e avisa a equipe."}
@@ -1706,7 +1749,7 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
       <div class="container pagina-topo-grade eco-grade">
         <div>
           <h1 id="titulo-pagina" data-revelar-texto>Soluções</h1>
-          <p class="pagina-topo-apoio">Sistemas de gestão, atendimento e vendas, presença online e IA, desenvolvidos sob medida para o seu negócio. E, quando ele pede algo diferente, a Kyzent constrói do zero.</p>
+          <p class="pagina-topo-apoio">ERP, BI e análise de dados, IA de atendimento, e vendas e presença online, desenvolvidos sob medida para o seu negócio. E, quando ele pede algo diferente, a Kyzent constrói do zero.</p>
         </div>
         {ecossistema()}
       </div>
@@ -1714,8 +1757,8 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
 
     <section class="secao claro" aria-labelledby="titulo-cinco">
       <div class="container">
-        <h2 id="titulo-cinco" class="visualmente-oculto">Os três pilares</h2>
-        <ul class="pilares pilares-catalogo">
+        <h2 id="titulo-cinco" class="visualmente-oculto">Os quatro pilares</h2>
+        <ul class="pls pls-catalogo">
           {"".join(cartao_pilar(*p, modo="catalogo") for p in PILARES_SOL)}
         </ul>
       </div>
@@ -1725,7 +1768,7 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-catalogo" data-revelar-texto>O que a Kyzent faz.</h2>
-          <p>Organizados pelos três pilares. Toque no nome da solução para ver como funciona, testar a simulação e saber o que cada serviço resolve.</p>
+          <p>Organizados pelos quatro pilares. Toque no nome da solução para ver como funciona, testar a simulação e saber o que cada serviço resolve.</p>
         </div>
         {lista_servicos()}
       </div>
@@ -1739,7 +1782,7 @@ DESC = "A Kyzent desenvolve sistemas de gestão (ERP), cardápio online, agendam
 
 saidas = [
     ("index.html", "Kyzent | Sistemas de gestão, automação e IA para o seu negócio", DESC, INICIO.replace("<!--VIS_GESTAO-->", f'<div class="pilar-vis" aria-hidden="true">{visual_gestao()}</div>'), "", None),
-    ("servicos.html", "Soluções e serviços | Kyzent", "Soluções da Kyzent em três pilares: sistemas de gestão sob medida (ERP), atendimento e vendas com cardápio online, agendamento e a Aurora, e presença online e IA. Simule o seu orçamento.", SERVICOS_PAG.replace("<!--VIS_GESTAO-->", f'<div class="pilar-vis" aria-hidden="true">{visual_gestao()}</div>'), FILTRO_JANELA, None),
+    ("servicos.html", "Soluções e serviços | Kyzent", "Soluções da Kyzent em quatro pilares: ERP sob medida, BI e análise de dados, IA de atendimento com a Aurora, e vendas e presença online com cardápio, agendamento e site. Simule o seu orçamento.", SERVICOS_PAG.replace("<!--VIS_GESTAO-->", f'<div class="pilar-vis" aria-hidden="true">{visual_gestao()}</div>'), FILTRO_JANELA, None),
     ("quem-somos.html", "Quem somos | Kyzent", "A Kyzent é uma empresa de Tecnologia e Inovação que desenvolve sistemas sob medida. Conheça o nosso propósito, a missão, a visão, os valores e os diferenciais.", QUEM, "", None),
     ("privacidade.html", "Política de Privacidade | Kyzent", "Como a Kyzent trata os seus dados pessoais, de acordo com a LGPD: quais dados recebemos, para que usamos, com quem compartilhamos e como exercer os seus direitos.", PRIVACIDADE, "", None),
     ("aurora.html", "Aurora, a IA de atendimento | Kyzent", "Conheça a Aurora, a IA de atendimento da Kyzent: atende os clientes do seu negócio no WhatsApp e no Instagram, 24 horas, e chama a sua equipe quando precisa.", aurora_pagina(), "", None),

@@ -42,7 +42,7 @@ Só anotado. Nada disto foi feito ainda.
 - Também: Cardápio e Agendamento aparecem em 3 lugares (Início, Vendas, Atendimento); Atendimento e Aurora apontam uma para a outra (caminho circular).
 
 ## 4. Textos que dependem dos sócios
-- [CONFIRMAR] 6 serviços novos, 3 respostas do FAQ e a frase de estoque e almoxarifado em Quem somos.
+- [CONFIRMAR] 3 serviços de BI (Dados de várias fontes num lugar só, Análise de vendas, clientes e estoque, Alertas de indicadores) e a página solucao-bi.html; 6 serviços novos, 3 respostas do FAQ e a frase de estoque e almoxarifado em Quem somos.
 - [REVISAR] fichas dos serviços (páginas de solução).
 
 ## 5. Próxima conversa: os serviços do site
