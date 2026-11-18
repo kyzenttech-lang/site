@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "169"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "171"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1627,18 +1627,18 @@ def pagina_solucao(mid):
       </div>
     </section>
 
-    <section class="secao" aria-labelledby="titulo-dia">
+{ERP_EXPLICA if mid == "gestao" else f"""    <section class="secao" aria-labelledby="titulo-dia">
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-dia" data-revelar-texto>Como funciona no dia a dia.</h2>
         </div>
         <ol class="processo processo-4">{passos}</ol>
       </div>
-    </section>
+    </section>"""}
 
 {funcionando}
 {SOLUCAO_EXTRA.get(mid, lambda: "")()}
-    <section class="secao claro secao-faixa" id="incluido" aria-labelledby="titulo-incluido">
+{"" if mid == "gestao" else f"""    <section class="secao claro secao-faixa" id="incluido" aria-labelledby="titulo-incluido">
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-incluido" data-revelar-texto>{"Módulos possíveis." if mid == "gestao" else "O que está incluído."}</h2>
@@ -1648,9 +1648,51 @@ def pagina_solucao(mid):
 {fichas}
         </ul>
       </div>
-    </section>
+    </section>"""}
 
 {chamada(mid)}"""
+
+# ---------- página do ERP: o que é um ERP e onde ele economiza tempo  [REVISAR] rascunho do Claude
+ERP_SEM = ["A venda é anotada no caixa ou no caderno.",
+           "No fim do dia, alguém tira da planilha de estoque o que saiu.",
+           "O valor é lançado de novo no controle do financeiro.",
+           "No fim do mês, alguém junta tudo isso para descobrir quanto vendeu e o que precisa comprar."]
+ERP_COM = ["A venda é registrada uma vez, no caixa ou no pedido online.",
+           "O estoque daquele produto baixa no mesmo instante.",
+           "O valor já entra no caixa do dia e, se for a prazo, nas contas a receber.",
+           "O relatório do mês está pronto a qualquer hora, sem ninguém montar."]
+ERP_GANHOS = [
+    ("Cada informação entra uma vez", "Uma venda, uma compra ou um cadastro é digitado num lugar só. Acaba o trabalho de passar o mesmo dado do caderno para a planilha e da planilha para o caixa, que é onde mais aparece erro de digitação."),
+    ("O fechamento não depende de conferência", "Como o caixa é a soma das vendas registradas, ele fecha sozinho. Ninguém fica somando cupom ou procurando a diferença depois do expediente."),
+    ("A compra é feita antes de faltar", "Cada produto tem um estoque mínimo. Quando passa dele, o sistema avisa, e a reposição é feita com base no que realmente saiu, sem comprar a mais nem deixar faltar."),
+    ("A resposta está na tela, não na cabeça do dono", "Preço, saldo de um cliente, o que um fornecedor entregou ou quanto entrou ontem: qualquer pessoa da equipe consulta em segundos, sem interromper ninguém."),
+]
+ERP_EXPLICA = f"""    <section class="secao erp-o-que" aria-labelledby="titulo-erp-o-que">
+      <div class="container">
+        <div class="erp-intro">
+          <div class="cabeca">
+            <p class="px-rotulo">O que é um ERP</p>
+            <h2 id="titulo-erp-o-que" data-revelar-texto>Um sistema onde todas as áreas usam a mesma informação.</h2>
+          </div>
+          <div class="erp-def">
+            <p>ERP é a sigla em inglês para <em>Enterprise Resource Planning</em>, ou planejamento dos recursos da empresa. Na prática, é um sistema só onde vendas, estoque, compras, financeiro e cadastros trabalham sobre a mesma base de dados.</p>
+            <p>A diferença para usar um programa para cada coisa é que nada precisa ser passado de um lugar para o outro: o que acontece numa área já aparece nas outras.</p>
+          </div>
+        </div>
+
+        <div class="erp-venda">
+          <p class="erp-venda-titulo">O caminho de uma venda</p>
+          <div class="erp-colunas">
+            <div class="erp-col erp-col-sem"><h3>Sem ERP</h3><ol>{"".join(f"<li>{t}</li>" for t in ERP_SEM)}</ol></div>
+            <div class="erp-col erp-col-com"><h3>Com ERP</h3><ol>{"".join(f"<li>{t}</li>" for t in ERP_COM)}</ol></div>
+          </div>
+        </div>
+
+        <h3 class="erp-ganhos-titulo">Onde a equipe ganha tempo</h3>
+        <ul class="erp-ganhos">{"".join(f'<li><span class="erp-g-n">0{k + 1}</span><h4>{t}</h4><p>{d}</p></li>' for k, (t, d) in enumerate(ERP_GANHOS))}</ul>
+      </div>
+    </section>
+"""
 
 # ---------- o que cada página de solução tem a mais
 PROCESSO_SISTEMA = [
@@ -1663,15 +1705,6 @@ PROCESSO_SISTEMA = [
 def extra_gestao():
     passos = "".join(f'<li class="processo-passo"><span class="processo-n">{k + 1}</span><h3>{t}</h3><p>{d}</p></li>' for k, (t, d) in enumerate(PROCESSO_SISTEMA))
     return f"""
-    <section class="secao" aria-labelledby="titulo-processo">
-      <div class="container">
-        <div class="cabeca">
-          <h2 id="titulo-processo" data-revelar-texto>Como a Kyzent desenvolve o seu sistema.</h2>
-        </div>
-        <ol class="processo">{passos}</ol>
-      </div>
-    </section>
-
     <section class="secao secao-faixa" aria-labelledby="titulo-para-quem">
       <div class="container">
         <div>
@@ -1836,7 +1869,7 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
 
 {pilares_destaque()}
 
-    <section class="secao testar" id="demonstracoes" aria-labelledby="titulo-demos-sol">
+    <section class="secao testar demos-sol" id="demonstracoes" aria-labelledby="titulo-demos-sol">
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-demos-sol" data-revelar-texto>Veja nossas demonstrações de sistemas.</h2>

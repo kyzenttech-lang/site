@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR" data-theme="dark" data-v="169">
+<html lang="pt-BR" data-theme="dark" data-v="171">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,12 +43,12 @@
     });
   })();</script>
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=169">
+  <link rel="stylesheet" href="css/style.css?v=171">
   <script src="assets/vendor/gsap/gsap.min.js?v=3130" defer></script>
   <script src="assets/vendor/gsap/ScrollTrigger.min.js?v=3130" defer></script>
   <script src="assets/vendor/gsap/CustomEase.min.js?v=3130" defer></script>
-  <script src="js/main.js?v=169" defer></script>
-  <script src="js/animacoes.js?v=169" defer></script>
+  <script src="js/main.js?v=171" defer></script>
+  <script src="js/animacoes.js?v=171" defer></script>
 </head>
 <body data-promo-fim="2026-12-05T23:59:59-03:00" data-whats="5519988728894 5519971246077">
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -113,14 +113,32 @@
       </div>
     </section>
 
-    <section class="secao" aria-labelledby="titulo-dia">
+    <section class="secao erp-o-que" aria-labelledby="titulo-erp-o-que">
       <div class="container">
-        <div class="cabeca">
-          <h2 id="titulo-dia" data-revelar-texto>Como funciona no dia a dia.</h2>
+        <div class="erp-intro">
+          <div class="cabeca">
+            <p class="px-rotulo">O que é um ERP</p>
+            <h2 id="titulo-erp-o-que" data-revelar-texto>Um sistema onde todas as áreas usam a mesma informação.</h2>
+          </div>
+          <div class="erp-def">
+            <p>ERP é a sigla em inglês para <em>Enterprise Resource Planning</em>, ou planejamento dos recursos da empresa. Na prática, é um sistema só onde vendas, estoque, compras, financeiro e cadastros trabalham sobre a mesma base de dados.</p>
+            <p>A diferença para usar um programa para cada coisa é que nada precisa ser passado de um lugar para o outro: o que acontece numa área já aparece nas outras.</p>
+          </div>
         </div>
-        <ol class="processo processo-4"><li class="processo-passo"><span class="processo-n">1</span><h3>A venda acontece</h3><p>No balcão, no cardápio online ou pela conversa, cada venda entra no sistema.</p></li><li class="processo-passo"><span class="processo-n">2</span><h3>O estoque baixa</h3><p>Os produtos vendidos saem do estoque, e o sistema avisa quando algum está acabando.</p></li><li class="processo-passo"><span class="processo-n">3</span><h3>O caixa fecha</h3><p>Entradas e saídas do dia somadas, sem calculadora.</p></li><li class="processo-passo"><span class="processo-n">4</span><h3>Os números aparecem</h3><p>O painel mostra pedidos, faturamento e clientes da semana e do mês.</p></li></ol>
+
+        <div class="erp-venda">
+          <p class="erp-venda-titulo">O caminho de uma venda</p>
+          <div class="erp-colunas">
+            <div class="erp-col erp-col-sem"><h3>Sem ERP</h3><ol><li>A venda é anotada no caixa ou no caderno.</li><li>No fim do dia, alguém tira da planilha de estoque o que saiu.</li><li>O valor é lançado de novo no controle do financeiro.</li><li>No fim do mês, alguém junta tudo isso para descobrir quanto vendeu e o que precisa comprar.</li></ol></div>
+            <div class="erp-col erp-col-com"><h3>Com ERP</h3><ol><li>A venda é registrada uma vez, no caixa ou no pedido online.</li><li>O estoque daquele produto baixa no mesmo instante.</li><li>O valor já entra no caixa do dia e, se for a prazo, nas contas a receber.</li><li>O relatório do mês está pronto a qualquer hora, sem ninguém montar.</li></ol></div>
+          </div>
+        </div>
+
+        <h3 class="erp-ganhos-titulo">Onde a equipe ganha tempo</h3>
+        <ul class="erp-ganhos"><li><span class="erp-g-n">01</span><h4>Cada informação entra uma vez</h4><p>Uma venda, uma compra ou um cadastro é digitado num lugar só. Acaba o trabalho de passar o mesmo dado do caderno para a planilha e da planilha para o caixa, que é onde mais aparece erro de digitação.</p></li><li><span class="erp-g-n">02</span><h4>O fechamento não depende de conferência</h4><p>Como o caixa é a soma das vendas registradas, ele fecha sozinho. Ninguém fica somando cupom ou procurando a diferença depois do expediente.</p></li><li><span class="erp-g-n">03</span><h4>A compra é feita antes de faltar</h4><p>Cada produto tem um estoque mínimo. Quando passa dele, o sistema avisa, e a reposição é feita com base no que realmente saiu, sem comprar a mais nem deixar faltar.</p></li><li><span class="erp-g-n">04</span><h4>A resposta está na tela, não na cabeça do dono</h4><p>Preço, saldo de um cliente, o que um fornecedor entregou ou quanto entrou ontem: qualquer pessoa da equipe consulta em segundos, sem interromper ninguém.</p></li></ul>
       </div>
     </section>
+
 
     <section class="secao" id="funcionando" aria-labelledby="titulo-funcionando">
       <div class="container vis-grade">
@@ -143,15 +161,6 @@
       </div>
     </section>
 
-    <section class="secao" aria-labelledby="titulo-processo">
-      <div class="container">
-        <div class="cabeca">
-          <h2 id="titulo-processo" data-revelar-texto>Como a Kyzent desenvolve o seu sistema.</h2>
-        </div>
-        <ol class="processo"><li class="processo-passo"><span class="processo-n">1</span><h3>Diagnóstico</h3><p>Conversamos sobre como o seu negócio funciona hoje: o que vende, como controla o estoque e o caixa, onde perde tempo.</p></li><li class="processo-passo"><span class="processo-n">2</span><h3>Protótipo</h3><p>Mostramos as telas do sistema antes de desenvolver, para você ajustar o que quiser.</p></li><li class="processo-passo"><span class="processo-n">3</span><h3>Desenvolvimento</h3><p>Construímos o sistema com as partes que o seu negócio precisa, já com os seus produtos, serviços e clientes.</p></li><li class="processo-passo"><span class="processo-n">4</span><h3>Treinamento</h3><p>Ensinamos a sua equipe a usar o sistema no dia a dia.</p></li><li class="processo-passo"><span class="processo-n">5</span><h3>Suporte</h3><p>Acompanhamos, corrigimos e evoluímos o sistema conforme o seu negócio cresce.</p></li></ol>
-      </div>
-    </section>
-
     <section class="secao secao-faixa" aria-labelledby="titulo-para-quem">
       <div class="container">
         <div>
@@ -160,24 +169,7 @@
         </div>
       </div>
     </section>
-    <section class="secao claro secao-faixa" id="incluido" aria-labelledby="titulo-incluido">
-      <div class="container">
-        <div class="cabeca">
-          <h2 id="titulo-incluido" data-revelar-texto>Módulos possíveis.</h2>
-          <p>O seu sistema tem só os módulos que o seu negócio precisa. Dá para começar com um e acrescentar os outros depois.</p>
-        </div>
-        <ul class="painel-itens itens-solucao">
-              <li class="item ficha brilho"><h3>Sistema de gestão sob medida (ERP)</h3><p>O sistema do seu negócio, feito do jeito que você trabalha, só com o que você precisa.</p><dl><dt>Resolve</dt><dd>Controles espalhados em caderno, planilha e vários programas.</dd><dt>Na prática</dt><dd>Tudo do negócio num lugar só, sem pagar por funções que você não usa.</dd></dl></li>
-              <li class="item ficha brilho"><h3>Controle de estoque</h3><p>O estoque baixa sozinho a cada venda e avisa quando um produto está acabando.</p><dl><dt>Resolve</dt><dd>Produto que acaba sem ninguém perceber.</dd><dt>Na prática</dt><dd>Você repõe antes de faltar.</dd></dl></li>
-              <li class="item ficha brilho"><h3>Financeiro e fluxo de caixa</h3><p>Entradas, saídas e contas a pagar e a receber, com o caixa do dia fechado sem calculadora.</p><dl><dt>Resolve</dt><dd>Não saber quanto entrou e quanto saiu no mês.</dd><dt>Na prática</dt><dd>O caixa fecha certo e as contas do mês ficam à vista.</dd></dl></li>
-              <li class="item ficha brilho"><h3>Cadastro de clientes e fornecedores</h3><p>Clientes e fornecedores num lugar só, com o histórico de cada um.</p><dl><dt>Resolve</dt><dd>Contatos perdidos em agendas, papéis e conversas.</dd><dt>Na prática</dt><dd>Qualquer pessoa da equipe acha o contato e o histórico.</dd></dl></li>
-              <li class="item ficha brilho"><h3>Gestão de cadastros e pedidos</h3><p>Organização automatizada de informações e solicitações.</p><dl><dt>Resolve</dt><dd>Pedidos anotados em vários lugares.</dd><dt>Na prática</dt><dd>Cada pedido com a sua situação, do começo ao fim.</dd></dl></li>
-              <li class="item ficha brilho"><h3>Integração com CRM</h3><p>Centralização e gerenciamento do relacionamento com clientes.</p><dl><dt>Resolve</dt><dd>Relacionamento com o cliente sem nenhum registro.</dd><dt>Na prática</dt><dd>O histórico de cada cliente à mão na hora de atender.</dd></dl></li>
-              <li class="item ficha brilho"><h3>Automação de documentos</h3><p>Organização e envio automático de documentos.</p><dl><dt>Resolve</dt><dd>Documentos montados e enviados um a um.</dd><dt>Na prática</dt><dd>Os documentos saem prontos e no prazo.</dd></dl></li>
-              <li class="item ficha brilho"><h3>Integração com os sistemas que você já usa</h3><p>O que a Kyzent desenvolve conversa com o que você já tem, sem digitar a mesma coisa duas vezes.</p><dl><dt>Resolve</dt><dd>Digitar a mesma informação em dois sistemas.</dd><dt>Na prática</dt><dd>Os dados passam de um sistema para o outro sozinhos.</dd></dl></li>
-        </ul>
-      </div>
-    </section>
+
 
     <section class="chamada" aria-labelledby="titulo-chamada">
       <div class="container">
