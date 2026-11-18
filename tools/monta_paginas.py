@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "156"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "157"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -185,6 +185,22 @@ PILARES_SOL = [
      ["O cliente pede ou marca o horário sozinho", "Site com a marca e as informações do negócio", "Quem sumiu recebe um lembrete para voltar"],
      ["agenda", "site"]),
 ]
+# pilares do Início (como eram antes; o Início não mudou com os 4 pilares de Soluções)
+PILARES_INICIO = [
+    ("sistemas", "Sistemas de gestão sob medida", "ERP feito para o seu negócio",
+     "Chega de caderno e planilha: estoque, vendas, caixa e clientes num sistema só, tudo ligado. Uma venda já baixa o estoque e entra no caixa.",
+     ["Estoque, caixa, clientes e fornecedores num lugar só", "Só as partes que o seu negócio usa", "Começa com um módulo e cresce depois"],
+     ["gestao"]),
+    ("atendimento", "Atendimento e vendas", "Do primeiro contato ao pedido",
+     "Cardápio online, agendamento online, um sistema de atendimento para a equipe e a Aurora, a IA que responde a qualquer hora.",
+     ["O cliente faz o pedido ou marca o horário sozinho", "A equipe vê todas as conversas num lugar só", "Quem sumiu recebe um lembrete para voltar"],
+     ["agenda", "whatsapp"]),
+    ("presenca", "Presença online e IA sob medida", "Para ser encontrado e trabalhar menos",
+     "Sites feitos para o seu negócio, inteligência artificial para processos internos e automações sob medida.",
+     ["Site com a marca e as informações do negócio", "IA para as tarefas internas da equipe", "Automação para o processo que só você tem"],
+     ["site", "ia"]),
+]
+
 # caminhos de cada pilar: (texto, endereço); o primeiro é o principal
 CAMINHOS_PILAR = {
     "erp": [("Ver o ERP funcionando", "solucao-gestao.html#funcionando"), ("Conhecer o ERP", "solucao-gestao.html")],
@@ -253,7 +269,7 @@ DADOS_ESTRUTURADOS = json.dumps({
 def pagina(arq, titulo, descricao, corpo, janelas="", ativo=None):
     url = BASE + ("" if arq == "index.html" else arq)
     ativo = ativo or arq
-    servicos_rodape = "".join(f'<li><a href="{PAGINA_MOD[mid]}">{nome}</a></li>' for mid, nome, *_ in MODULOS if mid in MOD_PAGINA)
+    servicos_rodape = "".join(f'<li><a href="{PAGINA_MOD[mid]}">{nome}</a></li>' for mid, nome, *_ in MODULOS if mid in MOD_PAGINA and mid != "bi")   # rodapé como antes dos 4 pilares
     return f"""<!doctype html>
 <html lang="pt-BR" data-theme="dark" data-v="{VERSAO}">
 <head>
@@ -822,8 +838,7 @@ PROJETOS = []
 # ------------------------------------------------------------------ Orçamento: simulador e contato
 # o que a pessoa precisa -> serviços recomendados
 NECESSIDADES = [
-    ("sistema", "Sistema de gestão (estoque, caixa, clientes)", ["Sistema de gestão sob medida (ERP)", "Controle de estoque", "Financeiro e fluxo de caixa"]),
-    ("bi", "Painéis e relatórios (BI)", ["Relatórios e painel de indicadores", "Análise de vendas, clientes e estoque"]),
+    ("sistema", "Sistema de gestão (estoque, caixa, clientes)", ["Sistema de gestão sob medida (ERP)", "Controle de estoque", "Financeiro e fluxo de caixa", "Relatórios e painel de indicadores"]),
     ("cardapio", "Cardápio online e pedidos", ["Cardápio online com pedidos", "Gestão de cadastros e pedidos"]),
     ("agendamento", "Agendamento online", ["Agendamento online", "Follow-up inteligente"]),
     ("aurora", "Atendimento com IA (Aurora)", ["Chatbots inteligentes", "Respostas inteligentes", "Sistema de atendimento"]),
@@ -1115,6 +1130,27 @@ def mini_card(titulo, texto, href, externo=False):
     aviso = '<span class="visualmente-oculto"> (abre em nova aba)</span>' if externo else ""
     return f'<li><a class="mini-card" href="{href}"{alvo}><strong>{titulo}{aviso}</strong><span>{texto}</span></a></li>'
 
+def cartao_pilar_inicio(pid, titulo, apoio, texto, resultados, mods, modo="inicio"):
+    """modo "inicio": apresentação (texto curto, mini cards e painel). modo "catalogo" (Soluções): os resultados em lista."""
+    res = "".join(f"<li>{r}</li>" for r in resultados)
+    links = "".join(f'<li><a class="link-seta" href="{PAGINA_MOD[m]}">{MOD[m][0]}</a></li>' for m in mods if m in MOD_PAGINA)
+    extra = ""
+    if modo == "catalogo":
+        return (f'<li class="pilar-card pilar-{pid}"><p class="pilar-apoio">{apoio}</p><h3>{titulo}</h3>'
+                f'<ul class="frente-itens frente-itens-catalogo">{res}</ul><div class="pilar-rodape">'
+                f'<ul class="pilar-links">{links}</ul></div></li>')
+    if pid == "atendimento":
+        extra = ('<ul class="mini-cards">' + mini_card("Aurora", "A IA que atende os seus clientes a qualquer hora", "aurora.html")
+                 + mini_card("Cardápio online", "Teste a demonstração", DEMO_CARDAPIO, True)
+                 + mini_card("Agendamento online", "Teste a demonstração", DEMO_AGENDAMENTO, True) + "</ul>")
+    if pid == "sistemas":   # as partes que o sistema pode ter, preenchendo o card maior
+        nomes = ["Estoque", "Financeiro e caixa", "Clientes e fornecedores", "Pedidos e vendas", "Relatórios e painel", "Documentos", "Integração com o que você já usa"]
+        extra = ('<!--VIS_GESTAO--><ul class="pilar-partes" aria-label="Partes que o sistema pode ter">'
+                 + "".join(f"<li>{n}</li>" for n in nomes) + "</ul>")   # VIS_GESTAO: o painel da página de Gestão (definido mais abaixo)
+    return (f'<li class="pilar-card pilar-{pid}"><p class="pilar-apoio">{apoio}</p><h3>{titulo}</h3><p class="pilar-texto">{texto}</p>'
+            f'{extra}<div class="pilar-rodape">'
+            f'<ul class="pilar-links">{links}</ul></div></li>')
+
 def previa_pilar(pid):
     """prévia ilustrativa de cada pilar (decorativa, sem números reais)"""
     if pid == "erp":
@@ -1163,12 +1199,12 @@ SOLUCOES_SECAO = f"""    <section class="secao claro" id="solucoes" aria-labelle
         <div class="cabeca-linha">
           <div class="cabeca">
             <h2 id="titulo-solucoes" data-revelar-texto>Soluções para cada parte do seu negócio.</h2>
-            <p>Quatro pilares, desenvolvidos sob medida para pequenos e médios negócios: ERP, BI e análise de dados, IA de atendimento, e vendas e presença online.</p>
+            <p>A Kyzent desenvolve sistemas de gestão, atendimento e inteligência artificial sob medida para pequenos e médios negócios.</p>
           </div>
           <a class="link-seta" href="servicos.html#catalogo">Ver todos os serviços</a>
         </div>
-        <ul class="pls">
-          {"".join(cartao_pilar(*p) for p in PILARES_SOL)}
+        <ul class="pilares pilares-inicio">
+          {"".join(cartao_pilar_inicio(*p) for p in PILARES_INICIO if p[0] != "presenca")}
         </ul>
       </div>
     </section>"""
