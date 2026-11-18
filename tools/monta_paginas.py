@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "171"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "172"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1724,7 +1724,7 @@ def extra_vendas():
         <ul class="demos-completas">{"".join(cartao_demo(*d) for d in DEMOS_COMPLETAS)}</ul>
       </div>
     </section>"""
-SOLUCAO_EXTRA = {"gestao": extra_gestao, "agenda": extra_vendas}
+SOLUCAO_EXTRA = {"agenda": extra_vendas}   # ERP sem "Para quem é"
 
 # ---------- Quem somos: a empresa apresentada uma vez; propósito, missão e proposta com papéis diferentes
 QUEM = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
