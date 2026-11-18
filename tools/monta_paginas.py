@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "172"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "173"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1608,7 +1608,6 @@ def pagina_solucao(mid):
         </div>
         <div class="pagina-topo-texto">
           <a class="botao botao-grande" href="orcamento.html" data-magnetico>Pedir orçamento</a>
-          <a class="link-seta" href="#funcionando">{link_topo}</a>
         </div>
       </div>
     </section>
