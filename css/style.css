@@ -1625,8 +1625,6 @@ a.solucao { color: inherit; text-decoration: none; }
 @keyframes eco-flutua { 50% { translate: 0 -6px; } }
 .eco-bola { width: 24px; height: 24px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #8FD3FF, #1A5CFF 65%); box-shadow: 0 0 0 6px rgba(26,92,255,.18), 0 0 24px rgba(63,180,255,.6); transition: transform .35s var(--mola), box-shadow .3s; }
 .eco-nome { padding: 4px 10px; border-radius: 8px; background: rgba(20,24,34,.85); box-shadow: 0 0 0 1px rgba(63,180,255,.3) inset; font-size: .82rem; font-weight: 700; white-space: nowrap; transition: background-color .3s; }
-.eco-no:hover .eco-bola, .eco-no:focus-visible .eco-bola { transform: scale(1.35); box-shadow: 0 0 0 10px rgba(26,92,255,.22), 0 0 34px rgba(63,180,255,.9); }
-.eco-no:hover .eco-nome, .eco-no:focus-visible .eco-nome { background: #1A5CFF; }
 @media (max-width: 479px) { .eco-nome { font-size: .7rem; padding: 3px 7px; } .eco-bola { width: 18px; height: 18px; } }
 
 /* ---------- Início: do jeito manual ao automático ---------- */

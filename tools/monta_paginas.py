@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "152"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "154"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1675,7 +1675,7 @@ PRIVACIDADE = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagin
       </div>
     </section>"""
 
-# ---------- Soluções: central de navegação (5 cartões, os 19 serviços em lista, um único acesso ao simulador)
+# ---------- Soluções: central de navegação (cartões e a lista de serviços, sem número, um único acesso ao simulador)
 def lista_servicos():
     blocos = []
     for pid, titulo, apoio, *_resto, mods in PILARES_SOL:
@@ -1697,8 +1697,8 @@ def ecossistema():
         a = math.radians(-90 + k * passo)
         x, y = 320 + rx * math.cos(a), 190 + ry * math.sin(a)
         nome = MOD[mid][1]
-        nos.append(f'<a class="eco-no" href="{PAGINA_MOD[mid]}" style="--x:{x / 640 * 100:.2f}%;--y:{y / 380 * 100:.2f}%;--i:{k}">'
-                   f'<span class="eco-bola"></span><span class="eco-nome">{nome}</span></a>')
+        nos.append(f'<span class="eco-no" style="--x:{x / 640 * 100:.2f}%;--y:{y / 380 * 100:.2f}%;--i:{k}">'
+                   f'<span class="eco-bola"></span><span class="eco-nome">{nome}</span></span>')   # só ilustração, sem clique
     return f"""<div class="ecossistema" data-ecossistema>
           <svg viewBox="0 0 640 380" aria-hidden="true" focusable="false">
             <ellipse class="eco-orbita" cx="320" cy="190" rx="{rx}" ry="{ry}"/>
@@ -1708,7 +1708,7 @@ def ecossistema():
             {"".join(f'<line class="eco-raio" x1="320" y1="190" x2="{320 + rx * math.cos(math.radians(-90 + k * passo)):.1f}" y2="{190 + ry * math.sin(math.radians(-90 + k * passo)):.1f}"/>' for k in range(n))}
           </svg>
           {k3d("eco-k3d")}
-          <nav class="eco-nos" aria-label="Soluções">{"".join(nos)}</nav>
+          <div class="eco-nos" aria-hidden="true">{"".join(nos)}</div>
         </div>"""
 
 SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagina">
@@ -1716,7 +1716,7 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
       <div class="container pagina-topo-grade eco-grade">
         <div>
           <h1 id="titulo-pagina" data-revelar-texto>Soluções</h1>
-          <p class="pagina-topo-apoio">Sistemas de gestão, atendimento e vendas, presença online e IA: {N_SERVICOS} serviços que a Kyzent desenvolve sob medida. Escolha por onde começar.</p>
+          <p class="pagina-topo-apoio">Sistemas de gestão, atendimento e vendas, presença online e IA, desenvolvidos sob medida para o seu negócio. E, quando ele pede algo diferente, a Kyzent constrói do zero.</p>
         </div>
         {ecossistema()}
       </div>
@@ -1734,7 +1734,7 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
     <section class="secao claro secao-faixa" id="catalogo" aria-labelledby="titulo-catalogo">
       <div class="container">
         <div class="cabeca">
-          <h2 id="titulo-catalogo" data-revelar-texto>Todos os {N_SERVICOS} serviços.</h2>
+          <h2 id="titulo-catalogo" data-revelar-texto>O que a Kyzent faz.</h2>
           <p>Organizados pelos três pilares. Toque no nome da solução para ver como funciona, testar a simulação e saber o que cada serviço resolve.</p>
         </div>
         {lista_servicos()}
