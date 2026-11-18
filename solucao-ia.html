@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR" data-theme="dark" data-v="158">
+<html lang="pt-BR" data-theme="dark" data-v="161">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,12 +43,12 @@
     });
   })();</script>
   <link rel="preload" href="assets/fonts/mona-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=158">
+  <link rel="stylesheet" href="css/style.css?v=161">
   <script src="assets/vendor/gsap/gsap.min.js?v=3130" defer></script>
   <script src="assets/vendor/gsap/ScrollTrigger.min.js?v=3130" defer></script>
   <script src="assets/vendor/gsap/CustomEase.min.js?v=3130" defer></script>
-  <script src="js/main.js?v=158" defer></script>
-  <script src="js/animacoes.js?v=158" defer></script>
+  <script src="js/main.js?v=161" defer></script>
+  <script src="js/animacoes.js?v=161" defer></script>
 </head>
 <body data-promo-fim="2026-12-05T23:59:59-03:00" data-whats="5519988728894 5519971246077">
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -95,7 +95,7 @@
         </div>
         <div class="pagina-topo-texto">
           <a class="botao botao-grande" href="orcamento.html" data-magnetico>Pedir orçamento</a>
-          <a class="link-seta" href="#funcionando">Testar agora</a>
+          <a class="link-seta" href="#funcionando">Ver como fica</a>
         </div>
       </div>
     </section>
@@ -123,34 +123,20 @@
       </div>
     </section>
 
-    <section class="secao secao-demos " id="funcionando" aria-labelledby="titulo-funcionando">
-      <div class="container">
-        <div class="cabeca cabeca-centro">
-          <h2 id="titulo-funcionando" data-revelar-texto>Teste aqui.</h2>
-          <p>Simulação com dados fictícios. Uma mensagem do cliente vira uma tarefa feita: a IA entende o pedido, consulta os sistemas e avisa a equipe.</p>
+    <section class="secao" id="funcionando" aria-labelledby="titulo-funcionando">
+      <div class="container vis-grade">
+        <div class="vis-texto">
+          <h2 id="titulo-funcionando" data-revelar-texto>Uma IA que conhece a sua empresa.</h2>
+          <p>Pergunte em português e receba a resposta com base nos seus próprios sistemas.</p>
         </div>
-        <div class="demo-centro" data-demo-centro>
-          
-          
-          <div class="demo-painel" id="dpainel-automacao" role="tabpanel" aria-labelledby="daba-automacao">
-            <div class="demo-info">
-              <span class="selo-exemplo">Simulação demonstrativa</span>
-              <h3>Automação de processos</h3>
-              <p>A IA entende o pedido, consulta os sistemas, organiza a tarefa e avisa quem precisa saber.</p>
-              
-              
+        <div class="vis vis-ia">
+              <div class="vis-topo"><strong>Assistente interno</strong><span class="selo-exemplo">Simulação demonstrativa</span></div>
+              <div class="ia-conversa">
+                <p class="ia-pergunta">Quanto vendemos ontem e o que precisa de reposição?</p>
+                <div class="ia-consulta"><small>Consultando</small><span class="ia-fonte" style="--i:0">Vendas</span><span class="ia-fonte" style="--i:1">Estoque</span><span class="ia-fonte" style="--i:2">Agenda</span></div>
+                <p class="ia-resposta">Ontem foram <strong>86 pedidos</strong>. Faltam reposição de <strong>pão de hambúrguer</strong> e <strong>embalagens</strong>; já deixei o pedido ao fornecedor pronto para você aprovar.</p>
+              </div>
             </div>
-            <div class="demo-tela"><figure class="demo-visual">
-            <div class="fluxo" data-fluxo role="img" aria-label="Exemplo ilustrativo: chega a mensagem &quot;Quero 2 X-bacon para sexta, com entrega ao meio-dia.&quot; A IA entende o pedido, confere o estoque, agenda a entrega para sexta às 12h e responde o cliente, avisando a cozinha.">
-              <div class="fluxo-entrada" aria-hidden="true"><small>Mensagem recebida</small><p>"Quero 2 X-bacon para sexta, com entrega ao meio-dia."</p></div>
-              <div class="fluxo-nucleo" aria-hidden="true"><span class="fluxo-orbita"></span><strong>Assistente de IA</strong></div>
-              <ol class="fluxo-passos" aria-hidden="true"><li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>Entende o pedido</strong><small>2 X-bacon, sexta, entrega ao meio-dia</small></span><span class="fluxo-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li><li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>Confere o estoque</strong><small>Pão, carne e bacon disponíveis</small></span><span class="fluxo-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li><li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>Agenda a entrega</strong><small>Sexta, 12h, na rota do centro</small></span><span class="fluxo-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li><li class="fluxo-passo" data-passo><span class="fluxo-icone fluxo-n"></span><span><strong>Responde e avisa a equipe</strong><small>Cliente confirmado, cozinha avisada</small></span><span class="fluxo-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></li></ol>
-            </div>
-            <figcaption><span class="selo-exemplo">Exemplo ilustrativo</span></figcaption>
-          </figure></div>
-          </div>
-        </div>
-        
       </div>
     </section>
 

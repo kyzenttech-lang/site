@@ -2410,3 +2410,44 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
 .atalho-seta { color: #1A5CFF; font-weight: 700; transition: transform .25s var(--ease); }
 .atalho:hover .atalho-seta { transform: translateX(4px); }
 @media (prefers-reduced-motion: reduce) { .atalho, .atalho:hover { transition: none; transform: none; } }
+
+/* ---------- Soluções: cada pilar numa faixa própria ---------- */
+.px-intro { padding-bottom: 28px; }
+.px-rotulo { color: #1A5CFF; font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+.px-menu { position: sticky; top: 76px; z-index: 5; margin-top: 28px; }
+.px-menu ul { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding: 6px; border-radius: 999px; background: rgba(255,255,255,.9); box-shadow: 0 0 0 1px rgba(11,18,32,.08) inset; width: max-content; max-width: 100%; }
+.px-menu ul::-webkit-scrollbar { display: none; }
+.px-menu a { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 16px; border-radius: 999px; color: #3A4458; font-weight: 600; font-size: .92rem; text-decoration: none; white-space: nowrap; transition: background-color .25s, color .25s; }
+.px-menu a span { color: #1A5CFF; font-weight: 800; font-size: .8rem; }
+.px-menu a:hover { background: #0B1220; color: #fff; } .px-menu a:hover span { color: #8DB8FF; }
+.px { padding: clamp(64px, 9vw, 120px) 0; background: #F3F5F9; color: #0B1220; scroll-margin-top: 70px; }
+.px-escuro { background: radial-gradient(70% 90% at 85% 10%, rgba(26,92,255,.35), transparent 60%), linear-gradient(170deg, #0B1220, #0E1B3D); color: #E9EEF8; }
+.px-grade { display: grid; gap: 40px; align-items: center; }
+@media (min-width: 1000px) { .px-grade { grid-template-columns: 1fr 1.05fr; gap: 72px; }
+  .px:not(.px-escuro) .px-texto { order: 2; } }
+.px-num { display: flex; align-items: center; gap: 12px; color: #1A5CFF; font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.px-num span { font-size: 2.6rem; font-weight: 800; letter-spacing: -.04em; line-height: 1; color: transparent; -webkit-text-stroke: 1.4px currentColor; }
+.px-escuro .px-num { color: #8DB8FF; }
+.px h3 { margin-top: 16px; font-size: clamp(2.3rem, 1.4rem + 3vw, 4rem); line-height: 1; letter-spacing: -.04em; color: inherit; }
+.px-frase { margin-top: 18px; max-width: 32rem; font-size: 1.12rem; line-height: 1.6; color: #4A5468; }
+.px-escuro .px-frase { color: #C9D3E6; }
+.px-lista { display: grid; gap: 10px; margin-top: 22px; }
+.px-lista li { display: flex; gap: 10px; font-weight: 600; color: #0B1220; }
+.px-lista svg { width: 20px; flex: none; color: #1A5CFF; }
+.px-escuro .px-lista li { color: #E9EEF8; } .px-escuro .px-lista svg { color: #8DB8FF; }
+.px-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 30px; }
+.px-escuro .pl-principal { background: #fff; color: #0B1220; } .px-escuro .pl-principal:hover { background: #DCE8FF; }
+.px-escuro .pl-outros a { color: #A9CCFF; }
+.px-previa { position: relative; }
+.px-previa::before { content: ""; position: absolute; inset: 8% 6%; border-radius: 50%; background: radial-gradient(closest-side, rgba(26,92,255,.35), transparent); filter: blur(20px); z-index: 0; }
+.px-previa .pv { position: relative; z-index: 1; padding: 22px; border-radius: 26px; font-size: .95rem; background: #fff; box-shadow: 0 0 0 1px rgba(11,18,32,.08) inset, 0 40px 80px -40px rgba(11,18,32,.45); }
+.px-escuro .px-previa .pv { background: rgba(255,255,255,.06); box-shadow: 0 0 0 1px rgba(255,255,255,.12) inset, 0 40px 80px -40px rgba(0,0,0,.6); }
+.px-previa .pv-graf { height: 200px; gap: 12px; }
+.px-previa .pv-estoque li { padding: 12px 14px; grid-template-columns: 1fr 110px auto; }
+.px-previa .pv-msg { font-size: 1rem; }
+@media (max-width: 999px) { .px-menu { top: 64px; } .px-acoes { flex-direction: column; align-items: stretch; } .px-acoes .pl-principal { justify-content: center; } .pl-outros { justify-content: center; } }
+
+.px-num span { -webkit-text-stroke: 1.4px #1A5CFF; } .px-escuro .px-num span { -webkit-text-stroke-color: #8DB8FF; }
+@media (max-width: 639px) { .px-previa .pv { padding: 14px; font-size: .82rem; } .px-previa .pv-estoque li { grid-template-columns: 1fr 60px; } .px-previa .pv-estoque b { grid-column: 1 / -1; justify-self: start; }
+  .px-previa .pv-graf { height: 140px; gap: 8px; } }
+.px-intro .px-menu { position: static; }

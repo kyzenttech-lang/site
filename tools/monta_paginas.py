@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "158"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "161"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -203,10 +203,10 @@ PILARES_INICIO = [
 
 # caminhos de cada pilar: (texto, endereço); o primeiro é o principal
 CAMINHOS_PILAR = {
-    "erp": [("Ver o ERP funcionando", "solucao-gestao.html#funcionando"), ("Conhecer o ERP", "solucao-gestao.html")],
-    "bi": [("Ver o painel funcionando", "solucao-bi.html#funcionando"), ("Conhecer o BI", "solucao-bi.html")],
-    "ia": [("Conversar com a Aurora", "aurora.html#conversar"), ("Agentes sob medida", "solucao-ia.html")],
-    "vendas": [("Testar o agendamento", "solucao-vendas.html#funcionando"), ("Cardápio e agendamento", "solucao-vendas.html"), ("Site", "solucao-site.html")],
+    "erp": [("Conhecer o ERP", "solucao-gestao.html")],
+    "bi": [("Conhecer o BI", "solucao-bi.html")],
+    "ia": [("Conhecer a Aurora", "aurora.html"), ("Agentes sob medida", "solucao-ia.html")],
+    "vendas": [("Cardápio e agendamento", "solucao-vendas.html"), ("Site", "solucao-site.html")],
 }
 ICONE_PILAR = {"erp": "gestao", "bi": "grafico", "ia": "conversa", "vendas": "vendas"}
 
@@ -411,7 +411,7 @@ PERGUNTAS = [
     ("Funciona no computador e no celular?",
      "Sim. Os sistemas funcionam pelo navegador, no computador e no celular, sem precisar instalar nada."),   # [CONFIRMAR]
     ("Posso testar antes de contratar?",
-     'Sim. O <a href="#testar">cardápio online e o agendamento online</a> estão no ar para você testar, e a <a href="solucao-gestao.html#funcionando">página do sistema de gestão</a> tem uma simulação dele funcionando.'),
+     'Sim. O <a href="#testar">cardápio online e o agendamento online</a> estão no ar para você testar, e a <a href="solucao-gestao.html">página do sistema de gestão</a> mostra como ele funciona no dia a dia.'),
 ]
 # as perguntas do Início em 3 assuntos (todas continuam; só ficam agrupadas)
 GRUPOS_PERGUNTAS = [
@@ -1170,6 +1170,38 @@ def previa_pilar(pid):
             '<div class="pv-itens"><span><b>Combo da casa</b><em>Adicionar</em></span><span><b>Corte + barba</b><em>Agendar</em></span></div></div>'
             '<div class="pv-horas"><span>9:00</span><span class="on">10:30</span><span>14:00</span></div></div>')
 
+def pilares_destaque():
+    """Soluções: cada pilar numa faixa própria (largura toda), com título da seção e um menu para pular entre eles."""
+    menu = "".join(f'<li><a href="{CAMINHOS_PILAR[pid][0][1]}"><span>0{k + 1}</span>{t}</a></li>' for k, (pid, t, *_r) in enumerate(PILARES_SOL))
+    faixas = []
+    for k, (pid, titulo, apoio, texto, resultados, mods) in enumerate(PILARES_SOL):
+        res = "".join(f"<li>{I['check']}{r}</li>" for r in resultados)
+        (t0, h0), *resto = CAMINHOS_PILAR[pid]
+        outros = "".join(f'<a href="{h}">{t}</a>' for t, h in resto)
+        faixas.append(f"""    <section class="px px-{pid}{" px-escuro" if k % 2 == 0 else ""}" id="pilar-{pid}" aria-labelledby="titulo-pilar-{pid}">
+      <div class="container px-grade">
+        <div class="px-texto">
+          <p class="px-num"><span>0{k + 1}</span>{apoio}</p>
+          <h3 id="titulo-pilar-{pid}">{titulo}</h3>
+          <p class="px-frase">{texto}</p>
+          <ul class="px-lista">{res}</ul>
+          <div class="px-acoes"><a class="pl-principal" href="{h0}">{t0}</a><span class="pl-outros">{outros}</span></div>
+        </div>
+        <div class="px-previa" aria-hidden="true">{previa_pilar(pid)}</div>
+      </div>
+    </section>""")
+    return f"""    <section class="secao claro px-intro" aria-labelledby="titulo-pilares-sol">
+      <div class="container">
+        <div class="cabeca">
+          <p class="px-rotulo">Os 4 pilares</p>
+          <h2 id="titulo-pilares-sol" data-revelar-texto>Tudo o que a Kyzent desenvolve, em quatro frentes.</h2>
+          <p>Escolha a frente que mais pesa no seu negócio hoje. Elas funcionam sozinhas ou juntas.</p>
+        </div>
+        <nav class="px-menu" aria-label="Pilares"><ul>{menu}</ul></nav>
+      </div>
+    </section>
+"""   # só a escolha: cada pilar leva à página que explica (as faixas saíram)
+
 def cartao_pilar(pid, titulo, apoio, texto, resultados, mods, modo="inicio"):
     """modo "inicio": texto de apresentação. modo "catalogo" (Soluções): os resultados em lista."""
     corpo = (f'<p class="pl-texto">{texto}</p>' if modo == "inicio"
@@ -1190,7 +1222,7 @@ TESTAR = f"""    <section class="secao testar" id="testar" aria-labelledby="titu
           {"".join(cartao_demo(*d, compacto=True) for d in DEMOS_COMPLETAS)}
         </ul>
         <p class="nota">Demonstrações com dados fictícios. Nenhum pedido ou agendamento é feito de verdade.</p>
-        <div class="demo-todas"><a class="link-seta" href="servicos.html">Ver as outras soluções funcionando</a></div>
+        <div class="demo-todas"><a class="link-seta" href="servicos.html">Ver todas as soluções</a></div>
       </div>
     </section>"""
 
@@ -1548,7 +1580,7 @@ def pagina_solucao(mid):
     probs = "".join(f"<li>{p}</li>" for p in problemas)
     bens = "".join(f"<li>{I['check']}{b}</li>" for b in benef)
     passos = "".join(f'<li class="processo-passo"><span class="processo-n">{k + 1}</span><h3>{t}</h3><p>{d}</p></li>' for k, (t, d) in enumerate(COMO_FUNCIONA[mid]))
-    if mid in DEMOS_MOD:
+    if False and mid in DEMOS_MOD:   # simulações desligadas: vão para a futura área de testes (.offpilot/implementacoes-para-o-futuro.md)
         funcionando = central_demos(ids=DEMOS_MOD[mid], titulo="Teste aqui.", sec_id="funcionando", com_link=False,
                                     intro=f'Simulação com dados fictícios. {INTRO_DEMOS[mid]}')
         link_topo = "Testar agora"
@@ -1562,7 +1594,7 @@ def pagina_solucao(mid):
         {fn()}
       </div>
     </section>"""
-        link_topo = "Ver um exemplo"
+        link_topo = "Ver como fica"
     return f"""    <section class="pagina-topo solucao-topo" aria-labelledby="titulo-pagina">
       <div class="pagina-topo-fundo" aria-hidden="true"></div>
       <div class="container pagina-topo-grade">
@@ -1795,20 +1827,13 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
       </div>
     </section>
 
-    <section class="secao claro" aria-labelledby="titulo-cinco">
-      <div class="container">
-        <h2 id="titulo-cinco" class="visualmente-oculto">Os quatro pilares</h2>
-        <ul class="pls pls-catalogo">
-          {"".join(cartao_pilar(*p, modo="catalogo") for p in PILARES_SOL)}
-        </ul>
-      </div>
-    </section>
+{pilares_destaque()}
 
     <section class="secao claro secao-faixa" id="catalogo" aria-labelledby="titulo-catalogo">
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-catalogo" data-revelar-texto>O que a Kyzent faz.</h2>
-          <p>Organizados pelos quatro pilares. Toque no nome da solução para ver como funciona, testar a simulação e saber o que cada serviço resolve.</p>
+          <p>Organizados pelos quatro pilares. Toque no nome da solução para ver como funciona e o que cada serviço resolve.</p>
         </div>
         {lista_servicos()}
       </div>
