@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "164"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "169"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1194,7 +1194,7 @@ def pilares_destaque():
     </section>""")
     return f"""    <section class="secao claro px-intro" aria-labelledby="titulo-pilares-sol">
       <div class="container">
-        <div class="cabeca">
+        <div class="cabeca" id="pilares">
           <p class="px-rotulo">Os 4 pilares</p>
           <h2 id="titulo-pilares-sol" data-revelar-texto>Tudo o que a Kyzent desenvolve, em quatro frentes.</h2>
           <p>Escolha a frente que mais pesa no seu negócio hoje. Elas funcionam sozinhas ou juntas.</p>
@@ -1601,7 +1601,7 @@ def pagina_solucao(mid):
       <div class="pagina-topo-fundo" aria-hidden="true"></div>
       <div class="container pagina-topo-grade">
         <div>
-          <a class="voltar-link" href="servicos.html">{I["voltar"]}Todas as soluções</a>
+          <a class="voltar-link" href="servicos.html#pilares">{I["voltar"]}Todas as soluções</a>
           {ilustra(mid, "ilu ilu-grande")}
           <h1 id="titulo-pagina" data-revelar-texto>{titulo}</h1>
           <p class="pagina-topo-apoio">{chamada_txt}</p>
@@ -1836,13 +1836,16 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
 
 {pilares_destaque()}
 
-    <section class="secao secao-faixa" id="catalogo" aria-labelledby="titulo-catalogo">
+    <section class="secao testar" id="demonstracoes" aria-labelledby="titulo-demos-sol">
       <div class="container">
         <div class="cabeca">
-          <h2 id="titulo-catalogo" data-revelar-texto>O que a Kyzent faz.</h2>
-          <p>Toque em um pilar para ver os serviços que ele reúne.</p>
+          <h2 id="titulo-demos-sol" data-revelar-texto>Veja nossas demonstrações de sistemas.</h2>
+          <p>Sistemas que a Kyzent desenvolveu, inteiros e no ar, cada um com a cara do negócio de exemplo. Faça um pedido ou marque um horário do começo ao fim.</p>
         </div>
-        {lista_servicos()}
+        <ul class="demos-completas">
+          {"".join(cartao_demo(*d, compacto=True) for d in DEMOS_COMPLETAS)}
+        </ul>
+        <p class="nota">Demonstrações com dados fictícios. Nenhum pedido ou agendamento é feito de verdade.</p>
       </div>
     </section>
 

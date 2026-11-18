@@ -852,6 +852,20 @@
     });
   }
 
+  /* ------------------------------------------------------------ "Todas as soluções": volta de verdade
+     Se a pessoa veio de Soluções, volta pelo histórico (mesmo ponto da página, sem recarregar nem pular).
+     Se entrou direto na página da solução, o link normal abre Soluções nos pilares. */
+  $$(".voltar-link").forEach(function (l) {
+    l.addEventListener("click", function (e) {
+      var ref = document.referrer;
+      if (!ref || history.length < 2) return;
+      try {
+        var u = new URL(ref);
+        if (u.origin === location.origin && /servicos\.html$/.test(u.pathname)) { e.preventDefault(); history.back(); }
+      } catch (_) {}
+    });
+  });
+
   /* ------------------------------------------------------------ ano do rodapé */
   var ano = $("[data-ano]");
   if (ano) ano.textContent = new Date().getFullYear();
