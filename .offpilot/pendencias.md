@@ -43,7 +43,7 @@ Só anotado. Nada disto foi feito ainda.
 
 ## 4. Textos que dependem dos sócios
 - [CONFIRMAR] 6 serviços novos, 3 respostas do FAQ e a frase de estoque e almoxarifado em Quem somos.
-- [REVISAR] fichas dos 24 serviços (página Soluções).
+- [REVISAR] fichas dos serviços (páginas de solução).
 
 ## 5. Próxima conversa: os serviços do site
 - Discutir com o Otavio os serviços que estão no site (os 24 do catálogo): quais a Kyzent entrega hoje, quais tirar, quais juntar.

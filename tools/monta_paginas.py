@@ -1283,17 +1283,7 @@ HERO = f"""    <section class="hero hero-cinema hero-3d" aria-labelledby="titulo
       </div>
     </section>"""
 
-N_SERVICOS = len(CATALOGO)
-NUMEROS = f"""    <section class="numeros-faixa claro" aria-label="A Kyzent em números">
-      <div class="container">
-        <ul class="hero-numeros">
-          <li><strong data-contar="5">5</strong><span>soluções para o seu negócio</span></li>
-          <li><strong data-contar="{N_SERVICOS}">{N_SERVICOS}</strong><span>serviços de automação</span></li>
-          <li><strong data-contar="6">6</strong><span>segmentos com soluções pensadas</span></li>
-          <li><strong><span data-contar="24">24</span> h</strong><span>de atendimento no WhatsApp e no Instagram</span></li>
-        </ul>
-      </div>
-    </section>"""
+# (a faixa de números saiu do site: a Kyzent não numera o que faz)
 
 
 TAREFAS = [("Contar o estoque no caderno toda sexta", "O estoque baixa sozinho a cada venda"),
