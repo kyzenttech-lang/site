@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "179"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "180"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1573,6 +1573,32 @@ INTRO_DEMOS = {"bi": "Registre um pedido em Pedidos e veja o painel se atualizar
                "whatsapp": "Faça o papel do cliente de uma barbearia de exemplo: marque um horário, pergunte o preço ou peça para falar com uma pessoa.",
                "ia": "Uma mensagem do cliente vira uma tarefa feita: a IA entende o pedido, consulta os sistemas e avisa a equipe."}
 
+def resolve_3d(problemas, benef):
+    """ERP: problemas como anotações soltas em 3D e o que muda numa tela 3D que acende item por item"""
+    giros = [(-7, 0, 40), (5, 34, 20), (-3, 8, 0)]   # (rotação, deslocamento, altura) de cada papel
+    notas = "".join(f'<li class="er-nota" style="--r:{r}deg;--x:{x}px;--z:{z}px;--i:{k}"><span class="er-fita"></span><span class="er-ex">!</span>{t}</li>'
+                    for k, (t, (r, x, z)) in enumerate(zip(problemas, giros)))
+    bens = "".join(f'<li style="--i:{k}">{I["check"]}<span>{b}</span></li>' for k, b in enumerate(benef))
+    return f"""    <section class="secao claro er" aria-labelledby="titulo-problemas" data-er>
+      <div class="container er-grade">
+        <div class="er-lado">
+          <h2 id="titulo-problemas" data-revelar-texto>O que esta solução resolve.</h2>
+          <div class="er-mesa" data-er-cena><ul class="er-notas">{notas}</ul></div>
+        </div>
+        <div class="er-seta" aria-hidden="true"><span></span></div>
+        <div class="er-lado er-lado-tela">
+          <div class="er-cena-tela" data-er-cena>
+            <div class="er-tela">
+              <div class="er-tela-topo"><i></i><i></i><i></i><b>O que muda</b></div>
+              <ul class="er-bens">{bens}</ul>
+              <p class="nota">{AVISO_RESULTADOS}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+"""
+
 def pagina_solucao(mid):
     nome, curto, ic, resumo, servs = MOD[mid]
     titulo, chamada_txt, benef, problemas = SOLUCOES[mid]
@@ -1612,7 +1638,7 @@ def pagina_solucao(mid):
       </div>
     </section>
 
-    <section class="secao claro" aria-labelledby="titulo-problemas">
+{resolve_3d(problemas, benef) if mid == "gestao" else f"""    <section class="secao claro" aria-labelledby="titulo-problemas">
       <div class="container solucao-duas">
         <div>
           <h2 id="titulo-problemas" data-revelar-texto>O que esta solução resolve.</h2>
@@ -1624,7 +1650,7 @@ def pagina_solucao(mid):
           <p class="nota">{AVISO_RESULTADOS}</p>
         </div>
       </div>
-    </section>
+    </section>"""}
 
 {ERP_EXPLICA if mid == "gestao" else f"""    <section class="secao" aria-labelledby="titulo-dia">
       <div class="container">

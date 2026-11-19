@@ -144,6 +144,24 @@
     });
     cena.addEventListener("pointerleave", function () { rx(base.rx); rz(base.rz); });
   });
+  /* ERP, o que resolve: os papéis caem na mesa, a tela gira para a frente e os itens acendem; a cena segue o mouse */
+  $$("[data-er]").forEach(function (sec) {
+    sec.classList.add("pronto");
+    ScrollTrigger.create({ trigger: sec, start: "top 70%", once: true, onEnter: function () { sec.classList.add("visto"); } });
+    if (!ponteiroFino) return;
+    $$("[data-er-cena] > *", sec).forEach(function (alvo) {
+      var ry = g.quickTo(alvo, "rotationY", { duration: 0.7, ease: EASE });
+      var rx = g.quickTo(alvo, "rotationX", { duration: 0.7, ease: EASE });
+      var base = alvo.classList.contains("er-tela") ? { x: 8, y: -16 } : { x: 16, y: 12 };
+      sec.addEventListener("pointermove", function (e) {
+        if (!sec.classList.contains("visto")) return;
+        var r = sec.getBoundingClientRect();
+        ry(base.y + ((e.clientX - r.left) / r.width - 0.5) * 10);
+        rx(base.x - ((e.clientY - r.top) / r.height - 0.5) * 8);
+      });
+      sec.addEventListener("pointerleave", function () { ry(base.y); rx(base.x); });
+    });
+  });
   $$("[data-erp-caminho]").forEach(function (cam) {
     var sem = $$(".ec-sem li", cam), com = $$(".ec-com li", cam);
     g.set(sem.concat(com), { autoAlpha: 0, y: 16 });
