@@ -943,6 +943,53 @@
     }
   }
 
+  /* ------------------------------------------------------------ Vendas: os dois celulares contam a história (uma vez, ao aparecer) */
+  var vd = $("[data-vd3d]");
+  if (vd) {
+    var vdParado = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var q = function (s) { return vd.querySelector(s); };
+    var precos = [26, 22, 6];   // X-bacon, X-salada e refrigerante: 3 itens, R$ 54,00
+    var reais = function (v) { return "R$ " + v.toFixed(2).replace(".", ","); };
+    var final = function () {
+      q("[data-vd-qtd]").textContent = "Pedido enviado"; q("[data-vd-total]").textContent = reais(54); q("[data-vd-carrinho]").classList.add("enviado");
+      q("[data-vd-hora]").classList.add("on"); q("[data-vd-confirmar]").textContent = "Horário confirmado ✓"; q("[data-vd-confirmar]").classList.add("ok");
+      q("[data-vd-nota-a]").classList.add("on"); q("[data-vd-nota-b]").classList.add("on");
+    };
+    var rodar = function () {
+      var itens = vd.querySelectorAll("[data-vd-item]"), total = 0, passos = [];
+      [0, 1, 2].forEach(function (k) {
+        passos.push(function () {
+          itens[k].classList.add("toque"); total += precos[k];
+          q("[data-vd-qtd]").textContent = (k + 1) + (k ? " itens" : " item");
+          q("[data-vd-total]").textContent = reais(total);
+          setTimeout(function () { itens[k].classList.remove("toque"); }, 450);
+        });
+      });
+      passos.push(function () { q("[data-vd-qtd]").textContent = "Pedido enviado"; q("[data-vd-carrinho]").classList.add("enviado"); q("[data-vd-nota-a]").classList.add("on"); });
+      passos.push(function () { q("[data-vd-hora]").classList.add("on"); });
+      passos.push(function () { q("[data-vd-confirmar]").textContent = "Horário confirmado ✓"; q("[data-vd-confirmar]").classList.add("ok"); q("[data-vd-nota-b]").classList.add("on"); });
+      passos.forEach(function (f, n) { setTimeout(f, 900 + n * 750); });
+    };
+    if (vdParado || !("IntersectionObserver" in window)) { final(); }
+    else {
+      vd.classList.add("pronto");
+      var obsVd = new IntersectionObserver(function (e) {
+        if (!e[0].isIntersecting) return;
+        obsVd.disconnect(); vd.classList.add("entrou"); rodar();
+      }, { threshold: 0.35 });
+      obsVd.observe(vd);
+      if (matchMedia("(pointer: fine)").matches) {
+        var cenaVd = q("[data-vd-cena]");
+        vd.addEventListener("pointermove", function (ev) {
+          if (!vd.classList.contains("entrou")) return;
+          var r = vd.getBoundingClientRect();
+          cenaVd.style.transform = "rotateX(" + (10 - ((ev.clientY - r.top) / r.height - 0.5) * 8).toFixed(2) + "deg) rotateY(" + (-14 + ((ev.clientX - r.left) / r.width - 0.5) * 14).toFixed(2) + "deg)";
+        });
+        vd.addEventListener("pointerleave", function () { cenaVd.style.transform = ""; });
+      }
+    }
+  }
+
   /* ------------------------------------------------------------ ano do rodapé */
   var ano = $("[data-ano]");
   if (ano) ano.textContent = new Date().getFullYear();

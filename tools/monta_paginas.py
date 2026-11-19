@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "183"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "185"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -176,10 +176,7 @@ PILARES_SOL = [
      "Painéis e relatórios que se atualizam sozinhos, com os dados de todos os seus sistemas num lugar só.",
      ["O que mais vende e o que está parado", "Os números do mês sem montar planilha", "Um aviso quando algo sai do normal"],
      ["bi"]),
-    ("ia", "IA de atendimento", "A Aurora e agentes sob medida",
-     "A Aurora atende os seus clientes no WhatsApp e no Instagram a qualquer hora, e agentes de IA fazem as tarefas repetitivas da equipe.",
-     ["Resposta na hora, até de madrugada", "Uma pessoa entra quando precisa", "Tarefas internas feitas por agentes de IA"],
-     ["whatsapp", "ia"]),
+    # IA de atendimento saiu dos pilares: fica na página da Aurora (menu)
     ("vendas", "Vendas e presença online", "Cardápio, agendamento e site",
      "Cardápio online com pedidos, agendamento online e um site com a sua marca, para o cliente comprar e marcar sozinho.",
      ["O cliente pede ou marca o horário sozinho", "Site com a marca e as informações do negócio", "Quem sumiu recebe um lembrete para voltar"],
@@ -1195,11 +1192,11 @@ def pilares_destaque():
     return f"""    <section class="secao claro px-intro" aria-labelledby="titulo-pilares-sol">
       <div class="container">
         <div class="cabeca" id="pilares">
-          <p class="px-rotulo">Os 4 pilares</p>
-          <h2 id="titulo-pilares-sol" data-revelar-texto>Tudo o que a Kyzent desenvolve, em quatro frentes.</h2>
+          <p class="px-rotulo">Os 3 pilares</p>
+          <h2 id="titulo-pilares-sol" data-revelar-texto>Tudo o que a Kyzent desenvolve, em três frentes.</h2>
           <p>Escolha a frente que mais pesa no seu negócio hoje. Elas funcionam sozinhas ou juntas.</p>
         </div>
-        <nav class="pe-nav" aria-label="Os 4 pilares"><ul class="pe-lista">{menu}</ul></nav>
+        <nav class="pe-nav" aria-label="Os 3 pilares"><ul class="pe-lista">{menu}</ul></nav>
       </div>
     </section>
 """   # só a escolha: cada pilar leva à página que explica (as faixas saíram)
@@ -1638,7 +1635,7 @@ def pagina_solucao(mid):
       </div>
     </section>
 
-{resolve_3d(problemas, benef) if mid in ("gestao", "bi") else f"""    <section class="secao claro" aria-labelledby="titulo-problemas">
+{resolve_3d(problemas, benef) if mid in ("gestao", "bi", "agenda") else f"""    <section class="secao claro" aria-labelledby="titulo-problemas">
       <div class="container solucao-duas">
         <div>
           <h2 id="titulo-problemas" data-revelar-texto>O que esta solução resolve.</h2>
@@ -1652,7 +1649,7 @@ def pagina_solucao(mid):
       </div>
     </section>"""}
 
-{ {"gestao": ERP_EXPLICA, "bi": BI_EXPLICA}[mid] if mid in ("gestao", "bi") else f"""    <section class="secao" aria-labelledby="titulo-dia">
+{ {"gestao": ERP_EXPLICA, "bi": BI_EXPLICA, "agenda": VENDAS_EXPLICA}[mid] if mid in ("gestao", "bi", "agenda") else f"""    <section class="secao" aria-labelledby="titulo-dia">
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-dia" data-revelar-texto>Como funciona no dia a dia.</h2>
@@ -1661,9 +1658,9 @@ def pagina_solucao(mid):
       </div>
     </section>"""}
 
-{"" if mid == "bi" else funcionando}
+{"" if mid in ("bi", "agenda") else funcionando}
 {SOLUCAO_EXTRA.get(mid, lambda: "")()}
-{"" if mid in ("gestao", "bi") else f"""    <section class="secao claro secao-faixa" id="incluido" aria-labelledby="titulo-incluido">
+{"" if mid in ("gestao", "bi", "agenda") else f"""    <section class="secao claro secao-faixa" id="incluido" aria-labelledby="titulo-incluido">
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-incluido" data-revelar-texto>{"Módulos possíveis." if mid == "gestao" else "O que está incluído."}</h2>
@@ -1773,6 +1770,54 @@ BI_EXPLICA = f"""    <section class="secao erp-hero bi-hero" aria-labelledby="ti
           <h2 id="titulo-bi-faz" data-revelar-texto>O que dá para fazer com BI.</h2>
         </div>
         <ul class="bi-faz">{"".join(f'<li class="bi-faz-item"><span class="bi-faz-icone">{I[ic]}</span><span class="eg-n">0{k + 1}</span><h3>{t}</h3><p>{d}</p></li>' for k, (ic, t, d) in enumerate(BI_FAZ))}</ul>
+      </div>
+    </section>
+"""
+
+# ---------- página de Vendas: o que é venda online, dois celulares em 3D e o que dá para fazer  [REVISAR] rascunho do Claude; exemplo fictício
+VD_ITENS = [("X-bacon", "R$ 26,00"), ("X-salada", "R$ 22,00"), ("Refrigerante lata", "R$ 6,00")]
+VD_HORAS = ["9:00", "10:30", "11:00", "14:00", "15:30", "17:00"]
+VENDAS_CENA = (
+    '<div class="vd3d" data-vd3d role="img" aria-label="Exemplo ilustrativo: no celular, um cliente monta o pedido no cardápio online e outro marca um horário no agendamento online; o pedido e o horário chegam confirmados para a equipe.">'
+    '<div class="vd-cena" data-vd-cena>'
+    '<div class="vd-cel vd-cel-a"><div class="vd-tela"><div class="vd-topo"><b>Lanchonete Exemplo</b><small>Cardápio</small></div><ul class="vd-itens">'
+    + "".join(f'<li data-vd-item="{k}"><span><b>{n}</b><small>{pr}</small></span><em>+</em></li>' for k, (n, pr) in enumerate(VD_ITENS))
+    + '</ul><div class="vd-carrinho" data-vd-carrinho><span data-vd-qtd>Carrinho vazio</span><b data-vd-total>R$ 0,00</b></div></div></div>'
+    '<div class="vd-cel vd-cel-b"><div class="vd-tela"><div class="vd-topo"><b>Salão Exemplo</b><small>Agendar horário</small></div>'
+    '<div class="vd-dias"><span>Qui<br><b>20</b></span><span class="on">Sex<br><b>21</b></span><span>Sáb<br><b>22</b></span></div>'
+    '<div class="vd-horas">' + "".join(f'<span{" data-vd-hora" if h == "10:30" else ""}>{h}</span>' for h in VD_HORAS) + '</div>'
+    '<div class="vd-confirmar" data-vd-confirmar>Confirmar horário</div></div></div>'
+    '<div class="vd-nota vd-nota-a" data-vd-nota-a><span class="vd-ponto"></span><b>Novo pedido #1044</b><small>3 itens · R$ 54,00 · já com o total</small></div>'
+    '<div class="vd-nota vd-nota-b" data-vd-nota-b><span class="vd-ponto"></span><b>Horário confirmado</b><small>Sexta, 10:30 · lembrete programado</small></div>'
+    '</div></div>'
+)
+VENDAS_FAZ = [
+    ("lanche", "Receber pedidos com o total certo", "O cliente escolhe no cardápio online, com fotos e preços, e o pedido chega completo, sem item trocado nem conta feita de cabeça."),
+    ("agenda", "Deixar o cliente marcar sozinho", "A agenda mostra só os horários livres. O cliente escolhe, o horário entra sem choque com outro e o lembrete sai antes do atendimento."),
+    ("repetir", "Trazer de volta quem sumiu", "Quem não aparece há um tempo recebe uma mensagem no momento certo, e o orçamento pedido chega enquanto o cliente ainda está interessado."),
+    ("site", "Ter um site com a sua marca", "Serviços, horários, cardápio e agendamento num endereço só, rápido no celular, para quem procura o seu negócio na internet."),
+]
+VENDAS_EXPLICA = f"""    <section class="secao erp-hero vd-hero" aria-labelledby="titulo-vd-o-que">
+      <div class="container">
+        <div class="erp-hero-cabeca">
+          <p class="px-rotulo">O que é venda online</p>
+          <h2 id="titulo-vd-o-que" data-revelar-texto>O cliente pede e marca sozinho, pelo celular.</h2>
+        </div>
+        {VENDAS_CENA}
+        <div class="erp-hero-def">
+          <p>Venda online é o cliente fazer o pedido ou marcar o horário pelo celular, sem depender de alguém responder mensagem. Na prática: um cardápio com fotos e preços que já soma o total, uma agenda que mostra só os horários livres e um site que reúne tudo com a sua marca.</p>
+          <p>A diferença para atender só pelo WhatsApp é que o pedido chega completo e organizado, a qualquer hora, e a sua equipe só confirma e prepara.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="secao claro bi-faz-sec" aria-labelledby="titulo-vd-faz">
+      <div class="container">
+        <div class="cabeca">
+          <p class="px-rotulo">Na prática</p>
+          <h2 id="titulo-vd-faz" data-revelar-texto>O que dá para fazer com vendas online.</h2>
+        </div>
+        <ul class="bi-faz">{"".join(f'<li class="bi-faz-item"><span class="bi-faz-icone">{I[ic]}</span><span class="eg-n">0{k + 1}</span><h3>{t}</h3><p>{d}</p></li>' for k, (ic, t, d) in enumerate(VENDAS_FAZ))}</ul>
       </div>
     </section>
 """
@@ -1944,7 +1989,7 @@ SERVICOS_PAG = f"""    <section class="pagina-topo" aria-labelledby="titulo-pagi
       <div class="container pagina-topo-grade eco-grade">
         <div>
           <h1 id="titulo-pagina" data-revelar-texto>Soluções</h1>
-          <p class="pagina-topo-apoio">ERP, BI e análise de dados, IA de atendimento, e vendas e presença online, desenvolvidos sob medida para o seu negócio. E, quando ele pede algo diferente, a Kyzent constrói do zero.</p>
+          <p class="pagina-topo-apoio">ERP, BI e análise de dados, e vendas e presença online, desenvolvidos sob medida para o seu negócio. E, quando ele pede algo diferente, a Kyzent constrói do zero.</p>
         </div>
         {ecossistema()}
       </div>
