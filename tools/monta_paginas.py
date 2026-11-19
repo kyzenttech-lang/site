@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "182"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "183"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1766,7 +1766,7 @@ BI_EXPLICA = f"""    <section class="secao erp-hero bi-hero" aria-labelledby="ti
       </div>
     </section>
 
-    <section class="secao bi-faz-sec" aria-labelledby="titulo-bi-faz">
+    <section class="secao claro bi-faz-sec" aria-labelledby="titulo-bi-faz">
       <div class="container">
         <div class="cabeca">
           <p class="px-rotulo">Na prática</p>

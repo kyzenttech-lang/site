@@ -2810,3 +2810,11 @@ html:active-view-transition-type(voltar)::view-transition-new(conteudo) { animat
 .bi-fl-ticket { top: 150px; right: -44px; }
 .bi-fl-alerta { left: -54px; bottom: -18px; }
 @media (max-width: 999px) { .bi-fl-ticket { right: -6px; top: -30px; } .bi-fl-alerta { left: 6px; bottom: -30px; } }
+/* BI: "O que dá para fazer" em fundo claro */
+.claro.bi-faz-sec { background: radial-gradient(50% 60% at 10% 0%, rgba(26,92,255,.08), transparent 60%), #F3F5F9; border-top: 0; }
+.claro .bi-faz-item { background: #fff; box-shadow: 0 0 0 1px rgba(11,18,32,.08) inset, 0 24px 50px -36px rgba(11,18,32,.35); }
+.claro .bi-faz-item:hover { box-shadow: 0 0 0 1.5px rgba(26,92,255,.4) inset, 0 30px 60px -34px rgba(26,92,255,.45); }
+.claro .bi-faz-item h3 { color: #0B1220; }
+.claro .bi-faz-item p { color: #4A5468; }
+.claro .bi-faz-item .eg-n { -webkit-text-stroke-color: rgba(26,92,255,.55); }
+.claro.bi-faz-sec h2 { color: #0B1220; }
