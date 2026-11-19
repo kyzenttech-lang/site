@@ -866,6 +866,83 @@
     });
   });
 
+  /* ------------------------------------------------------------ BI: painel de exemplo (dados fictícios) */
+  var bi = $("[data-bi3d]");
+  if (bi) {
+    var dadosBI = JSON.parse(bi.getAttribute("data-bi-dados"));
+    var parado = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var fmt = {
+      fat: function (v) { return v >= 100000 ? "R$ " + Math.round(v / 1000).toLocaleString("pt-BR") + " mil" : "R$ " + Math.round(v).toLocaleString("pt-BR"); },
+      ticket: function (v) { return "R$ " + v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); },
+      ped: function (v) { return Math.round(v).toLocaleString("pt-BR"); },
+      novos: function (v) { return Math.round(v).toLocaleString("pt-BR"); },
+    };
+    var atual = { fat: 0, ticket: 0, ped: 0, novos: 0 };
+    var caminho = function (vals, max) {
+      var n = vals.length;
+      return vals.map(function (v, i) { return (i ? "L" : "M") + (i * 300 / (n - 1)).toFixed(1) + " " + (125 - v / max * 110).toFixed(1); }).join(" ");
+    };
+    var desenhar = function (el) {
+      if (parado) return;
+      var len = 2400;   // o traço não escala com o SVG: um comprimento folgado, em pixels de tela
+      el.style.transition = "none"; el.style.strokeDasharray = len; el.style.strokeDashoffset = len;
+      el.getBoundingClientRect();
+      el.style.transition = "stroke-dashoffset 1.1s cubic-bezier(.2,.8,.2,1)"; el.style.strokeDashoffset = 0;
+    };
+    var mostrar = function (per) {
+      var d = dadosBI[per];
+      Object.keys(fmt).forEach(function (k) {
+        var el = bi.querySelector('[data-bi-kpi="' + k + '"]'), de = atual[k], para = d.kpi[k], t0 = null;
+        bi.querySelector('[data-bi-var="' + k + '"]').textContent = "+" + d.var[k] + "% que o período anterior";
+        if (parado) { el.textContent = fmt[k](para); atual[k] = para; return; }
+        var passo = function (ts) {
+          if (!t0) t0 = ts;
+          var p = Math.min(1, (ts - t0) / 800), e = 1 - Math.pow(1 - p, 3);
+          el.textContent = fmt[k](de + (para - de) * e);
+          if (p < 1) requestAnimationFrame(passo); else atual[k] = para;
+        };
+        requestAnimationFrame(passo);
+      });
+      bi.querySelector("[data-bi-barras]").innerHTML = d.barras.map(function (h, i) {
+        return '<span style="--h:' + h + '%;--i:' + i + '"><i></i><b>' + d.rot[i] + "</b></span>";
+      }).join("");
+      var max = Math.max.apply(null, d.atual.concat(d.ant)) * 1.05;
+      var pa = bi.querySelector("[data-bi-atual]"), pb = bi.querySelector("[data-bi-ant]");
+      pa.setAttribute("d", caminho(d.atual, max)); pb.setAttribute("d", caminho(d.ant, max));
+      desenhar(pa);
+      bi.querySelector("[data-bi-rank]").innerHTML = d.rank.map(function (r) { return "<li><span>" + r[0] + '</span><i style="--v:' + r[1] + '%"></i></li>'; }).join("");
+      $$("[data-bi-per]", bi).forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-bi-per") === per ? "true" : "false"); });
+    };
+    $$("[data-bi-per]", bi).forEach(function (b) {
+      b.addEventListener("click", function () {
+        // barras novas crescem do zero
+        bi.classList.remove("entrou"); bi.getBoundingClientRect();
+        mostrar(b.getAttribute("data-bi-per"));
+        requestAnimationFrame(function () { bi.classList.add("entrou"); });
+      });
+    });
+    if (!parado && "IntersectionObserver" in window) {
+      bi.classList.add("pronto");
+      var obs = new IntersectionObserver(function (ent) {
+        if (!ent[0].isIntersecting) return;
+        obs.disconnect();
+        mostrar("semana");
+        requestAnimationFrame(function () { bi.classList.add("entrou"); });
+      }, { threshold: 0.3 });
+      obs.observe(bi);
+    } else { mostrar("semana"); bi.classList.add("entrou"); }
+    // a cena inclina seguindo o mouse
+    if (matchMedia("(pointer: fine)").matches && !parado) {
+      var cenaBI = bi.querySelector("[data-bi-cena]");
+      bi.addEventListener("pointermove", function (e) {
+        if (!bi.classList.contains("entrou")) return;
+        var r = bi.getBoundingClientRect();
+        cenaBI.style.transform = "rotateX(" + (16 - ((e.clientY - r.top) / r.height - 0.5) * 8).toFixed(2) + "deg) rotateY(" + (-12 + ((e.clientX - r.left) / r.width - 0.5) * 12).toFixed(2) + "deg)";
+      });
+      bi.addEventListener("pointerleave", function () { cenaBI.style.transform = ""; });
+    }
+  }
+
   /* ------------------------------------------------------------ ano do rodapé */
   var ano = $("[data-ano]");
   if (ano) ano.textContent = new Date().getFullYear();

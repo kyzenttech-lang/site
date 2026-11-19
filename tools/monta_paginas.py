@@ -8,7 +8,7 @@ from urllib.parse import quote
 
 SITE = sys.argv[1]
 BASE = "https://kyzenttech-lang.github.io/site/"
-VERSAO = "180"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
+VERSAO = "182"   # aumente a cada mudança no CSS/JS, para o navegador baixar o arquivo novo
 
 WHATS = [("5519988728894", "(19) 98872-8894"), ("5519971246077", "(19) 97124-6077")]
 MSG = quote("Olá, vim pelo site da Kyzent")
@@ -1638,7 +1638,7 @@ def pagina_solucao(mid):
       </div>
     </section>
 
-{resolve_3d(problemas, benef) if mid == "gestao" else f"""    <section class="secao claro" aria-labelledby="titulo-problemas">
+{resolve_3d(problemas, benef) if mid in ("gestao", "bi") else f"""    <section class="secao claro" aria-labelledby="titulo-problemas">
       <div class="container solucao-duas">
         <div>
           <h2 id="titulo-problemas" data-revelar-texto>O que esta solução resolve.</h2>
@@ -1652,7 +1652,7 @@ def pagina_solucao(mid):
       </div>
     </section>"""}
 
-{ERP_EXPLICA if mid == "gestao" else f"""    <section class="secao" aria-labelledby="titulo-dia">
+{ {"gestao": ERP_EXPLICA, "bi": BI_EXPLICA}[mid] if mid in ("gestao", "bi") else f"""    <section class="secao" aria-labelledby="titulo-dia">
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-dia" data-revelar-texto>Como funciona no dia a dia.</h2>
@@ -1661,9 +1661,9 @@ def pagina_solucao(mid):
       </div>
     </section>"""}
 
-{funcionando}
+{"" if mid == "bi" else funcionando}
 {SOLUCAO_EXTRA.get(mid, lambda: "")()}
-{"" if mid == "gestao" else f"""    <section class="secao claro secao-faixa" id="incluido" aria-labelledby="titulo-incluido">
+{"" if mid in ("gestao", "bi") else f"""    <section class="secao claro secao-faixa" id="incluido" aria-labelledby="titulo-incluido">
       <div class="container">
         <div class="cabeca">
           <h2 id="titulo-incluido" data-revelar-texto>{"Módulos possíveis." if mid == "gestao" else "O que está incluído."}</h2>
@@ -1745,6 +1745,34 @@ ERP_EXPLICA = f"""    <section class="secao erp-hero" aria-labelledby="titulo-er
           <h2 id="titulo-ganhos" data-revelar-texto>Onde a equipe ganha tempo.</h2>
         </div>
         <ul class="eg">{"".join(f'<li class="eg-item eg-{k + 1}" data-erp-ganho><div class="eg-txt"><span class="eg-n">0{k + 1}</span><h3>{t}</h3><p>{d}</p></div><div class="eg-vis" aria-hidden="true">{ERP_PREVIAS[k]}</div></li>' for k, (t, d) in enumerate(ERP_GANHOS))}</ul>
+      </div>
+    </section>
+"""
+
+BI_FAZ = [('grafico', 'Ver o negócio inteiro numa tela', 'Faturamento, pedidos, ticket médio e clientes num painel atualizado a cada venda, sem montar planilha no fim do mês.'), ('repetir', 'Juntar dados que hoje estão separados', 'O sistema de vendas, o estoque, o financeiro e aquela planilha que só uma pessoa entende passam a alimentar o mesmo painel.'), ('busca', 'Descobrir o que vende, para quem e quando', 'Qual produto puxa as vendas, em que dia o movimento cai, qual cliente parou de comprar. É com isso que se decide promoção, compra e escala da equipe.'), ('alvo', 'Ser avisado antes de o problema crescer', 'Você define o que é normal. Se a venda cai, um custo sobe ou o estoque passa do mínimo, o aviso chega na hora, não no fechamento do mês.')]
+
+# ---------- página do BI: o que é BI, um painel de exemplo em 3D e o que dá para fazer  [REVISAR] rascunho do Claude; dados fictícios
+BI_EXPLICA = f"""    <section class="secao erp-hero bi-hero" aria-labelledby="titulo-bi-o-que">
+      <div class="container">
+        <div class="erp-hero-cabeca">
+          <p class="px-rotulo">O que é BI</p>
+          <h2 id="titulo-bi-o-que" data-revelar-texto>Os dados que o seu negócio já tem, virando respostas.</h2>
+        </div>
+        <div class="bi3d" data-bi3d data-bi-dados="{{&quot;semana&quot;: {{&quot;rot&quot;: [&quot;Seg&quot;, &quot;Ter&quot;, &quot;Qua&quot;, &quot;Qui&quot;, &quot;Sex&quot;, &quot;Sáb&quot;, &quot;Dom&quot;], &quot;barras&quot;: [52, 47, 58, 66, 88, 100, 71], &quot;atual&quot;: [30, 26, 34, 40, 55, 64, 46], &quot;ant&quot;: [26, 25, 28, 35, 46, 52, 44], &quot;kpi&quot;: {{&quot;fat&quot;: 8420, &quot;ticket&quot;: 32.4, &quot;ped&quot;: 260, &quot;novos&quot;: 18}}, &quot;var&quot;: {{&quot;fat&quot;: 12, &quot;ticket&quot;: 4, &quot;ped&quot;: 9, &quot;novos&quot;: 6}}, &quot;rank&quot;: [[&quot;X-bacon&quot;, 92], [&quot;X-salada&quot;, 75], [&quot;Porção de batata&quot;, 58], [&quot;Refrigerante lata&quot;, 44]]}}, &quot;mes&quot;: {{&quot;rot&quot;: [&quot;Sem 1&quot;, &quot;Sem 2&quot;, &quot;Sem 3&quot;, &quot;Sem 4&quot;], &quot;barras&quot;: [74, 81, 88, 100], &quot;atual&quot;: [180, 200, 215, 240], &quot;ant&quot;: [170, 176, 190, 205], &quot;kpi&quot;: {{&quot;fat&quot;: 36900, &quot;ticket&quot;: 31.8, &quot;ped&quot;: 1160, &quot;novos&quot;: 74}}, &quot;var&quot;: {{&quot;fat&quot;: 8, &quot;ticket&quot;: 2, &quot;ped&quot;: 6, &quot;novos&quot;: 11}}, &quot;rank&quot;: [[&quot;X-bacon&quot;, 88], [&quot;X-salada&quot;, 79], [&quot;Refrigerante lata&quot;, 61], [&quot;Porção de batata&quot;, 55]]}}, &quot;ano&quot;: {{&quot;rot&quot;: [&quot;J&quot;, &quot;F&quot;, &quot;M&quot;, &quot;A&quot;, &quot;M&quot;, &quot;J&quot;, &quot;J&quot;, &quot;A&quot;, &quot;S&quot;, &quot;O&quot;, &quot;N&quot;, &quot;D&quot;], &quot;barras&quot;: [62, 58, 66, 70, 72, 69, 75, 80, 78, 86, 92, 100], &quot;atual&quot;: [28, 27, 30, 32, 33, 32, 35, 37, 36, 40, 43, 47], &quot;ant&quot;: [25, 24, 27, 28, 30, 29, 31, 33, 33, 35, 37, 41], &quot;kpi&quot;: {{&quot;fat&quot;: 412000, &quot;ticket&quot;: 30.9, &quot;ped&quot;: 13300, &quot;novos&quot;: 820}}, &quot;var&quot;: {{&quot;fat&quot;: 15, &quot;ticket&quot;: 3, &quot;ped&quot;: 11, &quot;novos&quot;: 9}}, &quot;rank&quot;: [[&quot;X-bacon&quot;, 95], [&quot;X-salada&quot;, 77], [&quot;Porção de batata&quot;, 60], [&quot;Refrigerante lata&quot;, 52]]}}}}" role="img" aria-label="Exemplo ilustrativo de painel de BI de uma lanchonete, com dados fictícios: faturamento, ticket médio, pedidos, clientes novos, vendas por dia, comparação com o período anterior, vendas por categoria e produtos mais vendidos."><div class="bi-cena" data-bi-cena><div class="bi-painel"><div class="bi-topo"><div class="bi-titulo"><b>Painel de vendas</b><small>Lanchonete Exemplo</small></div><div class="bi-filtros" role="group" aria-label="Período"><button type="button" data-bi-per="semana" aria-pressed="true">Semana</button><button type="button" data-bi-per="mes" aria-pressed="false">Mês</button><button type="button" data-bi-per="ano" aria-pressed="false">Ano</button></div><span class="bi-ficticio">Dados fictícios</span></div><div class="bi-kpis"><div class="bi-kpi"><small>Faturamento</small><strong data-bi-kpi="fat">0</strong><em data-bi-var="fat">+12%</em></div><div class="bi-kpi"><small>Ticket médio</small><strong data-bi-kpi="ticket">0</strong><em data-bi-var="ticket">+4%</em></div><div class="bi-kpi"><small>Pedidos</small><strong data-bi-kpi="ped">0</strong><em data-bi-var="ped">+9%</em></div><div class="bi-kpi"><small>Clientes novos</small><strong data-bi-kpi="novos">0</strong><em data-bi-var="novos">+6%</em></div></div><div class="bi-meio"><div class="bi-card bi-barras"><p>Vendas no período</p><div class="bi-cols" data-bi-barras><span style="--h:52%;--i:0"><i></i><b>Seg</b></span><span style="--h:47%;--i:1"><i></i><b>Ter</b></span><span style="--h:58%;--i:2"><i></i><b>Qua</b></span><span style="--h:66%;--i:3"><i></i><b>Qui</b></span><span style="--h:88%;--i:4"><i></i><b>Sex</b></span><span style="--h:100%;--i:5"><i></i><b>Sáb</b></span><span style="--h:71%;--i:6"><i></i><b>Dom</b></span></div></div><div class="bi-card bi-linha"><p>Este período x anterior <span class="bi-leg-linha"><i class="a"></i>atual <i class="b"></i>anterior</span></p><svg viewBox="0 0 300 130" preserveAspectRatio="none"><path class="bi-ant" data-bi-ant d=""/><path class="bi-atual" data-bi-atual d=""/></svg></div></div><div class="bi-baixo"><div class="bi-card bi-rosca"><p>Vendas por categoria</p><div class="bi-rosca-corpo"><div class="bi-rosca-graf"><svg viewBox="0 0 42 42"><circle r="15.9" cx="21" cy="21" stroke="#1A5CFF" stroke-dasharray="52 48" stroke-dashoffset="25" style="--d:0.00s"/><circle r="15.9" cx="21" cy="21" stroke="#3FB4FF" stroke-dasharray="21 79" stroke-dashoffset="-27" style="--d:0.52s"/><circle r="15.9" cx="21" cy="21" stroke="#8DB8FF" stroke-dasharray="17 83" stroke-dashoffset="-48" style="--d:0.73s"/><circle r="15.9" cx="21" cy="21" stroke="#C7DBFF" stroke-dasharray="10 90" stroke-dashoffset="-65" style="--d:0.90s"/></svg><span>4<br><small>categorias</small></span></div><ul class="bi-leg"><li><i style="background:#1A5CFF"></i>Lanches<b>52%</b></li><li><i style="background:#3FB4FF"></i>Bebidas<b>21%</b></li><li><i style="background:#8DB8FF"></i>Porções<b>17%</b></li><li><i style="background:#C7DBFF"></i>Sobremesas<b>10%</b></li></ul></div></div><div class="bi-card bi-rank"><p>Mais vendidos</p><ol data-bi-rank><li><span>X-bacon</span><i style="--v:92%"></i></li><li><span>X-salada</span><i style="--v:75%"></i></li><li><span>Porção de batata</span><i style="--v:58%"></i></li><li><span>Refrigerante lata</span><i style="--v:44%"></i></li></ol></div></div></div><div class="bi-flutua bi-fl-ticket"><small>Ticket médio</small><b>subiu</b><em>↑</em></div><div class="bi-flutua bi-fl-alerta"><span>!</span>Estoque de pão abaixo do mínimo</div></div></div>
+        <div class="erp-hero-def">
+          <p>BI é a sigla em inglês para <em>Business Intelligence</em>, ou inteligência de negócios. Na prática, é juntar os dados que o negócio já gera, como vendas, estoque, financeiro e planilhas, e organizar tudo em painéis que respondem perguntas: o que mais vende, em que dia, para quem.</p>
+          <p>A diferença para um relatório comum é que o painel se atualiza sozinho e deixa comparar: esta semana contra a passada, um produto contra outro, este mês contra o mesmo mês do ano anterior.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="secao bi-faz-sec" aria-labelledby="titulo-bi-faz">
+      <div class="container">
+        <div class="cabeca">
+          <p class="px-rotulo">Na prática</p>
+          <h2 id="titulo-bi-faz" data-revelar-texto>O que dá para fazer com BI.</h2>
+        </div>
+        <ul class="bi-faz">{"".join(f'<li class="bi-faz-item"><span class="bi-faz-icone">{I[ic]}</span><span class="eg-n">0{k + 1}</span><h3>{t}</h3><p>{d}</p></li>' for k, (ic, t, d) in enumerate(BI_FAZ))}</ul>
       </div>
     </section>
 """
